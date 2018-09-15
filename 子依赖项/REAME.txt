@@ -1,0 +1,19 @@
+
+
+Platform依赖项 created by 自动化脚本
+/* CODE_VERSION: */      4;
+/* KERNEL_VERSION: */    5;
+author:  
+WangChengQing    
+date:  
+2018年04月12日 16:09:06
+
+
+SubGame依赖项 自动化脚本
+/* CODE_VERSION: */      4;
+/* KERNEL_VERSION: */    5;
+/* PLATFORM_VERSION: */  2;
+author:  
+WangChengQing    
+date:  
+2018年04月12日 16:10:12

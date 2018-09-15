@@ -1,0 +1,78 @@
+﻿<?xml version="1.0"?>
+<?xml-stylesheet type="text/xsl" href="card_config.xsl"?>
+<PUKE xmlns:dt="urn:schemas-microsoft-com:datatypes">
+
+	<Game name="武汉四五趣游网络"> 	
+		<!-- 一副牌数量，可以比实际需要的大，不能小 -->
+		<CARDSUM>54</CARDSUM>
+
+		<!-- 游戏的得分经典模式 -->
+		<CAME_SCORE_MODE_CLASSIC>
+			<Nothing>1</Nothing>
+		  <FF7>1</FF7>
+		  <FF8>1</FF8>
+		  <FF9>1</FF9>
+		  <FF10>1</FF10>
+		  <FF11>2</FF11>
+		  <FF12>2</FF12>
+		  <FF13>2</FF13>
+		  <FF14>2</FF14>
+		  <FF15>2</FF15>
+		  <FF16>2</FF16>
+		  <FF17>2</FF17>
+		  <FF18>2</FF18>
+		  <FF19>2</FF19>
+		  <FF22>2</FF22>
+		</CAME_SCORE_MODE_CLASSIC>
+		
+		<!-- 游戏的得分疯狂加倍模式 -->
+		<CAME_SCORE_MODE_CRAZY>
+		</CAME_SCORE_MODE_CRAZY>
+	
+		<!-- 卡牌配置-->
+		<CARD_GOURP>	
+			<color>0</color> 	<!--方片-->
+			<begin>1</begin>
+			<end>13</end>
+			<sum>1</sum>
+		</CARD_GOURP>
+		
+		<CARD_GOURP>	
+			<color>1</color> 	<!--梅花-->
+			<begin>1</begin>
+			<end>13</end>
+			<sum>1</sum>
+		</CARD_GOURP>
+		
+		<CARD_GOURP>	
+			<color>2</color> 	<!--红桃-->
+			<begin>1</begin>
+			<end>13</end>
+			<sum>1</sum>
+		</CARD_GOURP>
+		
+		<CARD_GOURP>	
+			<color>3</color> 	<!--黑桃-->
+			<begin>1</begin>
+			<end>13</end>
+			<sum>1</sum>
+		</CARD_GOURP>
+		
+		<CARD_GOURP>
+			<color>4</color> 	<!--大王-->
+			<begin>14</begin>
+			<end>15</end>
+			<sum>1</sum>
+		</CARD_GOURP>
+		
+		<!-- 玩家组配置 -->
+		<Players>
+			<!--玩家类型-->
+			<id>1</id>
+     		<!-- 最大手牌数量 -->
+			<card_sum>17</card_sum>
+		</Players>		
+		
+	</Game>
+		
+</PUKE>

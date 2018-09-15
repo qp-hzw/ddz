@@ -1,0 +1,114 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <ClCompile Include="AndroidUserItemSink.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="GameCardConfig.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="GameConfig.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="GameData.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="GamePlayerConfig.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="GameServer.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="GameServerManager.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="ServerLog.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="Stdafx.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="SubGameRule.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="TableFrameSink.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="AndroidUserItemSink.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="GameCardConfig.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="GameConfig.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="GameData.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="GameInterface.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="GameServerManager.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="Resource.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="ServerLog.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="Stdafx.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="SubGameRule.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="TableFrameSink.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="..\消息定义\cardType.h">
+      <Filter>消息定义</Filter>
+    </ClInclude>
+    <ClInclude Include="..\消息定义\CMD_SubGame.h">
+      <Filter>消息定义</Filter>
+    </ClInclude>
+    <ClInclude Include="..\消息定义\define.h">
+      <Filter>消息定义</Filter>
+    </ClInclude>
+    <ClInclude Include="GamePlayerConfig.h">
+      <Filter>源文件</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <Filter Include="资源文件">
+      <UniqueIdentifier>{016a8864-962d-4a2a-9ba1-3e7485ce6230}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="源文件">
+      <UniqueIdentifier>{65e23a2a-2cf9-441f-80e0-57947c9892b7}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="头文件">
+      <UniqueIdentifier>{a468ba10-cdee-4978-997b-028a557385b5}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="消息定义">
+      <UniqueIdentifier>{c2147d5d-a512-4bc6-aab4-e4035fc4a898}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="res\GameServer.rc2">
+      <Filter>资源文件</Filter>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <ResourceCompile Include="Res\GameServer.rc">
+      <Filter>资源文件</Filter>
+    </ResourceCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <Text Include="ReadMe.txt">
+      <Filter>资源文件</Filter>
+    </Text>
+  </ItemGroup>
+</Project>

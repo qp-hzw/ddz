@@ -1,0 +1,10 @@
+﻿ipch/
+SubGames_QP.sdf
+游戏服务器/Release_Unicode
+游戏服务器/Debug_Unicode
+*.opensdf
+*.sdf
+.sdf
+发布组件/
+*.lib
+*.exp
