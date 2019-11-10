@@ -8,10 +8,13 @@
 	#include "..\..\消息定义\CMD_Commom.h"
 	#include "..\..\消息定义\CMD_Correspond.h"
 	#include "..\..\消息定义\CMD_GameServer.h"
+    #include "..\..\消息定义\STR_CMD_GameServer.h"
 
 	//组件定义
-	#include "..\..\依赖项\服务核心\ServiceCoreHead.h"
-	#include "..\..\依赖项\内核引擎\KernelEngineHead.h"
+	#include "../../../../share\依赖项\服务核心\ServiceCoreHead.h"
+	#include "../../../../share\依赖项\内核引擎\KernelEngineHead.h"
+
+
 #else
 	//消息定义
 	#include "..\消息定义\CMD_Commom.h"
@@ -173,11 +176,9 @@ struct tagGameParameter
 //服务属性
 struct tagGameServiceAttrib
 {
-	//内核属性
 	DWORD							dwGameID;							//游戏索引
 
-	WORD							wChairCount;						//椅子数目
-	WORD							wSupporType;						//支持类型
+	WORD							wChairCount;						//椅子数目 
 
 	DWORD							dwSubGameVersion;					//子游戏版本
 	TCHAR							szDllName[LEN_DLL];					//Dll名称
@@ -191,49 +192,8 @@ struct tagGameServiceOption
 
 	//常规配置
 	TCHAR							szServerName[LEN_SERVER];			//房间名称
-	WORD							wServerType;						//房间类型		TODONOW added by WangChengQing 删除该字段,根据子游戏的配置自动选择
-	WORD							wTableCount;						//桌子数目 
-	WORD							wMaxPlayer;							//房间人数		TODONOW added by WangChengQing 删除该字段,根据子游戏的Attribute
-
-	//游戏服信息 added by lizhihu
-	TCHAR							szGameServerAddr[LEN_DB_ADDR];		//游戏服地址
 	WORD							wGameServerPort;					//游戏服端口
-
-	//属性配置
-	LONG							lCellScore;							//游戏底分
-	SCORE							lRestrictScore;						//每局封顶
-	WORD							wRevenueRatio;						//税收比例
-	SCORE							lServiceScore;						//服务费用
-
-
-	//条件限制
-	SCORE							lMinTableScore;						//坐下游戏的最低积分
-	SCORE							lMinEnterScore;						//进入房间的最低积分
-	SCORE							lMaxEnterScore;						//进入房间的最高积分
-	BYTE							cbMinEnterMember;					//最低会员
-	BYTE							cbMaxEnterMember;					//最高会员
-
-	//分组参数
-	WORD							wMinDistributeUser;					//最少人数
-	WORD							wMaxDistributeUser;					//最多人数
-	WORD							wDistributeTimeSpace;				//分组间隔
-	WORD							wDistributeDrawCount;				//分组局数
-	WORD							wDistributeStartDelay;				//开始延时
-
-
-	SCORE							lMinEnterScoreMultiBeilv;			//最低积分乘上游戏倍率
-	SCORE							lMaxEnterScoreMultiBeilv;			//最高积分乘上游戏倍率
-
-	//房间配置
-	DWORD							dwServerRule;						//房间规则		TODO 这是从哪里获取的
-	DWORD							dwAttachUserRight;					//附加权限
-	
-	//分组设置
-	BYTE							cbDistributeRule;					//分组规则
-    
-	//自定规则
-	BYTE							cbCustomRule[1024];					//自定规则
-
+	TCHAR							szGameServerAddr[LEN_DB_ADDR];		//游戏服地址    数据库中获取
 };
 
 //游戏配置
@@ -265,6 +225,9 @@ struct tagTableFrameParameter
 	ITimerEngine *					pITimerEngine;						//时间引擎
 	IDataBaseEngine *				pIRecordDataBaseEngine;				//数据引擎
 	IDataBaseEngine *				pIKernelDataBaseEngine;				//数据引擎
+
+	//组件接口
+	ITCPSocketService *				PITCPSocketService;					//网络服务
 
 	//服务组件
 	IMainServiceFrame *				pIMainServiceFrame;					//服务框架
@@ -375,7 +338,8 @@ struct tagUserRule
 	TCHAR							szPassword[LEN_PASSWORD];			//桌子密码
 };
 
-//用户信息
+//用户信息 TODONOW added by WangChengQing 这个字段可以删除 2018/5/12
+//在下次 迭代的时候删除, 现在不删除 是因为会对子游戏有影响(子依赖项)
 struct tagUserInfoPlus
 {
 	//登录信息
@@ -517,8 +481,6 @@ interface IGameDataBaseEngine : public IUnknownEx
 {
 	//配置参数
 public:
-	//自定配置
-	virtual VOID* GetCustomRule() =NULL;
 	//服务属性
 	virtual tagGameServiceAttrib * GetGameServiceAttrib()=NULL;
 	//服务配置
@@ -577,6 +539,10 @@ public:
 	virtual DWORD GetClientAddr()=NULL;
 	//机器标识
 	virtual LPCTSTR GetMachineID()=NULL;
+	//设置断线标志 GameID  TODONOW
+	virtual void SetOfflineGameID(DWORD )=NULL;
+	//获取断线标志 GameID  TODONOW
+	virtual DWORD GetOfflineGameID()=NULL;
 
 	//登录信息
 public:
@@ -604,6 +570,12 @@ public:
 	virtual DWORD GetUserID()=NULL;
 	//用户昵称
 	virtual LPCTSTR GetNickName()=NULL;
+	
+	//用户断线之前的状态
+	virtual void SetOldGameStatus(BYTE gamestatus) = NULL;
+
+	//用户断线之前的状态
+	virtual BYTE GetOldGameStatus() = NULL;
 
 	//状态接口
 public:
@@ -679,8 +651,6 @@ public:
 public:
 	//对比帐号
 	virtual bool ContrastNickName(LPCTSTR pszNickName)=NULL;
-	//对比密码
-	virtual bool ContrastLogonPass(LPCTSTR pszPassword)=NULL;
 
 	//游戏状态
 public:
@@ -710,30 +680,11 @@ public:
 public:
 	//设置状态
 	virtual bool SetUserStatus(BYTE cbUserStatus, WORD wTableID, WORD wChairID, bool bNotify=true)=NULL;
-	//写入积分
-	virtual bool WriteUserScore(SCORE lScore, SCORE lChoushui, DWORD dwChoushuiType, SCORE lGrade, SCORE lRevenue, DWORD dwUserMedal, BYTE cbScoreType, DWORD dwPlayTimeCount)=NULL;
 	//修改权限
 	virtual VOID ModifyUserRight( DWORD dwAddRight, DWORD dwRemoveRight, bool bGameRight=true)=NULL;
-	//更新房卡 扣取-/+增加房卡
-	virtual bool ModifyUserRoomCard(DWORD dwUserID, SCORE lRoomCardCount) = NULL;
-	//更新钻石 扣取-/+增加钻石
-	virtual bool ModifyUserDiamond(SCORE lRoomCardCount/*, WORD wServerId*/) = NULL;
-	//更新金币 扣取-/+增加金币
-	virtual bool ModifyUserGold(SCORE lRoomCardCount/*, WORD wServerId*/) = NULL;
-	//写入胜场记录
-	virtual void WriteVictoryRecord(DWORD dwWinCount)=NULL;
 
-	//冻结接口
-public:
-	//冻结积分
-	virtual bool FrozenedUserScore(SCORE lScore)=NULL;
-	//解冻积分
-	virtual bool UnFrozenedUserScore(SCORE lScore)=NULL;
-
-	//修改接口
-public:
-	//修改信息
-	virtual bool ModifyUserProperty(SCORE lScore, LONG lLoveLiness)=NULL;
+	//更新用户财富信息
+	virtual bool ModifyUserTreasure(DWORD dwTableID, BYTE byTableMode, BYTE byRound, SCORE lUserTreasuse, BYTE byWin) = NULL;
 
 	//高级接口
 public:
@@ -796,20 +747,12 @@ static const GUID IID_IServerUserItemSink={0x9d0cfe02,0x0fe9,0x4a8b,0x97,0x95,0x
 //状态接口
 interface IServerUserItemSink : public IUnknownEx
 {
-	//用户积分
-	virtual bool OnEventUserItemScore(IServerUserItem * pIServerUserItem, BYTE cbReason)=NULL;
-	//用户房卡
-	virtual bool OnEventUserOpenRoomCard(IServerUserItem *pIServerUserItem, DWORD dwUserID, SCORE lCardCount)=NULL;
-	//用户钻石
-	virtual bool OnEventUserDiamond(IServerUserItem *pIServerUserItem, SCORE lCardCount/*, WORD wServerId*/)=NULL;
-	//用户金币
-	virtual bool OnEventModifyUserGold(IServerUserItem *pIServerUserItem, SCORE lCardCount/*, WORD wServerId*/)=NULL;
+	//更新用户财富信息
+	virtual bool OnEventModifyUserTreasure(IServerUserItem *pIServerUserItem, DWORD dwTableID, BYTE byTableMode, BYTE byRound, SCORE lUserTreasuse, BYTE byWin)=NULL;
 	//用户状态
 	virtual bool OnEventUserItemStatus(IServerUserItem * pIServerUserItem, WORD wOldTableID=INVALID_TABLE, WORD wOldChairID=INVALID_CHAIR)=NULL;
 	//用户权限
 	virtual bool OnEventUserItemRight(IServerUserItem *pIServerUserItem, DWORD dwAddRight, DWORD dwRemoveRight,bool bGameRight=true)=NULL;
-	//用户胜场
-	virtual void OnEventUserWinCount(IServerUserItem *pIServerUserItem, DWORD dwWinCount/*, WORD wServerId*/)=NULL;
 };
 
 //////////////////////////////////////////////////////////////////////////////////
@@ -877,11 +820,15 @@ public:
 	virtual WORD GetTableID()=NULL;
 	//游戏人数
 	virtual WORD GetChairCount()=NULL;
+	//获取密码
+	virtual DWORD GetPassword()=NULL;
 
 	//配置参数
 public:
-	//自定配置
+	//读取通用房间规则
 	virtual VOID* GetCustomRule() =NULL;
+	//读取子游戏特有房间规则
+	virtual VOID * GetSubGameRule()=NULL;
 	//服务属性
 	virtual tagGameServiceAttrib * GetGameServiceAttrib()=NULL;
 	//服务配置
@@ -893,13 +840,6 @@ public:
 	virtual BYTE GetStartMode()=NULL;
 	//开始模式
 	virtual VOID SetStartMode(BYTE cbStartMode)=NULL;
-
-	//单元积分
-public:
-	//单元积分
-	virtual LONG GetCellScore()=NULL;
-	//单元积分
-	virtual VOID SetCellScore(LONG lCellScore)=NULL;
 
 	//信息接口
 public:
@@ -930,33 +870,13 @@ public:
 
 	//写分接口
 public:
-	//写入积分
-	virtual bool WriteUserScore(WORD wChairID, tagScoreInfo & ScoreInfo, DWORD dwGameMemal=INVALID_DWORD, DWORD dwPlayGameTime=INVALID_DWORD)=NULL;
-	//写入积分
-	virtual bool WriteTableScore(tagScoreInfo ScoreInfoArray[], WORD wScoreCount)=NULL;
-	////更新房卡 扣取-/+增加房卡
-	//virtual bool ModifyOpenRoomCard() = NULL;
-	//更新金币钻石 扣取-/+增加
-	//virtual bool ModifyUserDiamondGold(WORD wChairID, LONG lWinCount) = NULL;
-	//写胜场记录
-	virtual void WriteVictoryRecord(WORD wChairID, DWORD wWinCount) = NULL;
 	//写入录像记录 参数 小局数,数据和长度
 	virtual bool WriteRecordInfo(WORD wXJCount,TCHAR strScore[],  VOID* pData, DWORD dwDataSize) = NULL;
 	//处理小局结束
 	virtual bool HandleXJGameEnd(BYTE cbCurGameCount, BYTE cbGameMode, SCORE *lGameScore) = NULL;
-	//彩金
-public:
-	//写入彩金积分
-	virtual bool WritePrizePoolScore(WORD wGameID,WORD wRoomID,LONGLONG lPrizePoolScore) = NULL;
-	//彩金配置
-	virtual bool GetPrizePoolData(WORD wGameID,WORD wRoomID,WORD wTableID) = NULL;
-	//获取彩金中奖
-	virtual bool GetPrizePoolReward(WORD wGameID,WORD wRoomID,WORD wTableId, WORD wChairID,LONG lTopPercent=1,LONG lBottomPercent=1) = NULL;
 
 	//计算接口
 public:
-	//计算税收
-	virtual void CalculateRevenue(WORD wChairID, SCORE& lScore, SCORE& lRevenue, SCORE& lChoushui)=NULL;
 	//消费限额
 	virtual SCORE QueryConsumeQuota(IServerUserItem * pIServerUserItem)=NULL;
 
@@ -1006,11 +926,6 @@ public:
 	//房间消息
 	virtual bool SendRoomMessage(IServerUserItem * pIServerUserItem, LPCTSTR lpszMessage, WORD wType)=NULL;
 
-	//跑马灯消息yang
-public: 
-	//发送跑马灯消息yang
-	virtual bool SendMarqueeMsg(LPCTSTR lpszMessage, WORD wType, WORD MsgID)=NULL;
-
 	//动作处理
 public:
 	//起立动作
@@ -1032,19 +947,6 @@ public:
 	//获取比赛桌子接口
 	virtual IGameMatchSink* GetGameMatchSink()=NULL;
 
-public:
-	//web改变玩家控制值yang
-	virtual void WebChangeUserControlScore( WORD chair_id, SCORE val )=NULL;
-	//web控制游戏难易程度yang
-	virtual void WebControlGameLevel(DWORD RoomID, DWORD val)=NULL;
-	//获得房间控制值yang
-	virtual SCORE GetRoomControlValue() = NULL;
-	//设置房间控制值yang
-	virtual void SetRoomControlValue(SCORE val) = NULL;
-	//库存计算是否控制(系统输钱填负值)
-	virtual bool IsControl( SCORE expectStock ) = NULL;
-	//修改当前库存值(传本局输赢变化值)
-	virtual void SetStockScore(SCORE currentStock) = NULL;
 
 };
 
@@ -1223,18 +1125,46 @@ public:
 	//删除用户
 	virtual bool DeleteWaitDistribute(IServerUserItem * pIServerUserItem)=NULL;
 
+
+
+#pragma region DB事件通知
+	//替他人开房
 public:
 	//替他人开房结束
 	virtual void ConcludeTable(DWORD dwTableID) = NULL;
-
 	//替他人开房开始
 	virtual void StartTable(DWORD dwTableID) = NULL;
-
 	//用户加入替他人开房
 	virtual void JoinTable(DWORD dwTableID, DWORD dwUserID) = NULL;
-
 	//用户离开替他人开房
 	virtual void LeaveTable(DWORD dwTableID, DWORD dwUserID) = NULL;
+
+	//CLUB牌友圈2  && 金币大厅
+public:
+	//用户坐下
+	virtual void ClubPlayerSitDown(DWORD dwTableID, DWORD dwUserID, BYTE byChairID, BYTE byClubOrHallGold) = NULL;
+	//用户起立
+	virtual void ClubPlayerSitUp(DWORD dwTableID, DWORD dwUserID, BYTE byChairID, BYTE byClubOrHallGold) = NULL;
+	//最后一个用户起立
+	virtual void ClubLastPlayerSitUp(DWORD dwTableID, DWORD dwUserID, BYTE byChairID, BYTE byClubOrHallGold)= NULL;
+	//用户掉线
+	virtual void ClubPlayerOffline(DWORD dwTableID, DWORD dwUserID, BYTE byChairID, BYTE byClubOrHallGold) = NULL;
+
+	//创建桌子 -- 俱乐部桌子
+	virtual void ClubTableCreate(DWORD dwClubRoomID, DWORD dwUserID, DWORD dwTableID, DWORD dwLockState) = NULL;
+	//桌子开始游戏
+	virtual void ClubTableStart(DWORD dwTableID, BYTE byClubOrHallGold) = NULL;
+	//桌子人数已满
+	virtual void ClubTableMax(DWORD dwTableID, BYTE byClubOrHallGold) = NULL;
+	//桌子人数没有满
+	virtual void ClubTableNotMax(DWORD dwTableID, BYTE byClubOrHallGold) = NULL;
+	//桌子小局结束游戏
+	virtual void ClubTableXJ(DWORD dwTableID) = NULL;
+	//桌子大局结束游戏
+	virtual void ClubTableDJ(DWORD dwTableID) = NULL;
+#pragma endregion
+
+public:
 };
 
 //////////////////////////////////////////////////////////////////////////////////

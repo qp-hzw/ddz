@@ -2781,7 +2781,7 @@ bool __stdcall CGameData::SetRoomRule(VOID * pData, WORD wDataSize)
 		return false;
 	}
 	//效验数据
-	if ( wDataSize != sizeof(tagTableCfg) )
+	if ( wDataSize != sizeof(tagGameRoomItem) )
 	{
 		return false;
 	}
@@ -2793,28 +2793,28 @@ bool __stdcall CGameData::SetRoomRule(VOID * pData, WORD wDataSize)
 	ZeroMemory(&m_playing_para, sizeof(m_playing_para));
 
 	//赋值
-	tagTableCfg * m_pRoomRuleOption = (tagTableCfg *)pData;
+	tagGameRoomItem * m_pRoomRuleOption = (tagGameRoomItem *)pData;
 
 	//设置游戏类型ID
 	SetKindID(KIND_ID);
 
 	//设置局数
-	SetAllCount(m_pRoomRuleOption->GameCount);
+	//SetAllCount(m_pRoomRuleOption->GameCount);
 
 	//设置椅子和玩家数目
-	SetMaxChairCount(m_pRoomRuleOption->PlayerCount);	
+	//SetMaxChairCount(m_pRoomRuleOption->PlayerCount);	
 
 	// 设置下注底分
-	SetCellScore( m_pRoomRuleOption->CellScore ); 
+	//SetCellScore( m_pRoomRuleOption->CellScore ); 
 
 	//设置游戏得分模式，经典模式或疯狂模式
-	SetGameScoreMode( m_pRoomRuleOption->GameMode );	
+	//SetGameScoreMode( m_pRoomRuleOption->GameMode );	
 
 	//设置游戏抢庄模式：0 - 抢庄		1 - 轮庄		2 - 固定庄
-	SetRobBankMode( m_pRoomRuleOption->RobBankType );
+	//SetRobBankMode( m_pRoomRuleOption->RobBankType );
 
 	//设置房主
-	SetRoomFangzhu( m_pRoomRuleOption->FangZhu );
+	//SetRoomFangzhu( m_pRoomRuleOption->FangZhu );
 
 	//根据人数设置升级扣底卡牌数
 	m_card_config.leave_card_num = NORMAL_LEAVE_CARD_NUM;

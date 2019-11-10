@@ -44,7 +44,7 @@ protected:
 	tagGameServiceOption            * m_pGameServiceOption;					//游戏配置
 	tagGameServiceAttrib            * m_pGameServiceAttrib;					//游戏属性
 
-	tagTableCfg						* m_pRoomRuleOption;					//房间规则
+	tagGameRoomItem						* m_pRoomRuleOption;					//房间规则
 
 	DWORD							m_dPlayerState[MAX_CHAIR_COUNT];		//框架传来的玩家游戏状态
 

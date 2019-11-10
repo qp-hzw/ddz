@@ -377,6 +377,8 @@ public:
 	virtual bool SetConnectionInfo(DWORD dwDBAddr, WORD wPort, LPCTSTR szDBName, LPCTSTR szUser, LPCTSTR szPassword)=NULL;
 	//连接信息
 	virtual bool SetConnectionInfo(LPCTSTR szDBAddr, WORD wPort, LPCTSTR szDBName, LPCTSTR szUser, LPCTSTR szPassword)=NULL;
+	//连接信息
+	virtual bool SetConnectionInfo(BYTE byMask, BYTE byLocalSql)=NULL;
 
 	//参数接口
 public:

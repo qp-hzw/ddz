@@ -3,63 +3,86 @@
 
 #pragma pack(1)
 
-#include "Define.h"
-
-//////////////////////////////////////////////////////////////////////////////////
-//游戏列表
-
-//游戏类型
+#pragma region 游戏列表  -- 来源: 数据库
+//TypeItem
 struct tagGameType
 {
-	WORD							wJoinID;							//挂接索引
-	WORD							wSortID;							//排序索引
 	WORD							wTypeID;							//类型索引
 	TCHAR							szTypeName[LEN_TYPE];				//种类名字
 };
 
-//游戏种类
+//KindItem
 struct tagGameKind
 {
-	WORD							wTypeID;							//类型索引
 	WORD							wKindID;							//类型索引
-	WORD							wJoinID;							//挂接索引
-	WORD							wSortID;							//排序索引	
+	WORD							wTypeID;							//类型索引
 	TCHAR							szKindName[LEN_KIND];				//游戏名字
 };
 
-//游戏节点
+//NodeItem
 struct tagGameNode
 {
 	WORD							wKindID;							//名称索引
-	WORD							wJoinID;							//挂接索引
-	WORD							wSortID;							//排序索引
 	WORD							wNodeID;							//节点索引
 	TCHAR							szNodeName[LEN_NODE];				//节点名称
 };
 
-//游戏房间
+//GameItem
+struct tagGameGame
+{
+	DWORD							wGameID;							//模块标识
+	TCHAR							szGameName[LEN_KIND];				//游戏名字
+	TCHAR							szGameServerAddr[LEN_DB_ADDR];		//游戏服地址
+	TCHAR							szDLLName[LEN_DLL];					//DLL名字
+
+	//非数据库, 程序中使用
+	//TODONOW 此字段是根据szDLLName来判断当前是否有dll. 如果不放在此处, 每次都需要使用函数来get一下
+	DWORD							dwNativeVersion;					//校验Dll是否存在
+};
+
+//RoomItem
+struct tagGameRoomItem
+{
+	//索引变量
+	DWORD							dwServerID;							//房间标识
+	TCHAR							szServerName[LEN_SERVER];			//房间名称
+
+	WORD							wGameServerPort;					//游戏服端口
+
+	//非数据库, 程序中使用
+	//TODONOW DLLName此字段其实是存在Database中的GameItem中的 如果不放在此处, 程序中就无法加载dll
+	//        dwNativeVersion原因是 不需要每次校验dll是否存在
+	TCHAR							szDLLName[LEN_DLL];					//DLL名字
+	DWORD							dwNativeVersion;					//校验Dll是否存在
+	//GameItem表中读取
+	TCHAR							szGameServerAddr[LEN_DB_ADDR];		//游戏服地址
+};
+
+#pragma endregion
+
+#pragma region 游戏服, 协调服, 登录服, 客户端 统一数据
+//游戏房间 -- 发给client的
 struct tagGameServer
 {
 	DWORD							wServerID;							//房间索引
-	WORD							wSortID;							//排序索引	
 	TCHAR							szServerName[LEN_SERVER];			//房间名称
-	DWORD							dwSubGameVersion;					//子游戏版本信息
+	
 	TCHAR							szGameServerAddr[LEN_IP_ADDR];		//游戏服地址
 	WORD							wGameServerPort;					//游戏服端口
-	DWORD							dwOnLineCount;						//在线人数
+
+	DWORD							dwSubGameVersion;					//子游戏版本信息
+
+	DWORD							dwOnlineCount;						//在线人数统计
+
+	BYTE							byMask;								//增加删除标志 0为增加 1位删除
 };
 
-//在线信息
-struct tagOnLineInfoKind
-{
-	WORD							wKindID;							//类型标识
-	DWORD							dwOnLineCount;						//在线人数
-};
+#pragma endregion
 
 //在线信息
-struct tagOnLineInfoServer
+struct tagOnLineInfoGame
 {
-	WORD							wServerID;							//房间标识
+	DWORD							dwGameID;							//类型标识
 	DWORD							dwOnLineCount;						//在线人数
 };
 
@@ -199,7 +222,6 @@ struct tagGamePlaza
 {
 	WORD							wPlazaID;							//广场标识
 	TCHAR							szServerAddr[32];					//服务地址
-	TCHAR							szServerName[32];					//服务器名
 };
 
 //级别子项
@@ -249,16 +271,6 @@ struct tagLicenseInfo
 	TCHAR						szCPUID[MAX_PATH];							//
 };
 
-//数据信息
-struct tagDataBaseParameter
-{
-	WORD							wDataBasePort;						//数据库端口
-	TCHAR							szDataBaseAddr[LEN_DB_ADDR];		//数据库地址
-	TCHAR							szDataBaseUser[LEN_DB_USER];		//数据库用户
-	TCHAR							szDataBasePass[LEN_DB_PASS];		//数据库密码
-	TCHAR							szDataBaseName[LEN_DB_NAME];		//数据库名字
-};
-
 //房间配置
 struct tagServerOptionInfo
 {
@@ -267,46 +279,9 @@ struct tagServerOptionInfo
 	WORD							wNodeID;							//挂接节点
 	WORD							wSortID;							//排列标识
 
-	//税收配置
-	WORD							wRevenueRatio;						//税收比例
-	SCORE							lServiceScore;						//服务费用
-
-	//房间配置
-	SCORE							lRestrictScore;						//限制积分
-	SCORE							lMinTableScore;						//最低积分
-	SCORE							lMinEnterScore;						//最低积分
-	SCORE							lMaxEnterScore;						//最高积分
-
-	//会员限制
-	BYTE							cbMinEnterMember;					//最低会员
-	BYTE							cbMaxEnterMember;					//最高会员
-
 	//房间属性
-	DWORD							dwServerRule;						//房间规则
 	TCHAR							szServerName[LEN_SERVER];			//房间名称
 };
-
-
-//服务器配置信息 added by WangChengQing 2018/1/12 暂时放在这里处理, 之后删掉
-struct tagServerParameter
-{
-	TCHAR							szCorrspAddr[LEN_DB_ADDR];             //协调服务器地址
-	TCHAR							szServerName[LEN_DB_NAME];			   //服务器名字
-	TCHAR							szServicAddr[LEN_DB_ADDR];			   //登陆服服务地址
-
-	//默认数据库配置
-	WORD							wDefaultDBPort;							//默认数据库端口
-	TCHAR							szDefaultDBAddr[LEN_DB_ADDR];			//默认数据库地址
-	TCHAR							szDefaultDBAccount[LEN_DB_USER];		//默认数据库账号
-	TCHAR							szDefaultDBPassword[LEN_DB_PASS];		//默认数据库密码
-
-	//财富库信息
-	tagDataBaseParameter            tagAccountsDB;                         //用户数据库
-	tagDataBaseParameter            tagTreasureDB;                         //财富数据库
-	tagDataBaseParameter            tagPlatformDB;                         //平台数据库
-
-};
-
 //////////////////////////////////////////////////////////////////////////////////
 
 #pragma pack()

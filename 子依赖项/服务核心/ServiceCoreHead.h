@@ -41,7 +41,6 @@
 		#include "WHIniData.h"
 		#include "WHDataQueue.h"
 		#include "WHDataLocker.h"
-		#include "WHCommandLine.h"
 	#endif
 #endif
 

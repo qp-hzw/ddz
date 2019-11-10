@@ -1,19 +1,29 @@
 
 
+--------------------------------------
 Platform依赖项 created by 自动化脚本
 /* CODE_VERSION: */      4;
 /* KERNEL_VERSION: */    5;
+
+
+commit b47144121f6c166cec4739c210fb8e52ef9a0cb4 Author: WangChengQing <377133665@qq.com> Date: Thu Dec 13 19:33:48 2018 +0800 【简要描述】删除无用字段 【详细描述】删除无用字段 【修 改 人】王成庆
+
 author:  
 WangChengQing    
+
 date:  
-2018年04月12日 16:09:06
+2019年 6月 3日 星期一 17时19分39秒 CST
 
 
+--------------------------------------
 SubGame依赖项 自动化脚本
-/* CODE_VERSION: */      4;
-/* KERNEL_VERSION: */    5;
-/* PLATFORM_VERSION: */  2;
+/* PLATFORM_VERSION: */      4;
+
+
+commit bec52300fce169b2132cb783c4217faf704eafa6 Author: WangChengQing <377133665@qq.com> Date: Mon Dec 17 15:40:15 2018 +0800 【简要描述】聚贤庄v1.0 版本 【详细描述】1. 缺少自动获取外网ip 【修 改 人】王成庆
+
 author:  
 WangChengQing    
+
 date:  
-2018年04月12日 16:10:12
+2019年 6月12日 星期三 21时46分40秒 CST

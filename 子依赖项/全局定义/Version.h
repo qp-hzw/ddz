@@ -21,15 +21,6 @@ const BYTE CODE_VERSION =
 const BYTE KERNEL_VERSION =
 /* KERNEL_VERSION: */    5;
 
-//平台版本 platform
-const BYTE PLATFORM_VERSION = 
-/* PLATFORM_VERSION: */  2;
-
-//子游戏版本 subGame
-const BYTE SUBGAME_VERSION =
-/* SUBGAME_VERSION: */   NULL;
-
-
 /************************************************************************
 ** FUNCTION  对外接口
 ************************************************************************/
@@ -44,14 +35,14 @@ static DWORD Get_Kernel_Version()
 }
 
 //获取框架版本
-static DWORD Get_Framework_Version()
+static DWORD Get_Framework_Version(const BYTE PLATFORM_VERSION)
 {
 	DWORD dwVersion = (CODE_VERSION<<24) + (KERNEL_VERSION<<16) + (PLATFORM_VERSION<<8);
 	return dwVersion;
 }
 
 //获取子游戏版本
-static DWORD Get_SubGame_Version()
+static DWORD Get_SubGame_Version(const BYTE PLATFORM_VERSION, const BYTE SUBGAME_VERSION)
 {
 	DWORD dwVersion = (CODE_VERSION<<24) + (KERNEL_VERSION<<16) + (PLATFORM_VERSION<<8) + SUBGAME_VERSION;
 	return dwVersion;
@@ -85,7 +76,7 @@ static inline byte Compare_Kernek_Framework(DWORD Kernel_Version, DWORD framewor
 	return 0;// 0 满足要求； 其他值: 不满足要求
 }
 
-//游戏版本比较  范围: framework与dll
+//游戏版本比较  范围: framework与dll(子游戏)
 static inline byte Compare_Dll_Framework(DWORD dll_Version, DWORD framework_Version)
 {
 	if (GetCodeVer(dll_Version) != GetCodeVer(framework_Version)) return 1;
@@ -99,21 +90,15 @@ static inline byte Compare_Dll_Framework(DWORD dll_Version, DWORD framework_Vers
 static inline byte Compate_Hall_LogonServer(DWORD client_Version, DWORD LognServer_Version)
 {
 	//CODE版本不匹配 直接强制升级
-	if (GetCodeVer(LognServer_Version) != GetCodeVer(client_Version)) return 2;
+	if (GetCodeVer(LognServer_Version) != GetCodeVer(client_Version)) return 1;
 
-	// kernel 1.查询版本不能大于当下版本  2.内核版本相差2时必须升级
-	if (GetKernelVer(LognServer_Version) < GetKernelVer(client_Version)) return 2;
-	if ((GetKernelVer(LognServer_Version) - GetKernelVer(client_Version)) >= 2 ) return 2;
-	// kernel版本 不相等时, 建议升级
+	// kernel版本
 	if (GetKernelVer(LognServer_Version) != GetKernelVer(client_Version)) return 1;
 
-	// platform 1.查询版本不能大于当下版本  2.平台版本相差2时必须升级
-	if (GetPlatformVer(LognServer_Version) < GetPlatformVer(client_Version)) return 2;
-	if ((GetPlatformVer(LognServer_Version) - GetPlatformVer(client_Version)) >=2 ) return 2;
-	// platform版本 不相等时候, 建议升级
-	if (GetPlatformVer(LognServer_Version) < GetPlatformVer(client_Version)) return 1;
+	// platform 版本
+	if (GetPlatformVer(LognServer_Version) != GetPlatformVer(client_Version)) return 1;
 
-	// 0 满足要求； 1 建议升级 ；  2强制升级
+	// 0 满足要求； 1升级
 	return 0;
 }
 
@@ -127,6 +112,7 @@ static inline byte Compate_clientSubGame_ServerSubGame(DWORD client_subGame_Vers
 	// 0 满足要求； 1 建议升级 ；  2强制升级
 	return 0;
 }
+
 
 //游戏版本比较 -- 仅供内核使用
 static inline bool InterfaceVersionCompare(DWORD dwQueryVer, DWORD dwInterfaceVer)
@@ -145,6 +131,7 @@ static inline bool InterfaceVersionCompare(DWORD dwQueryVer, DWORD dwInterfaceVe
 	
 	return true;
 }
+
 #define INCLUDE_IMPORT_FILES
 
 

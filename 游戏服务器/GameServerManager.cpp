@@ -13,10 +13,10 @@ CGameServiceManager::CGameServiceManager(void)
 
 	//
 	m_GameServiceAttrib.wChairCount=MAX_CHAIR_COUNT;
-	m_GameServiceAttrib.wSupporType=GAME_GENRE;
+	//m_GameServiceAttrib.wSupporType=GAME_GENRE;
 
 	//∞Ê±æ–≈œ¢
-	m_GameServiceAttrib.dwSubGameVersion = Get_SubGame_Version();
+	//m_GameServiceAttrib.dwSubGameVersion = Get_SubGame_Version();
 	TCHAR szDllName[32];
 	wsprintf(szDllName, TEXT("%d_%d.dll"), KIND_ID, NODE_ID);
 	memcpy_s(m_GameServiceAttrib.szDllName, sizeof(m_GameServiceAttrib.szDllName), szDllName, sizeof(m_GameServiceAttrib.szDllName));

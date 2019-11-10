@@ -14,7 +14,7 @@
 #define LEN_LESS_PASSWORD			6									//最短密码
 
 //人数定义
-#define MAX_CHAIR					60									//最大椅子
+#define MAX_CHAIR					6									//最大椅子
 #define MAX_TABLE					512									//最大桌子
 #define MAX_COLUMN					32									//最大列表
 #define MAX_ANDROID					256									//最大机器
@@ -310,17 +310,4 @@
 #define LEN_GROUP_NOTICE					256									//牌友圈公告
 #define LEN_GROUP_MESSAGE					256									//牌友圈聊天信息长度
 
-
-
-/* 服务器端口配置 */
-const WORD _MIN_PORT =           8300;                    					//服务器开放的最小端口 -- [min， min+9]为进程预留
-const WORD _MAX_PORT =           8900;                         			    //服务器开放的最大端口
-
-const WORD  PORT_LOGON		=			_MIN_PORT;							//登陆服务器端口
-const WORD  PORT_CENTER		=			_MIN_PORT+1;						//协调服务器端口
-const WORD  PORT_MANAGER	=			_MIN_PORT+2;						//管理端口 (未使用)
-
-const WORD _MIN_SERVER_PORT =           _MIN_PORT+10;                       //最小的ServerPort
-const WORD _MAX_SERVER_PORT =           _MAX_PORT;                          //最大的ServerPort
-////////////////////////////////////////////////////////////////////////////////
 #endif

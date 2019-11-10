@@ -8,7 +8,7 @@
 
 #pragma region 游戏配置
 //游戏属性配置Attribute
-#define KIND_ID								4												//Kind I D
+#define KIND_ID								8												//Kind I D
 #define NODE_ID								1												//Node ID
 #define GAME_GENRE							(GAME_GENRE_GOLD|GAME_GENRE_MATCH)				//支持类型
 

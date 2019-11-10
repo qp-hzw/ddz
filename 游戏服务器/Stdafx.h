@@ -43,16 +43,16 @@
 #include "../子依赖项/全局定义/Define.h"
 
 //结构文件
-#include "../子依赖项/全局定义/Struct.h"
+#include "../子依赖项/全局定义/Struct_Frame.h"
 #include "../子依赖项/全局定义/Packet.h"
-#include "../子依赖项/全局定义/Property.h"
+//#include "../子依赖项/全局定义/Property.h"
 
 //模板文件
 #include "../子依赖项/全局定义/Array.h"
 #include "../子依赖项/全局定义/Module.h"
 #include "../子依赖项/全局定义/PacketAide.h"
-#include "../子依赖项/全局定义/ServerRule.h"
-#include "../子依赖项/全局定义/RightDefine.h"
+//#include "../子依赖项/全局定义/ServerRule.h"
+//#include "../子依赖项/全局定义/RightDefine.h"
 
 #include "..\子依赖项\全局定义\Version.h"
 #include "..\子依赖项\游戏服务\GameServiceHead.h"

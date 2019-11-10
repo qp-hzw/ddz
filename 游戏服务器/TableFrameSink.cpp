@@ -64,7 +64,7 @@ bool CTableFrameSink::Initialization(IUnknownEx * pIUnknownEx)
 	m_pGameServiceOption=m_pITableFrame->GetGameServiceOption();
 
 	//房卡配置
-	m_pRoomRuleOption= (tagTableCfg*)m_pITableFrame->GetCustomRule();
+	m_pRoomRuleOption= (tagGameRoomItem*)m_pITableFrame->GetCustomRule();
 
 	//校验
 	if (NULL != m_GameLogic)
@@ -274,7 +274,7 @@ bool CTableFrameSink::OnEventSendGameScene(WORD wChairID, IServerUserItem * pISe
 			//如果房间配置为空，获取房间配置
 			if ( NULL == m_pRoomRuleOption )
 			{
-				m_pRoomRuleOption = (tagTableCfg*)m_pITableFrame->GetCustomRule();
+				m_pRoomRuleOption = (tagGameRoomItem*)m_pITableFrame->GetCustomRule();
 			}
 
 			//空闲状态
@@ -282,10 +282,10 @@ bool CTableFrameSink::OnEventSendGameScene(WORD wChairID, IServerUserItem * pISe
 			ZeroMemory( &StatusFree, sizeof( StatusFree ) );
 
 			// 设置变量
-			StatusFree.GameCount = m_pRoomRuleOption->GameCount;
-			StatusFree.PlayerCount = m_pRoomRuleOption->PlayerCount;
-			StatusFree.CellScore = m_pRoomRuleOption->CellScore;
-			StatusFree.FangZhu = m_pRoomRuleOption->FangZhu;
+			//StatusFree.GameCount = m_pRoomRuleOption->GameCount;
+			//StatusFree.PlayerCount = m_pRoomRuleOption->PlayerCount;
+			//StatusFree.CellScore = m_pRoomRuleOption->CellScore;
+			//StatusFree.FangZhu = m_pRoomRuleOption->FangZhu;
 
 			// 发送场景
 			return m_pITableFrame->SendGameScene( pIServerUserItem, &StatusFree, sizeof(StatusFree));
@@ -541,7 +541,7 @@ bool CTableFrameSink::OnEventGameStart()
 	m_GameData.CreateGame( &m_GameLogic, &m_GameAccess );
 
 	// 初始化房间-设置房间规则
-	if ( !m_GameAccess->SetRoomRule( m_pRoomRuleOption, sizeof(tagTableCfg)) )
+	if ( !m_GameAccess->SetRoomRule( m_pRoomRuleOption, sizeof(tagGameRoomItem)) )
 		return false;
 
 	// 加载读取的配置文件参数和创建日志,铁岭麻将-经典模式		
