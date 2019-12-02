@@ -78,26 +78,26 @@ bool CAndroidUserItemSink::OnEventTimer(UINT nTimerID)
 	{
 	case IDI_START_GAME:		//开始定时器
 		{
-			CMD_C_PlayerAction pPlayerAction;
-			//pPlayerAction.iActionID = E_INGAME;  TODONOW 这里是什么？？？
+			//CMD_C_PlayerAction pPlayerAction;
+			////pPlayerAction.iActionID = E_INGAME;  TODONOW 这里是什么？？？
 
-			//发送准备
-			m_pIAndroidUserItem->SendUserReady(NULL,0);
+			////发送准备
+			//m_pIAndroidUserItem->SendUserReady(NULL,0);
 
 			return true;
 		}
 	case IDI_CALL_BANKER:		//叫庄定时
 		{
-			//设置变量
-			CMD_C_CallBanker CallBanker;
-			CallBanker.bBanker =rand()%2;
-			if(m_pIAndroidUserItem->GetMeUserItem()->GetUserScore() < (m_cbUserCount -1)*m_lDiZhu*30)
-			{
-				CallBanker.bBanker = 0;
-			}
+			////设置变量
+			//CMD_C_CallBanker CallBanker;
+			//CallBanker.bBanker =rand()%2;
+			//if(m_pIAndroidUserItem->GetMeUserItem()->GetUserScore() < (m_cbUserCount -1)*m_lDiZhu*30)
+			//{
+			//	CallBanker.bBanker = 0;
+			//}
 
-			//发送信息
-			m_pIAndroidUserItem->SendSocketData(SUB_C_A_CALL_BANKER,&CallBanker,sizeof(CallBanker));
+			////发送信息
+			//m_pIAndroidUserItem->SendSocketData(SUB_C_A_CALL_BANKER,&CallBanker,sizeof(CallBanker));
 
 			return true;
 		}

@@ -4,6 +4,7 @@
 
 #include "Stdafx.h"
 #include "GameData.h"
+#include "IntelligentAI.h"
 
 enum GameRecIndex
 {
@@ -49,6 +50,9 @@ protected:
 	DWORD							m_dPlayerState[MAX_CHAIR_COUNT];		//框架传来的玩家游戏状态
 
 	GameRecord						m_GameRec;								//游戏录像数据结构体
+
+	AILogic							m_AILogic;							//AI出牌逻辑类
+	HandCardData					m_HandCardData[3];						//AI手牌数据类
 
 	//函数定义
 public:
@@ -141,10 +145,16 @@ protected:
 	//下注事件
 	void OnUserAddScore(WORD wChairID, SCORE lScore);
 	//明牌事件
-	void On_Sub_UserMingPai(WORD wChairID, const BYTE &cbMPType, BYTE cbFlag);
+	void On_Sub_UserMingPai(WORD wChairID, const BYTE &cbMPType, BYTE cbFlag, BYTE FlushCardBet = 1);
 
 	//小局结算准备
 	void OnUserXjGameReady(WORD wChairID, BYTE ready);
+
+	//游戏结束的获取公共倍数信息
+	void OnUserPublicBet(WORD wChairID);
+
+	//处理客户端发来的记牌器消息
+	void OnUserJiPaiQi(WORD wChairID);
 
 	//响应client时间的 内部函数
 protected:
@@ -177,10 +187,14 @@ protected:
 	void HandleOutCardPass(WORD wOutCardUser);
 	//处理一轮出牌结束
 	void HandleRoundEnd(const WORD &wWinner);
+	//处理叫三分
+	void HandleJiaoFenRobBanker();
+	//发送叫三分开始消息
+	void SendJiaoFenStart(WORD wChairID, const BYTE &ActionType);
+	//处理客户端发来的叫三分消息
+	void OnUserJiaoFen(WORD wChairID, BYTE Score);
 	//处理抢庄
 	void HandleRobBanker();
-	//处理固定庄和轮庄
-	void HandleTurnAndFixRobBanker();
 	//处理自由抢庄
 	void HandleFreeRobBanker();
 	//发送抢庄开始消息

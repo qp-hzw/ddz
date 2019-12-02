@@ -14,7 +14,7 @@ public:
 public:
 
 	// 根据抢庄模式，指定庄家
-	virtual bool __stdcall AppointBanker( WORD &wChairID );
+	//virtual bool __stdcall AppointBanker( WORD &wChairID );
 
 	// 分析用户牌型
 	virtual int __stdcall AnsysCardsType( );

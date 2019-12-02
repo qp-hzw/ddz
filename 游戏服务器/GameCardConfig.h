@@ -103,7 +103,7 @@ public:
 							const DWORD dest_len, 
 							const CARD_DESCS source_cards, 
 							const DWORD src_len, 
-							CServerLog *m_plog );
+							const BYTE nMode);
 
 // 
 public:
@@ -142,6 +142,11 @@ public:
 	 */
 	static int CompareCards( const CARD_DESC *self, const CARD_DESC *rival, BOOL *flag);
 
+	////////////////////////////////////////////////////////
+	//不洗牌模式的洗牌算法       by  lih
+	static int CreateBuXiPaiArray(BYTE randarray[], const int src_len);
+	/////////////////////////////////////////////////////////
+
 	/**
 	 * 牌排序
 	 * 先按点数排，然后按花色排
@@ -170,5 +175,10 @@ public:
 	 */
 	static BYTE GetCardGroup( CARD_DESC card );
 
+	//不洗牌模式的卡牌数局索引值
+	static const BYTE	m_CardData[FULL_COUNT];			//原始扑克数据
+
+	//两种牌型的牌值映射函数
+	static BYTE   MapOfCardValue(BYTE CardData);
 };
 

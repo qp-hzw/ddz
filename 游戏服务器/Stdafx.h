@@ -59,4 +59,7 @@
 
 #include "..\消息定义\CMD_SubGame.h"
 
+# include <iostream>
+using namespace std;
+
 #endif

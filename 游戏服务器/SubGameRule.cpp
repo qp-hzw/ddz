@@ -144,39 +144,39 @@ bool CSubGameRule::AppointBankerFIXED(WORD &wChairID)
 	return true;
 }
 
-//根据不同的抢庄模式指定庄家
-bool __stdcall CSubGameRule::AppointBanker( WORD &wChairID )
-{
-	//校验抢庄模式
-	if ( m_room_config.game_robBank_mode < 0 )
-	{
-		return false;
-	}
-
-	//根据抢庄模式，指定庄家
-	switch ( m_room_config.game_robBank_mode )
-	{
-		case ROOMRULE_OPTION_ROBTYPE_FREE:	// 自由抢庄
-		{			
-			return AppointBankerFREE(wChairID);
-		}
-		case ROOMRULE_OPTION_ROBTYPE_TURN:	// 轮庄 
-		{
-			return AppointBankerTURN(wChairID);
-		}
-		case ROOMRULE_OPTION_ROBTYPE_FIXED: // 固定庄家
-		{
-			return AppointBankerFIXED(wChairID);
-		}
-		default:
-		{
-			m_plog->LogSingleLine(L"抢庄函数错误", NULL);
-			break;
-		}
-	}
-
-	return false;
-}
+////根据不同的抢庄模式指定庄家
+//bool __stdcall CSubGameRule::AppointBanker( WORD &wChairID )
+//{
+//	//校验抢庄模式
+//	if ( m_room_config.game_robBank_mode < 0 )
+//	{
+//		return false;
+//	}
+//
+//	//根据抢庄模式，指定庄家
+//	switch ( m_room_config.game_robBank_mode )
+//	{
+//		case ROOMRULE_OPTION_ROBTYPE_FREE:	// 自由抢庄
+//		{			
+//			return AppointBankerFREE(wChairID);
+//		}
+//		case ROOMRULE_OPTION_ROBTYPE_TURN:	// 轮庄 
+//		{
+//			return AppointBankerTURN(wChairID);
+//		}
+//		case ROOMRULE_OPTION_ROBTYPE_FIXED: // 固定庄家
+//		{
+//			return AppointBankerFIXED(wChairID);
+//		}
+//		default:
+//		{
+//			m_plog->LogSingleLine(L"抢庄函数错误", NULL);
+//			break;
+//		}
+//	}
+//
+//	return false;
+//}
 
 //分析卡牌类型
 int __stdcall CSubGameRule::AnsysCardsType( )

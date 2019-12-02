@@ -6,6 +6,47 @@
 using namespace MSXML2;
 #include <time.h>
 
+//用于不洗牌模式的卡牌数组
+const BYTE CGameCardConfig::m_CardData[FULL_COUNT] = {
+	31,32,33,34,
+	41,42,43,44,
+	51,52,53,54,
+	61,62,63,64,
+	71,72,73,74,
+	81,82,83,84,
+	91,92,93,94,
+	101,102,103,104,
+	111,112,113,114,
+	121,122,123,124,
+	131,132,133,134,
+	141,142,143,144,
+	151,152,153,154,
+	165,166
+};
+
+
+//两种牌型的牌值映射函数
+BYTE    CGameCardConfig::MapOfCardValue(BYTE CardData)
+{
+	if (0 == CardData)
+	{
+		return 0;
+	}
+
+	//判断A和2和大小王的情况
+	if (CardData > 140 && CardData < 160)
+	{
+		return ((CardData % 10 - 1) * 16 + (CardData / 10) - 13);
+	}
+
+	if (CardData > 160)
+	{
+		return (CardData == 165 ? 0x4E : 0x4F);
+	}
+
+	//从 牌值+花色   ==>  花色+牌值
+	return ((CardData % 10 - 1) * 16 + CardData / 10);
+}
 
 /**
  * 获取一副牌的数量
@@ -530,6 +571,45 @@ int CGameCardConfig::CreateOutOrderArray( DWORD randarray[], const int src_len )
 	return 0;
 }
 
+////////////////////////////////////////////
+//不洗牌模式的洗牌算法       by  lih
+int CGameCardConfig::CreateBuXiPaiArray(BYTE randarray[], const int src_len)
+{
+	cout << "func CreateBuXiPaiArray begin" << endl;
+
+	// 参数校验
+	if (NULL == randarray)
+	{
+		return -1;
+	}
+
+	BYTE count = 0;
+	BYTE index[2] = { 0 };
+
+	//随机两个下标交换15次   //嫌牌不好 改成7次
+	while (count < 7)
+	{
+		index[0] = rand() % src_len;
+		index[1] = rand() % src_len;
+
+		if (index[0] != index[1])
+		{
+			BYTE tmpSwapCard = randarray[index[0]];
+			randarray[index[0]] = randarray[index[1]];
+			randarray[index[1]] = tmpSwapCard;
+
+			count++;
+		}
+	}
+
+
+
+	cout << "func CreateBuXiPaiArray end" << endl;
+
+	return 0;
+}
+////////////////////////////////////////////
+
 /** 
  * 乱序排列数组, 洗牌
  * 每局开始时, 将牌的顺序打乱
@@ -542,37 +622,60 @@ int CGameCardConfig::OutOrder(		CARD_DESCS dest_cards,
 									const DWORD dest_len, 
 									const CARD_DESCS source_cards, 
 									const DWORD src_len, 
-									CServerLog *m_plog )
+									const BYTE nMode)
 {
 	// 校验输入参数
 	if( NULL == dest_cards	||
 		NULL == source_cards ||
-		dest_len < src_len  ||
-		NULL == m_plog )
+		dest_len < src_len  )
 	{
 		return -1;
 	}
 
 	int result = 0;
 
-	// 生成一个乱序数组
-	DWORD *randarray = new DWORD[src_len](); // 乱序缓冲区
-
-	if( 0 == CreateOutOrderArray( randarray, src_len ))
+	if (GAME_SCORE_MODE_CLASSIC == nMode)
 	{
-		for( unsigned i = 0; i < src_len; ++i )
+		// 生成一个乱序数组
+		DWORD *randarray = new DWORD[src_len](); // 乱序缓冲区
+
+		if (0 == CreateOutOrderArray(randarray, src_len))
 		{
-			dest_cards[i] = source_cards[randarray[i]]; 
+			for (unsigned i = 0; i < src_len; ++i)
+			{
+				dest_cards[i] = source_cards[randarray[i]];
+			}
 		}
+		else
+		{
+			// 乱序排列错误
+			result = -1;
+		}
+
+		delete[] randarray;
 	}
 	else
 	{
-		// 乱序排列错误
-		//m_plog->LogSingleLine(L"乱序排列错误", NULL);
-		result = -1;
+		// 生成一个不洗牌模式的乱序数组
+		BYTE *tmpCards = new BYTE[src_len]();
+		CopyMemory(tmpCards, m_CardData, sizeof(BYTE)*src_len);
+
+		srand((unsigned)time(NULL));
+
+		if (0 == CreateBuXiPaiArray(tmpCards, src_len))
+		{
+			for (int i = 0; i < src_len; i++)
+			{
+				//牌值映射
+				dest_cards[i] = MapOfCardValue(tmpCards[i]);
+			}
+		}
+		else
+		{
+			result = -1;
+		}
 	}
 
-	delete [] randarray;
 	return result;
 }
 

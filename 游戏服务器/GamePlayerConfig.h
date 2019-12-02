@@ -19,11 +19,23 @@ typedef struct _tagPLAYER_DESC
 	BYTE				showcard_state;		// 摊牌状态			0 未完成，	1 完成
 	BYTE				xj_ready_state;		// 小局玩家准备			0 未准备，	1 准备
 	BYTE				bet_state;			// 玩家下注状态		0 未完成，	1 完成
+	BYTE				mingpai_state;		// 玩家明牌状态		0 未完成，	1 完成
 	BYTE				action_state;		// 玩家动作状态		0 未完成,   1 完成
 	BYTE				action;				// 玩家动作			1-过 2-碰 3-吃 4-带
 	SCORE				single_score;		// 单局得分
 	SCORE				total_score;		// 玩家总得分
 	BYTE				winsum;				// 赢局数
+	DWORD				bank_count;			// 做庄的次数
+	WORD				addscore_bet;		// 下注的倍数
+	WORD				mingpai_bet;		// 明牌的倍数
+	SCORE				best_bet;			// 玩家一大局中获得过的最大倍数
+	BASE_PLAYERINFO		player_info;				// 记录玩家信息
+	DWORD				start_mingpai;		//是否开始游戏明牌
+	WORD				jiaofen_state;		//记录玩家叫的分
+	WORD				spring_state;		//记录是否出过牌
+	WORD				spring;				//记录是否春天
+	WORD				player_tuo_guan;	//玩家是否托管   0-不托管
+	WORD				out_time_num;		//玩家出牌超时次数
 
 	BYTE				hand_card_num;						// 当前手牌数
 	BYTE				out_card_num;						// 玩家该轮的出牌数目	
