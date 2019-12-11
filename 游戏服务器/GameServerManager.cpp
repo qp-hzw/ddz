@@ -130,14 +130,21 @@ VOID * CGameServiceManager::CreateGameDataBaseEngineSink(REFGUID Guid, DWORD dwQ
 
 //////////////////////////////////////////////////////////////////////////
 
-//建立对象函数 
-extern "C" __declspec(dllexport) VOID * CreateGameServiceManager(REFGUID Guid, DWORD dwInterfaceVer)
-{
-	//读取配置文件和创建日志
-	CGameConfig::LoadGameCommonConfig();
+//待删除类
 
-	static CGameServiceManager GameServiceManager;
-	return GameServiceManager.QueryInterface(Guid,dwInterfaceVer);
-}
+//建立对象函数 
+//extern "C" __declspec(dllexport) VOID * CreateGameServiceManager(REFGUID Guid, DWORD dwInterfaceVer)
+//{
+//	//读取配置文件和创建日志
+//	CGameConfig::LoadGameCommonConfig();
+//
+//	/*static CGameServiceManager GameServiceManager;
+//	return GameServiceManager.QueryInterface(Guid,dwInterfaceVer);*/
+//
+//	CGameServiceManager *pGameServiceManager = new CGameServiceManager();
+//	if (pGameServiceManager == NULL)
+//		return false;
+//	return pGameServiceManager;
+//}
 
 /////////////////////////////////////////////////////////////////////////

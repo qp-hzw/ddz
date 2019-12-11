@@ -4,8 +4,7 @@
 
 //抢庄模式
 #define ROOMRULE_OPTION_ROBTYPE_FREE		0								//自由抢庄
-#define ROOMRULE_OPTION_ROBTYPE_TURN		1								//轮庄
-#define ROOMRULE_OPTION_ROBTYPE_FIXED		2								//固定庄
+#define ROOMRULE_OPTION_ROBTYPE_JIAOSANFEN	1								//叫三分
 
 
 //得分模式
@@ -35,6 +34,7 @@
 #define GS_WK_ROB					GAME_STATUS_PLAY+1					//游戏状态-抢庄
 #define GS_WK_ADD_SCORE				GAME_STATUS_PLAY+2					//游戏状态-抢庄
 #define GS_WK_ADDSCORE				GAME_STATUS_PLAY+3					//游戏状态-下注
+#define GS_WK_JIAO_FEN				GAME_STATUS_PLAY+7					//叫分状态
 
 #define GS_WK_FANZHU				GAME_STATUS_PLAY+3					//游戏状态-反主
 #define GS_WK_KOUDI					GAME_STATUS_PLAY+4					//游戏状态-扣底（盖底牌）
@@ -47,27 +47,27 @@
 #define	IDI_ROB_BANKER					1							//抢庄定时器
 #define IDI_ADD_SCORE					2							//下注定时器
 #define IDI_MING_PAI					3							//明牌定时器
+#define IDI_ADD_SCORE_ROBOT				4							//机器人下注定时器持续时间
 
-#define IDI_LIANG_ZHU					2							//亮主定时器
-#define IDI_FAN_ZHU						3							//反主定时器
 #define IDI_KOU_DI						4							//扣底定时器
 #define IDI_OUT_CARD					5							//出牌定时器
 #define IDI_XJGAME_USER_READY			6							//小局游戏结束用户准备开始定时器
 #define IDI_FAN_ZHU_DELAY				7							//反主延迟定时器，客户端处理完发牌动画之后，再给第一个人发送反主提示
 #define IDI_ROUND_END_DELAY				8							//一轮结束延迟定时器，客户端处理积分结算动画
+#define IDI_ROB_JiaoFen					9							//叫分定时器
 
 //各个定时器持续时间
 #define IDI_TIME_ROB_BANKER				10000						//抢庄定时器持续时间
-#define IDI_TIME_ADD_SCORE				10000						//抢庄定时器持续时间
-#define IDI_TIME_MING_PAI				7000						//明牌定时器持续时间
+#define IDI_TIME_ADD_SCORE				5000						//下注定时器持续时间
+#define IDI_TIME_MING_PAI				3000						//明牌定时器持续时间
+#define IDI_TIME_ADD_SCORE_ROBOT		1000						//机器人下注定时器持续时间
 
-#define IDI_TIME_LIANG_ZHU				20000						//亮主定时器持续时间
-#define IDI_TIME_FAN_ZHU				10000						//反主定时器持续时间
 #define IDI_TIME_KOU_DI					20000						//扣底定时器持续时间
 #define IDI_TIME_OUT_CARD				20000						//出牌定时器持续时间
 #define IDI_TIME_XJGAME_USER_READY		8000						//小局结束用户准备定时器持续时间
 #define IDI_TIME_FAN_ZHU_DELAY			6000						//反主延迟定时器持续时间
 #define IDI_TIME_ROUND_END_DELAY		2000						//一轮结束延迟定时器持续时间
+#define IDI_TIME_ROB_JiaoFen			10000						//叫分定时器
 ///////////////////////////////
 
 ///////////////////////////////
@@ -91,8 +91,14 @@
 #define	ROB_STATE_PASS			1			//过
 #define	ROB_STATE_AGREE			2			//叫/抢
 
+#define JIAOFEN_START			15			//第一个玩家叫分  1111
+#define JIAOFEN_3				1<<3		//叫分三分
+#define JIAOFEN_2				1<<2		//叫分二分
+#define JIAOFEN_1				1<<1		//叫分一分
+
 #define	MING_PAI_TYPE_OUTCARD	1			//出牌明牌
 #define	MING_PAI_TYPE_GAMESTART	2			//游戏开始明牌
+#define	MING_PAI_TYPE_DEAL		3			//发牌明牌
 
 #define OUT_CARD_FAIL			0									//出牌失败
 #define OUT_CARD_SUCCESS		1									//出牌成功
@@ -243,5 +249,64 @@ struct tagAnalyseResult
 	BYTE							cbSignedCardData[200];				//单张扑克
 	bool							cbLaiZi;							//赖子类型
 };
+
+//记牌器结构
+struct tagCardRecorder
+{
+	BYTE							TwoCount;					//牌2的张数
+	BYTE							ThreeCount;					//牌3的张数
+	BYTE							FourCount;					//牌4的张数
+	BYTE							FiveCount;					//牌5的张数
+	BYTE							SixCount;					//牌6的张数
+	BYTE							SevenCount;					//牌7的张数
+	BYTE							EightCount;					//牌8的张数
+	BYTE							NineCount;					//牌9的张数
+	BYTE							TenCount;					//牌10的张数
+	BYTE							JCount;						//牌J的张数
+	BYTE							QCount;						//牌Q的张数
+	BYTE							KCount;						//牌K的张数
+	BYTE							ACount;						//牌A的张数
+	BYTE							SmallJokerCount;			//牌小王的张数
+	BYTE							BigJokerCount;				//牌大王的张数
+};
+
+//房间规则
+struct tagTableCfg
+{
+	//tagCommonRoomRule com_rule; //通用房间规则
+	//MSG_SUB_ROOM_RULE sub_rule; //子游戏特有房间规则
+};
+
+
+
+//==============================机器人相关==================================================
+
+//手牌组合枚举
+enum CardGroupType
+{
+	cgERROR = -1,						            //错误类型
+	cgZERO = 0,						                //不出类型
+	cgSINGLE = 1,									//单牌类型
+	cgDOUBLE = 2,									//对牌类型
+	cgTHREE = 3,									//三条类型
+	cgSINGLE_LINE = 4,								//单连类型
+	cgDOUBLE_LINE = 5,								//对连类型
+	cgTHREE_LINE = 6,								//三连类型
+	cgTHREE_TAKE_ONE = 7,							//三带一单
+	cgTHREE_TAKE_TWO = 8,							//三带一对
+	cgTHREE_TAKE_ONE_LINE = 9,						//三带一单连
+	cgTHREE_TAKE_TWO_LINE = 10,						//三带一对连
+	cgFOUR_TAKE_ONE = 11,							//四带两单
+	cgFOUR_TAKE_TWO = 12,							//四带两对
+	cgBOMB_CARD = 13,							    //炸弹类型
+	cgKING_CARD = 14								//王炸类型
+};
+
+//最多手牌
+#define HandCardMaxLen 20
+//价值最小值
+#define MinCardsValue -25
+//价值最大值
+#define MaxCardsValue 106
 
 #endif

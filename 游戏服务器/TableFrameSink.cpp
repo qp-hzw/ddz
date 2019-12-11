@@ -3576,3 +3576,27 @@ void CTableFrameSink::WriteGameRecord()
 //`t?宱PT<~0M9诀
 //g
 
+////////////////////////////////////////////////////////////////////////////////////
+//导出定义
+
+extern "C" __declspec(dllexport) VOID * CreateTableFrameSink()
+{
+	CTableFrameSink *pTableFrameSink = NULL;
+	try
+	{
+		pTableFrameSink = new CTableFrameSink();
+		if (pTableFrameSink == NULL)
+		{
+			throw TEXT("创建失败");
+		}
+
+		return pTableFrameSink;
+	}
+	catch (...) {}
+
+	//清理对象
+	SafeDelete(pTableFrameSink);
+	return NULL;
+}
+
+////////////////////////////////////////////////////////////////////////////////////

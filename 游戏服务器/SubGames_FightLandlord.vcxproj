@@ -99,7 +99,7 @@
       <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
     </ClCompile>
     <Link>
-      <OutputFile>../发布组件/Release/4_1.dll</OutputFile>
+      <OutputFile>../发布组件/Release/test.dll</OutputFile>
       <ModuleDefinitionFile />
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <SubSystem>Windows</SubSystem>
