@@ -1,312 +1,320 @@
-#ifndef CMD_OX_HEAD_FILE
+ï»¿#ifndef CMD_OX_HEAD_FILE
 #define CMD_OX_HEAD_FILE
-#pragma pack(1)		//1×Ö½Ú¶ÔÆë
+#pragma pack(1)		//1å­—èŠ‚å¯¹é½
 #include <windows.h>
 #include "define.h"
 #include "cardType.h"
 #include <string>
 
 
-#pragma region ÓÎÏ·ÅäÖÃ
-//ÓÎÏ·ÊôĞÔÅäÖÃAttribute
-#define KIND_ID								8												//Kind I D
+#pragma region æ¸¸æˆé…ç½®
+//æ¸¸æˆå±æ€§é…ç½®Attribute
+#define KIND_ID								9												//Kind I D
 #define NODE_ID								1												//Node ID
-#define GAME_GENRE							(GAME_GENRE_GOLD|GAME_GENRE_MATCH)				//Ö§³ÖÀàĞÍ
+#define GAME_GENRE							(GAME_GENRE_GOLD|GAME_GENRE_MATCH)				//æ”¯æŒç±»å‹
 
-//×î´ó/Ğ¡ÒÎ×ÓÊı
-#define MAX_CHAIR_COUNT						4			//×î´óÒÎ×ÓÊı ×¢: 1.¿Í»§¶Ë·¢ËÍµÄ·¿¼ä¹æÔòÖĞµÄ×î´óÒÎ×ÓÊı Ó¦¸ÃĞ¡ÓÚ´ËÊıÖµ  2.º¬»úÆ÷ÈË 3.º¬ÅÔ¹ÛÕß	
-#define MIN_CHAIR_COUNT						3			//¿ªÊ¼ÓÎÏ·µÄ×îĞ¡ÒÎ×ÓÊı
+//æœ€å¤§/å°æ¤…å­æ•°
+#define MAX_CHAIR_COUNT						5			//æœ€å¤§æ¤…å­æ•° æ³¨: 1.å®¢æˆ·ç«¯å‘é€çš„æˆ¿é—´è§„åˆ™ä¸­çš„æœ€å¤§æ¤…å­æ•° åº”è¯¥å°äºæ­¤æ•°å€¼  2.å«æœºå™¨äºº 3.å«æ—è§‚è€…	
+#define MIN_CHAIR_COUNT						3			//å¼€å§‹æ¸¸æˆçš„æœ€å°æ¤…å­æ•°
 #pragma endregion
 
-#pragma region ·¢ËÍÏûÏ¢
+#pragma region å‘é€æ¶ˆæ¯
 /* *********************************************************************************
-**										CMD·¢ËÍÏûÏ¢ºÅ
+**										CMDå‘é€æ¶ˆæ¯å·
 ** *********************************************************************************/
-#define CMD_SC_SEND_CARD							1							//¸øÍæ¼Ò·¢ÅÆ
-#define CMD_SC_ROB_START							2							//ÇÀ×¯¿ªÊ¼£¨ÇÀµØÖ÷£©		
-#define CMD_SC_ROB_RESULT							3    						//ÇÀ×¯½á¹û
-#define CMD_SC_APPOINT_BANKER						4    						//Ö¸¶¨×¯¼Ò
-#define CMD_SC_USER_SEND_LEAVE_CARD					5							//·¢ËÍµ×ÅÆ£¬²¢¸øËùÓĞÍæ¼Ò·¢ËÍÅÅĞòºóµÄÊÖÅÆÊı¾İ
-#define CMD_SC_MING_PAI_START						6							//Ã÷ÅÆ£¨³öÅÆ£©¿ªÊ¼
-#define CMD_SC_MING_PAI_RESULT						7							//Ã÷ÅÆ£¨³öÅÆ£©½á¹û
-#define CMD_SC_ADD_SCORE_START						8							//¼Ó×¢¿ªÊ¼£¨¼Ó±¶£©
-#define CMD_SC_ADD_SCORE_RESULT						9							//¼Ó×¢½á¹û£¨¼Ó±¶£©
-#define	CMD_SC_USER_OUT_CARD_START					10							//³öÅÆ¿ªÊ¼
-#define CMD_SC_USER_OUT_CARD_RESULT					11							//³öÅÆ½á¹û
-#define CMD_SC_XJ_GAME_END							12							//Ğ¡¾ÖÓÎÏ·½áÊø
-#define CMD_SC_DJ_GAME_END							13							//´ó¾ÖÓÎÏ·½áÊø
-#define	CMD_SC_PUBLIC_BET							14							// ¹«¹²±¶Êı
-#define	CMD_SC_JIAOFEN_START						15							// ½ĞÈı·Ö¿ªÊ¼
-#define	CMD_SC_JIAOFEN_RESULT						16							// ½ĞÈı·Ö½á¹û
-#define	CMD_SC_JIPAIQI_START						17							// ¼ÇÅÆÆ÷
-#define	CMD_SC_FANGJIAN_BET							18							// ·¿¼ä±¶Êı
-#define	CMD_SC_TUO_GUAN								19							//ÍĞ¹Ü
-#define	CMD_SC_RECODE								27							//Â¼Ïñ
+#define CMD_SC_SEND_CARD							1							//ç»™ç©å®¶å‘ç‰Œ
+#define CMD_SC_ROB_START							2							//æŠ¢åº„å¼€å§‹ï¼ˆæŠ¢åœ°ä¸»ï¼‰		
+#define CMD_SC_ROB_RESULT							3    						//æŠ¢åº„ç»“æœ
+#define CMD_SC_APPOINT_BANKER						4    						//æŒ‡å®šåº„å®¶
+#define CMD_SC_USER_SEND_LEAVE_CARD					5							//å‘é€åº•ç‰Œï¼Œå¹¶ç»™æ‰€æœ‰ç©å®¶å‘é€æ’åºåçš„æ‰‹ç‰Œæ•°æ®
+#define CMD_SC_MING_PAI_START						6							//æ˜ç‰Œï¼ˆå‡ºç‰Œï¼‰å¼€å§‹
+#define CMD_SC_MING_PAI_RESULT						7							//æ˜ç‰Œï¼ˆå‡ºç‰Œï¼‰ç»“æœ
+#define CMD_SC_ADD_SCORE_START						8							//åŠ æ³¨å¼€å§‹ï¼ˆåŠ å€ï¼‰
+#define CMD_SC_ADD_SCORE_RESULT						9							//åŠ æ³¨ç»“æœï¼ˆåŠ å€ï¼‰
+#define	CMD_SC_USER_OUT_CARD_START					10							//å‡ºç‰Œå¼€å§‹
+#define CMD_SC_USER_OUT_CARD_RESULT					11							//å‡ºç‰Œç»“æœ
+#define CMD_SC_XJ_GAME_END							12							//å°å±€æ¸¸æˆç»“æŸ
+#define CMD_SC_DJ_GAME_END							13							//å¤§å±€æ¸¸æˆç»“æŸ
+#define	CMD_SC_PUBLIC_BET							14							// å…¬å…±å€æ•°
+#define	CMD_SC_JIAOFEN_START						15							// å«ä¸‰åˆ†å¼€å§‹
+#define	CMD_SC_JIAOFEN_RESULT						16							// å«ä¸‰åˆ†ç»“æœ
+#define	CMD_SC_JIPAIQI_START						17							// è®°ç‰Œå™¨
+#define	CMD_SC_FANGJIAN_BET							18							// æˆ¿é—´å€æ•°
+#define	CMD_SC_TUO_GUAN								19							//æ‰˜ç®¡
+#define	CMD_SC_RECODE								27							//å½•åƒ
 
-#define	CMD_SC_STATUS_FREE							20						// ÖØÁ¬--¿ÕÏĞ×´Ì¬
-#define	CMD_SC_STATUS_OUTCARD						21						// ÖØÁ¬--³öÅÆ×´Ì¬
-#define	CMD_SC_STATUS_XJ_END						22						// ÖØÁª--Ğ¡¾Ö½áÊø
-#define	CMD_SC_STATUS_ROB							23						// ÖØÁ¬--ÇÀ×¯×´Ì¬
-#define	CMD_SC_STATUS_ADD_SCORE						24						// ÖØÁ¬--ÏÂ×¢×´Ì¬
-#define	CMD_SC_STATUS_JIAOFEN						25						// ÖØÁ¬½Ğ·Ö×´Ì¬
-#define	CMD_SC_RULE									26						//¹æÔò
+//ä¸€ä¸‹ç›®å‰ä¸éœ€è¦
+#define	CMD_SC_STATUS_FREE							20						// é‡è¿--ç©ºé—²çŠ¶æ€
+#define	CMD_SC_STATUS_OUTCARD						21						// é‡è¿--å‡ºç‰ŒçŠ¶æ€
+#define	CMD_SC_STATUS_XJ_END						22						// é‡è”--å°å±€ç»“æŸ
+#define	CMD_SC_STATUS_ROB							23						// é‡è¿--æŠ¢åº„çŠ¶æ€
+#define	CMD_SC_STATUS_ADD_SCORE						24						// é‡è¿--ä¸‹æ³¨çŠ¶æ€
+#define	CMD_SC_STATUS_JIAOFEN						25						// é‡è¿å«åˆ†çŠ¶æ€
+#define	CMD_SC_RULE									26						//è§„åˆ™
 
 
 ///////////////////////////////////////////////////////////////////////////////////
-//·¢ÅÆÃüÁî
+//å‘ç‰Œå‘½ä»¤
 struct STR_CMD_SC_SEND_CARD
 {
-	WORD		wChairID;							//·¢ÅÆÍæ¼Ò
-	BYTE		cbHandCardData[MAX_CARD_COUNT];		//ÊÖÅÆÊı¾İ
-	BYTE		cbHandCardNum;						//ÊÖÅÆ¸öÊı
-	DWORD		CurJuShu;						//µ±Ç°¾ÖÊı
-	DWORD		ISMingPaiStart;					//ÊÇ·ñÃ÷ÅÆ¿ªÊ¼  1-ÊÇ 0-²»ÊÇ
-	//repeated Card  	   HandCardData;  	        //¸¨ÖúÂ¼Ïñ»Ø·ÅÊÖÅÆÊı¾İ
-	DWORD		GoldCoin[MAX_CHAIR_COUNT];				//½ğ±Ò
-	//DWORD		replay_code = 8;					//»Ø·ÅÂë
+	WORD		wChairID;							//å‘ç‰Œç©å®¶
+	BYTE		cbHandCardData[MAX_CARD_COUNT];		//æ‰‹ç‰Œæ•°æ®
+	BYTE		cbHandCardNum[MAX_CHAIR_COUNT];						//æ‰‹ç‰Œä¸ªæ•°
+	DWORD		CurJuShu;						//å½“å‰å±€æ•°
+	DWORD		ISMingPaiStart;					//æ˜¯å¦æ˜ç‰Œå¼€å§‹  1-æ˜¯ 0-ä¸æ˜¯
+	//repeated Card  	   HandCardData;  	        //è¾…åŠ©å½•åƒå›æ”¾æ‰‹ç‰Œæ•°æ®
+	DWORD		GoldCoin[MAX_CHAIR_COUNT];				//é‡‘å¸
+	//DWORD		replay_code = 8;					//å›æ”¾ç 
 };
-//struct Card				//Â¼Ïñ»Ø·ÅÊÇ·ñ»¹ÊÇÓÃÔ­À´µÄ
+//struct Card				//å½•åƒå›æ”¾æ˜¯å¦è¿˜æ˜¯ç”¨åŸæ¥çš„
 //{
 //	repeated  CardData = 1;
 //			   wChairID = 2;
 //}
 
-//ÇÀ×¯¿ªÊ¼
+//æŠ¢åº„å¼€å§‹
 struct STR_CMD_SC_ROB_BANKER_START
 {
-	BYTE 		wChairID;					//ÇÀ×¯µÄÍæ¼Ò
-	BYTE		cbType;						//Íæ¼ÒÇÀ×¯ÀàĞÍ	0-Î´¿ªÊ¼	1-½ĞµØÖ÷	2-ÇÀµØÖ÷
 };
 
-//ÇÀ×¯½á¹û
+//æŠ¢åº„ç»“æœ
 struct STR_CMD_SC_ROB_RESULT
 {
-	WORD		wChairID;					//ÒÎ×ÓºÅ
-	BYTE		cbType;						//Íæ¼ÒÇÀ×¯ÀàĞÍ	0-Î´¿ªÊ¼	1-½ĞµØÖ÷	2-ÇÀµØÖ÷
-	BYTE		cbRobState;					//Íæ¼ÒÇÀ×¯±êÖ¾	0-¹ı	1-½Ğ/ÇÀ
-	BYTE		room_bet[MAX_CHAIR_COUNT];					//·¿¼ä±¶Êı
+	WORD		wChairID;					//æ¤…å­å·
+	//BYTE		cbType;						//ç©å®¶æŠ¢åº„ç±»å‹	0-æœªå¼€å§‹	1-å«åœ°ä¸»	2-æŠ¢åœ°ä¸»
+	//BYTE		cbRobState;					//ç©å®¶æŠ¢åº„æ ‡å¿—	0-è¿‡	1-å«/æŠ¢
+	BYTE			cbResult;					//0-ä¸å«  1-å«åœ°ä¸»  2-ä¸æŠ¢  3-æŠ¢åœ°ä¸»
+	DWORD	room_bet[MAX_CHAIR_COUNT];					//æˆ¿é—´å€æ•°
 };
 
-//½ĞÈı·Ö¿ªÊ¼
+//å«ä¸‰åˆ†å¼€å§‹
 struct STR_CMD_SC_JIAOFEN_START
 {
-	WORD		wChairID;		//½ĞÈı·ÖµÄÍæ¼Ò
-	BYTE		ActionType;		//¶ş½øÖÆ¶¯×÷ĞĞÎª   0001-²»½Ğ  0010-½ĞÒ»·Ö 0100-½Ğ¶ş·Ö 1000-½ĞÈı·Ö	
+	WORD		wChairID;		//å«ä¸‰åˆ†çš„ç©å®¶
+	BYTE		ActionType;		//äºŒè¿›åˆ¶åŠ¨ä½œè¡Œä¸º   0001-ä¸å«  0010-å«ä¸€åˆ† 0100-å«äºŒåˆ† 1000-å«ä¸‰åˆ†	
 };
 
-//½ĞÈı·Ö½á¹û
+//å«ä¸‰åˆ†ç»“æœ
 struct STR_CMD_SC_JIAOFEN_RESULT
 {
-	WORD 		wChairID;						//ÒÎ×ÓºÅ
-	BYTE		Score;							//Íæ¼Ò½»ÁË¶àÉÙ·Ö   0 1 2 3
-	BYTE		room_bet[MAX_CHAIR_COUNT];		//¸÷Íæ¼ÒµÄ·¿¼ä±¶Êı	
+	WORD 		wChairID;						//æ¤…å­å·
+	BYTE		Score;							//ç©å®¶äº¤äº†å¤šå°‘åˆ†   0 1 2 3
+	BYTE		room_bet[MAX_CHAIR_COUNT];		//å„ç©å®¶çš„æˆ¿é—´å€æ•°	
 };
 
-//Ö¸¶¨×¯¼Ò
+//æŒ‡å®šåº„å®¶
 struct STR_CMD_SC_APPOINT_BANKER
 {
-	WORD		wBanker;					//×¯¼ÒÒÎ×ÓºÅ
+	WORD		wBanker;					//åº„å®¶æ¤…å­å·
 };
 
-//¸øÍæ¼Ò·¢ËÍµ×ÅÆ
+//ç»™ç©å®¶å‘é€åº•ç‰Œ
 struct STR_CMD_SC_SEND_LEAVE_CARD
 {
-	WORD		wSendCardUser;						//·¢ËÍÊ£Óàµ×ÅÆµÄÍæ¼Ò
-	BYTE		cbSortedCard[MAX_CARD_COUNT];		//Íæ¼ÒÅÅĞòºóµÄÊÖÅÆ
-	BYTE		cbHandCardNum;						//ÊÖÅÆ¸öÊı
-	BYTE		cbMagicCardNum;						//ñ®×Ó¸öÊı£¨Ö÷ÅÆ´Ó×óÏòÓÒÅÅĞò£¬¿Í»§¶Ë´Ó0-cbMagicCardNumÎªÖ÷»¨É«£©
-	BYTE		cbMagicCard;						//ñ®×Ó
-	BYTE		cbLeaveCard[MAX_LEAVE_CARD_NUM];	//µ×ÅÆÊı¾İ
-	DWORD		LeaveCardBet;						//µ×ÅÆ±¶Êı
+	WORD		wSendCardUser;						//å‘é€å‰©ä½™åº•ç‰Œçš„ç©å®¶
+	BYTE		cbSortedCard[MAX_CARD_COUNT];		//ç©å®¶æ’åºåçš„æ‰‹
+	BYTE		cbHandCardNum;						//æ‰‹ç‰Œä¸ªæ•°
+	BYTE		cbMagicCardNum;						//ç™å­ä¸ªæ•°ï¼ˆä¸»ç‰Œä»å·¦å‘å³æ’åºï¼Œå®¢æˆ·ç«¯ä»0-cbMagicCardNumä¸ºä¸»èŠ±è‰²ï¼‰
+	BYTE		cbMagicCard;						//ç™å­
+	BYTE		cbLeaveCard[MAX_LEAVE_CARD_NUM];	//åº•ç‰Œæ•°æ®
+	DWORD		LeaveCardBet;						//åº•ç‰Œå€æ•°
 };
 
-//ÏÂ×¢(¼Ó±¶)¿ªÊ¼
+//ä¸‹æ³¨(åŠ å€)å¼€å§‹
 struct STR_CMD_SC_ADD_SCORE_START
 {
-	BYTE		cbStart;					//ÏÂ×¢¿ªÊ¼±êÊ¶	0-Î´¿ªÊ¼	1-¿ªÊ¼
+	BYTE		cbStart;					//ä¸‹æ³¨å¼€å§‹æ ‡è¯†	0-æœªå¼€å§‹	1-å¼€å§‹
 };
 
-//ÏÂ×¢½á¹û
+//ä¸‹æ³¨ç»“æœ
 struct STR_CMD_SC_ADD_SCORE_RESULT
 {
-	WORD                                wChairID;						//ÏÂ×¢Íæ¼Ò 
-	WORD                                wAddSocre;						//¸Ã´ÎÏÂ×¢·ÖÖµ
-	DWORD								RoomBet[MAX_CHAIR_COUNT];       //·¿¼ä±¶Êı
+	WORD                                wChairID;						//ä¸‹æ³¨ç©å®¶ 
+	WORD                                wAddSocre;						//è¯¥æ¬¡ä¸‹æ³¨åˆ†å€¼
+	DWORD								RoomBet[MAX_CHAIR_COUNT];       //æˆ¿é—´å€æ•°
 };
 
-//Ã÷ÅÆ¿ªÊ¼
+//æ˜ç‰Œå¼€å§‹
 struct STR_CMD_SC_MING_PAI_START
 {
-	WORD                                wChairID;						//Ã÷ÅÆ¿ªÊ¼Íæ¼Ò 
-	BYTE                                cbType;							//Ã÷ÅÆÀàĞÍ	3-·¢ÅÆ¿ªÊ¼Ã÷ÅÆ	2-¿ªÊ¼ÓÎÏ·Ã÷ÅÆ	1-³öÅÆ¿ªÊ¼Ã÷ÅÆ
+	WORD                                wChairID;						//æ˜ç‰Œå¼€å§‹ç©å®¶ 
+	BYTE                                cbType;							//æ˜ç‰Œç±»å‹	3-å‘ç‰Œå¼€å§‹æ˜ç‰Œ	2-å¼€å§‹æ¸¸æˆæ˜ç‰Œ	1-å‡ºç‰Œå¼€å§‹æ˜ç‰Œ
 };
 
-//Ã÷ÅÆ½á¹û
+//æ˜ç‰Œç»“æœ
 struct STR_CMD_SC_MING_PAI_RESULT
 {
-	WORD                                wChairID;						//Ã÷ÅÆÍæ¼Ò 
-	BYTE                                cbIsMing;						//ÊÇ·ñÃ÷ÅÆ	0-²»Ã÷ÅÆ	1-Ã÷ÅÆ
-	BYTE								cbTimes;						//¼Ó±¶ºóµÄ±¶Êı
-	BYTE								cbHandCard[MAX_CARD_COUNT];		//ÓÃ»§ÊÖÅÆ
-	DWORD							    RoomBet[MAX_CHAIR_COUNT];		//·¿¼ä±¶Êı
+	WORD                                wChairID;						//æ˜ç‰Œç©å®¶ 
+	BYTE                                cbIsMing;						//æ˜¯å¦æ˜ç‰Œ	0-ä¸æ˜ç‰Œ	1-æ˜ç‰Œ
+	BYTE								cbTimes;						//åŠ å€åçš„å€æ•°
+	BYTE								cbHandCard[MAX_CARD_COUNT];		//ç”¨æˆ·æ‰‹ç‰Œ
+	DWORD							    RoomBet[MAX_CHAIR_COUNT];		//æˆ¿é—´å€æ•°
 };
 
 
 
 
-////ÁÁÖ÷½á¹û
+////äº®ä¸»ç»“æœ
 //struct STR_CMD_SC_LIANGZHU_RESULT
 //{
-//	WORD		wLiangzhuUser;						//ÁÁÖ÷Íæ¼Ò
-//	BYTE		cbLZCard;							//ÁÁÖ÷¿¨ÅÆ
+//	WORD		wLiangzhuUser;						//äº®ä¸»ç©å®¶
+//	BYTE		cbLZCard;							//äº®ä¸»å¡ç‰Œ
 //};	
 //
-////·´Ö÷¿ªÊ¼
+////åä¸»å¼€å§‹
 //struct STR_CMD_SC_FANZHU_NOTIFY
 //{
-//	WORD		wFanzhuUser;						//·´Ö÷Íæ¼Ò
-//	BYTE		cbFanZhuCard[MAX_FANZHU_TYPE_NUM];	//·´Ö÷¿¨ÅÆ
+//	WORD		wFanzhuUser;						//åä¸»ç©å®¶
+//	BYTE		cbFanZhuCard[MAX_FANZHU_TYPE_NUM];	//åä¸»å¡ç‰Œ
 //};	 
 //
-////·´Ö÷½á¹û
+////åä¸»ç»“æœ
 //struct STR_CMD_SC_FANZHU_RESULT
 //{
-//	WORD		wFanzhuUser;						//·´Ö÷Íæ¼Ò
-//	BYTE		cbFanZhuCard;						//·´Ö÷¿¨ÅÆ
+//	WORD		wFanzhuUser;						//åä¸»ç©å®¶
+//	BYTE		cbFanZhuCard;						//åä¸»å¡ç‰Œ
 //};	 	
 //
-////¿Ûµ×¿ªÊ¼
+////æ‰£åº•å¼€å§‹
 //struct STR_CMD_SC_SEND_KOUDI_START
 //{
-//	WORD		wKouDiUser;						//¿Ûµ×Íæ¼Ò		
-//	BYTE		cbKouDiNum;						//¿Ûµ×¿¨ÅÆÊıÄ¿;
+//	WORD		wKouDiUser;						//æ‰£åº•ç©å®¶		
+//	BYTE		cbKouDiNum;						//æ‰£åº•å¡ç‰Œæ•°ç›®;
 //};	
 //
-////¿Ûµ×Íê³É
+////æ‰£åº•å®Œæˆ
 //struct STR_CMD_SC_SEND_KOUDI_FINISH
 //{
-//	WORD		wKouDiUser;						//¿Ûµ×Íæ¼Ò
-//	BYTE		cbFinishMask;					//0-Î´Íê³É	1-Íê³É
-//	BYTE		cbUserHandCard[MAX_CARD_COUNT];	//¿Ûµ×Íê³ÉºóµÄÍæ¼ÒÅÅĞòÊÖÅÆ
-//	BYTE		cbMainColorNum;					//Ö÷ÅÆ¸öÊı£¨Ö÷ÅÆ´Ó×óÏòÓÒÅÅĞò£¬¿Í»§¶Ë´Ó0-cbMainColorNumÎªÖ÷»¨É«£©
+//	WORD		wKouDiUser;						//æ‰£åº•ç©å®¶
+//	BYTE		cbFinishMask;					//0-æœªå®Œæˆ	1-å®Œæˆ
+//	BYTE		cbUserHandCard[MAX_CARD_COUNT];	//æ‰£åº•å®Œæˆåçš„ç©å®¶æ’åºæ‰‹ç‰Œ
+//	BYTE		cbMainColorNum;					//ä¸»ç‰Œä¸ªæ•°ï¼ˆä¸»ç‰Œä»å·¦å‘å³æ’åºï¼Œå®¢æˆ·ç«¯ä»0-cbMainColorNumä¸ºä¸»èŠ±è‰²ï¼‰
 //};	
 //
-////³öÅÆÌáÊ¾
+////å‡ºç‰Œæç¤º
 //struct STR_CMD_SC_OUT_CARD_NOTIFY
 //{
-//	tagOutCardNotify		OutCardNotify;		//³öÅÆÌáÊ¾
+//	tagOutCardNotify		OutCardNotify;		//å‡ºç‰Œæç¤º
 //};	
 
 
-//³öÅÆ¿ªÊ¼
+//å‡ºç‰Œå¼€å§‹
 struct STR_CMD_SC_OUT_CARD_START
 {
-	WORD		wOutCardUser;						//³öÅÆÌáÍæ¼Ò
-	BYTE		ActionType;							//¶ş½øÖÆ¶¯×÷ĞĞÎª   //0001-³öÅÆ  0010-²»³ö  0100-ÌáÊ¾  1000-Òª²»Æğ
-	BYTE		TurnOutCardData[MAX_CARD_COUNT];				//µ±Ç°ÂÖ×î´ó³öÅÆÊı¾İ
-	DWORD		TurnOutCardNum;					//µ±Ç°ÂÖ×î´ó³öÅÆÊıÄ¿     //ÊÇ·ñĞèÒª
+	WORD		wOutCardUser;						//å‡ºç‰Œçš„ç©å®¶
+	BYTE		ActionType;							//äºŒè¿›åˆ¶åŠ¨ä½œè¡Œä¸º   //0001-å‡ºç‰Œ  0010-ä¸å‡º  0100-æç¤º  1000-è¦ä¸èµ·
+	//BYTE		TurnOutCardData[MAX_CARD_COUNT];				//å½“å‰è½®æœ€å¤§å‡ºç‰Œæ•°æ®
+	//DWORD		TurnOutCardNum;					//å½“å‰è½®æœ€å¤§å‡ºç‰Œæ•°ç›®     //æ˜¯å¦éœ€è¦
 };	
 
-//³öÅÆ½á¹û
+//å‡ºç‰Œç»“æœ
 struct STR_CMD_SC_OUT_CARD_RESULT
 {
-	BYTE		cbFlag;								//¹ıµÄ±êÊ¶	0-¹ı	1-Õı³£³öÅÆ
-	BYTE		cbSuccess;							//ÊÇ·ñ³É¹¦	1-³öÅÆ³É¹¦  0-ÅÆĞÍ´íÎó
-	WORD		wOutCardUser;						//³öÅÆÍæ¼Ò
-	BYTE		cbOutCardNum;						//³öÅÆÊıÄ¿
-	BYTE		cbOutCard[MAX_CARD_COUNT];			//³öÅÆÊı¾İ
-	BYTE		cbHandCardNum;						//ÊÖÅÆ¸öÊı
-	BYTE		cbCardType;							//ÅÆĞÍ£¬ÅÆĞÍ´óÓÚ7£¬ÔòÎª½±£¬¿Í»§¶ËÏÔÊ¾½±µÃ·Ö
-	SCORE		lBonusScore;						//½±µÃ·Ö£¬ÓĞ½±²ÅÓĞÖµ
-	SCORE		lSingleGameScore[MAX_CHAIR_COUNT];	//Íæ¼Òµ¥¾ÖµÃ·Ö
-	BYTE		handcarddata[MAX_CARD_COUNT];       //³öÅÆÍæ¼ÒÊÖÅÆÊı¾İ
-	DWORD		RoomBet[MAX_CHAIR_COUNT];			//·¿¼ä±¶Êı
+	BYTE		cbFlag;								//è¿‡çš„æ ‡è¯†	0-è¿‡	1-æ­£å¸¸å‡ºç‰Œ
+	BYTE		cbSuccess;							//æ˜¯å¦æˆåŠŸ	1-å‡ºç‰ŒæˆåŠŸ  0-ç‰Œå‹é”™è¯¯
+	WORD		wOutCardUser;						//å‡ºç‰Œç©å®¶
+	BYTE		cbOutCardNum;						//å‡ºç‰Œæ•°ç›®	
+	BYTE		cbOutCard[MAX_CARD_COUNT];			//å‡ºç‰Œæ•°æ®
+	BYTE		handcarddata[MAX_CARD_COUNT];       //å‡ºç‰Œç©å®¶æ‰‹ç‰Œæ•°æ®
+	BYTE		cbHandCardNum;						//æ‰‹ç‰Œä¸ªæ•°
+	BYTE		cbCardType;							//ç‰Œå‹ï¼Œç‰Œå‹å¤§äº7ï¼Œåˆ™ä¸ºå¥–ï¼Œå®¢æˆ·ç«¯æ˜¾ç¤ºå¥–å¾—åˆ†
+	//SCORE		lSingleGameScore[MAX_CHAIR_COUNT];	//ç©å®¶å•å±€å¾—åˆ†
+
+	DWORD		RoomBet[MAX_CHAIR_COUNT];			//æˆ¿é—´å€æ•°
 };	
 
-////Ò»ÂÖ»ı·Ö½áËã
+////ä¸€è½®ç§¯åˆ†ç»“ç®—
 //struct STR_CMD_SC_ROUND_BALANCE
 //{
-//	WORD		wRoundWinner;						//¸ÃÂÖÓ®¼Ò
-//	WORD		wCurOutCardUser;					//µ±Ç°³öÅÆÍæ¼Ò
-//	LONGLONG	lUserScore[MAX_CHAIR_COUNT];		//¸ÃÂÖÍæ¼Ò»ı·Ö
-//	LONGLONG	lRoundScore;						//¸ÃÂÖ·ÖÊı£¬ÈôÊØ·Ö·½Ó®ÔòÊÇ0£¬µÃ·Ö·½Ó®ÔòÊÇ¾ßÌå·ÖÊı
+//	WORD		wRoundWinner;						//è¯¥è½®èµ¢å®¶
+//	WORD		wCurOutCardUser;					//å½“å‰å‡ºç‰Œç©å®¶
+//	LONGLONG	lUserScore[MAX_CHAIR_COUNT];		//è¯¥è½®ç©å®¶ç§¯åˆ†
+//	LONGLONG	lRoundScore;						//è¯¥è½®åˆ†æ•°ï¼Œè‹¥å®ˆåˆ†æ–¹èµ¢åˆ™æ˜¯0ï¼Œå¾—åˆ†æ–¹èµ¢åˆ™æ˜¯å…·ä½“åˆ†æ•°
 //};
 
-//Ğ¡¾ÖÓÎÏ·½áÊø
+//å°å±€æ¸¸æˆç»“æŸ
 struct STR_CMD_SC_XJ_GAME_END
 {
+	/*
 	struct	XJ_END
 	{ 
-		WORD 		UsrChairID;							//Íæ¼Ò×ùÎ»ºÅ
-		BYTE		cbLeaveHandCard[MAX_CARD_COUNT];	//Íæ¼ÒÊ£ÓàÊÖÅÆ
-		SCORE		nTotalGameScore;  					//Íæ¼Ò×ÜµÃ·ÖÊı
-		SCORE		nSingleGameScore;					//Íæ¼Òµ¥¾ÖµÃ·Ö
-		SCORE		UserBet;							//Íæ¼Ò´Ë¾ÖµÄ±¶Êı
-		SCORE		RoomSocre;							//½ğ±Ò³¡·¿¼äµ×·Ö
-		WORD		BankID;								//×¯¼Ò
-		std::string		PlayerName;    					//Íæ¼ÒÃû×Ö
-		DWORD		IsWin;								//Íæ¼ÒÊÇ·ñÓ®ÁË  0-°Ü  1-Ê¤
-		DWORD		IsEnd;								//´ó¾ÖÊÇ·ñ½áÊø    0-Î´½áÊø  1-½áÊø
+		WORD 		UsrChairID;							//ç©å®¶åº§ä½å·
+		BYTE		cbLeaveHandCard[MAX_CARD_COUNT];	//ç©å®¶å‰©ä½™æ‰‹ç‰Œ
+		SCORE		nTotalGameScore;  					//ç©å®¶æ€»å¾—åˆ†æ•°
+		SCORE		nSingleGameScore;					//ç©å®¶å•å±€å¾—åˆ†
+		SCORE		UserBet;							//ç©å®¶æ­¤å±€çš„å€æ•°
+		SCORE		RoomSocre;							//é‡‘å¸åœºæˆ¿é—´åº•åˆ†
+		WORD		BankID;								//åº„å®¶
+		std::string		PlayerName;    					//ç©å®¶åå­—
+		DWORD		IsWin;								//ç©å®¶æ˜¯å¦èµ¢äº†  0-è´¥  1-èƒœ
+		DWORD		IsEnd;								//å¤§å±€æ˜¯å¦ç»“æŸ    0-æœªç»“æŸ  1-ç»“æŸ
 	};
 	struct XJ_END		xj_end[MAX_CHAIR_COUNT];
 	WORD				wchairID;
+	*/
+
+	SCORE		nSingleGameScore[MAX_CHAIR_COUNT];				//ç©å®¶å•å±€å¾—åˆ†
+	DWORD		nUserBet[MAX_CHAIR_COUNT];								//ç©å®¶æ­¤å±€çš„å€æ•°
+	BYTE			cbLeaveHandCard[MAX_CHAIR_COUNT][MAX_CARD_COUNT];			//ç©å®¶å‰©ä½™æ‰‹ç‰Œ
+	BYTE			cbLeaveCardCount[MAX_CHAIR_COUNT];												//ç©å®¶å‰©ä½™æ‰‹ç‰Œæ•°é‡
+	WORD		wWinChair;																//èµ¢å®¶
 };
 
-//´ó¾ÖÓÎÏ·½áÊø
+//å¤§å±€æ¸¸æˆç»“æŸ
 struct STR_CMD_SC_DJ_GAME_END
 {
-	WORD							wMaxWinChairID;							// Ó®´ÎÊı×î¶àµÄÍæ¼ÒÒÎ×ÓºÅ
-	WORD							wFangzhuID;								// ·¿Ö÷ID
-	SCORE							lUserScore[MAX_CHAIR_COUNT];			// Íæ¼Ò×ÜµÃ·Ö 
-	BYTE                            bWinTime[MAX_CHAIR_COUNT];				// Ê¤Àû´ÎÊı
-	WORD							BankTime[MAX_CHAIR_COUNT];				//µØÖ÷´ÎÊı
+	WORD							wMaxWinChairID;							// èµ¢æ¬¡æ•°æœ€å¤šçš„ç©å®¶æ¤…å­å·
+	WORD							wFangzhuID;								// æˆ¿ä¸»ID
+	SCORE							lUserScore[MAX_CHAIR_COUNT];			// ç©å®¶æ€»å¾—åˆ† 
+	BYTE                            bWinTime[MAX_CHAIR_COUNT];				// èƒœåˆ©æ¬¡æ•°
+	WORD							BankTime[MAX_CHAIR_COUNT];				//åœ°ä¸»æ¬¡æ•°
 
 	struct PlayerInfo
 	{
-		std::string		playerName;    //Ãû×Ö
+		std::string		playerName;    //åå­—
 		WORD			playerID;   		//ID
-		std::string		szFaceUrl;			//Í·Ïñ¿ò
+		std::string		szFaceUrl;			//å¤´åƒæ¡†
 	};
 
-	struct PlayerInfo	playerinfo[MAX_CHAIR_COUNT];      			//Íæ¼ÒĞÅÏ¢
-	SCORE				PlayerBigestBet[MAX_CHAIR_COUNT];			//Íæ¼ÒÔø»ñµÃ¹ıµÄ×î´ó±¶Êı
-	WORD				IsEnd;												//ÊÇ·ñ½áÊø  0-½áÊø  1-Î´½áÊø
-	WORD				Rich_ID[MAX_CHAIR_COUNT];					//´óÍÁºÀµÄÒÎ×ÓºÅ ÊäµÃ×î¶àµÄ
+	struct PlayerInfo	playerinfo[MAX_CHAIR_COUNT];      			//ç©å®¶ä¿¡æ¯
+	SCORE				PlayerBigestBet[MAX_CHAIR_COUNT];			//ç©å®¶æ›¾è·å¾—è¿‡çš„æœ€å¤§å€æ•°
+	WORD				IsEnd;												//æ˜¯å¦ç»“æŸ  0-ç»“æŸ  1-æœªç»“æŸ
+	WORD				Rich_ID[MAX_CHAIR_COUNT];					//å¤§åœŸè±ªçš„æ¤…å­å· è¾“å¾—æœ€å¤šçš„
 };
 
-//ÓÎÏ·½áÊø ¹«¹²±¶Êı
+//æ¸¸æˆç»“æŸ å…¬å…±å€æ•°
 struct STR_CMD_SC_PUBLIC_BET
 {
-	SCORE		RoomBet;			//µ×·Ö
-	SCORE		MingPai;			//Ã÷ÅÆ
-	SCORE		Rob;				//ÇÀµØÖ÷
-	SCORE		LeaveCard;			//µ×ÅÆ
-	SCORE		Boom;				//Õ¨µ¯
-	SCORE 		Spring;			//´ºÌì
-	SCORE		AddScore[MAX_CHAIR_COUNT];			//¼Ó±¶
-	SCORE		IUserAScore;			//×Ü·Ö 
-	WORD		Game_State;			//µ±Ç°ÓÎÏ·×´Ì¬
-	WORD		bank_ID;			//×¯¼ÒID
-	SCORE		public_bet;			//¹«¹²±¶Êı
-	WORD		Rule;			//µ±Ç°ÓÎÏ·¹æÔò  0-ÇÀ×¯  1-½Ğ·Ö
+	SCORE		RoomBet;			//åº•åˆ†
+	SCORE		MingPai;			//æ˜ç‰Œ
+	SCORE		Rob;				//æŠ¢åœ°ä¸»
+	SCORE		LeaveCard;			//åº•ç‰Œ
+	SCORE		Boom;				//ç‚¸å¼¹
+	SCORE 		Spring;			//æ˜¥å¤©
+	SCORE		AddScore[MAX_CHAIR_COUNT];			//åŠ å€
+	SCORE		IUserAScore;			//æ€»åˆ† 
+	WORD		Game_State;			//å½“å‰æ¸¸æˆçŠ¶æ€
+	WORD		bank_ID;			//åº„å®¶ID
+	SCORE		public_bet;			//å…¬å…±å€æ•°
+	WORD		Rule;			//å½“å‰æ¸¸æˆè§„åˆ™  0-æŠ¢åº„  1-å«åˆ†
 };
 
-//¼ÇÅÆÆ÷
+//è®°ç‰Œå™¨
 struct STR_CMD_SC_JIPAIQI_START
 {
-	WORD		JiPaiQi[MAX_CARD_COUNT];			//¼ÇÅÆÆ÷
+	WORD		JiPaiQi[MAX_CARD_COUNT];			//è®°ç‰Œå™¨
 };
 
-//·¿¼ä±¶Êı
+//æˆ¿é—´å€æ•°
 struct STR_CMD_SC_FANGJIAN_BET
 {
 	SCORE	room_bet[MAX_CHAIR_COUNT];
 };
 
-//ÍĞ¹Ü
+//æ‰˜ç®¡
 struct STR_CMD_SC_TUO_GUAN
 {
-	WORD	tuo_guan;	//´«1±íÊ¾ÒÑ×Ô¶¯ÍĞ¹Ü
+	WORD	tuo_guan;	//ä¼ 1è¡¨ç¤ºå·²è‡ªåŠ¨æ‰˜ç®¡
 };
 
 //rule
@@ -315,302 +323,301 @@ struct STR_CMD_SC_RULE
 	WORD	rule;   // 0-jingdian   1-buxip
 };
 
-//Â¼Ïñ»Ø·Å
+//å½•åƒå›æ”¾
 struct STR_CMD_SC_RECODE
 {
-	std::string		ReplayData;			//Â¼Ïñ»Ø·ÅÊı¾İ
+	std::string		ReplayData;			//å½•åƒå›æ”¾æ•°æ®
 };
 
 #pragma endregion
 
-#pragma region ½ÓÊÕÏûÏ¢
+#pragma region æ¥æ”¶æ¶ˆæ¯
 /* *********************************************************************************
-**										SUB½ÓÊÕÏûÏ¢
+**										SUBæ¥æ”¶æ¶ˆæ¯
 ** *********************************************************************************/
-#define SUB_CS_ROB_BANKER							1							//ÇÀ×¯
-#define SUB_CS_MING_PAI								2							//Ã÷ÅÆ
-#define SUB_CS_ADD_SCORE							3							//¼Ó×¢£¨¼Ó±¶£©
-#define SUB_CS_OUT_CARD								4							//³öÅÆ
-#define SUB_CS_XJ_GAME_READY 						5							//Ğ¡¾ÖÓÎÏ·×¼±¸
-#define	SUB_CS_PUBLIC_BET							106							//´ó¾Ö½áÊø¹«¹²±¶Êı
-#define	SUB_CS_JIAO_FEN								107							//½Ğ·Ö
-#define	SUB_CS_JIPAIQI								108							//¼ÇÅÆÆ÷
-#define	SUB_CS_TUO_GUAN								109							//ÍĞ¹Ü
+#define SUB_CS_ROB_BANKER							101							//æŠ¢åº„
+#define SUB_CS_MING_PAI								102							//æ˜ç‰Œ
+#define SUB_CS_ADD_SCORE							103							//åŠ æ³¨ï¼ˆåŠ å€ï¼‰
+#define SUB_CS_OUT_CARD								104							//å‡ºç‰Œ
+#define SUB_CS_XJ_GAME_READY 						105							//å°å±€æ¸¸æˆå‡†å¤‡
+#define	SUB_CS_PUBLIC_BET							106							//å¤§å±€ç»“æŸå…¬å…±å€æ•°
+#define	SUB_CS_JIAO_FEN								107							//å«åˆ†
+#define	SUB_CS_JIPAIQI								108							//è®°ç‰Œå™¨
+#define	SUB_CS_TUO_GUAN								109							//æ‰˜ç®¡
 
-//#define SUB_CS_LIANG_ZHU							1							//ÁÁÖ÷
-//#define SUB_CS_FAN_ZHU								2							//·´Ö÷
-//#define SUB_CS_KOU_DI								3							//¿Ûµ×
+//#define SUB_CS_LIANG_ZHU							1							//äº®ä¸»
+//#define SUB_CS_FAN_ZHU								2							//åä¸»
+//#define SUB_CS_KOU_DI								3							//æ‰£åº•
 /////////////////////////////////////////////////////////////////////////////////////////////
 
-//ÇÀ×¯ÃüÁî
+//æŠ¢åº„å‘½ä»¤
 struct STR_SUB_CS_ROB_BANKER
 {
-	BYTE		cbType;						//Íæ¼ÒÇÀ×¯ÀàĞÍ	0-½ĞµØÖ÷	1-ÇÀµØÖ÷	
-	BYTE		cbRobState;					//ÇÀ×¯×´Ì¬		0-¹ı	1-½Ğ/ÇÀ	
+	BYTE			cbResult;					// 2å«,æŠ¢ | 1ä¸å«,ä¸æŠ¢
 };
 
-//½ĞÈı·ÖÃüÁî
+//å«ä¸‰åˆ†å‘½ä»¤
 struct STR_SUB_CS_JIAO_FEN
 {
-	SCORE		Score;							//Íæ¼Ò½ĞÁË¶àÉÙ·Ö   0-²»½Ğ  1-1·Ö 2-2·Ö 3-3·Ö
+	SCORE		Score;							//ç©å®¶å«äº†å¤šå°‘åˆ†   0-ä¸å«  1-1åˆ† 2-2åˆ† 3-3åˆ†
 };
 
-//Íæ¼ÒÏÂ×¢  
+//ç©å®¶ä¸‹æ³¨  
 struct STR_SUB_CS_ADD_SCORE
 {
-	DWORD		score;						//ÏÂ×¢·ÖÖµ	0-´ú±í²»ÏÂ×¢
+	DWORD		score;						//ä¸‹æ³¨åˆ†å€¼	0-ä»£è¡¨ä¸ä¸‹æ³¨
 };
 
-//Íæ¼ÒÃ÷ÅÆ
+//ç©å®¶æ˜ç‰Œ
 struct STR_SUB_CS_MING_PAI
 {
-	BYTE        cbType;						//Ã÷ÅÆÀàĞÍ	2-·¢ÅÆ¿ªÊ¼Ã÷ÅÆ	1-³öÅÆ¿ªÊ¼Ã÷ÅÆ
-	BYTE		cbIsMing;					//ÊÇ·ñÃ÷ÅÆ	0-²»Ã÷ÅÆ	1-Ã÷ÅÆ
-	SCORE		OutCard_bet;				//·¢ÅÆÃ÷ÅÆµÄ±¶Êı
+	BYTE        cbType;						//æ˜ç‰Œç±»å‹	2-å‘ç‰Œå¼€å§‹æ˜ç‰Œ	1-å‡ºç‰Œå¼€å§‹æ˜ç‰Œ
+	BYTE		cbIsMing;					//æ˜¯å¦æ˜ç‰Œ	0-ä¸æ˜ç‰Œ	1-æ˜ç‰Œ
+	SCORE		OutCard_bet;				//å‘ç‰Œæ˜ç‰Œçš„å€æ•°
 };
 
 
-////ÁÁÖ÷
+////äº®ä¸»
 //struct STR_SUB_CS_LIANG_ZHU
 //{
-//	WORD		wLiangZhuUser;		//ÁÁÖ÷Íæ¼Ò
-//	BYTE		cbLiangZhuColor;	//ÁÁÖ÷»¨É«
+//	WORD		wLiangZhuUser;		//äº®ä¸»ç©å®¶
+//	BYTE		cbLiangZhuColor;	//äº®ä¸»èŠ±è‰²
 //};
 //
-////·´Ö÷
+////åä¸»
 //struct STR_SUB_CS_FAN_ZHU
 //{
-//	BYTE		cbFlag;				//·´Ö÷±êÊ¶	0-Íæ¼Ò·ÅÆú·´Ö÷	1-Íæ¼Ò·´Ö÷
-//	WORD		wFanZhuUser;		//·´Ö÷Íæ¼Ò
-//	BYTE		cbFanZhuCard;		//·´Ö÷¿¨ÅÆ
+//	BYTE		cbFlag;				//åä¸»æ ‡è¯†	0-ç©å®¶æ”¾å¼ƒåä¸»	1-ç©å®¶åä¸»
+//	WORD		wFanZhuUser;		//åä¸»ç©å®¶
+//	BYTE		cbFanZhuCard;		//åä¸»å¡ç‰Œ
 //};
 
-////¿Ûµ×
+////æ‰£åº•
 //struct STR_SUB_CS_KOUDI
 //{
-//	WORD		wKouDiUser;							//¿Ûµ×Íæ¼Ò
-//	BYTE		cbKouDiCard[MAX_LEAVE_CARD_NUM];	//¿Ûµ×¿¨ÅÆ
+//	WORD		wKouDiUser;							//æ‰£åº•ç©å®¶
+//	BYTE		cbKouDiCard[MAX_LEAVE_CARD_NUM];	//æ‰£åº•å¡ç‰Œ
 //};
 
-//³öÅÆ
+//å‡ºç‰Œ
 struct STR_SUB_CS_OUT_CARD
 {
-	BYTE		cbPass;								//¹ı	0-Õı³£³öÅÆ	1-¹ı
-	WORD		wOutCardUser;						//³öÅÆÍæ¼Ò
-	BYTE		cbOutCardNum;						//³öÅÆÊıÄ¿
-	BYTE		cbOutCard[MAX_CARD_COUNT];			//³öÅÆÊı¾İ
+	BYTE		cbPass;								//è¿‡	0-æ­£å¸¸å‡ºç‰Œ	1-è¿‡
+	//WORD		wOutCardUser;						//å‡ºç‰Œç©å®¶
+	BYTE		cbOutCardNum;						//å‡ºç‰Œæ•°ç›®
+	BYTE		cbOutCard[MAX_CARD_COUNT];			//å‡ºç‰Œæ•°æ®
 };
 
-//Ğ¡¾ÖÓÎÏ·×¼±¸
+//å°å±€æ¸¸æˆå‡†å¤‡
 struct STR_SUB_CS_XJ_USER_READY
 {
-	WORD		wReadyUser;							//×¼±¸Íæ¼Ò
-	BYTE		cbReady;							//Ğ¡¾ÖÓÎÏ·ÓÃ»§×¼±¸	1-×¼±¸£»0-Î´×¼±¸
-	SCORE		cbBet;								//Ã÷ÅÆ¿ªÊ¼±¶Êı
+	WORD		wReadyUser;							//å‡†å¤‡ç©å®¶
+	BYTE		cbReady;							//å°å±€æ¸¸æˆç”¨æˆ·å‡†å¤‡	1-å‡†å¤‡ï¼›0-æœªå‡†å¤‡
+	SCORE		cbBet;								//æ˜ç‰Œå¼€å§‹å€æ•°
 };
 
-//ÓÎÏ·½áÊø ¹«¹²±¶Êı
+//æ¸¸æˆç»“æŸ å…¬å…±å€æ•°
 struct STR_SUB_CS_PUBLIC_BET
 {
-	WORD		wChairID;			//Òª²é¿´µÄÒÎ×ÓºÅ
+	WORD		wChairID;			//è¦æŸ¥çœ‹çš„æ¤…å­å·
 };
 
-//¼ÇÅÆÆ÷
+//è®°ç‰Œå™¨
 struct STR_SUB_CS_JIPAIQI
 {
-	WORD tmp;			//²»Òª´«0
+	WORD tmp;			//ä¸è¦ä¼ 0
 };
 
-//ÍĞ¹Ü
+//æ‰˜ç®¡
 struct STR_SUB_CS_TUO_GUAN
 {
-	WORD	TuoGuan_state;		//1-ÉèÖÃÍĞ¹Ü   0-È¡ÏûÍĞ¹Ü
+	WORD	TuoGuan_state;		//1-è®¾ç½®æ‰˜ç®¡   0-å–æ¶ˆæ‰˜ç®¡
 };
 
 #pragma endregion
 
-#pragma region ¶ÏÏßÖØÁ¬
-//¿ÕÏĞ×´Ì¬
+#pragma region æ–­çº¿é‡è¿
+//ç©ºé—²çŠ¶æ€
 struct STR_CMD_SC_STATUS_FREE
 {
-	BYTE	GameCount;				//ÓÎÏ·¾ÖÊı 0-ÎŞÏŞ¾Ö
-	BYTE	PlayerCount;			//ÓÎÏ·ÈËÊı
-	WORD	CellScore;				//µ×·Ö	  Ä¬ÈÏÎª1
-	DWORD	FangZhu;				//·¿Ö÷    ´´½¨ÓÃ»§
+	BYTE	GameCount;				//æ¸¸æˆå±€æ•° 0-æ— é™å±€
+	BYTE	PlayerCount;			//æ¸¸æˆäººæ•°
+	WORD	CellScore;				//åº•åˆ†	  é»˜è®¤ä¸º1
+	DWORD	FangZhu;				//æˆ¿ä¸»    åˆ›å»ºç”¨æˆ·
 };
 
-////ÁÁÖ÷×´Ì¬
+////äº®ä¸»çŠ¶æ€
 //struct STR_CMD_SC_STATUS_LIANGZHU
 //{
-//	BYTE	cbHandCard[MAX_CARD_COUNT];			//Íæ¼ÒÊÖÅÆ
-//	BYTE	cbCardNum;							//Íæ¼ÒÊÖÅÆ×ÜÊı
-//	BYTE	cbLastTime;							//ÁÁÖ÷¶¨Ê±Æ÷Ê£ÓàÊ±¼ä£¨Ãë£©
+//	BYTE	cbHandCard[MAX_CARD_COUNT];			//ç©å®¶æ‰‹ç‰Œ
+//	BYTE	cbCardNum;							//ç©å®¶æ‰‹ç‰Œæ€»æ•°
+//	BYTE	cbLastTime;							//äº®ä¸»å®šæ—¶å™¨å‰©ä½™æ—¶é—´ï¼ˆç§’ï¼‰
 //};
 //
-////·´Ö÷×´Ì¬
+////åä¸»çŠ¶æ€
 //struct STR_CMD_SC_STATUS_FANZHU
 //{
-//	WORD	wCurFanzhuUser;						//µ±Ç°·´Ö÷Íæ¼Ò
-//	BYTE	cbFanZhuCard[MAX_FANZHU_TYPE_NUM];	//Íæ¼Ò×Ô¼ºµÄ·´Ö÷¿¨ÅÆ£¬µ±Ç°Íæ¼ÒÊÇ×Ô¼ºµÄÊ±ºò²ÅÏÔÊ¾·´Ö÷ÌáÊ¾
-//	BYTE	cbLastTime;							//·´Ö÷¶¨Ê±Æ÷Ê£ÓàÊ±¼ä£¨Ãë£©
+//	WORD	wCurFanzhuUser;						//å½“å‰åä¸»ç©å®¶
+//	BYTE	cbFanZhuCard[MAX_FANZHU_TYPE_NUM];	//ç©å®¶è‡ªå·±çš„åä¸»å¡ç‰Œï¼Œå½“å‰ç©å®¶æ˜¯è‡ªå·±çš„æ—¶å€™æ‰æ˜¾ç¤ºåä¸»æç¤º
+//	BYTE	cbLastTime;							//åä¸»å®šæ—¶å™¨å‰©ä½™æ—¶é—´ï¼ˆç§’ï¼‰
 //};
 //
-////¿Ûµ××´Ì¬
+////æ‰£åº•çŠ¶æ€
 //struct STR_CMD_SC_STATUS_KOUDI
 //{
-//	WORD		wCurKouDiUser;						//µ±Ç°¿Ûµ×Íæ¼Ò
-//	BYTE		cbSortedCard[MAX_CARD_COUNT];		//Íæ¼ÒÅÅĞòºóµÄÊÖÅÆ
-//	BYTE		cbHandCardNum;						//ÊÖÅÆ¸öÊı
-//	BYTE		cbMainColorNum;						//Ö÷ÅÆ¸öÊı£¨Ö÷ÅÆ´Ó×óÏòÓÒÅÅĞò£¬¿Í»§¶Ë´Ó0-cbMainColorNumÎªÖ÷»¨É«£©
-//	BYTE		cbMainColor;						//µ±Ç°Ö÷»¨É«
+//	WORD		wCurKouDiUser;						//å½“å‰æ‰£åº•ç©å®¶
+//	BYTE		cbSortedCard[MAX_CARD_COUNT];		//ç©å®¶æ’åºåçš„æ‰‹ç‰Œ
+//	BYTE		cbHandCardNum;						//æ‰‹ç‰Œä¸ªæ•°
+//	BYTE		cbMainColorNum;						//ä¸»ç‰Œä¸ªæ•°ï¼ˆä¸»ç‰Œä»å·¦å‘å³æ’åºï¼Œå®¢æˆ·ç«¯ä»0-cbMainColorNumä¸ºä¸»èŠ±è‰²ï¼‰
+//	BYTE		cbMainColor;						//å½“å‰ä¸»èŠ±è‰²
 //};
 
 
-//ÇÀ×¯×´Ì¬
+//æŠ¢åº„çŠ¶æ€
 struct STR_CMD_SC_STATUS_ROB
 {
-	WORD			CurRobUsr;					//µ±Ç°ÕıÔÚÇÀ×¯µÄÍæ¼Ò
-	WORD 			robstate[MAX_CHAIR_COUNT];	//¸÷Íæ¼ÒµÄÇÀ×¯×´Ì¬
-	BYTE			HandCardData[MAX_CARD_COUNT];	//µ±Ç°Íæ¼ÒµÄÊÖÅÆ
-	DWORD			HandCardNum[MAX_CHAIR_COUNT];	//¸÷Íæ¼ÒµÄÊÖÅÆ¸öÊı
-	WORD			CurJuShu;		//µ±Ç°·¿¼ä¾ÖÊı
-	SCORE			room_bet[MAX_CHAIR_COUNT];	//µ±Ç°·¿¼ä±¶Êı
-	SCORE			All_bet[MAX_CHAIR_COUNT];	//×Ü»ı·Ö
-	SCORE			GoldCoin[MAX_CHAIR_COUNT];	//¸÷Íæ¼ÒµÄ½ğ±Ò
-	DWORD		    replay_code;			//»Ø·ÅÂë
+	WORD			CurRobUsr;					//å½“å‰æ­£åœ¨æŠ¢åº„çš„ç©å®¶
+	WORD 			robstate[MAX_CHAIR_COUNT];	//å„ç©å®¶çš„æŠ¢åº„çŠ¶æ€
+	BYTE			HandCardData[MAX_CARD_COUNT];	//å½“å‰ç©å®¶çš„æ‰‹ç‰Œ
+	DWORD			HandCardNum[MAX_CHAIR_COUNT];	//å„ç©å®¶çš„æ‰‹ç‰Œä¸ªæ•°
+	WORD			CurJuShu;		//å½“å‰æˆ¿é—´å±€æ•°
+	SCORE			room_bet[MAX_CHAIR_COUNT];	//å½“å‰æˆ¿é—´å€æ•°
+	SCORE			All_bet[MAX_CHAIR_COUNT];	//æ€»ç§¯åˆ†
+	SCORE			GoldCoin[MAX_CHAIR_COUNT];	//å„ç©å®¶çš„é‡‘å¸
+	DWORD		    replay_code;			//å›æ”¾ç 
 };
 
-//½Ğ·Ö×´Ì¬
+//å«åˆ†çŠ¶æ€
 struct STR_CMD_SC_STATUS_JIAOFEN
 {
-	WORD	   CurRobUsr;            //µ±Ç°ÕıÔÚ½Ğ·ÖµÄÍæ¼Ò
-	WORD	   robstate[MAX_CHAIR_COUNT];     //¸÷Íæ¼ÒµÄ½Ğ·Ö×´Ì¬
-	BYTE	   HandCardData[MAX_CARD_COUNT];         //µ±Ç°Íæ¼ÒµÄÊÖÅÆ
-	DWORD	   HandCardNum[MAX_CHAIR_COUNT];  //¸÷Íæ¼ÒµÄÊÖÅÆ¸öÊı
-	DWORD	   CurJuShu;             //µ±Ç°·¿¼ä¾ÖÊı
-	SCORE	   room_bet[MAX_CHAIR_COUNT];     //µ±Ç°·¿¼ä±¶Êı
-	SCORE	   All_bet[MAX_CHAIR_COUNT];      //×Ü»ı·Ö
-	SCORE	   GoldCoin[MAX_CHAIR_COUNT];	//¸÷Íæ¼ÒµÄ½ğ±Ò
-	DWORD	   replay_code;			//»Ø·ÅÂë
+	WORD	   CurRobUsr;            //å½“å‰æ­£åœ¨å«åˆ†çš„ç©å®¶
+	WORD	   robstate[MAX_CHAIR_COUNT];     //å„ç©å®¶çš„å«åˆ†çŠ¶æ€
+	BYTE	   HandCardData[MAX_CARD_COUNT];         //å½“å‰ç©å®¶çš„æ‰‹ç‰Œ
+	DWORD	   HandCardNum[MAX_CHAIR_COUNT];  //å„ç©å®¶çš„æ‰‹ç‰Œä¸ªæ•°
+	DWORD	   CurJuShu;             //å½“å‰æˆ¿é—´å±€æ•°
+	SCORE	   room_bet[MAX_CHAIR_COUNT];     //å½“å‰æˆ¿é—´å€æ•°
+	SCORE	   All_bet[MAX_CHAIR_COUNT];      //æ€»ç§¯åˆ†
+	SCORE	   GoldCoin[MAX_CHAIR_COUNT];	//å„ç©å®¶çš„é‡‘å¸
+	DWORD	   replay_code;			//å›æ”¾ç 
 };
 
 
-//ÏÂ×¢×´Ì¬
+//ä¸‹æ³¨çŠ¶æ€
 struct STR_CMD_SC_STATUS_ADD_SCORE
 {
-	WORD		scorestate[MAX_CHAIR_COUNT];	//¸÷Íæ¼ÒµÄÏÂ×¢×´Ì¬
-	BYTE		HandCardData[MAX_CARD_COUNT];	//µ±Ç°Íæ¼ÒµÄÊÖÅÆ
-	DWORD		HandCardNum[MAX_CHAIR_COUNT];	//¸÷Íæ¼ÒµÄÊÖÅÆ¸öÊı
-	DWORD		CurJuShu;			             //µ±Ç°·¿¼ä¾ÖÊı
-	SCORE 		room_bet[MAX_CHAIR_COUNT];	//µ±Ç°·¿¼äµÄ±¶Êı
-	WORD		bankID;		//×¯¼ÒID
-	SCORE		All_bet[MAX_CHAIR_COUNT];	//×Ü»ı·Ö
-	SCORE 		GoldCoin[MAX_CHAIR_COUNT];	//¸÷Íæ¼ÒµÄ½ğ±Ò
-	DWORD		replay_code;			//»Ø·ÅÂë
+	WORD		scorestate[MAX_CHAIR_COUNT];	//å„ç©å®¶çš„ä¸‹æ³¨çŠ¶æ€
+	BYTE		HandCardData[MAX_CARD_COUNT];	//å½“å‰ç©å®¶çš„æ‰‹ç‰Œ
+	DWORD		HandCardNum[MAX_CHAIR_COUNT];	//å„ç©å®¶çš„æ‰‹ç‰Œä¸ªæ•°
+	DWORD		CurJuShu;			             //å½“å‰æˆ¿é—´å±€æ•°
+	SCORE 		room_bet[MAX_CHAIR_COUNT];	//å½“å‰æˆ¿é—´çš„å€æ•°
+	WORD		bankID;		//åº„å®¶ID
+	SCORE		All_bet[MAX_CHAIR_COUNT];	//æ€»ç§¯åˆ†
+	SCORE 		GoldCoin[MAX_CHAIR_COUNT];	//å„ç©å®¶çš„é‡‘å¸
+	DWORD		replay_code;			//å›æ”¾ç 
 };
 
 struct player_op_info
 {
-   WORD					op_type;    //²Ù×÷ÀàĞÍ 0-¹ı 1-³öÅÆ
-   BYTE 				op_result[MAX_CARD_COUNT]; //³öÅÆ½á¹û, ÅÆÊı¾İ; Ö»ÔÚop_type=1Ê±²ÅÓĞĞ§
-   DWORD				op_cardscount;   //µ±Ç°ÅÆÊıÁ¿
-   BYTE					MingPaiCardData[MAX_CARD_COUNT];   //Ã÷ÅÆÍæ¼ÒµÄÊÖÅÆ
+   WORD					op_type;    //æ“ä½œç±»å‹ 0-è¿‡ 1-å‡ºç‰Œ
+   BYTE 				op_result[MAX_CARD_COUNT]; //å‡ºç‰Œç»“æœ, ç‰Œæ•°æ®; åªåœ¨op_type=1æ—¶æ‰æœ‰æ•ˆ
+   DWORD				op_cardscount;   //å½“å‰ç‰Œæ•°é‡
+   BYTE					MingPaiCardData[MAX_CARD_COUNT];   //æ˜ç‰Œç©å®¶çš„æ‰‹ç‰Œ
 };
 
-//³öÅÆ×´Ì¬
+//å‡ºç‰ŒçŠ¶æ€
 struct STR_CMD_SC_STATUS_OUTCARD
 {
-	struct	player_op_info		players_op[MAX_CHAIR_COUNT];     //Íæ¼ÒĞÅÏ¢
-	WORD						outcardid;						//µ±Ç°³öÅÆÍæ¼Ò
-	BYTE 						brokenoutcarddata[MAX_CARD_COUNT];					//×Ô¼ºµÄÊÖÅÆÊı¾İ
-	WORD						CurJuShu;             //µ±Ç°·¿¼ä¾ÖÊı
-	SCORE 						room_bet[MAX_CHAIR_COUNT];		//µ±Ç°·¿¼äµÄ±¶Êı
-	WORD						bankID;		//×¯¼ÒID
-	WORD 						MingPaiState[MAX_CHAIR_COUNT];		//¸÷Íæ¼ÒµÄÃ÷ÅÆ×´Ì¬
-	BYTE 						LeaveCard[MAX_LEAVE_CARD_NUM];		//µ×ÅÆ
-	SCORE						All_bet[MAX_CHAIR_COUNT];		//×Ü»ı·Ö
-	BYTE						TurnCardData[MAX_CARD_COUNT];	//µ±Ç°ÂÖ×î´ó³öÅÆ
-	SCORE 						GoldCoin[MAX_CHAIR_COUNT];	//¸÷Íæ¼ÒµÄ½ğ±Ò
-	WORD						Add_bet[MAX_CHAIR_COUNT];		//Íæ¼ÒÊÇ·ñ¼Ó±¶
-	SCORE						Leave_bet;		//µ×ÅÆ±¶Êı
-	DWORD					    replay_code;			//»Ø·ÅÂë
+	struct	player_op_info		players_op[MAX_CHAIR_COUNT];     //ç©å®¶ä¿¡æ¯
+	WORD						outcardid;						//å½“å‰å‡ºç‰Œç©å®¶
+	BYTE 						brokenoutcarddata[MAX_CARD_COUNT];					//è‡ªå·±çš„æ‰‹ç‰Œæ•°æ®
+	WORD						CurJuShu;             //å½“å‰æˆ¿é—´å±€æ•°
+	SCORE 						room_bet[MAX_CHAIR_COUNT];		//å½“å‰æˆ¿é—´çš„å€æ•°
+	WORD						bankID;		//åº„å®¶ID
+	WORD 						MingPaiState[MAX_CHAIR_COUNT];		//å„ç©å®¶çš„æ˜ç‰ŒçŠ¶æ€
+	BYTE 						LeaveCard[MAX_LEAVE_CARD_NUM];		//åº•ç‰Œ
+	SCORE						All_bet[MAX_CHAIR_COUNT];		//æ€»ç§¯åˆ†
+	BYTE						TurnCardData[MAX_CARD_COUNT];	//å½“å‰è½®æœ€å¤§å‡ºç‰Œ
+	SCORE 						GoldCoin[MAX_CHAIR_COUNT];	//å„ç©å®¶çš„é‡‘å¸
+	WORD						Add_bet[MAX_CHAIR_COUNT];		//ç©å®¶æ˜¯å¦åŠ å€
+	SCORE						Leave_bet;		//åº•ç‰Œå€æ•°
+	DWORD					    replay_code;			//å›æ”¾ç 
 };
 
 
-//Ğ¡¾Ö½áËã×´Ì¬
+//å°å±€ç»“ç®—çŠ¶æ€
 struct STR_CMD_SC_STATUS_XJ_END
 {
-	SCORE 		nSingleGameScore[MAX_CHAIR_COUNT];				//Íæ¼Òµ¥¾ÖµÃ·Ö	
+	SCORE 		nSingleGameScore[MAX_CHAIR_COUNT];				//ç©å®¶å•å±€å¾—åˆ†	
 };
 
-//×ÓÓÎÏ··¿¼ä¹æÔò
+//å­æ¸¸æˆæˆ¿é—´è§„åˆ™
 struct STR_CMD_SUB_ROOM_RULE
 {
-	WORD		Gamejushu;                  //ÓÎÏ·¾ÖÊı
-	WORD		Cellscore;                   //ÓÎÏ·µ×·Ö(1/2/5)
-	WORD		Balancemode;                //½áËã·½Ê½(0:»ı·Ö½áËã 1:½ğ±Ò½áËã)
-	WORD		GameChuPai;                 //ÓÎÏ·³öÅÆ(ÏŞÊ±-->15Ãë³öÅÆ/25Ãë³öÅÆ/²»ÏŞÖÆ³öÅÆ)
-	WORD		GameWanFa;                  //ÓÎÏ·Íæ·¨(¾­µäÍæ·¨/ñ®×ÓÍæ·¨/ÌìµØñ®×Ó)
-	WORD		GameDiZhu;                  //ÓÎÏ·µØÖ÷Ä£Ê½(0-ÇÀµØÖ÷ 1-½ĞÈı·Ö)
-	WORD		GameFengDing;               //ÓÎÏ··â¶¥Ä£Ê½(32/64/128/²»·â¶¥)
-	WORD		Preventcheat;               //·À×÷±×
-	WORD		DontCutCards;               //²»Ï´ÅÆ
-	WORD		AddMultiple;               //¼Ó±¶
-	WORD		ShowCards;                 //Ã÷ÅÆ
-	WORD		BaseCardAddMultiple;       //µ×ÅÆ·­±¶
-	WORD		GameMode;                  //ÓÎÏ·µÃ·ÖÄ£Ê½   0-¾­µäÄ£Ê½  1-·è¿ñÄ£Ê½ 
+	WORD		Gamejushu;                  //æ¸¸æˆå±€æ•°
+	WORD		Cellscore;                   //æ¸¸æˆåº•åˆ†(1/2/5)
+	WORD		Balancemode;                //ç»“ç®—æ–¹å¼(0:ç§¯åˆ†ç»“ç®— 1:é‡‘å¸ç»“ç®—)
+	WORD		GameChuPai;                 //æ¸¸æˆå‡ºç‰Œ(é™æ—¶-->15ç§’å‡ºç‰Œ/25ç§’å‡ºç‰Œ/ä¸é™åˆ¶å‡ºç‰Œ)
+	WORD		GameWanFa;                  //æ¸¸æˆç©æ³•(ç»å…¸ç©æ³•/ç™å­ç©æ³•/å¤©åœ°ç™å­)
+	WORD		GameDiZhu;                  //æ¸¸æˆåœ°ä¸»æ¨¡å¼(0-æŠ¢åœ°ä¸» 1-å«ä¸‰åˆ†)
+	WORD		GameFengDing;               //æ¸¸æˆå°é¡¶æ¨¡å¼(32/64/128/ä¸å°é¡¶)
+	WORD		Preventcheat;               //é˜²ä½œå¼Š
+	WORD		DontCutCards;               //ä¸æ´—ç‰Œ
+	WORD		AddMultiple;               //åŠ å€
+	WORD		ShowCards;                 //æ˜ç‰Œ
+	WORD		BaseCardAddMultiple;       //åº•ç‰Œç¿»å€
+	WORD		GameMode;                  //æ¸¸æˆå¾—åˆ†æ¨¡å¼   0-ç»å…¸æ¨¡å¼  1-ç–¯ç‹‚æ¨¡å¼ 
 };
 
-////Â¼Ïñ»Ø·Å½á¹¹Ìå
+////å½•åƒå›æ”¾ç»“æ„ä½“
 //message GAME_REPLAY
 //{
-//	//×ÓÓÎÏ··¿¼ä¹æÔò
+//	//å­æ¸¸æˆæˆ¿é—´è§„åˆ™
 //	message MSG_SUB_ROOM_RULE
 //	{
-//			int32 Gamejushu = 1;                  //ÓÎÏ·¾ÖÊı
-//		int32 Cellscore = 2;                   //ÓÎÏ·µ×·Ö(1/2/5)
-//		int32 Balancemode = 3;                //½áËã·½Ê½(0:»ı·Ö½áËã 1:½ğ±Ò½áËã)
-//		int32 GameChuPai = 4;                 //ÓÎÏ·³öÅÆ(ÏŞÊ±-->15Ãë³öÅÆ/25Ãë³öÅÆ/²»ÏŞÖÆ³öÅÆ)
-//		int32 GameWanFa = 5;                  //ÓÎÏ·Íæ·¨(¾­µäÍæ·¨/ñ®×ÓÍæ·¨/ÌìµØñ®×Ó)
-//		int32 GameDiZhu = 6;                  //ÓÎÏ·µØÖ÷Ä£Ê½(0-ÇÀµØÖ÷ 1-½ĞÈı·Ö)
-//		int32 GameFengDing = 7;               //ÓÎÏ··â¶¥Ä£Ê½(32/64/128/²»·â¶¥)
-//		int32 Preventcheat = 8;               //·À×÷±×
-//		int32 DontCutCards = 9;               //²»Ï´ÅÆ
-//		int32 AddMultiple = 10;               //¼Ó±¶
-//		int32 ShowCards = 11;                 //Ã÷ÅÆ
-//		int32 BaseCardAddMultiple = 12;       //µ×ÅÆ·­±¶
-//		int32 GameMode = 13;                  //ÓÎÏ·µÃ·ÖÄ£Ê½   0-¾­µäÄ£Ê½  1-·è¿ñÄ£Ê½
+//			int32 Gamejushu = 1;                  //æ¸¸æˆå±€æ•°
+//		int32 Cellscore = 2;                   //æ¸¸æˆåº•åˆ†(1/2/5)
+//		int32 Balancemode = 3;                //ç»“ç®—æ–¹å¼(0:ç§¯åˆ†ç»“ç®— 1:é‡‘å¸ç»“ç®—)
+//		int32 GameChuPai = 4;                 //æ¸¸æˆå‡ºç‰Œ(é™æ—¶-->15ç§’å‡ºç‰Œ/25ç§’å‡ºç‰Œ/ä¸é™åˆ¶å‡ºç‰Œ)
+//		int32 GameWanFa = 5;                  //æ¸¸æˆç©æ³•(ç»å…¸ç©æ³•/ç™å­ç©æ³•/å¤©åœ°ç™å­)
+//		int32 GameDiZhu = 6;                  //æ¸¸æˆåœ°ä¸»æ¨¡å¼(0-æŠ¢åœ°ä¸» 1-å«ä¸‰åˆ†)
+//		int32 GameFengDing = 7;               //æ¸¸æˆå°é¡¶æ¨¡å¼(32/64/128/ä¸å°é¡¶)
+//		int32 Preventcheat = 8;               //é˜²ä½œå¼Š
+//		int32 DontCutCards = 9;               //ä¸æ´—ç‰Œ
+//		int32 AddMultiple = 10;               //åŠ å€
+//		int32 ShowCards = 11;                 //æ˜ç‰Œ
+//		int32 BaseCardAddMultiple = 12;       //åº•ç‰Œç¿»å€
+//		int32 GameMode = 13;                  //æ¸¸æˆå¾—åˆ†æ¨¡å¼   0-ç»å…¸æ¨¡å¼  1-ç–¯ç‹‚æ¨¡å¼
 //	};
 //
-////Íæ¼ÒĞÅÏ¢
+////ç©å®¶ä¿¡æ¯
 //message MSG_TABLE_PLAYER_INFO_NOTIFY
 //{
 //		uint32 messageid = 1;
-//		uint64  player_id = 2;                  //Íæ¼ÒID
-//		string name = 3;                    //Íæ¼ÒÃû×Ö
-//		int64  registerDate = 4;                //×¢²áÊ±¼ä
-//		uint32 sex = 5;                    //ĞÔ±ğ
-//		int32 userstate = 6;                  //Íæ¼Ò×´Ì¬
-//		int32 tableposid = 7;                //×ùÎ»ºÅ
-//		int32 isonline = 8;                  //ÔÚÏß×´Ì¬£º1£ºÎªÔÚÏß0£º²»ÔÚÏß
-//		int64 playergold = 9;                //½ğ±Ò
-//		string faceurl = 10;                  //Í¼ÏñµØÖ·
+//		uint64  player_id = 2;                  //ç©å®¶ID
+//		string name = 3;                    //ç©å®¶åå­—
+//		int64  registerDate = 4;                //æ³¨å†Œæ—¶é—´
+//		uint32 sex = 5;                    //æ€§åˆ«
+//		int32 userstate = 6;                  //ç©å®¶çŠ¶æ€
+//		int32 tableposid = 7;                //åº§ä½å·
+//		int32 isonline = 8;                  //åœ¨çº¿çŠ¶æ€ï¼š1ï¼šä¸ºåœ¨çº¿0ï¼šä¸åœ¨çº¿
+//		int64 playergold = 9;                //é‡‘å¸
+//		string faceurl = 10;                  //å›¾åƒåœ°å€
 //};
 //
 //
-////²Ù×÷ĞÅÏ¢
+////æ“ä½œä¿¡æ¯
 //message OPERATE_INFO
 //{
-//	MSG_M2C_SEND_CARD 			send_card = 1;		//·¢ÅÆ
-//	MSG_M2C_ROB_RESULT 			rob_result = 2;		//ÇÀ×¯½á¹û
-//	MSG_M2C_APPOINT_BANKER 				appoint_banker = 3;	//Ö¸¶¨×¯¼Ò
-//	MSG_M2C_SEND_LEAVE_CARD		send_leave_card = 4;	//·¢ËÍµ×ÅÆ
-//	MSG_M2C_MING_PAI_RESULT		mingpai_result = 5;	//Ã÷ÅÆ½á¹û
-//	MSG_M2C_ADD_SCORE_RESULT		addscore_result = 6;	//¼Ó±¶½á¹û
-//	MSG_M2C_OUT_CARD_RESULT		outcard_result = 7;	//³öÅÆ½á¹û
-//	MSG_M2C_XJ_GAME_END			xj_end = 8;		//Ğ¡¾Ö½áÊø
-//	MSG_M2C_DJ_GAME_END				dj_end = 9;		//´ó¾Ö½áÊø
-//	MSG_M2C_JIAOFEN_RESULT			jiaosanfen_result = 10;	//½ĞÈı·Ö½á¹û	
+//	MSG_M2C_SEND_CARD 			send_card = 1;		//å‘ç‰Œ
+//	MSG_M2C_ROB_RESULT 			rob_result = 2;		//æŠ¢åº„ç»“æœ
+//	MSG_M2C_APPOINT_BANKER 				appoint_banker = 3;	//æŒ‡å®šåº„å®¶
+//	MSG_M2C_SEND_LEAVE_CARD		send_leave_card = 4;	//å‘é€åº•ç‰Œ
+//	MSG_M2C_MING_PAI_RESULT		mingpai_result = 5;	//æ˜ç‰Œç»“æœ
+//	MSG_M2C_ADD_SCORE_RESULT		addscore_result = 6;	//åŠ å€ç»“æœ
+//	MSG_M2C_OUT_CARD_RESULT		outcard_result = 7;	//å‡ºç‰Œç»“æœ
+//	MSG_M2C_XJ_GAME_END			xj_end = 8;		//å°å±€ç»“æŸ
+//	MSG_M2C_DJ_GAME_END				dj_end = 9;		//å¤§å±€ç»“æŸ
+//	MSG_M2C_JIAOFEN_RESULT			jiaosanfen_result = 10;	//å«ä¸‰åˆ†ç»“æœ	
 //};
 //
 //MSG_SUB_ROOM_RULE    room_info = 1;
@@ -618,76 +625,76 @@ struct STR_CMD_SUB_ROOM_RULE
 //repeated OPERATE_INFO operate_info = 3;
 //};
 //
-////µ¥¾ÖÕ½¼¨¼ÍÂ¼
+////å•å±€æˆ˜ç»©çºªå½•
 //message GAME_SINGLE_RECODE
 //{
-//	int32		cur_jushu = 1;		//µ±Ç°¾ÖÊı
-//	int32		winID = 2;		//Ó®¼Ò
-//	repeated int32	single_score = 3;		//µ¥¾ÖµÃ·Ö
+//	int32		cur_jushu = 1;		//å½“å‰å±€æ•°
+//	int32		winID = 2;		//èµ¢å®¶
+//	repeated int32	single_score = 3;		//å•å±€å¾—åˆ†
 //};
 
 //***********************************************************************************//
 #pragma endregion
 
-#pragma region ´ı´¦Àí -- »úÆ÷ÈË
+#pragma region å¾…å¤„ç† -- æœºå™¨äºº
 ///////////////////////////////////////////////////////////////////////////////////////////////////
-// »úÆ÷ÈËÊ¹ÓÃ, ÔİÊ±Î´ÓÃµ½ added by WangChengQing 2017.9.21 TODONOW ÒÔºóÓ¦¸ÃÔÚÆåÅÆÖĞÔö¼Ó»úÆ÷ÈË¹¦ÄÜ
+// æœºå™¨äººä½¿ç”¨, æš‚æ—¶æœªç”¨åˆ° added by WangChengQing 2017.9.21 TODONOW ä»¥ååº”è¯¥åœ¨æ£‹ç‰Œä¸­å¢åŠ æœºå™¨äººåŠŸèƒ½
 ///////////////////////////////////////////////////////////////////////////////////////////////////
-//·şÎñÆ÷ÃüÁî½á¹¹    --  »úÆ÷ÈË
-#define SUB_S_A_ADD_SCORE					(0x0008)									//¼Ó×¢½á¹û
-#define SUB_S_A_PLAYER_EXIT				(0x0010)									//ÓÃ»§Ç¿ÍË
-#define SUB_S_A_GAME_END					(0x0040)									//ÓÎÏ·½áÊø
-#define SUB_S_A_OPEN_CARD					(0x0080)									//ÓÃ»§Ì¯ÅÆ
-#define SUB_S_A_CALL_BANKER				(0x0100)									//ÓÃ»§½Ğ×¯
-#define SUB_S_A_CALL						(0x0400)									//ÓÃ»§½Ğ×¯
+//æœåŠ¡å™¨å‘½ä»¤ç»“æ„    --  æœºå™¨äºº
+#define SUB_S_A_ADD_SCORE					(0x0008)									//åŠ æ³¨ç»“æœ
+#define SUB_S_A_PLAYER_EXIT				(0x0010)									//ç”¨æˆ·å¼ºé€€
+#define SUB_S_A_GAME_END					(0x0040)									//æ¸¸æˆç»“æŸ
+#define SUB_S_A_OPEN_CARD					(0x0080)									//ç”¨æˆ·æ‘Šç‰Œ
+#define SUB_S_A_CALL_BANKER				(0x0100)									//ç”¨æˆ·å«åº„
+#define SUB_S_A_CALL						(0x0400)									//ç”¨æˆ·å«åº„
 
-//Íæ¼Òflash ID ºÍ ¶¯×÷ID
+//ç©å®¶flash ID å’Œ åŠ¨ä½œID
 struct CMD_S_PlayerAction
 {
 	WORD wChairID;
 	int iActionID;
 };
-//Íæ¼Ò ¶¯×÷ID
+//ç©å®¶ åŠ¨ä½œID
 struct CMD_C_PlayerAction
 {
 	int iActionID;
 };
 
 
-//ÓÎÏ·×´Ì¬
+//æ¸¸æˆçŠ¶æ€
 struct CMD_S_StatusCall
 {
-	WORD							    	wCallBanker;						//½Ğ×¯ÓÃ»§
-	BYTE							        cbPlayStatus[MAX_CHAIR_COUNT];          //ÓÃ»§×´Ì¬
-	BYTE									cbCallStatus[MAX_CHAIR_COUNT];			//½Ğ×¯×´Ì¬
-	bool									bCallBanker[MAX_CHAIR_COUNT];			//ÊÇ·ñ½Ğ×¯
-	SCORE									lCellScore;							//»ù´¡»ı·Ö
+	WORD							    	wCallBanker;						//å«åº„ç”¨æˆ·
+	BYTE							        cbPlayStatus[MAX_CHAIR_COUNT];          //ç”¨æˆ·çŠ¶æ€
+	BYTE									cbCallStatus[MAX_CHAIR_COUNT];			//å«åº„çŠ¶æ€
+	bool									bCallBanker[MAX_CHAIR_COUNT];			//æ˜¯å¦å«åº„
+	SCORE									lCellScore;							//åŸºç¡€ç§¯åˆ†
 	SCORE									lRevenue;
 	BYTE									cbTimeLeave;
-	SCORE									lPlayerScore[MAX_CHAIR_COUNT];			//Íæ¼Ò·ÖÊı
+	SCORE									lPlayerScore[MAX_CHAIR_COUNT];			//ç©å®¶åˆ†æ•°
 };
 
 struct CMD_S_PlayerCount
 {
 	BYTE									wPlayerCount;
-	SCORE									lUserScore[MAX_CHAIR_COUNT];			//Íæ¼Ò»ı·Ö
+	SCORE									lUserScore[MAX_CHAIR_COUNT];			//ç©å®¶ç§¯åˆ†
 };
 //
-////ÓÃ»§½Ğ×¯
+////ç”¨æˆ·å«åº„
 struct CMD_S_CallBanker
 {
-	WORD							     	wCallBanker;						//½Ğ×¯ÓÃ»§
-	bool							    	bFirstTimes;						//Ê×´Î½Ğ×¯
+	WORD							     	wCallBanker;						//å«åº„ç”¨æˆ·
+	bool							    	bFirstTimes;						//é¦–æ¬¡å«åº„
 };
 
 ////////////////////////////////////////////////////////////////////////////
-//¿Í»§¶ËÃüÁî½á¹¹             --  »úÆ÷ÈË
-#define SUB_C_A_CALL_BANKER				1									//ÓÃ»§½Ğ×¯
-#define SUB_C_A_ADD_SCORE					2									//ÓÃ»§¼Ó×¢
-#define SUB_C_A_OPEN_CARD					3									//ÓÃ»§Ì¯ÅÆ
-#define SUB_C_A_AMDIN_COMMAND				5									//¹ÜÀíÔ±ÃüÁî
-#define SUB_C_A_AMDIN_CHANGE_CARD			6									//¹ÜÀíÔ±ÃüÁî
-#define SUB_C_A_READY_MESSAGE				7								    //¿Í»§¶Ë·¢ËÍ×¼±¸ÏûÏ¢
+//å®¢æˆ·ç«¯å‘½ä»¤ç»“æ„             --  æœºå™¨äºº
+#define SUB_C_A_CALL_BANKER				1									//ç”¨æˆ·å«åº„
+#define SUB_C_A_ADD_SCORE					2									//ç”¨æˆ·åŠ æ³¨
+#define SUB_C_A_OPEN_CARD					3									//ç”¨æˆ·æ‘Šç‰Œ
+#define SUB_C_A_AMDIN_COMMAND				5									//ç®¡ç†å‘˜å‘½ä»¤
+#define SUB_C_A_AMDIN_CHANGE_CARD			6									//ç®¡ç†å‘˜å‘½ä»¤
+#define SUB_C_A_READY_MESSAGE				7								    //å®¢æˆ·ç«¯å‘é€å‡†å¤‡æ¶ˆæ¯
 
 /////////-----5
 struct CMD_C_Admin_ChangeCard
@@ -697,7 +704,16 @@ struct CMD_C_Admin_ChangeCard
 
 };
 
-# endif
+struct tagSubGameRule
+{
 
-//lD6-Åe?—¨<p??~?,?B€Ï[k›ùîkñH£›ocO˜èÃ¨‡ÕKH^áèÖb?ûÉÿ¶‹*Ø‰ªÑJ»sÍa¼ß?
-//Y?.Ö’§ÜXKØsr ]œÎGVM?ƒE8Äèü€6šgÊ Q7Íì?İÁpe¥¡
+};
+
+//æˆ¿é—´è§„åˆ™
+struct tagTableCfg
+{
+	tagTableRule			*com_rule;		//é€šç”¨æˆ¿é—´è§„åˆ™
+	tagSubGameRule	*sub_rule;			//å­æ¸¸æˆç‰¹æœ‰è§„åˆ™
+};
+
+# endif

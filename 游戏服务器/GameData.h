@@ -165,6 +165,28 @@ public:
 	//计算底牌是否翻倍 并返回倍数
 	virtual DWORD __stdcall IsDoubleLeaveCard();
 
+	//================================================癞子场判断=================================================
+
+	//获得于包含癞子的卡牌的逻辑数值
+	virtual BYTE GetCardLogicValueLaiZi(BYTE cbCardData);
+
+	//将玩家手牌中的癞子进行牌值替换
+	virtual bool ReplaceLaiZiCard(WORD wChairID, BYTE cbCardNum);
+
+	//斗地主不考虑癞子的排序
+	virtual void SortCardListNoLaiZi(BYTE cbCardData[], BYTE cbCardCount, BYTE cbSortType);
+
+	//判断癞子场的玩家是否能出牌
+	virtual bool JudgeLaiZiPlayerOutCard(WORD wChairID);
+
+	//癞子：玩家第一个出牌  判断他可以出的合适的牌
+	virtual bool LaiZiAnalysePlayerOutCardFirst(WORD OutCardUsr, BYTE OutCardData[], BYTE *OutCardNum);
+
+	//癞子：玩家接牌
+	virtual bool LaiZiAnalysePlayerOutCard(WORD OutCardUsr, BYTE OutCardData[], BYTE *OutCardNum);
+
+	//癞子：分析比较手牌
+	virtual bool LaiZiCompareCard(BYTE Card[], BYTE CardCount, BYTE OutCardData[]/*out*/, BYTE *OutCardNum);
 
 	//辅助函数
 	//扑克转换
@@ -244,7 +266,7 @@ public:
 	virtual BYTE __stdcall GetCurBankerCount();
 
 	// 设置玩家抢庄做庄
-	virtual int __stdcall SetBankerState(WORD wChairID, BYTE type, BYTE state);
+	virtual int __stdcall SetBankerState(WORD wChairID, BYTE cbResult);
 
 	// 获取玩家抢庄状态
 	virtual BYTE __stdcall GetBankerState(WORD wChairID);
@@ -336,7 +358,7 @@ public:
 	virtual DWORD __stdcall GetGameStatus();
 
 	// 设置房间规则 added by lizhihu 2017.10.17 使用 void* + size 取代固定结构体
-	virtual bool __stdcall SetRoomRule(tagGameRoomItem * pRoomRuleOption);
+	virtual bool __stdcall SetRoomRule(tagTableCfg * pRoomRuleOption);
 
 	//设置游戏抢庄模式：0-抢庄		1-轮庄		2-固定庄
 	virtual int __stdcall SetRobBankMode(BYTE nMode);
@@ -596,7 +618,13 @@ public:
 	//获取玩家连续超时出牌次数
 	virtual int __stdcall GetPlayerTimeOutNum(WORD wChairID);
 
+	//================================================癞子场判断=================================================
 
+	//设置癞子当成的普通牌
+	virtual int SetLaiZiToCommon(BYTE LaiZiData[], BYTE Count);
+
+	//获取癞子当成的普通牌
+	virtual int GetLaiZiToCommon(BYTE LaiZiData[], BYTE &Count);
 
 protected:
 	// 根据游戏配置加载卡牌数据
@@ -639,7 +667,7 @@ public:
 
 	DWORD				m_dPlayerState[MAX_CHAIR_COUNT];		//大局游戏玩家状态，在初始化游戏之前会用到
 
-protected:
+public:
 	static const BYTE	m_cbCardData[FULL_COUNT];			//原始扑克数据
 	
 };

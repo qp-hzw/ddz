@@ -45,7 +45,7 @@ protected:
 	tagGameServiceOption            * m_pGameServiceOption;					//游戏配置
 	tagGameServiceAttrib            * m_pGameServiceAttrib;					//游戏属性
 
-	tagGameRoomItem						* m_pRoomRuleOption;					//房间规则
+	tagTableCfg						* m_pRoomRuleOption;					//房间规则
 
 	DWORD							m_dPlayerState[MAX_CHAIR_COUNT];		//框架传来的玩家游戏状态
 
@@ -71,9 +71,11 @@ public:
 	//管理接口
 public:
 	//初始化
-	virtual bool Initialization(IUnknownEx * pIUnknownEx);
+	virtual bool Initialization(ITableFrame *pTableFrame);
 	//复位桌子
 	virtual VOID RepositionSink();
+	//获取KindID给框架
+	virtual DWORD GetKindIDToFrame();
 
 	//游戏事件
 public:
@@ -89,7 +91,7 @@ public:
 	// 定时器事件
 	virtual bool OnTimerMessage(DWORD wTimerID, WPARAM wBindParam);
 	//游戏消息处理
-	virtual bool OnGameMessage(WORD wSubCmdID, VOID * pData, WORD wDataSize, IServerUserItem * pIServerUserItem);
+	virtual bool OnGameMessage(WORD wSubCmdID, VOID * pData, WORD wDataSize, WORD wChairID);
 	//框架消息处理
 	virtual bool OnFrameMessage(WORD wSubCmdID, VOID * pData, WORD wDataSize, IServerUserItem * pIServerUserItem) { return false; }
 	//数据事件
@@ -141,7 +143,7 @@ protected:
 	void On_Sub_UserOutCard(WORD wOutCardUser, BYTE *cbOutCard, BYTE cbOutCardNum, const bool &bPass);
 
 	//抢庄事件
-	void OnUserCallBanker(WORD wChairID, BYTE cbType, BYTE cbRobState);
+	void OnUserCallBanker(WORD wChairID, BYTE cbResult);
 	//下注事件
 	void OnUserAddScore(WORD wChairID, SCORE lScore);
 	//明牌事件

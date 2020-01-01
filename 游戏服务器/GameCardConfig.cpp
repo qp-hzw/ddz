@@ -1,6 +1,5 @@
 #include "StdAfx.h"
 #include "GameCardConfig.h"
-#include "ServerLog.h"
 
 #import "msxml6.dll"
 using namespace MSXML2;
@@ -8,20 +7,11 @@ using namespace MSXML2;
 
 //用于不洗牌模式的卡牌数组
 const BYTE CGameCardConfig::m_CardData[FULL_COUNT] = {
-	31,32,33,34,
-	41,42,43,44,
-	51,52,53,54,
-	61,62,63,64,
-	71,72,73,74,
-	81,82,83,84,
-	91,92,93,94,
-	101,102,103,104,
-	111,112,113,114,
-	121,122,123,124,
-	131,132,133,134,
-	141,142,143,144,
-	151,152,153,154,
-	165,166
+	0x01,0x02,0x03,0x04,0x05,0x06,0x07,0x08,0x09,0x0A,0x0B,0x0C,0x0D,	//方块 A - K
+	0x11,0x12,0x13,0x14,0x15,0x16,0x17,0x18,0x19,0x1A,0x1B,0x1C,0x1D,	//梅花 A - K
+	0x21,0x22,0x23,0x24,0x25,0x26,0x27,0x28,0x29,0x2A,0x2B,0x2C,0x2D,	//红桃 A - K
+	0x31,0x32,0x33,0x34,0x35,0x36,0x37,0x38,0x39,0x3A,0x3B,0x3C,0x3D,	//黑桃 A - K
+	0x4E,0x4F,
 };
 
 
@@ -57,76 +47,24 @@ BYTE    CGameCardConfig::MapOfCardValue(BYTE CardData)
  * return					0				正常
  *							-1				异常
  */
-int CGameCardConfig::LoadCardsSum( const wchar_t *configfile, DWORD &cards_sum, CServerLog *m_plog )
+int CGameCardConfig::LoadCardsSum(CConfigFile&ff, DWORD &cards_sum)
 {
 	int result = 0;
 
 	//升级默认两副牌
 	cards_sum = 108;
 
-	if( NULL == configfile )
-	{
-		return -1;
-	}
+	// 初始化输出参数
+	cards_sum = MAX_TOTAL_CARD_NUM;			//默认值
 
-	// 读取配置文件，在VS2012上可运行成功，VS2017 XML解析库已经升级
-	MSXML2::IXMLDOMDocumentPtr pXMLDom;
-	HRESULT hr= pXMLDom.CreateInstance(__uuidof(MSXML2::DOMDocument60), NULL, CLSCTX_INPROC_SERVER);
-	if (FAILED(hr)) 
+	ff.GetItemValue("GAME", "CardSum", cards_sum);
+	if (cards_sum == 0)
 	{
-		if (NULL != m_plog)
-			m_plog->LogSingleLine(L"加载XML解析器失败%d", 2);
-		return -1;
-	}
-
-	try
-	{
-		pXMLDom->async = VARIANT_FALSE;
-		pXMLDom->validateOnParse = VARIANT_FALSE;
-		pXMLDom->resolveExternals = VARIANT_FALSE; // 初始化标识
-
-		// 初始化输出参数
-		cards_sum = MAX_TOTAL_CARD_NUM;			//默认值
-
-		if(pXMLDom->load(configfile) == VARIANT_TRUE)
-		{
-			MSXML2::IXMLDOMNodeListPtr pnl = pXMLDom->selectNodes(L"//Game"); // 加载所有节点
-			if(NULL != pnl)
-			{
-				for( int i = 0; i < pnl->length; ++i )
-				{
-					//获得一副牌的总数
-					if( 0 == wcscmp( L"武汉四五趣游网络", pnl->item[i]->Getattributes()->getNamedItem(L"name")->text))
-					{
-						if( NULL != pnl->item[i]->selectSingleNode(L"CARDSUM"))
-						{
-							cards_sum = atoi( pnl->item[i]->selectSingleNode(L"CARDSUM")->text);
-						}
-					}
-				}
-			}
-			else
-			{
-				if (NULL != m_plog)
-					m_plog->LogSingleLine(L"Game节点不存在%d", 2);
-				result = -1;
-			}
-		}
-		else
-		{
-			if (NULL != m_plog)
-				m_plog->LogSingleLine(L"配置文件加载失败%d", 2);
-			result = -1;
-		}
-	}
-	catch(_com_error errorObject)
-	{
-		if (NULL != m_plog)
-			m_plog->LogSingleLine(L"异常代码：0x%08x", errorObject.Error() );
+		CLog::Log(log_error, "获取失败");
 		result = -1;
 	}
 
-	if( result == -1) // 解析失败
+	if (result == -1) // 解析失败
 	{
 		cards_sum = 0;
 	}
@@ -145,133 +83,37 @@ int CGameCardConfig::LoadCardsSum( const wchar_t *configfile, DWORD &cards_sum, 
 * return					0				正常
 *							-1				异常
 */
-int CGameCardConfig::LoadGameScoreTimes(const wchar_t *configfile, BYTE game_score_Mode, BYTE *game_score_times, CServerLog *m_plog)
+int CGameCardConfig::LoadGameScoreTimes(CConfigFile &ff, BYTE game_score_Mode, BYTE *game_score_times)
 {
 	int result = 0;
-	memset( game_score_times, 1, sizeof(BYTE)*MAX_GAME_SCORE_TYPES);
+	memset(game_score_times, 1, sizeof(BYTE)*MAX_GAME_SCORE_TYPES);
 
-	if (NULL == configfile || NULL == game_score_times || NULL == m_plog)
+	if (NULL == game_score_times)
 	{
 		return -1;
 	}
 
-	// 读取配置文件
-	MSXML2::IXMLDOMDocumentPtr pXMLDom;
-	HRESULT hr = pXMLDom.CreateInstance(__uuidof(MSXML2::DOMDocument60), NULL, CLSCTX_INPROC_SERVER);
-	if (FAILED(hr))
+
+	// 选出经典模式
+	BYTE type_sum = 0;
+	ff.GetItemValue("CAME_SCORE_MODE_CLASSIC", "sum", type_sum);
+
+	type_sum = (type_sum > MAX_GAME_SCORE_TYPES) ? MAX_GAME_SCORE_TYPES : type_sum;
+	if (type_sum == 0)
 	{
-		//m_plog->LogSingleLine(L"加载XML解析器失败%d", 2);
-		return -1;
+		CLog::Log(log_error, "读取 得分模式失败");
+		return -2;
 	}
 
-	try
+	for (int j = 0; j < type_sum; j++)
 	{
-		// 初始化标识
-		pXMLDom->async = VARIANT_FALSE;
-		pXMLDom->validateOnParse = VARIANT_FALSE;
-		pXMLDom->resolveExternals = VARIANT_FALSE; 
-		
-		// 加载所有节点
-		if (pXMLDom->load(configfile) == VARIANT_TRUE)
-		{
-			MSXML2::IXMLDOMNodeListPtr pnl = pXMLDom->selectNodes(L"//Game");
-			if (NULL != pnl)
-			{					
-				for (int i = 0; i < pnl->length; ++i)
-				{
-					//获得得分加倍模式
-					if ( 0 == wcscmp(L"武汉四五趣游网络", pnl->item[i]->Getattributes()->getNamedItem(L"name")->text) )
-					{
-						MSXML2::IXMLDOMNodeListPtr pNodes;
-
-						// 选出经典模式
-						pNodes = pnl->item[i]->selectNodes( L"CAME_SCORE_MODE_CLASSIC" );
-						if (NULL != pNodes)
-						{
-							// 遍历所有的 CAME_SCORE_MODE_CLASSIC
-							for (int j = 0; j < pNodes->length; j++)
-							{
-                                //added by WangChengQing 2017/12/8 使用通用性的数字代替文字
-								for (int k = 0; k < MAX_GAME_SCORE_TYPES; k++)
-								{
-                                    _bstr_t value = 1; //默认为1
-								    // 解析得分加倍
-                                    wchar_t wchName[32];
-                                    swprintf(wchName, 31, L"FF%d", k);
-                                    if ( NULL != pNodes->item[j]->selectSingleNode(wchName))
-								    {
-										value = pNodes->item[j]->selectSingleNode(wchName)->text;
-                                    }                                                                       
-								    game_score_times[k] = atoi(value);
-									
-								}
-							}
-						}
-						else
-						{
-                            //add 考虑之后xml配置文件的通用性， 此处不应该报错，而是给一个默认值1
-							for (int i = 0; i < MAX_GAME_SCORE_TYPES; i++)
-							{
-								game_score_times[i] = 1;
-							}
-						}
-
-						// 选出疯狂加倍模式
-						pNodes = pnl->item[i]->selectNodes( L"CAME_SCORE_MODE_CRAZY" );
-						if (NULL != pNodes)
-						{
-							// 遍历所有的 CAME_SCORE_MODE_CRAZY
-							for (int j = 0; j < pNodes->length; j++)
-							{
-                                //added by WangChengQing 2017/12/8 使用通用性的数字代替文字
-								for (int k = 0; k < MAX_GAME_SCORE_TYPES; k++)
-								{
-                                    _bstr_t value = 1; //默认为1
-								    // 解析得分加倍
-                                    wchar_t wchName[32];
-                                    swprintf(wchName, 31, L"FF%d", k);
-                                    if ( NULL != pNodes->item[j]->selectSingleNode(wchName))
-								    {
-										value = pNodes->item[j]->selectSingleNode(wchName)->text;
-                                    }                                                                       
-								    game_score_times[k+MAX_GAME_SCORE_TYPES] = atoi(value);
-									
-								}
-							}
-						}
-						else
-						{
-                            //add 考虑之后xml配置文件的通用性， 此处不应该报错，而是给一个默认值1
-							for (int i = 0; i < MAX_GAME_SCORE_TYPES; i++)
-							{
-								game_score_times[i] = 1;
-							}
-						}
-					}
-					else
-					{
-						//m_plog->LogSingleLine(L"name节点不存在%s", 2);
-						result = -1;
-					}
-				}
-			}
-			else
-			{
-				//m_plog->LogSingleLine(L"Game节点不存在%d", 2);
-				result = -1;
-			}
-		}
-		else
-		{
-			//m_plog->LogSingleLine(L"配置文件加载失败%d", 2);
-			result = -1;
-		}
+		char sz[20];
+		sprintf(sz, "FF_%d", j);
+		ff.GetItemValue("CAME_SCORE_MODE_CLASSIC", sz, game_score_times[j]);
 	}
-	catch (_com_error errorObject)
-	{
-		//m_plog->LogSingleLine(L"异常代码：0x%08x", errorObject.Error());
-		result = -1;
-	}
+
+	// 选出疯狂加倍模式
+	// 暂时不需要增加
 
 	return result;
 }
@@ -288,128 +130,37 @@ int CGameCardConfig::LoadGameScoreTimes(const wchar_t *configfile, BYTE game_sco
  * return							 0				正常
  *							        -1				异常
  */
-int CGameCardConfig::LoadCardGroups(const wchar_t *configfile, CARD_GOURP *groups, DWORD &group_sum, CServerLog *m_plog)
+int CGameCardConfig::LoadCardGroups(CConfigFile &ff, CARD_GOURP *groups, DWORD &group_sum)
 {
 	int result = 0;
 
-	if( NULL == configfile || NULL == groups)
+	if (NULL == groups)
 	{
 		return -1;
 	}
 
-	// 读取配置文件
-	MSXML2::IXMLDOMDocumentPtr pXMLDom;
-	HRESULT hr= pXMLDom.CreateInstance(__uuidof(MSXML2::DOMDocument60), NULL, CLSCTX_INPROC_SERVER);
-	if (FAILED(hr)) 
+	BYTE card_group_num = 0;
+	ff.GetItemValue("GAME", "CardGroupNum", card_group_num);
+
+	cout << "card_group_num: " << (int)card_group_num << endl;
+
+	//取最小的卡牌牌组数
+	group_sum = (card_group_num > MAX_CARD_GROUP_NUM) ? MAX_CARD_GROUP_NUM : card_group_num;
+
+	if (group_sum <= 0)
 	{
-		if ( NULL != m_plog )
-			m_plog->LogSingleLine(L"加载XML解析器失败%d", 3);
-		
+		CLog::Log(log_error, "读取配置文件, card group num失败");
 		return -1;
 	}
 
-	// 初始化 输出参数
-	pXMLDom->async = VARIANT_FALSE;
-	pXMLDom->validateOnParse = VARIANT_FALSE;
-	pXMLDom->resolveExternals = VARIANT_FALSE; // 初始化标识
-
-	if(pXMLDom->load(configfile) == VARIANT_TRUE)
+	for (int j = 0; j < group_sum; j++)	 // 遍历所有的 CARD_GOURP
 	{
-		MSXML2::IXMLDOMNodeListPtr pnl = pXMLDom->selectNodes(L"//Game"); // 加载所有Game节点
-		if(NULL != pnl)
-		{
-			for( int i = 0; i < pnl->length; ++i )
-			{
-				if( 0 == wcscmp( pnl->item[i]->Getattributes()->getNamedItem(L"name")->text, L"武汉四五趣游网络") )
-				{
-					MSXML2::IXMLDOMNodeListPtr pNodes;
-
-					// 解析牌组顺序
-					pNodes = pnl->item[i]->selectNodes(L"CARD_GOURP");			// 选出所有的 CARD_GOURP
-					if( NULL != pNodes)
-					{
-						//取最小的卡牌牌组数
-						group_sum = (pNodes->length > MAX_CARD_GROUP_NUM) ? MAX_CARD_GROUP_NUM : pNodes->length;
-
-						for( int j = 0; j < group_sum; j++)		// 遍历所有的 CARD_GOURP
-						{
-							if( NULL != pNodes->item[j]->selectSingleNode(L"color") )	// 解析color
-							{
-								groups[j].color = atoi( pNodes->item[j]->selectSingleNode(L"color")->text );
-								if ( NULL != pNodes->item[j]->selectSingleNode(L"begin") )	// 解析begin
-								{
-									groups[j].begin = atoi( pNodes->item[j]->selectSingleNode(L"begin")->text ); 
-									if ( 0 != groups[j].begin )
-									{
-										if ( NULL != pNodes->item[j]->selectSingleNode(L"end") )	// 解析end
-										{
-											groups[j].end = atoi( pNodes->item[j]->selectSingleNode(L"end")->text ); 
-											if ( 0 != groups[j].end )
-											{
-												// 解析花色
-												if( NULL != pNodes->item[j]->selectSingleNode(L"sum") )		//解析sum
-												{
-													groups[j].sum = atoi( pNodes->item[j]->selectSingleNode(L"sum")->text );
-												}
-												else
-												{
-													if ( NULL != m_plog )
-														m_plog->LogSingleLine(L"牌组: %d sum节点值异常", j);
-													result = -1;
-												}
-											}
-										}
-										else
-										{
-											if ( NULL != m_plog )
-												m_plog->LogSingleLine(L"牌组: %d end节点异常", j);
-											result = -1;
-										}
-									}
-								}
-								else
-								{
-									if ( NULL != m_plog )
-										m_plog->LogSingleLine(L"牌组: %d begin节点异常", j);
-									result = -1;
-								}
-							}
-							else
-							{
-								// 组 ID 节点不存在
-								if ( NULL != m_plog )
-									m_plog->LogSingleLine(L"牌组: %d color节点不存在", j);
-								result = -1;
-							}
-
-							//异常退出
-							if ( -1 == result )
-							{
-								break;
-							}
-						}
-					}
-					else
-					{
-						if ( NULL != m_plog )
-							m_plog->LogSingleLine(L"没找到CARD_GOURP标签%d", 1);
-						result = -1;
-					}
-				}
-			}
-		}
-		else
-		{
-			if ( NULL != m_plog )
-				m_plog->LogSingleLine(L"节点获取失败%d", 1);
-			result = -1;
-		}
-	}
-	else
-	{
-		if ( NULL != m_plog )
-			m_plog->LogSingleLine(L"配置文件加载失败%d", 1);
-		result = -1;
+		char psz[20];
+		sprintf(psz, "CARD_GROUP_%d", j);
+		ff.GetItemValue(psz, "color", groups[j].color);
+		ff.GetItemValue(psz, "begin", groups[j].begin);
+		ff.GetItemValue(psz, "end", groups[j].end);
+		ff.GetItemValue(psz, "sum", groups[j].sum);
 	}
 
 	return result;
@@ -426,18 +177,18 @@ int CGameCardConfig::LoadCardGroups(const wchar_t *configfile, CARD_GOURP *group
  * @param		curlen					[in-out]		已经填充的长度， 注意，此参数会将现有值与填充进去的值相加
  *														所以此参数的输出值与输入值有关
  */
-int CGameCardConfig::TransGroup(	const CARD_GOURP *group, 
-									CARD_DESCS cards, 
-									const DWORD maxlen, 
-									DWORD &curIndex,
-									CServerLog *m_plog)
+int CGameCardConfig::TransGroup(const CARD_GOURP *group,
+	CARD_DESCS cards,
+	const DWORD maxlen,
+	DWORD &curIndex)
+
 {
 	// 输入参数校验
-	if ( NULL == group ||
-		 NULL == cards  ||
+	if (NULL == group ||
+		NULL == cards ||
 		maxlen < 1 ||
-		curIndex < 0 ||
-		 NULL == m_plog )
+		curIndex < 0)
+
 	{
 		return -1;
 	}
@@ -453,7 +204,7 @@ int CGameCardConfig::TransGroup(	const CARD_GOURP *group,
 	}
 
 	// 遍历纸牌列表，找出所有符合条件的牌
-	for( unsigned i = group->begin; i <= group->end; ++i)	//卡牌点数
+	for (unsigned i = group->begin; i <= group->end; ++i)	//卡牌点数
 	{
 		for (unsigned k = 0; k < group->sum; ++k)		//同一张有几张
 		{
@@ -461,7 +212,7 @@ int CGameCardConfig::TransGroup(	const CARD_GOURP *group,
 			if (curIndex < maxlen) // 检查card 缓冲区是否还有空位
 			{
 				cards[curIndex] = i; //低四位为牌值
-				cards[curIndex] += group->color * (0xF+1);// 填充花色 5-8位表示花色
+				cards[curIndex] += group->color * (0xF + 1);// 填充花色 5-8位表示花色
 				cards[curIndex] += group->id * (0xF + 1) * (0xF + 1); //9-12位表示id
 				++(curIndex);
 			}
@@ -469,8 +220,8 @@ int CGameCardConfig::TransGroup(	const CARD_GOURP *group,
 			{
 				// 溢出
 				result = -1;
-			}	
-		}	
+			}
+		}
 	}
 
 	return result;
@@ -487,10 +238,10 @@ int CGameCardConfig::TransGroup(	const CARD_GOURP *group,
  * @param		cardslen				[in-out]		扑克数组长度,输入估测长度，返回实际长度
  */
 int CGameCardConfig::TransGroups(const CARD_GOURP group[MAX_CARD_GROUP_NUM], const int &nGroupLen,
-									CARD_DESC *pGameCards, DWORD &dwCardSum, CServerLog *m_plog)
+	CARD_DESC *pGameCards, DWORD &dwCardSum)
 {
 	//校验
-	if (NULL == pGameCards || 0 > nGroupLen )
+	if (NULL == pGameCards || 0 > nGroupLen)
 	{
 		return -1;
 	}
@@ -500,16 +251,17 @@ int CGameCardConfig::TransGroups(const CARD_GOURP group[MAX_CARD_GROUP_NUM], con
 
 	// 遍历转换
 	int result = 0;
-	for( int i = 0; i < nGroupLen; ++i )
+	for (int i = 0; i < nGroupLen; ++i)
 	{
-		if( 0 != group[i].sum ) //检查当前组是否为空
+		if (0 != group[i].sum) //检查当前组是否为空
 		{
-			result = TransGroup( &group[i], pGameCards, dwCardSum, curIndex, m_plog ); // 解析单组
-			if( 0 != result)
+			result = TransGroup(&group[i], pGameCards, dwCardSum, curIndex); // 解析单组
+			if (0 != result)
 			{
 				// 发生异常
-				if (NULL != m_plog)
-					m_plog->LogSingleLine(L"填充牌组异常", NULL);
+				//if (NULL != m_plog)
+				//TODOLATER
+				//m_plog->LogSingleLine(L"填充牌组异常", NULL);
 				result = -1;
 				break;
 			}
@@ -517,7 +269,7 @@ int CGameCardConfig::TransGroups(const CARD_GOURP group[MAX_CARD_GROUP_NUM], con
 	}
 
 	// 牌数校验，如果牌数小于最大牌数，则按实际卡牌数算
-	if ((curIndex+1) < dwCardSum)
+	if ((curIndex + 1) < dwCardSum)
 	{
 		dwCardSum = curIndex;
 	}
@@ -608,6 +360,73 @@ int CGameCardConfig::CreateBuXiPaiArray(BYTE randarray[], const int src_len)
 
 	return 0;
 }
+
+bool CGameCardConfig::flushcard(BYTE card[], int &cardsum, BYTE boomcard[], int &boomsum)
+{
+	bool cardflag[13] = { 0 };
+	srand((unsigned)time(NULL));
+
+	BYTE tmpcard[54] = { 0 };
+	cardsum = 54;
+	memcpy(tmpcard, m_CardData, sizeof(BYTE) * 54);
+
+	BYTE tmpboom[54] = { 0 };
+	int boomcount = 0;
+
+	//随机2~7个炸弹
+	int boomNum = (rand() % 6) + 2;
+
+	//随机取炸弹
+	int index = 0;
+	for (int i = 0; i < boomNum; i++)
+	{
+		int flag = rand() % 13;
+		if (true == cardflag[flag])
+			continue;
+
+		cardflag[flag] = true;
+		boomcount++;
+		cardsum -= 4;
+
+		for (int j = 0; j < 54; j++)
+		{
+			if (flag + 1 == (tmpcard[j] & 0x0f))
+			{
+				tmpboom[index++] = tmpcard[j];
+				tmpcard[j] = 0;
+			}
+		}
+	}
+
+	//洗牌
+	int iSend = 0;
+	BYTE flushcard[54] = { 0 };
+	do
+	{
+		int station = rand() % (54 - iSend);
+		flushcard[iSend] = tmpcard[station];
+		iSend++;
+		tmpcard[station] = tmpcard[54 - iSend];
+	} while (iSend < 54);
+
+	//去除无效卡牌
+	index = 0;
+	for (int i = 0; i < 54; i++)
+	{
+		if (flushcard[i] != 0)
+		{
+			card[index++] = flushcard[i];
+		}
+	}
+
+	if (index != cardsum)  return false;
+
+	memcpy(boomcard, tmpboom, sizeof(BYTE)*boomcount * 4);
+	boomsum = boomcount;
+
+	return true;
+}
+
 ////////////////////////////////////////////
 
 /** 
@@ -622,7 +441,9 @@ int CGameCardConfig::OutOrder(		CARD_DESCS dest_cards,
 									const DWORD dest_len, 
 									const CARD_DESCS source_cards, 
 									const DWORD src_len, 
-									const BYTE nMode)
+									const BYTE nMode,
+									CARD_DESCS boom_cards,
+									BYTE &boomsum)
 {
 	// 校验输入参数
 	if( NULL == dest_cards	||
@@ -658,17 +479,15 @@ int CGameCardConfig::OutOrder(		CARD_DESCS dest_cards,
 	{
 		// 生成一个不洗牌模式的乱序数组
 		BYTE *tmpCards = new BYTE[src_len]();
-		CopyMemory(tmpCards, m_CardData, sizeof(BYTE)*src_len);
+		int tmpNum = 0;
+		BYTE *BoomCards = new BYTE[src_len]();
+		int BoomNum = 0;
 
-		srand((unsigned)time(NULL));
-
-		if (0 == CreateBuXiPaiArray(tmpCards, src_len))
+		if (flushcard(tmpCards, tmpNum, BoomCards, BoomNum))
 		{
-			for (int i = 0; i < src_len; i++)
-			{
-				//牌值映射
-				dest_cards[i] = MapOfCardValue(tmpCards[i]);
-			}
+			memcpy(dest_cards, tmpCards, sizeof(BYTE)*tmpNum);
+			memcpy(boom_cards, BoomCards, sizeof(BYTE)*BoomNum * 4);
+			boomsum = BoomNum;
 		}
 		else
 		{

@@ -63,12 +63,12 @@ int __stdcall CGameData::LoadConfigParameter(const wchar_t *_logFile, const BYTE
 		}
 		else
 		{
-			//	m_plog->LogSingleLine(L"配置玩家异常", NULL );
+			CLog::Log(log_error, "配置玩家异常\n");
 		}
 	}
 	else
 	{
-		//m_plog->LogSingleLine(L"配置卡牌异常", NULL );
+		CLog::Log(log_error, "配置卡牌异常\n");
 	}
 
 	return result;
@@ -166,18 +166,9 @@ WORD __stdcall CGameData::GetAppointBanker()
 * @param		type			[in]		抢庄类型		//	0-抢地主	1-叫地主
 * @param		state			[in]		抢庄状态		//  0-过		1-叫/抢地主
 */
-int __stdcall CGameData::SetBankerState(WORD wChairID, BYTE type, BYTE state)
+int __stdcall CGameData::SetBankerState(WORD wChairID, BYTE cbResult)
 {
-	if (state == 0)
-	{
-		m_players_config.players[wChairID].bank_state = state;   // bank_state    玩家抢庄		0-过	1-叫地主	2-抢地主
-	}
-	else
-	{
-		m_players_config.players[wChairID].bank_state = type + 1;
-	}
-
-
+	m_players_config.players[wChairID].bank_state = cbResult;   // //0-不叫  1-叫地主  2-不抢  3-抢地主
 
 	return 0;
 }
@@ -204,30 +195,29 @@ int __stdcall CGameData::AnsysCardsType()
 *************************************************/
 int __stdcall CGameData::Deal()
 {
-
 	// 用于洗牌发牌的零时存储区
 	CARD_DESC *cards = new CARD_DESC[m_card_config.game_cards_sum]();
+
+	CARD_DESC *boomCards = new CARD_DESC[m_card_config.game_cards_sum]();
+	BYTE	 boomSum = 0;
 
 	//获得的牌数组是一副牌的乱序数组
 	CGameCardConfig::OutOrder(cards, m_card_config.game_cards_sum,
 		m_card_config.game_cards, m_card_config.game_cards_sum,
-		m_room_config.game_score_mode); // 洗牌
+		m_room_config.game_score_mode, boomCards, boomSum); // 洗牌
 
-	//BYTE cardssum = m_card_config.game_cards_sum;
+	///*
+	BYTE cardssum = m_card_config.game_cards_sum;
+	//测试固定牌
+	BYTE tmpcards[54] = {
+		0x4E, 0x4F, 0x01, 0x11, 0x21, 0x31, 0x02, 0x12, 0x22, 0x32, 0x03, 0x13, 0x23, 0x33, 0x04, 0x14, 0x24, 0x34, 0x05, 0x15, 0x25, 0x35,
+		0x06, 0x16, 0x26, 0x36, 0x07, 0x17, 0x27, 0x37, 0x08, 0x18, 0x28, 0x38, 0x09, 0x19, 0x29, 0x39, 0x0A, 0x1A, 0x2A, 0x3A, 0x0B, 0x1B, 0x2B, 0x3B,
+		0x0C, 0x1C, 0x2C, 0x3C, 0x0D, 0x1D, 0x2D, 0x3D,
+	};
+	memcpy(cards, tmpcards, cardssum * sizeof(BYTE));
+	//*/
 
-	////测试固定牌
-	//BYTE tmpcards[54] = {
-	//	0x4E, 0x4F, 0x01, 0x11, 0x21, 0x31, 0x02, 0x12, 0x22, 0x32, 0x03, 0x13, 0x23, 0x33, 0x04, 0x14, 0x24, 0x34, 0x05, 0x15, 0x25, 0x35,
-	//	0x06, 0x16, 0x26, 0x36, 0x07, 0x17, 0x27, 0x37, 0x08, 0x18, 0x28, 0x38, 0x09, 0x19, 0x29, 0x39, 0x0A, 0x1A, 0x2A, 0x3A, 0x0B, 0x1B, 0x2B, 0x3B,
-	//	0x0C, 0x1C, 0x2C, 0x3C, 0x0D, 0x1D, 0x2D, 0x3D,
-
-	//};
-	//memcpy(cards, tmpcards, cardssum * sizeof(BYTE));
-
-//测试
-//SetCardData_Leo(0, cards);
-
-//获得扣底卡牌
+	//获得扣底卡牌
 	m_playing_para.leave_card[MAX_LEAVE_CARD_NUM];
 
 	//经典场分发手牌
@@ -239,10 +229,6 @@ int __stdcall CGameData::Deal()
 			m_card_config.leave_card_num * sizeof(BYTE));
 
 		SortCardList(m_playing_para.leave_card, m_card_config.leave_card_num, ST_ORDER);
-
-		//设置癞子,随机一张牌非双王的牌来作为癞子
-		BYTE LaiZi = GetCardLogicValue(rand() % (m_card_config.game_cards_sum - 2));
-		SetMagicCard(LaiZi);
 
 		//将一副牌分发给所有玩家
 		const CARD_DESC *card_index = cards;
@@ -259,8 +245,17 @@ int __stdcall CGameData::Deal()
 				cout << "游戏手牌已初始化" << endl;
 				//获得乱序手牌
 				memcpy(m_players_config.hand_cards[i], card_index, sizeof(CARD_DESC)*nCardNum);
+				cout << "1" << endl;
+
 				//手牌排序
 				SortCardList(m_players_config.hand_cards[i], nCardNum, ST_ORDER);
+				cout << "2" << endl;
+
+				for (int j = 0; j < nCardNum; j++)
+				{
+					cout << (int)m_players_config.hand_cards[i][j] << " ";
+				}
+				cout << endl;
 
 				card_index += nCardNum;
 			}
@@ -268,90 +263,69 @@ int __stdcall CGameData::Deal()
 	}
 	else	//不洗牌模式
 	{
-		//五张五张发牌
+		srand((unsigned)time(NULL));
+
+		BYTE card_sum = m_card_config.game_cards_sum - boomSum * 4;
 		CARD_DESC *card_index = cards;
-		BYTE  count = 0;
 
 		ZeroMemory(m_playing_para.leave_card, sizeof(m_playing_para.leave_card));
+		CopyMemory(m_playing_para.leave_card, &cards[card_sum - m_card_config.leave_card_num],
+			m_card_config.leave_card_num * sizeof(BYTE));
 
-		//随机取底牌
-		for (int i = 0; i < m_room_config.max_chair_sum; ++i)
-		{
-			BYTE index = rand() % m_card_config.game_cards_sum;
-			while (card_index[index] == 0)
-			{
-				index = rand() % m_card_config.game_cards_sum;
-			}
-
-			m_playing_para.leave_card[i] = card_index[index];
-			card_index[index] = 0;
-		}
-
-		//排序底牌
 		SortCardList(m_playing_para.leave_card, m_card_config.leave_card_num, ST_ORDER);
 
-		//设置癞子,底牌的第二张作为癞子
-		SetMagicCard(m_playing_para.leave_card[1]);
+		int cardflag = 0;
+		int boomflag = 0;
+		int index[3] = { 0 };
+		index[0] = rand() % boomSum;
+		if (index[0] > 3) index[0] = 3;
+		index[1] = rand() % (boomSum - index[0]);
+		if (index[1] > 3) index[1] = 3;
+		index[2] = boomSum - index[1] - index[0];
 
-		//分发牌
-		for (int i = 0; i < 4; i++)    //每次发十五张 共发4次牌
+		//机器人炸弹优化
+		/*for (int i = 0; i < 3; i++)
 		{
-			for (int j = 0; j < m_room_config.max_chair_sum; j++)
+			if (m_pGameRoomFrame->IsRobot(i))
 			{
-				if (USER_PLAYING == m_players_config.players[j].play_state)
+				if (0 < index[(i + 1) % 3])
 				{
-					if (i == 3)		//第四次发牌 只能发6张
-					{
-						for (int k = 0; k < 2; k++)
-						{
-							//手牌赋值
-							while (card_index[count] == 0)
-							{
-								count++;
-							}
-
-							m_players_config.hand_cards[j][k + i * 5] = card_index[count];
-							card_index[count++] = 0;
-							printf("%d\t", m_players_config.hand_cards[j][k + i * 5]);
-						}
-					}
-					else
-					{
-						for (int k = 0; k < 5; k++)
-						{
-							//手牌赋值
-							while (card_index[count] == 0)
-							{
-								count++;
-							}
-
-							m_players_config.hand_cards[j][k + i * 5] = card_index[count];
-							card_index[count++] = 0;
-							printf("%d\t", m_players_config.hand_cards[j][k + i * 5]);
-						}
-					}
+					index[i]++;
+					index[(i + 1) % 3]--;
 				}
 			}
-		}
+		}*/
 
-		//手牌排序
-		for (int i = 0; i < m_room_config.max_chair_sum; i++)
+		for (int i = 0; i < m_room_config.max_chair_sum; ++i)
 		{
 			int nCardNum = m_card_config.init_card_num;
-
+			//判断是否在游戏中
 			if (USER_PLAYING == m_players_config.players[i].play_state)
 			{
 				//玩家当前手牌数
 				m_players_config.players[i].hand_card_num = nCardNum;
 
+				int flag = 0;
+				for (int j = 0; j < nCardNum - index[i] * 4; j++)
+				{
+					m_players_config.hand_cards[i][flag++] = card_index[cardflag++];
+				}
+
+				for (int j = 0; j < index[i] * 4; j++)
+				{
+					m_players_config.hand_cards[i][flag++] = boomCards[boomflag++];
+				}
+
 				//手牌排序
 				SortCardList(m_players_config.hand_cards[i], nCardNum, ST_ORDER);
+
 			}
 		}
 	}
 
 	//释放
 	delete[] cards;
+	delete[] boomCards;
 	cards = NULL;
 
 	return 0;
@@ -424,7 +398,7 @@ BYTE __stdcall CGameData::AnalyseUpGrade(const SCORE &score)
 }
 
 //分析比较     
-bool __stdcall CGameData::AnalysebCompare(const BYTE cbCardData[], BYTE cbCardCount, tagAnalyseResult & AnalyseResult, int dCardType)
+bool CGameData::AnalysebCompare(const BYTE cbCardData[], BYTE cbCardCount, tagAnalyseResult & AnalyseResult, int dCardType)
 {
 	//分析扑克
 	BYTE bLaiZiCount = GetMagicCardNum(cbCardData, cbCardCount);
@@ -446,7 +420,7 @@ bool __stdcall CGameData::AnalysebCompare(const BYTE cbCardData[], BYTE cbCardCo
 
 		for (BYTE i = 0; i < cbCardCount; i++)
 		{
-			if (GetCardLogicValue(cbCardData[i]) == m_playing_para.magic_card)
+			if (GetCardLogicValueLaiZi(cbCardData[i]) == m_playing_para.magic_card)
 				SameCard = true;
 			else
 			{
@@ -459,45 +433,45 @@ bool __stdcall CGameData::AnalysebCompare(const BYTE cbCardData[], BYTE cbCardCo
 	//赖子判断
 	if (bLaiZiCount != 0 && !SameCard && m_room_config.game_laizi_mode > 0)
 	{
-		for (BYTE i = 0; i < cbCardCount; i++)
+		for (BYTE i = 0;i<cbCardCount;i++)
 		{
-			if (GetCardLogicValue(cbCardData[i]) == m_playing_para.magic_card)
+			if (GetCardLogicValueLaiZi(cbCardData[i]) == m_playing_para.magic_card)
 			{
 				//一张赖子
-				for (BYTE j = 0; j < 13; j++)
+				for (BYTE j = 0;j<13;j++)
 				{
 					bCardDataTemp[i] = m_cbCardData[j];
 
 					//两张赖子
 					if (bLaiZiCount >= 2)
 					{
-						for (BYTE k = i + 1; k < cbCardCount; k++)
+						for (BYTE k = i + 1;k<cbCardCount;k++)
 						{
-							if (GetCardLogicValue(cbCardData[k]) == m_playing_para.magic_card)
+							if (GetCardLogicValueLaiZi(cbCardData[k]) == m_playing_para.magic_card)
 							{
-								for (BYTE z = 0; z < 13; z++)
+								for (BYTE z = 0;z<13;z++)
 								{
 									bCardDataTemp[k] = m_cbCardData[z];
 
 									//三张赖子
 									if (bLaiZiCount >= 3)
 									{
-										for (BYTE g = k + 1; g < cbCardCount; g++)
+										for (BYTE g = k + 1;g<cbCardCount;g++)
 										{
-											if (GetCardLogicValue(cbCardData[g]) == m_playing_para.magic_card)
+											if (GetCardLogicValueLaiZi(cbCardData[g]) == m_playing_para.magic_card)
 											{
-												for (BYTE f = 0; f < 13; f++)
+												for (BYTE f = 0;f<13;f++)
 												{
 													bCardDataTemp[g] = m_cbCardData[f];
 
 													//四张赖子
 													if (bLaiZiCount == 4)
 													{
-														for (BYTE h = g + 1; h < cbCardCount; h++)
+														for (BYTE h = g + 1;h<cbCardCount;h++)
 														{
-															if (GetCardLogicValue(cbCardData[h]) == m_playing_para.magic_card)
+															if (GetCardLogicValueLaiZi(cbCardData[h]) == m_playing_para.magic_card)
 															{
-																for (BYTE l = 0; l < 13; l++)
+																for (BYTE l = 0;l<13;l++)
 																{
 																	bCardDataTemp[h] = m_cbCardData[l];
 
@@ -606,7 +580,7 @@ bool __stdcall CGameData::AnalysebCompare(const BYTE cbCardData[], BYTE cbCardCo
 }
 
 //分析扑克
-void __stdcall CGameData::AnalysebCardData(const BYTE cbCardData[], BYTE cbCardCount, tagAnalyseResult & AnalyseResult)
+void CGameData::AnalysebCardData(const BYTE cbCardData[], BYTE cbCardCount, tagAnalyseResult & AnalyseResult)
 {
 	//设置变量
 	BYTE bCardData[MAX_CARD_COUNT];
@@ -614,7 +588,7 @@ void __stdcall CGameData::AnalysebCardData(const BYTE cbCardData[], BYTE cbCardC
 	memset(bCardData, 0, sizeof(bCardData));
 	CopyMemory(bCardData, cbCardData, sizeof(BYTE)*cbCardCount);
 
-	SortCardList(bCardData, cbCardCount, ST_ORDER);
+	SortCardListNoLaiZi(bCardData, cbCardCount, ST_ORDER);
 
 	//扑克分析
 	for (BYTE i = 0; i < cbCardCount; i++)
@@ -677,9 +651,16 @@ void __stdcall CGameData::AnalysebCardData(const BYTE cbCardData[], BYTE cbCardC
 }
 
 //获取类型结果
-int __stdcall CGameData::GetType(tagAnalyseResult AnalyseResult, const BYTE cbCardData[], BYTE cbCardCount, const BYTE NoChangeCard[])
+int CGameData::GetType(tagAnalyseResult AnalyseResult, const BYTE cbCardData[], BYTE cbCardCount, const BYTE NoChangeCard[])
 {
 	BYTE bLaiZiCount = GetMagicCardNum(NoChangeCard, cbCardCount);
+
+	BYTE bCardData[MAX_CARD_COUNT];
+	ZeroMemory(&bCardData, sizeof(bCardData));
+	CopyMemory(bCardData, cbCardData, sizeof(BYTE)*cbCardCount);
+
+	//排序
+	SortCardListNoLaiZi(bCardData, cbCardCount, ST_ORDER);
 
 	//简单牌型
 	switch (cbCardCount)
@@ -695,20 +676,8 @@ int __stdcall CGameData::GetType(tagAnalyseResult AnalyseResult, const BYTE cbCa
 	case 2:	//对牌火箭
 	{
 		//牌型判断
-		if ((cbCardData[0] == 0x4F) && (cbCardData[1] == 0x4E)) return CT_MISSILE_CARD;
-		if (GetCardLogicValue(cbCardData[0]) == GetCardLogicValue(cbCardData[1])) return CT_DOUBLE;
-
-		//赖子判断
-		if (GetCardLogicValue(cbCardData[0]) != GetCardLogicValue(cbCardData[1]) && m_room_config.game_laizi_mode > 0)
-		{
-			if (GetCardLogicValue(cbCardData[0]) == m_playing_para.magic_card || GetCardLogicValue(cbCardData[1]) == m_playing_para.magic_card)
-			{
-				if ((cbCardData[0] != 0x4F) && (cbCardData[0] != 0x4E) && (cbCardData[0] != 0x4F) && (cbCardData[1] != 0x4E))
-				{
-					return CT_DOUBLE;
-				}
-			}
-		}
+		if ((bCardData[0] == 0x4F) && (bCardData[1] == 0x4E)) return CT_MISSILE_CARD;
+		if (GetCardLogicValue(bCardData[0]) == GetCardLogicValue(bCardData[1])) return CT_DOUBLE;
 
 		return CT_ERROR;
 	}
@@ -739,8 +708,8 @@ int __stdcall CGameData::GetType(tagAnalyseResult AnalyseResult, const BYTE cbCa
 		if (AnalyseResult.cbThreeCount > 1)
 		{
 			//变量定义
-			BYTE cbCardData = AnalyseResult.cbThreeCardData[0];
-			BYTE cbFirstLogicValue = GetCardLogicValue(cbCardData);
+			BYTE bCardData = AnalyseResult.cbThreeCardData[0];
+			BYTE cbFirstLogicValue = GetCardLogicValue(bCardData);
 
 			//错误过虑
 			if (cbFirstLogicValue >= 15) return CT_ERROR;
@@ -748,8 +717,8 @@ int __stdcall CGameData::GetType(tagAnalyseResult AnalyseResult, const BYTE cbCa
 			//连牌判断
 			for (BYTE i = 1; i < AnalyseResult.cbThreeCount; i++)
 			{
-				BYTE cbCardData = AnalyseResult.cbThreeCardData[i * 3];
-				if (cbFirstLogicValue != (GetCardLogicValue(cbCardData) + i))
+				BYTE bCardData = AnalyseResult.cbThreeCardData[i * 3];
+				if (cbFirstLogicValue != (GetCardLogicValue(bCardData) + i))
 					return CT_ERROR;
 			}
 		}
@@ -766,8 +735,8 @@ int __stdcall CGameData::GetType(tagAnalyseResult AnalyseResult, const BYTE cbCa
 	if (AnalyseResult.cbDoubleCount >= 3)
 	{
 		//变量定义
-		BYTE cbCardData = AnalyseResult.cbDoubleCardData[0];
-		BYTE cbFirstLogicValue = GetCardLogicValue(cbCardData);
+		BYTE bCardData = AnalyseResult.cbDoubleCardData[0];
+		BYTE cbFirstLogicValue = GetCardLogicValue(bCardData);
 
 		/*cout << "连对第一张牌逻辑值：" << (int)cbFirstLogicValue << endl;
 		cout << "最后一张拍逻辑值: " << (int)GetCardLogicValue(AnalyseResult.cbDoubleCardData[AnalyseResult.cbDoubleCount*2 - 1]) << endl;*/
@@ -778,8 +747,8 @@ int __stdcall CGameData::GetType(tagAnalyseResult AnalyseResult, const BYTE cbCa
 		//连牌判断
 		for (BYTE i = 1; i < AnalyseResult.cbDoubleCount; i++)
 		{
-			BYTE cbCardData = AnalyseResult.cbDoubleCardData[i * 2];
-			if (cbFirstLogicValue != (GetCardLogicValue(cbCardData) + i))
+			BYTE bCardData = AnalyseResult.cbDoubleCardData[i * 2];
+			if (cbFirstLogicValue != (GetCardLogicValue(bCardData) + i))
 				return CT_ERROR;
 		}
 
@@ -794,8 +763,8 @@ int __stdcall CGameData::GetType(tagAnalyseResult AnalyseResult, const BYTE cbCa
 	if ((AnalyseResult.cbSignedCount >= 5) && (AnalyseResult.cbSignedCount == cbCardCount))
 	{
 		//变量定义
-		BYTE cbCardData = AnalyseResult.cbSignedCardData[0];
-		BYTE cbFirstLogicValue = GetCardLogicValue(cbCardData);
+		BYTE bCardData = AnalyseResult.cbSignedCardData[0];
+		BYTE cbFirstLogicValue = GetCardLogicValue(bCardData);
 
 		//错误过虑
 		if (cbFirstLogicValue >= 15) return CT_ERROR;
@@ -803,8 +772,8 @@ int __stdcall CGameData::GetType(tagAnalyseResult AnalyseResult, const BYTE cbCa
 		//连牌判断
 		for (BYTE i = 1; i < AnalyseResult.cbSignedCount; i++)
 		{
-			BYTE cbCardData = AnalyseResult.cbSignedCardData[i];
-			if (cbFirstLogicValue != (GetCardLogicValue(cbCardData) + i))
+			BYTE bCardData = AnalyseResult.cbSignedCardData[i];
+			if (cbFirstLogicValue != (GetCardLogicValue(bCardData) + i))
 				return CT_ERROR;
 		}
 
@@ -815,7 +784,7 @@ int __stdcall CGameData::GetType(tagAnalyseResult AnalyseResult, const BYTE cbCa
 }
 
 //判断当前玩家是否能出牌 
-bool __stdcall CGameData::JudgePlayerOutCard(WORD wCurOutCardUser)      //lih
+bool CGameData::JudgePlayerOutCard(WORD wCurOutCardUser)      //lih
 {
 	//获得该轮最大出牌数据
 	BYTE TurnCardNum = m_playing_para.turn_cards_num;
@@ -851,7 +820,7 @@ bool __stdcall CGameData::JudgePlayerOutCard(WORD wCurOutCardUser)      //lih
 	if (TurnCardType == CT_ERROR)	return true;
 	if ((TurnCardType & (1 << CT_MISSILE_CARD)) != 0)    return false;    //王炸判断
 
-	//炸弹判断
+																		  //炸弹判断
 	if ((TurnCardType & (1 << CT_BOMB_CARD)) != 0)   //上家出炸弹
 	{
 		cout << "炸弹" << endl;
@@ -974,7 +943,7 @@ bool __stdcall CGameData::JudgePlayerOutCard(WORD wCurOutCardUser)      //lih
 					flag++;
 
 					//跳出条件
-					if (flag == TurnResult.cbSignedCount)
+					if (flag == TurnResult.cbSignedCount - 1)
 						break;
 				}
 				else
@@ -993,7 +962,7 @@ bool __stdcall CGameData::JudgePlayerOutCard(WORD wCurOutCardUser)      //lih
 						flag++;
 
 						//跳出条件
-						if (flag == TurnResult.cbSignedCount)
+						if (flag == TurnResult.cbSignedCount - 1)
 							break;
 					}
 					else
@@ -1002,7 +971,7 @@ bool __stdcall CGameData::JudgePlayerOutCard(WORD wCurOutCardUser)      //lih
 			}
 		}
 
-		if (flag >= TurnResult.cbSignedCount)
+		if (flag >= TurnResult.cbSignedCount - 1)
 			return true;
 	}
 	else if ((TurnCardType & (1 << CT_DOUBLE_LINE)) != 0)   //连对
@@ -1188,7 +1157,7 @@ bool __stdcall CGameData::JudgePlayerOutCard(WORD wCurOutCardUser)      //lih
 		{
 			int index = 0;
 			int flag = 1;   //判断飞机几个三张的标志
-			//判断三个是否连续
+							//判断三个是否连续
 			for (int i = 0; i < CurResult.cbThreeCount; i++)
 			{
 				if ((GetCardLogicValue(CurResult.cbThreeCardData[index]) - 1) == (GetCardLogicValue(CurResult.cbThreeCardData[index + 3])))  //连续
@@ -1196,7 +1165,7 @@ bool __stdcall CGameData::JudgePlayerOutCard(WORD wCurOutCardUser)      //lih
 					flag++;
 				}
 
-				if ((GetCardLogicValue(CurResult.cbThreeCardData[index]) > (TurnLogicValue - TurnResult.cbThreeCount + 2))
+				if ((GetCardLogicValue(CurResult.cbThreeCardData[index]) >(TurnLogicValue - TurnResult.cbThreeCount + 2))
 					&& (flag == TurnResult.cbThreeCount))   //大小比较
 					return true;
 
@@ -1238,7 +1207,7 @@ bool __stdcall CGameData::JudgePlayerOutCard(WORD wCurOutCardUser)      //lih
 		{
 			int index = 0;
 			int flag = 1;   //判断飞机几个三张的标志
-			//判断三个是否连续
+							//判断三个是否连续
 			for (int i = 0; i < CurResult.cbThreeCount; i++)
 			{
 				if ((GetCardLogicValue(CurResult.cbThreeCardData[index]) - 1) == (GetCardLogicValue(CurResult.cbThreeCardData[index + 3])))  //连续
@@ -1246,7 +1215,7 @@ bool __stdcall CGameData::JudgePlayerOutCard(WORD wCurOutCardUser)      //lih
 					flag++;
 				}
 
-				if ((GetCardLogicValue(CurResult.cbThreeCardData[index]) > (TurnLogicValue - TurnResult.cbThreeCount + 2))
+				if ((GetCardLogicValue(CurResult.cbThreeCardData[index]) >(TurnLogicValue - TurnResult.cbThreeCount + 2))
 					&& (flag == TurnResult.cbThreeCount))   //大小比较
 					return true;
 
@@ -1281,8 +1250,10 @@ bool __stdcall CGameData::JudgePlayerOutCard(WORD wCurOutCardUser)      //lih
 }
 
 //玩家第一个出牌  判断他可以出的合适的牌
-bool __stdcall CGameData::AnalysePlayerOutCardFirst(WORD OutCardUsr, BYTE OutCardData[], BYTE *OutCardNum)
+bool CGameData::AnalysePlayerOutCardFirst(WORD OutCardUsr, BYTE OutCardData[], BYTE *OutCardNum)
 {
+	cout << "func AnalysePlayerOutCardFirst() Begin::::" << endl;
+
 	//校验
 	if (OutCardData == NULL || OutCardUsr == INVALID_CHAIR)
 	{
@@ -1309,6 +1280,9 @@ bool __stdcall CGameData::AnalysePlayerOutCardFirst(WORD OutCardUsr, BYTE OutCar
 		CurCardData[i] = m_players_config.hand_cards[OutCardUsr][i];
 	}
 
+	//NoLaiZi的排序
+	SortCardListNoLaiZi(CurCardData, CurCardNum, ST_ORDER);
+
 	//分析两个扑克牌型
 	tagAnalyseResult CurResult;
 	ZeroMemory(&CurResult, sizeof(CurResult));
@@ -1316,6 +1290,8 @@ bool __stdcall CGameData::AnalysePlayerOutCardFirst(WORD OutCardUsr, BYTE OutCar
 	AnalysebCardData(CurCardData, CurCardNum, CurResult);
 
 	//判断能出的牌  优先出最小的牌值  炸弹最后出
+
+	cout << "开始进行比较" << endl;
 
 	//如果最小的牌为炸弹
 	if (CurResult.cbFourCount != 0)
@@ -1487,7 +1463,7 @@ bool __stdcall CGameData::AnalysePlayerOutCardFirst(WORD OutCardUsr, BYTE OutCar
 }
 
 //玩家接牌  判断他可以出的牌
-bool __stdcall CGameData::AnalysePlayerOutCard(WORD OutCardUsr, BYTE OutCardData[], BYTE *OutCardNum)
+bool CGameData::AnalysePlayerOutCard(WORD OutCardUsr, BYTE OutCardData[], BYTE *OutCardNum)
 {
 	//构建值
 	BYTE tmpOutCardData[MAX_CARD_COUNT];
@@ -1528,7 +1504,7 @@ bool __stdcall CGameData::AnalysePlayerOutCard(WORD OutCardUsr, BYTE OutCardData
 	if (TurnCardType == CT_ERROR)	return false;
 	if ((TurnCardType & (1 << CT_MISSILE_CARD)) != 0)    return false;    //王炸判断
 
-	//炸弹判断
+																		  //炸弹判断
 	if ((TurnCardType & (1 << CT_BOMB_CARD)) != 0)   //上家出炸弹
 	{
 		cout << "炸弹" << endl;
@@ -1537,7 +1513,7 @@ bool __stdcall CGameData::AnalysePlayerOutCard(WORD OutCardUsr, BYTE OutCardData
 		BYTE TurnLogicValue = GetCardLogicValue(TurnResult.cbFourCardData[0]);
 		int index = 0;   //辅助标识
 
-		//if (CurResult.cbFourCount == 0)    return false;
+						 //if (CurResult.cbFourCount == 0)    return false;
 		for (int i = 0; i < CurResult.cbFourCount; i++)
 		{
 			if (GetCardLogicValue(CurResult.cbFourCardData[index]) > TurnLogicValue)
@@ -1800,8 +1776,12 @@ bool __stdcall CGameData::AnalysePlayerOutCard(WORD OutCardUsr, BYTE OutCardData
 					flag++;
 
 					//跳出条件
-					if (flag == TurnResult.cbSignedCount)
+					if (flag == TurnResult.cbSignedCount - 1)
+					{
+						tmpOutCardData[index] = CurCardData[i + 1];
+						tmpOutCardNum++;
 						break;
+					}
 				}
 				else
 				{
@@ -1828,7 +1808,7 @@ bool __stdcall CGameData::AnalysePlayerOutCard(WORD OutCardUsr, BYTE OutCardData
 						flag++;
 
 						//跳出条件
-						if (flag == TurnResult.cbSignedCount)
+						if (flag == TurnResult.cbSignedCount - 1)
 							break;
 					}
 					else
@@ -1843,7 +1823,7 @@ bool __stdcall CGameData::AnalysePlayerOutCard(WORD OutCardUsr, BYTE OutCardData
 			}
 		}
 
-		if (flag >= TurnResult.cbSignedCount)
+		if (flag >= TurnResult.cbSignedCount - 1)
 		{
 			memcpy(OutCardData, tmpOutCardData, tmpOutCardNum*(sizeof(BYTE)));
 			*OutCardNum = tmpOutCardNum;
@@ -2177,7 +2157,7 @@ bool __stdcall CGameData::AnalysePlayerOutCard(WORD OutCardUsr, BYTE OutCardData
 			{
 				int index = 0;
 				int flag = 1;   //判断飞机几个三张的标志
-				//判断三个是否连续
+								//判断三个是否连续
 				for (int i = 0; i < CurResult.cbThreeCount; i++)
 				{
 					if ((GetCardLogicValue(CurResult.cbThreeCardData[index]) - 1) == (GetCardLogicValue(CurResult.cbThreeCardData[index + 3])))  //连续
@@ -2185,7 +2165,7 @@ bool __stdcall CGameData::AnalysePlayerOutCard(WORD OutCardUsr, BYTE OutCardData
 						flag++;
 					}
 
-					if ((GetCardLogicValue(CurResult.cbThreeCardData[index]) > (TurnLogicValue - TurnResult.cbThreeCount + 2))
+					if ((GetCardLogicValue(CurResult.cbThreeCardData[index]) >(TurnLogicValue - TurnResult.cbThreeCount + 2))
 						&& (flag == TurnResult.cbThreeCount))   //大小比较
 					{
 						index = index - TurnResult.cbThreeCount * 3 + 3;     //赋值的下标
@@ -2278,7 +2258,7 @@ bool __stdcall CGameData::AnalysePlayerOutCard(WORD OutCardUsr, BYTE OutCardData
 			{
 				int index = 0;
 				int flag = 1;   //判断飞机几个三张的标志
-				//判断三个是否连续
+								//判断三个是否连续
 				for (int i = 0; i < CurResult.cbThreeCount; i++)
 				{
 					if ((GetCardLogicValue(CurResult.cbThreeCardData[index]) - 1) == (GetCardLogicValue(CurResult.cbThreeCardData[index + 3])))  //连续
@@ -2286,7 +2266,7 @@ bool __stdcall CGameData::AnalysePlayerOutCard(WORD OutCardUsr, BYTE OutCardData
 						flag++;
 					}
 
-					if ((GetCardLogicValue(CurResult.cbThreeCardData[index]) > (TurnLogicValue - TurnResult.cbThreeCount + 2))
+					if ((GetCardLogicValue(CurResult.cbThreeCardData[index]) >(TurnLogicValue - TurnResult.cbThreeCount + 2))
 						&& (flag == TurnResult.cbThreeCount))   //大小比较
 					{
 						index = index - TurnResult.cbThreeCount * 3 + 3;     //赋值的下标
@@ -2416,7 +2396,7 @@ bool __stdcall CGameData::AnalysePlayerOutCard(WORD OutCardUsr, BYTE OutCardData
 }
 
 //记牌器
-bool __stdcall CGameData::CardRecorder(WORD wChairID, tagCardRecorder &Recorder)
+bool CGameData::CardRecorder(WORD wChairID, tagCardRecorder &Recorder)
 {
 
 	int _playernum = GetCurPlayerCount();
@@ -2456,13 +2436,13 @@ bool __stdcall CGameData::CardRecorder(WORD wChairID, tagCardRecorder &Recorder)
 }
 
 // 结算得分
-int __stdcall CGameData::Settle()
+int CGameData::Settle()
 {
 	return 0;
 }
 
 // 清理小局游戏数据
-int __stdcall CGameData::ClearXjGame()
+int CGameData::ClearXjGame()
 {
 	cout << "清理小局数据" << endl;
 
@@ -2525,7 +2505,7 @@ int __stdcall CGameData::ClearXjGame()
 }
 
 // 清理大局游戏数据
-int  __stdcall CGameData::ClearDjGame()
+int  CGameData::ClearDjGame()
 {
 	// 清理大局玩家数据
 	memset(m_players_config.hand_cards, 0, sizeof(m_players_config.hand_cards));
@@ -2558,7 +2538,7 @@ int  __stdcall CGameData::ClearDjGame()
 }
 
 // 清理房间数据
-int __stdcall CGameData::ClearRoom()
+int CGameData::ClearRoom()
 {
 	if (m_card_config.game_cards != NULL)
 		delete[] m_card_config.game_cards;
@@ -2568,8 +2548,8 @@ int __stdcall CGameData::ClearRoom()
 	return 0;
 }
 
-//按花色权位排序扑克
-void __stdcall CGameData::SortCardList(BYTE *cbCardData, BYTE cbCardCount)
+//按花色权位排序扑克  //垃圾函数
+void CGameData::SortCardList(BYTE *cbCardData, BYTE cbCardCount)
 {
 	//排序索引数组
 	BYTE cbSortValue[MAX_CARD_COUNT];
@@ -2602,21 +2582,24 @@ void __stdcall CGameData::SortCardList(BYTE *cbCardData, BYTE cbCardCount)
 }
 
 //按花色权位给用户手牌排序
-void __stdcall CGameData::SortCardList(const WORD &wChairID, BYTE cbCardCount, BYTE cbSortType)
+void CGameData::SortCardList(const WORD &wChairID, BYTE cbCardCount, BYTE cbSortType)
 {
 	//手牌排序
 	SortCardList(m_players_config.hand_cards[wChairID], cbCardCount, cbSortType);
 }
 
 //排列扑克
-void __stdcall CGameData::SortCardList(BYTE cbCardData[], BYTE cbCardCount, BYTE cbSortType)
+void CGameData::SortCardList(BYTE cbCardData[], BYTE cbCardCount, BYTE cbSortType)
 {
 	//数目过虑
 	if (cbCardCount == 0) return;
 
 	//转换数值
 	BYTE cbSortValue[MAX_CARD_COUNT];
-	for (BYTE i = 0; i < cbCardCount; i++) cbSortValue[i] = GetCardLogicValue(cbCardData[i]);
+	for (BYTE i = 0; i < cbCardCount; i++)
+	{
+		cbSortValue[i] = GetCardLogicValueLaiZi(cbCardData[i]);
+	}
 
 	//排序操作
 	bool bSorted = true;
@@ -2671,7 +2654,7 @@ void __stdcall CGameData::SortCardList(BYTE cbCardData[], BYTE cbCardCount, BYTE
 }
 
 //获得卡牌的排序等级
-BYTE __stdcall CGameData::GetCardSortOrder(BYTE cbCardData)
+BYTE CGameData::GetCardSortOrder(BYTE cbCardData)
 {
 	//过滤掉无效卡牌
 	if (INVALID_CARD == cbCardData)
@@ -2691,7 +2674,7 @@ BYTE __stdcall CGameData::GetCardSortOrder(BYTE cbCardData)
 	//若卡牌为主花色或等于级牌，排序花色变换
 	BYTE cbSortColor = cbCardColor;	//花色从1开始
 
-	//若卡牌值为A，A的排序在前，则排序数值变换
+									//若卡牌值为A，A的排序在前，则排序数值变换
 	BYTE cbSortValue = cbCardValue;
 	if (cbCardValue == 1)
 		cbSortValue += 13;
@@ -2710,7 +2693,7 @@ BYTE __stdcall CGameData::GetCardSortOrder(BYTE cbCardData)
 }
 
 //获得卡牌的逻辑数值
-BYTE __stdcall CGameData::GetCardLogicValue(BYTE cbCardData)
+BYTE CGameData::GetCardLogicValue(BYTE cbCardData)
 {
 	if (0 == cbCardData)
 	{
@@ -2721,23 +2704,14 @@ BYTE __stdcall CGameData::GetCardLogicValue(BYTE cbCardData)
 	BYTE cbCardColor = GetCardColor(cbCardData);
 	BYTE cbCardValue = GetCardValue(cbCardData);
 
-	if (m_room_config.game_laizi_mode > 0)
-	{
-		//癞子放在最左边
-		if ((cbCardData != 0) && (GetCardLogicValue(cbCardData) == m_playing_para.magic_card))      //不考虑癞子
-		{
-			return (cbCardValue + 18);
-		}
-	}
-
 	//转换数值明显出现错误
-	if ((cbCardColor << 4) == 0x40) return cbCardValue + 2;		//大小王   
+	if ((cbCardColor << 4) == 0x40) return cbCardValue + 2;		//大小王    
 
 	return (cbCardValue <= 2) ? (cbCardValue + 13) : cbCardValue;
 }
 
 //分析玩家是否能亮主
-bool __stdcall CGameData::AnalyseUserLiangZhu(const WORD &wChairID, BYTE *cbLiangZhuColor)
+bool CGameData::AnalyseUserLiangZhu(const WORD &wChairID, BYTE *cbLiangZhuColor)
 {
 	//校验
 	if ((VALUE_ERROR == m_playing_para.level_value) ||
@@ -2778,7 +2752,7 @@ bool __stdcall CGameData::AnalyseUserLiangZhu(const WORD &wChairID, BYTE *cbLian
 }
 
 //分析玩家是否能反主（反主按座位顺序）
-bool __stdcall CGameData::AnalyseUserFanZhu(const WORD &wChairID, BYTE *cbFanZhuCard)
+bool CGameData::AnalyseUserFanZhu(const WORD &wChairID, BYTE *cbFanZhuCard)
 {
 	//当前反主卡牌
 	BYTE cbCurFanzhuCard = m_playing_para.cur_fanzhu_card;
@@ -2810,7 +2784,7 @@ bool __stdcall CGameData::AnalyseUserFanZhu(const WORD &wChairID, BYTE *cbFanZhu
 }
 
 //判断玩家手牌是否能反主
-bool __stdcall CGameData::IsUserCanFanZhu(const WORD &wChairID, const BYTE &cbCurFanZhuColor, BYTE *cbFanZhuCard)
+bool CGameData::IsUserCanFanZhu(const WORD &wChairID, const BYTE &cbCurFanZhuColor, BYTE *cbFanZhuCard)
 {
 	//玩家卡牌索引
 	BYTE cbCardIndex[LEN_MAX_INDEX];
@@ -2859,7 +2833,7 @@ bool __stdcall CGameData::IsUserCanFanZhu(const WORD &wChairID, const BYTE &cbCu
 }
 
 //发送底牌给玩家
-void __stdcall CGameData::SendLeaveCardToUser(const WORD &wChairID)
+void CGameData::SendLeaveCardToUser(const WORD &wChairID)
 {
 	//将底牌赋给玩家
 	for (int i = 0; i < MAX_LEAVE_CARD_NUM; i++)
@@ -2873,7 +2847,7 @@ void __stdcall CGameData::SendLeaveCardToUser(const WORD &wChairID)
 }
 
 //获得一组卡牌的牌类型
-int __stdcall CGameData::GetCardLogicType(const BYTE *cbCardData, BYTE cbCardCount)
+int CGameData::GetCardLogicType(const BYTE *cbCardData, BYTE cbCardCount)
 {
 	//简单牌型
 	switch (cbCardCount)
@@ -2893,22 +2867,40 @@ int __stdcall CGameData::GetCardLogicType(const BYTE *cbCardData, BYTE cbCardCou
 		//cout << "2" << endl;
 		//牌型判断
 		if ((cbCardData[0] == 0x4F) && (cbCardData[1] == 0x4E)) return TransListToInt(0, CT_MISSILE_CARD);   //返回一个 1<<14
-		if (GetCardLogicValue(cbCardData[0]) == GetCardLogicValue(cbCardData[1])) return TransListToInt(0, CT_DOUBLE);
+		if (GetCardLogicValueLaiZi(cbCardData[0]) == GetCardLogicValueLaiZi(cbCardData[1])) return TransListToInt(0, CT_DOUBLE);
+
+		//参数定义
+		BYTE LaiZiData[MAX_LAIZI_COUNT] = { 0 };	//癞子当普通牌的数据
+		BYTE LaiZiNum = 0;					//癞子当普通牌的数量
+
+											//清零
+		SetLaiZiToCommon(LaiZiData, LaiZiNum);
 
 		//赖子判断
 		if (m_room_config.game_laizi_mode > 0)
 		{
-			if (GetCardLogicValue(cbCardData[0]) != GetCardLogicValue(cbCardData[1]))
+			if (GetCardLogicValueLaiZi(cbCardData[0]) != GetCardLogicValueLaiZi(cbCardData[1]))
 			{
-				if (GetCardLogicValue(cbCardData[0]) == m_playing_para.magic_card || GetCardLogicValue(cbCardData[1]) == m_playing_para.magic_card)
+				if (GetCardLogicValueLaiZi(cbCardData[0]) == m_playing_para.magic_card || GetCardLogicValueLaiZi(cbCardData[1]) == m_playing_para.magic_card)
 				{
 					if ((cbCardData[0] != BIG_JOKER) && (cbCardData[0] != SMALL_JOKER) && (cbCardData[1] != BIG_JOKER) && (cbCardData[1] != SMALL_JOKER))
 					{
+						LaiZiNum++;
+
+						if (GetCardLogicValueLaiZi(cbCardData[0]) == m_playing_para.magic_card)    LaiZiData[0] = GetCardLogicValue(cbCardData[1]);
+						if (GetCardLogicValueLaiZi(cbCardData[1]) == m_playing_para.magic_card)    LaiZiData[0] = GetCardLogicValue(cbCardData[0]);
+
+						cout << "对牌癞子：：：" << LaiZiData[0] << endl;
+						//设置癞子做普通牌
+						SetLaiZiToCommon(LaiZiData, LaiZiNum);
 						return TransListToInt(0, CT_DOUBLE);
 					}
 				}
 			}
 		}
+
+		//没有癞子 置零
+		SetLaiZiToCommon(LaiZiData, LaiZiNum);
 
 		//printf("对拍类型牌型判断错误\n");
 		return CT_ERROR;
@@ -2921,6 +2913,13 @@ int __stdcall CGameData::GetCardLogicType(const BYTE *cbCardData, BYTE cbCardCou
 	BYTE bCardDataTemp[MAX_CARD_COUNT];
 	int dCardType = CT_ERROR;
 
+	//参数定义
+	BYTE LaiZiData[MAX_LAIZI_COUNT] = { 0 };	//癞子当普通牌的数据
+	BYTE LaiZiNum = 0;					//癞子当普通牌的数量
+
+										//清零
+	SetLaiZiToCommon(LaiZiData, LaiZiNum);
+
 	memset(bCardDataTemp, 0, sizeof(bCardDataTemp));
 	CopyMemory(bCardDataTemp, cbCardData, sizeof(BYTE)*cbCardCount);
 	ZeroMemory(&AnalyseResult, sizeof(AnalyseResult));
@@ -2930,10 +2929,9 @@ int __stdcall CGameData::GetCardLogicType(const BYTE *cbCardData, BYTE cbCardCou
 	//都是赖子做普通牌
 	if (m_room_config.game_laizi_mode > 0)
 	{
-
 		for (BYTE i = 0; i < cbCardCount; i++)
 		{
-			if (GetCardLogicValue(cbCardData[i]) == m_playing_para.magic_card)
+			if (GetCardLogicValueLaiZi(cbCardData[i]) == m_playing_para.magic_card)
 				SameCard = true;
 			else
 			{
@@ -2946,45 +2944,49 @@ int __stdcall CGameData::GetCardLogicType(const BYTE *cbCardData, BYTE cbCardCou
 	//赖子判断
 	if (bLaiZiCount != 0 && !SameCard && m_room_config.game_laizi_mode > 0)
 	{
-		for (BYTE i = 0; i < cbCardCount; i++)
+		for (BYTE i = 0;i<cbCardCount;i++)
 		{
-			if (GetCardLogicValue(cbCardData[i]) == m_playing_para.magic_card)
+			if (GetCardLogicValueLaiZi(cbCardData[i]) == m_playing_para.magic_card)
 			{
+				cout << "==============一张癞子================" << endl;
 				//一张赖子
-				for (BYTE j = 0; j < 13; j++)
+				for (BYTE j = 0;j<13;j++)
 				{
 					bCardDataTemp[i] = m_cbCardData[j];
 
 					//两张赖子
 					if (bLaiZiCount >= 2)
 					{
-						for (BYTE k = i + 1; k < cbCardCount; k++)
+						for (BYTE k = i + 1;k<cbCardCount;k++)
 						{
-							if (GetCardLogicValue(cbCardData[k]) == m_playing_para.magic_card)
+							if (GetCardLogicValueLaiZi(cbCardData[k]) == m_playing_para.magic_card)
 							{
-								for (BYTE z = 0; z < 13; z++)
+								cout << "==============两张癞子================" << endl;
+								for (BYTE z = 0;z<13;z++)
 								{
 									bCardDataTemp[k] = m_cbCardData[z];
 
 									//三张赖子
 									if (bLaiZiCount >= 3)
 									{
-										for (BYTE g = k + 1; g < cbCardCount; g++)
+										for (BYTE g = k + 1;g<cbCardCount;g++)
 										{
-											if (GetCardLogicValue(cbCardData[g]) == m_playing_para.magic_card)
+											if (GetCardLogicValueLaiZi(cbCardData[g]) == m_playing_para.magic_card)
 											{
-												for (BYTE f = 0; f < 13; f++)
+												cout << "==============三张癞子================" << endl;
+												for (BYTE f = 0;f<13;f++)
 												{
 													bCardDataTemp[g] = m_cbCardData[f];
 
 													//四张赖子
 													if (bLaiZiCount == 4)
 													{
-														for (BYTE h = g + 1; h < cbCardCount; h++)
+														for (BYTE h = g + 1;h<cbCardCount;h++)
 														{
-															if (GetCardLogicValue(cbCardData[h]) == m_playing_para.magic_card)
+															if (GetCardLogicValueLaiZi(cbCardData[h]) == m_playing_para.magic_card)
 															{
-																for (BYTE l = 0; l < 13; l++)
+																cout << "==============四张癞子================" << endl;
+																for (BYTE l = 0;l<13;l++)
 																{
 																	if (l == 1)continue;
 																	bCardDataTemp[h] = m_cbCardData[l];
@@ -2994,8 +2996,18 @@ int __stdcall CGameData::GetCardLogicType(const BYTE *cbCardData, BYTE cbCardCou
 																	if (GetType(AnalyseResult, bCardDataTemp, cbCardCount, cbCardData) == 0)
 																		continue;
 
+																	//记录第四张癞子
+																	LaiZiData[0] = GetCardLogicValue(m_cbCardData[j]);
+																	LaiZiData[1] = GetCardLogicValue(m_cbCardData[z]);
+																	LaiZiData[2] = GetCardLogicValue(m_cbCardData[f]);
+																	LaiZiData[3] = GetCardLogicValue(m_cbCardData[l]);
+
 																	if ((dCardType&(1 << GetType(AnalyseResult, bCardDataTemp, cbCardCount, cbCardData))) == 0)
 																		dCardType = TransListToInt(dCardType, GetType(AnalyseResult, bCardDataTemp, cbCardCount, cbCardData));
+
+																	//目前策略 炸弹直接出
+																	if (((1 << CT_RUAN_BOMB)&dCardType) != 0)
+																		break;
 																}
 															}
 															else
@@ -3017,9 +3029,20 @@ int __stdcall CGameData::GetCardLogicType(const BYTE *cbCardData, BYTE cbCardCou
 													if (GetType(AnalyseResult, bCardDataTemp, cbCardCount, cbCardData) == 0)
 														continue;
 
+													//记录第三张癞子
+													LaiZiData[0] = GetCardLogicValue(m_cbCardData[j]);
+													LaiZiData[1] = GetCardLogicValue(m_cbCardData[z]);
+													LaiZiData[2] = GetCardLogicValue(m_cbCardData[f]);
+
 													if ((dCardType&(1 << GetType(AnalyseResult, bCardDataTemp, cbCardCount, cbCardData))) == 0)
 														dCardType = TransListToInt(dCardType, GetType(AnalyseResult, bCardDataTemp, cbCardCount, cbCardData));
+
+													//目前策略 炸弹直接出
+													if (((1 << CT_RUAN_BOMB)&dCardType) != 0)
+														break;
 												}
+
+												break;
 											}
 											else
 											{
@@ -3040,9 +3063,21 @@ int __stdcall CGameData::GetCardLogicType(const BYTE *cbCardData, BYTE cbCardCou
 									if (GetType(AnalyseResult, bCardDataTemp, cbCardCount, cbCardData) == 0)
 										continue;
 
+									//记录第二张癞子
+									cout << "TWO一癞子：：：" << (int)GetCardLogicValue(m_cbCardData[j]) << endl;
+									cout << "TWO二癞子：：：" << (int)GetCardLogicValue(m_cbCardData[z]) << endl;
+									LaiZiData[0] = GetCardLogicValue(m_cbCardData[j]);
+									LaiZiData[1] = GetCardLogicValue(m_cbCardData[z]);
+
 									if ((dCardType&(1 << GetType(AnalyseResult, bCardDataTemp, cbCardCount, cbCardData))) == 0)
 										dCardType = TransListToInt(dCardType, GetType(AnalyseResult, bCardDataTemp, cbCardCount, cbCardData));
+
+									//目前策略 炸弹直接出
+									if (((1 << CT_RUAN_BOMB)&dCardType) != 0)
+										break;
 								}
+
+								break;
 							}
 							else
 							{
@@ -3063,9 +3098,19 @@ int __stdcall CGameData::GetCardLogicType(const BYTE *cbCardData, BYTE cbCardCou
 					if (GetType(AnalyseResult, bCardDataTemp, cbCardCount, cbCardData) == 0)
 						continue;
 
+					//记录第一张癞子
+					cout << "ONE一癞子：：：" << (int)GetCardLogicValue(m_cbCardData[j]) << endl;
+					LaiZiData[0] = GetCardLogicValue(m_cbCardData[j]);
+
 					if ((dCardType&(1 << GetType(AnalyseResult, bCardDataTemp, cbCardCount, cbCardData))) == 0)
 						dCardType = TransListToInt(dCardType, GetType(AnalyseResult, cbCardData, cbCardCount, cbCardData));
+
+					//目前策略 炸弹直接出
+					if (((1 << CT_RUAN_BOMB)&dCardType) != 0)
+						break;
 				}
+
+				break;
 			}
 			else
 			{
@@ -3090,12 +3135,42 @@ int __stdcall CGameData::GetCardLogicType(const BYTE *cbCardData, BYTE cbCardCou
 			dCardType = TransListToInt(dCardType, GetType(AnalyseResult, bCardDataTemp, cbCardCount, cbCardData));
 	}
 
+	//获取数量
+	for (int i = 0; i < MAX_LAIZI_COUNT; i++)
+	{
+		if (INVALID_CARD != LaiZiData[i])
+		{
+			cout << (int)LaiZiData[i];
+			LaiZiNum++;
+		}
+	}
+	cout << endl;
+
+	//设置癞子做普通牌
+	SetLaiZiToCommon(LaiZiData, LaiZiNum);
+
+	cout << "LaiZiNum::" << (int)LaiZiNum << endl;
+
+	//定时器出牌事件炸弹类型的判断
+	if (dCardType&(1 << CT_BOMB_CARD) != 0)
+	{
+		int index = 0;
+		for (int i = 0; i < cbCardCount; i++)
+		{
+			if (cbCardData[i] > 0x50)
+				index++;
+		}
+
+		if (index > 0)   dCardType = (1 << CT_RUAN_BOMB);
+		if (index == 4)  dCardType = (1 << CT_LAIZI_BOMB);
+	}
+
 	return dCardType;
 
 }
 
 //获得卡牌的逻辑花色
-BYTE __stdcall CGameData::GetCardLogicColor(BYTE cbCardData)
+BYTE CGameData::GetCardLogicColor(BYTE cbCardData)
 {
 	//逻辑数值
 	BYTE cbCardColor = GetCardColor(cbCardData);
@@ -3114,7 +3189,7 @@ BYTE __stdcall CGameData::GetCardLogicColor(BYTE cbCardData)
 }
 
 //获得卡牌数组的逻辑花色
-BYTE __stdcall CGameData::GetCardLogicColor(const BYTE *cbCardData, BYTE cbCardCount)
+BYTE CGameData::GetCardLogicColor(const BYTE *cbCardData, BYTE cbCardCount)
 {
 	//获取卡牌数组的头尾花色
 	BYTE cbFirstColor = GetCardLogicColor(cbCardData[0]);
@@ -3125,7 +3200,7 @@ BYTE __stdcall CGameData::GetCardLogicColor(const BYTE *cbCardData, BYTE cbCardC
 }
 
 //两张卡牌是否相连（第一张牌比第二张大）
-bool __stdcall CGameData::IsLineValue(BYTE cbTurnCard, BYTE cbSecondCard)
+bool CGameData::IsLineValue(BYTE cbTurnCard, BYTE cbSecondCard)
 {
 	bool bIsLine = false;
 
@@ -3170,7 +3245,7 @@ bool __stdcall CGameData::IsLineValue(BYTE cbTurnCard, BYTE cbSecondCard)
 }
 
 //一轮比牌，判断赢家
-WORD __stdcall CGameData::GetOneRoundWinner()
+WORD CGameData::GetOneRoundWinner()
 {
 	//初始赢家为第一个出牌玩家
 	WORD wWinner = m_playing_para.start_outcard_user;
@@ -3250,7 +3325,7 @@ WORD __stdcall CGameData::GetOneRoundWinner()
 }
 
 //计算一轮输赢得分
-WORD __stdcall CGameData::SettleOneRound(const WORD &wWinner)
+WORD CGameData::SettleOneRound(const WORD &wWinner)
 {
 	//分数存在庄家和庄家的下家身上,庄家是守分方，闲家是得分方
 	WORD score = 0;
@@ -3279,7 +3354,7 @@ WORD __stdcall CGameData::SettleOneRound(const WORD &wWinner)
 }
 
 //获得一轮中的所有分牌
-BYTE __stdcall CGameData::GetScoreCard()
+BYTE CGameData::GetScoreCard()
 {
 	//变量定义
 	BYTE cbPostion = 0;
@@ -3308,7 +3383,7 @@ BYTE __stdcall CGameData::GetScoreCard()
 }
 
 //获取卡牌数组总分数
-WORD __stdcall CGameData::GetAllCardScore(const BYTE *cbCardData, BYTE cbCardCount)
+WORD CGameData::GetAllCardScore(const BYTE *cbCardData, BYTE cbCardCount)
 {
 	//变量定义
 	WORD wCardScore = 0;
@@ -3338,7 +3413,7 @@ WORD __stdcall CGameData::GetAllCardScore(const BYTE *cbCardData, BYTE cbCardCou
 }
 
 //比较玩家出牌大小，后面比前面大，返回true
-bool __stdcall CGameData::CompareUserOutCard(const BYTE &cbFirstCardData, const WORD &cbNextCardData)
+bool CGameData::CompareUserOutCard(const BYTE &cbFirstCardData, const WORD &cbNextCardData)
 {
 	//获取花色
 	BYTE cbLogicColorNext = GetCardLogicColor(cbNextCardData);
@@ -3362,7 +3437,7 @@ bool __stdcall CGameData::CompareUserOutCard(const BYTE &cbFirstCardData, const 
 }
 
 //出牌校验    //将玩家要出的牌和该轮最大的出牌进行比较 可以出返回true
-bool __stdcall CGameData::EfficacyOutCard(const WORD &wCheckUser, const BYTE *cbOutCardData, const BYTE &cbOutCardCount)
+bool CGameData::EfficacyOutCard(const WORD &wCheckUser, const BYTE *cbOutCardData, const BYTE &cbOutCardCount)
 {
 	//获得该轮最大的出牌数据
 	BYTE cbTurnCardNum = m_playing_para.turn_cards_num;
@@ -3378,8 +3453,8 @@ bool __stdcall CGameData::EfficacyOutCard(const WORD &wCheckUser, const BYTE *cb
 	cout << endl;
 
 	//获取类型
-	int cbNextType = GetCardLogicType(cbOutCardData, cbOutCardCount);
 	int cbFirstType = GetCardLogicType(cbTurnCard, cbTurnCardNum);
+	int cbNextType = GetCardLogicType(cbOutCardData, cbOutCardCount);
 
 	cout << "cbFirstType:" << cbFirstType << endl;
 	cout << "cbNextType:" << cbNextType << endl;
@@ -3391,21 +3466,12 @@ bool __stdcall CGameData::EfficacyOutCard(const WORD &wCheckUser, const BYTE *cb
 	if ((cbNextType&(1 << CT_MISSILE_CARD)) != 0) return true;
 
 	//炸弹判断
-	if ((cbFirstType&(1 << CT_MISSILE_CARD)) == 0 && (cbNextType&(1 << CT_LAIZI_BOMB)) != 0) { return true; }
-	//if((cbFirstType&(1<<CT_LAIZI_BOMB)) == 0 &&(cbNextType&(1<<CT_BOMB_CARD)) != 0) { cout << "2" << endl;  return true; }
+	if ((cbFirstType&(1 << CT_LAIZI_BOMB)) != 0) { return false; }
+	if ((cbNextType&(1 << CT_LAIZI_BOMB)) != 0) { return true; }
 	if ((cbFirstType&(1 << CT_BOMB_CARD)) == 0 && (cbNextType&(1 << CT_BOMB_CARD)) != 0) { return true; }
-
-	if ((cbFirstType&(1 << CT_LAIZI_BOMB)) != 0 && (cbNextType&(1 << CT_MISSILE_CARD)) == 0) { return false; }
-	//if((cbFirstType&(1<<CT_BOMB_CARD)) != 0 && (cbNextType&(1<<CT_LAIZI_BOMB)) == 0 && (cbNextType&(1<<CT_MISSILE_CARD)) == 0) { cout << "5" << endl;  return false; }
-	if ((cbFirstType&(1 << CT_RUAN_BOMB)) != 0 && (cbNextType&(1 << CT_RUAN_BOMB)) == 0
-		&& (cbNextType&(1 << CT_LAIZI_BOMB)) == 0 && (cbNextType&(1 << CT_MISSILE_CARD)) == 0) {
-		return false;
-	}
-
-	if ((cbFirstType&(1 << CT_MISSILE_CARD)) == 0 && (cbFirstType&(1 << CT_LAIZI_BOMB)) == 0 &&
-		(cbFirstType&(1 << CT_BOMB_CARD)) == 0 && (cbFirstType&(1 << CT_RUAN_BOMB)) == 0 && (cbNextType&(1 << CT_RUAN_BOMB)) != 0) {
-		return true;
-	}
+	if ((cbFirstType&(1 << CT_BOMB_CARD)) != 0 && (cbNextType&(1 << CT_BOMB_CARD)) == 0) { return false; }
+	if ((cbFirstType&(1 << CT_RUAN_BOMB)) != 0 && (cbNextType&(1 << CT_RUAN_BOMB)) == 0 && (cbNextType&(1 << CT_BOMB_CARD)) == 0) { return false; }
+	if ((cbFirstType&(1 << CT_BOMB_CARD)) == 0 && (cbFirstType&(1 << CT_RUAN_BOMB)) == 0 && (cbNextType&(1 << CT_RUAN_BOMB)) != 0) { return true; }
 
 
 	//规则判断
@@ -3656,7 +3722,6 @@ bool __stdcall CGameData::EfficacyOutCard(const WORD &wCheckUser, const BYTE *cb
 				return true;
 		}
 	}
-
 	else if ((cbNextType&(1 << CT_THREE_LINE_TAKE_ONE)) != 0 && cbTurnCardNum == cbOutCardCount)
 	{
 		//分析扑克
@@ -3780,7 +3845,7 @@ bool __stdcall CGameData::EfficacyOutCard(const WORD &wCheckUser, const BYTE *cb
 }
 
 //根据指定花色提取扑克
-BYTE __stdcall CGameData::DistillCardByColor(const BYTE cbCardData[], BYTE cbCardCount, BYTE cbCardColor, BYTE cbResultCard[])
+BYTE CGameData::DistillCardByColor(const BYTE cbCardData[], BYTE cbCardCount, BYTE cbCardColor, BYTE cbResultCard[])
 {
 	//变量定义
 	BYTE cbResultCount = 0;
@@ -3803,7 +3868,7 @@ BYTE __stdcall CGameData::DistillCardByColor(const BYTE cbCardData[], BYTE cbCar
 }
 
 //根据数目提取扑克
-BYTE __stdcall CGameData::DistillCardByCount(const BYTE cbCardData[], BYTE cbCardCount, BYTE cbSameCount, tagSameDataInfo &SameDataInfo)
+BYTE CGameData::DistillCardByCount(const BYTE cbCardData[], BYTE cbCardCount, BYTE cbSameCount, tagSameDataInfo &SameDataInfo)
 {
 	//参数效验
 	if ((cbSameCount < 2) || (cbSameCount > MAX_PACK)) return 0;
@@ -3845,7 +3910,7 @@ BYTE __stdcall CGameData::DistillCardByCount(const BYTE cbCardData[], BYTE cbCar
 }
 
 //提取拖拉机扑克
-BYTE __stdcall CGameData::DistillTrackorByCount(const BYTE cbCardData[], BYTE cbCardCount, BYTE cbSameCount, tagTractorDataInfo &TractorDataInfo)
+BYTE CGameData::DistillTrackorByCount(const BYTE cbCardData[], BYTE cbCardCount, BYTE cbSameCount, tagTractorDataInfo &TractorDataInfo)
 {
 	//参数效验
 	if ((cbSameCount < 2) || (cbSameCount > MAX_PACK)) return 0;
@@ -3930,7 +3995,7 @@ BYTE __stdcall CGameData::DistillTrackorByCount(const BYTE cbCardData[], BYTE cb
 	return TractorDataInfo.cbTractorCount;
 }
 
-BYTE __stdcall CGameData::GetIntersectionCount(const BYTE cbCardData1[], BYTE cbCardCount1, const BYTE cbCardData2[], BYTE cbCardCount2)
+BYTE CGameData::GetIntersectionCount(const BYTE cbCardData1[], BYTE cbCardCount1, const BYTE cbCardData2[], BYTE cbCardCount2)
 {
 	//变量定义
 	BYTE cbAnalyseCard[MAX_CARD_COUNT];
@@ -3957,7 +4022,7 @@ BYTE __stdcall CGameData::GetIntersectionCount(const BYTE cbCardData1[], BYTE cb
 }
 
 //根据一轮的开始出牌玩家，分析玩家可以出的牌
-bool __stdcall CGameData::AnalyseOutCardNotify(const WORD &wChairID, const BYTE *OutCardData,
+bool CGameData::AnalyseOutCardNotify(const WORD &wChairID, const BYTE *OutCardData,
 	const BYTE &cbOutCardNum, tagOutCardNotify *cbOutCardNotify)
 {
 
@@ -3967,7 +4032,7 @@ bool __stdcall CGameData::AnalyseOutCardNotify(const WORD &wChairID, const BYTE 
 }
 
 //判断用户手牌中是否有指定花色的该类型的卡牌
-bool __stdcall CGameData::IsHaveSpecificType(const WORD &wChairID, const BYTE &color, const BYTE &cbOutCardType,
+bool CGameData::IsHaveSpecificType(const WORD &wChairID, const BYTE &color, const BYTE &cbOutCardType,
 	const BYTE &cbOutCardNum, tagOutCardNotify &cbOutCardNotify)
 {
 	//校验
@@ -4691,7 +4756,7 @@ int __stdcall CGameData::SetShowCardState(WORD wChairID, BYTE state)
 @Return:          无
 @author & data:	lizhihu 2017.11.2
 *************************************************/
-bool __stdcall CGameData::SetRoomRule(tagGameRoomItem * pRoomRuleOption)
+bool __stdcall CGameData::SetRoomRule(tagTableCfg * pRoomRuleOption)
 {
 	if (NULL == pRoomRuleOption)
 	{
@@ -4707,50 +4772,41 @@ bool __stdcall CGameData::SetRoomRule(tagGameRoomItem * pRoomRuleOption)
 	//设置游戏类型ID
 	SetKindID(KIND_ID);
 
-	////设置局数
-	////cout << "2" << endl;
-	////printf("设置总局数：%d\n", pRoomRuleOption->sub_rule.gamejushu());
-	//SetAllCount(pRoomRuleOption->com_rule.GameCount);
+	//设置局数
+	SetAllCount(pRoomRuleOption->com_rule->GameCount);
 
-	////设置椅子和玩家数目
-	//SetMaxChairCount(pRoomRuleOption->com_rule.PlayerCount);
-	//cout << "PlayerCount:" << (int)pRoomRuleOption->com_rule.PlayerCount << endl;
+	//设置椅子和玩家数目
+	SetMaxChairCount(pRoomRuleOption->com_rule->PlayerCount);
 
-	//// 设置下注底分
-	////cout << "3" << endl;
-	////printf("打印房间底分：%d\n", pRoomRuleOption->sub_rule.cellscore());
-	//SetCellScore(pRoomRuleOption->com_rule.CellScore);
+	// 设置下注底分
+	SetCellScore(pRoomRuleOption->com_rule->CellScore);
 
-	////设置游戏得分模式，经典模式或不洗牌
-	//SetGameScoreMode(pRoomRuleOption->sub_rule.dontcutcards());
-	//cout << "设置游戏得分模式" << pRoomRuleOption->sub_rule.dontcutcards() << endl;
+	//设置游戏得分模式，经典模式或不洗牌   ---------子游戏规则待设定
+	SetGameScoreMode(0);
 
-	////设置游戏抢庄模式：0 - 抢庄		1 - 叫三分
-	//SetRobBankMode(pRoomRuleOption->sub_rule.gamedizhu());
-	//cout << "Bankmode::::" << pRoomRuleOption->sub_rule.gamedizhu() << endl;
+	//设置游戏抢庄模式：0 - 抢庄		1 - 叫三分
+	SetRobBankMode(0);
 
-	////设置房主
-	//printf("设置房主：%d\n", pRoomRuleOption->com_rule.FangZhu);
-	//SetRoomFangzhu(pRoomRuleOption->com_rule.FangZhu);
+	//设置房主
+	SetRoomFangzhu(pRoomRuleOption->com_rule->FangZhu);
 
-	////根据人数设置升级扣底卡牌数
-	//m_card_config.leave_card_num = NORMAL_LEAVE_CARD_NUM;
-	//m_card_config.init_card_num = NORMAL_HAND_CARD_NUM;
+	m_card_config.leave_card_num = NORMAL_LEAVE_CARD_NUM;
+	m_card_config.init_card_num = NORMAL_HAND_CARD_NUM;
 
-	////设置封顶倍数
-	//SetRoomMaxBet(pRoomRuleOption->sub_rule.gamefengding());
+	//设置封顶倍数
+	SetRoomMaxBet(0);
 
-	////设置游戏癞子模式  0-经典  1-癞子  2-天地癞子
-	//SetLaiZiMode(pRoomRuleOption->sub_rule.gamewanfa());
+	//设置游戏癞子模式  0-经典  1-癞子  2-天地癞子
+	SetLaiZiMode(0);
 
-	////设置底牌翻倍   0-不翻倍  1-翻倍
-	//SetISLeaveCardDouble(pRoomRuleOption->sub_rule.basecardaddmultiple());
+	//设置底牌翻倍   0-不翻倍  1-翻倍
+	SetISLeaveCardDouble(0);
 
-	////设置是否明牌   0-不明牌   1-明牌
-	//SetMingPaiMode(pRoomRuleOption->sub_rule.showcards());
+	//设置是否明牌   0-不明牌   1-明牌
+	SetMingPaiMode(0);
 
-	////设置是否加倍   0-不加倍   1-加倍
-	//SetAddBetMode(pRoomRuleOption->sub_rule.addmultiple());
+	//设置是否加倍   0-不加倍   1-加倍
+	SetAddBetMode(0);
 
 	return true;
 }
@@ -4784,6 +4840,9 @@ int __stdcall CGameData::SetPlayerInitCardNum()
 {
 	//根据人数，设置玩家初始手牌数
 	m_card_config.init_card_num = (m_card_config.game_cards_sum - m_card_config.leave_card_num) / m_players_config.player_sum;
+
+	//测试用 17张牌
+	m_card_config.init_card_num = 17;
 
 	return 0;
 }
@@ -5089,7 +5148,7 @@ BYTE __stdcall CGameData::GetMagicCardNum(const WORD &wChairID)
 //设置当前癞子
 int __stdcall CGameData::SetMagicCard(const BYTE &cbCard)
 {
-	m_playing_para.magic_card = cbCard;
+	m_playing_para.magic_card = ((cbCard >= 14) ? (cbCard - 13) : cbCard) + 0x50;   //癞子逻辑值有这么大
 	return 0;
 }
 
@@ -5108,15 +5167,17 @@ int __stdcall CGameData::SetUserBoomInfo(const WORD &wChairID, const DWORD cbBoo
 		cout << "Error!!!" << endl;
 
 	// 设置当前房间倍数并记录各玩家倍数
-	if (((cbBoomType&(1 << CT_MISSILE_CARD)) != 0))    //普通场不考虑软炸弹
+	if (((cbBoomType&(1 << CT_MISSILE_CARD)) != 0))    //王炸
 	{
-		cout << 1 << endl;
-		m_playing_para.room_bet *= HARD_BOOM_TIMES;
-
 		for (int i = 0; i < m_room_config.max_chair_sum; i++)      //把炸弹倍数添加上
 		{
 			if (USER_PLAYING == GetPlayerState(i))
-				m_players_config.players[i].bet *= RUAN_BOOM_TIMES;
+			{
+				if (0 < GetLaiZiMode())
+					m_players_config.players[i].bet *= HARD_BOOM_TIMES;
+				else
+					m_players_config.players[i].bet *= RUAN_BOOM_TIMES;
+			}
 
 			if (m_players_config.players[i].bet > m_playing_para.max_room_bet)   //判断是否封顶
 				m_players_config.players[i].bet = m_playing_para.max_room_bet;
@@ -5126,15 +5187,51 @@ int __stdcall CGameData::SetUserBoomInfo(const WORD &wChairID, const DWORD cbBoo
 		BYTE &cbBoomNum = m_players_config.players[wChairID].boom_info.cbBoomNum;
 		m_players_config.players[wChairID].boom_info.cbBoomType[cbBoomNum++] = cbBoomType;
 	}
-	else if (((cbBoomType & (1 << CT_BOMB_CARD)) != 0))    //普通场不考虑软炸弹
+	else if (((cbBoomType & (1 << CT_BOMB_CARD)) != 0))    //硬炸
 	{
-		cout << 1 << endl;
-		m_playing_para.room_bet *= RUAN_BOOM_TIMES;
-
 		for (int i = 0; i < m_room_config.max_chair_sum; i++)      //把炸弹倍数添加上
 		{
 			if (USER_PLAYING == GetPlayerState(i))
+			{
+				if (0 < GetLaiZiMode())
+					m_players_config.players[i].bet *= HARD_BOOM_TIMES;
+				else
+					m_players_config.players[i].bet *= RUAN_BOOM_TIMES;
+			}
+
+			if (m_players_config.players[i].bet > m_playing_para.max_room_bet)   //判断是否封顶
+				m_players_config.players[i].bet = m_playing_para.max_room_bet;
+		}
+
+		//赋值
+		BYTE &cbBoomNum = m_players_config.players[wChairID].boom_info.cbBoomNum;
+		m_players_config.players[wChairID].boom_info.cbBoomType[cbBoomNum++] = cbBoomType;
+	}
+	else if (((cbBoomType & (1 << CT_RUAN_BOMB)) != 0))    //软炸
+	{
+		for (int i = 0; i < m_room_config.max_chair_sum; i++)      //把炸弹倍数添加上
+		{
+			if (USER_PLAYING == GetPlayerState(i) && 0 < GetLaiZiMode())
+			{
 				m_players_config.players[i].bet *= RUAN_BOOM_TIMES;
+			}
+
+			if (m_players_config.players[i].bet > m_playing_para.max_room_bet)   //判断是否封顶
+				m_players_config.players[i].bet = m_playing_para.max_room_bet;
+		}
+
+		//赋值
+		BYTE &cbBoomNum = m_players_config.players[wChairID].boom_info.cbBoomNum;
+		m_players_config.players[wChairID].boom_info.cbBoomType[cbBoomNum++] = cbBoomType;
+	}
+	else if (((cbBoomType & (1 << CT_LAIZI_BOMB)) != 0))    //癞子炸弹
+	{
+		for (int i = 0; i < m_room_config.max_chair_sum; i++)      //把炸弹倍数添加上
+		{
+			if (USER_PLAYING == GetPlayerState(i) && 0 < GetLaiZiMode())
+			{
+				m_players_config.players[i].bet *= HARD_BOOM_TIMES;
+			}
 
 			if (m_players_config.players[i].bet > m_playing_para.max_room_bet)   //判断是否封顶
 				m_players_config.players[i].bet = m_playing_para.max_room_bet;
@@ -5186,6 +5283,10 @@ int CGameData::LoadGameCards()
 
 		//玩家初始手牌数
 		SetPlayerInitCardNum();
+	}
+	else
+	{
+		cout << "配置的全局变量ERR" << endl;
 	}
 
 	return result;
@@ -6064,3 +6165,1456 @@ int __stdcall CGameData::GetPlayerTimeOutNum(WORD wChairID)
 {
 	return m_players_config.players[wChairID].out_time_num;
 }
+
+//================================================癞子场判断=================================================   add by lih
+
+//获得于包含癞子的卡牌的逻辑数值
+BYTE CGameData::GetCardLogicValueLaiZi(BYTE cbCardData)
+{
+	if (0 == cbCardData)
+	{
+		return 0;
+	}
+
+	//逻辑数值
+	BYTE cbCardColor = GetCardColor(cbCardData);
+	BYTE cbCardValue = GetCardValue(cbCardData);
+
+	//转换数值明显出现错误
+	if ((cbCardColor << 4) == 0x40) return cbCardValue + 2;		//大小王   
+
+	if (m_room_config.game_laizi_mode > 0)
+	{
+		//癞子放在最左边
+		if ((m_playing_para.magic_card != 0) && (m_playing_para.magic_card == 16 * 5 + cbCardValue))     //不考虑癞子
+		{
+			return (cbCardValue + 16 * 5);
+		}
+	}
+
+	return (cbCardValue <= 2) ? (cbCardValue + 13) : cbCardValue;
+
+}
+
+//设置癞子当成的普通牌
+int CGameData::SetLaiZiToCommon(BYTE LaiZiData[], BYTE Count)
+{
+	if (LaiZiData == NULL)
+		return false;
+
+	ZeroMemory(&m_playing_para.laizi_transport, sizeof(m_playing_para.laizi_transport));
+	memcpy(m_playing_para.laizi_transport, LaiZiData, Count * sizeof(BYTE));
+
+	m_playing_para.transport_count = Count;
+
+	return 0;
+}
+
+//获取癞子当成的普通牌
+int CGameData::GetLaiZiToCommon(BYTE LaiZiData[], BYTE &Count)
+{
+	if (LaiZiData == NULL)
+		return false;
+
+	Count = m_playing_para.transport_count;
+
+	for (int i = 0; i < Count; i++)
+	{
+		LaiZiData[i] = m_playing_para.laizi_transport[i];
+	}
+
+	return 0;
+}
+
+//将玩家手牌中的癞子进行牌值替换
+bool CGameData::ReplaceLaiZiCard(WORD wChairID, BYTE cbCardNum)
+{
+	if (0 == m_room_config.game_laizi_mode)
+		return false;
+
+	for (int i = 0; i < MAX_LAIZI_COUNT; i++)
+	{
+		if (m_playing_para.magic_card == GetCardLogicValueLaiZi(m_players_config.hand_cards[wChairID][i]))
+		{
+			m_players_config.hand_cards[wChairID][i] = m_playing_para.magic_card;
+		}
+	}
+
+	return true;
+}
+
+//斗地主不考虑癞子的排序
+void CGameData::SortCardListNoLaiZi(BYTE cbCardData[], BYTE cbCardCount, BYTE cbSortType)
+{
+	//数目过虑
+	if (cbCardCount == 0) return;
+
+	//转换数值
+	BYTE cbSortValue[MAX_CARD_COUNT];
+	for (BYTE i = 0; i < cbCardCount; i++)
+	{
+		cbSortValue[i] = GetCardLogicValue(cbCardData[i]);
+	}
+
+	//排序操作
+	bool bSorted = true;
+	BYTE cbThreeCount, cbLast = cbCardCount - 1;
+	do
+	{
+		bSorted = true;
+		for (BYTE i = 0; i < cbLast; i++)
+		{
+			if ((cbSortValue[i] < cbSortValue[i + 1]) ||
+				((cbSortValue[i] == cbSortValue[i + 1]) && (cbCardData[i] < cbCardData[i + 1])))
+			{
+				//交换位置
+				cbThreeCount = cbCardData[i];
+				cbCardData[i] = cbCardData[i + 1];
+				cbCardData[i + 1] = cbThreeCount;
+				cbThreeCount = cbSortValue[i];
+				cbSortValue[i] = cbSortValue[i + 1];
+				cbSortValue[i + 1] = cbThreeCount;
+				bSorted = false;
+			}
+		}
+		cbLast--;
+	} while (bSorted == false);
+
+	return;
+}
+
+//判断癞子场的玩家是否能出牌
+bool CGameData::JudgeLaiZiPlayerOutCard(WORD wChairID)
+{
+	//校验
+	if (wChairID < 0 || wChairID > MAX_CHAIR_COUNT)
+		return false;
+
+	//获取玩家的手牌
+	BYTE HandCardData[MAX_CARD_COUNT];
+	BYTE HandCardNum = m_players_config.players[wChairID].hand_card_num;
+
+	ZeroMemory(&HandCardData, sizeof(HandCardData));
+	CopyMemory(HandCardData, m_players_config.hand_cards[wChairID], sizeof(BYTE)*HandCardNum);
+
+	//获取癞子数量
+	BYTE LaiZiNum = GetMagicCardNum(HandCardData, HandCardNum);
+
+	cout << "LaiZiCount:::" << (int)LaiZiNum << endl;
+
+	//定义癞子当普通牌的牌值 DOLATER
+	BYTE ReplaceData[MAX_LAIZI_COUNT] = { 0 };		//癞子当普通牌的数据
+	BYTE ReplaceNum = 0;							//癞子当普通牌的数量
+
+													//清零
+	SetLaiZiToCommon(ReplaceData, ReplaceNum);
+
+	//是否都是癞子
+	bool LaiFlag = false;
+	for (int i = 0; i < HandCardNum; i++)
+	{
+		if (m_playing_para.magic_card == GetCardLogicValueLaiZi(HandCardData[i]))
+			LaiFlag = true;
+		else
+			LaiFlag = false;
+	}
+
+	//辅助参数定义
+	BYTE OutCardData[MAX_CARD_COUNT];
+	BYTE OutCardNum;
+	ZeroMemory(&OutCardData, sizeof(OutCardData));
+
+	//替换数组定义
+	BYTE tmpCard[MAX_CARD_COUNT];
+	ZeroMemory(&tmpCard, sizeof(tmpCard));
+	CopyMemory(tmpCard, HandCardData, sizeof(BYTE)*HandCardNum);
+
+	//当癞子牌做普通牌
+	if (!LaiFlag && LaiZiNum != 0)
+	{
+		for (int a = 0; a < HandCardNum; a++)
+		{
+			if (m_playing_para.magic_card == GetCardLogicValueLaiZi(HandCardData[a]))
+			{
+				cout << "==============OneLai================" << endl;
+				//一张癞子
+				for (int b = 0; b < 13; b++)
+				{
+					//牌替换
+					tmpCard[a] = m_cbCardData[b] + 0x50;
+
+					//两张癞子
+					if (LaiZiNum >= 2)
+					{
+						for (int c = a + 1; c < HandCardNum; c++)
+						{
+							if (m_playing_para.magic_card == GetCardLogicValueLaiZi(HandCardData[c]))
+							{
+								cout << "==============TwoLai================" << endl;
+								for (int d = 0; d < 13; d++)
+								{
+									//牌替换
+									tmpCard[c] = m_cbCardData[d] + 0x50;
+
+									//三张癞子
+									if (LaiZiNum >= 3)
+									{
+										for (int e = c + 1; e < HandCardNum; e++)
+										{
+											if (m_playing_para.magic_card == GetCardLogicValueLaiZi(HandCardData[e]))
+											{
+												cout << "==============ThreeLai================" << endl;
+												for (int f = 0; f < 13; f++)
+												{
+													//牌替换
+													tmpCard[e] = m_cbCardData[f] + 0x50;
+
+													//四张癞子
+													if (LaiZiNum >= 4)
+													{
+														for (int g = e + 1; g < HandCardNum; g++)
+														{
+															if (m_playing_para.magic_card == GetCardLogicValueLaiZi(HandCardData[g]))
+															{
+																cout << "==============FourLai================" << endl;
+																for (int h = 0; h < 13; h++)
+																{
+																	//牌替换
+																	tmpCard[g] = m_cbCardData[h] + 0x50;
+
+																	//五张癞子  写天地癞子清在这里加
+
+																	//判断是否要的起
+																	if (LaiZiCompareCard(tmpCard, HandCardNum, OutCardData, &OutCardNum))
+																		return true;
+																	else
+																		continue;
+																}
+																break;
+															}
+														}
+													}
+
+													//判断是否要的起
+													if (LaiZiCompareCard(tmpCard, HandCardNum, OutCardData, &OutCardNum))
+														return true;
+													else
+														continue;
+												}
+												break;
+											}
+										}
+									}
+
+									//判断是否要的起
+									if (LaiZiCompareCard(tmpCard, HandCardNum, OutCardData, &OutCardNum))
+										return true;
+									else
+										continue;
+								}
+								break;
+							}
+						}
+					}
+
+					//判断是否要的起
+					if (LaiZiCompareCard(tmpCard, HandCardNum, OutCardData, &OutCardNum))
+						return true;
+					else
+						continue;
+				}
+				break;
+			}
+		}
+	}
+	else
+	{
+		if (LaiZiCompareCard(HandCardData, HandCardNum, OutCardData, &OutCardNum))
+			return true;
+		else
+			return false;
+	}
+
+	return false;
+}
+
+//癞子：玩家第一个出牌  判断他可以出的合适的牌
+bool CGameData::LaiZiAnalysePlayerOutCardFirst(WORD OutCardUsr, BYTE OutCardData[], BYTE *OutCardNum)
+{
+	//校验
+	if (OutCardUsr < 0 || OutCardUsr > MAX_CHAIR_COUNT || OutCardData == NULL)
+		return false;
+
+
+
+	return true;
+}
+
+//癞子：玩家接牌
+bool CGameData::LaiZiAnalysePlayerOutCard(WORD OutCardUsr, BYTE OutCardData[], BYTE *OutCardNum)
+{
+	//校验
+	if (OutCardUsr < 0 || OutCardUsr > MAX_CHAIR_COUNT || OutCardData == NULL)
+		return false;
+
+	//获取玩家的手牌
+	BYTE HandCardData[MAX_CARD_COUNT];
+	BYTE HandCardNum = m_players_config.players[OutCardUsr].hand_card_num;
+
+	ZeroMemory(&HandCardData, sizeof(HandCardData));
+	CopyMemory(HandCardData, m_players_config.hand_cards[OutCardUsr], sizeof(BYTE)*HandCardNum);
+
+	//获取癞子数量
+	BYTE LaiZiNum = GetMagicCardNum(HandCardData, HandCardNum);
+
+	cout << "LaiZiCount:::" << (int)LaiZiNum << endl;
+
+	//定义癞子当普通牌的牌值 DOLATER
+	BYTE ReplaceData[MAX_LAIZI_COUNT] = { 0 };		//癞子当普通牌的数据
+	BYTE ReplaceNum = 0;							//癞子当普通牌的数量
+
+													//清零
+	SetLaiZiToCommon(ReplaceData, ReplaceNum);
+
+	//是否都是癞子
+	bool LaiFlag = false;
+	for (int i = 0; i < HandCardNum; i++)
+	{
+		if (m_playing_para.magic_card == GetCardLogicValueLaiZi(HandCardData[i]))
+			LaiFlag = true;
+		else
+			LaiFlag = false;
+	}
+
+	//替换数组定义
+	BYTE tmpCard[MAX_CARD_COUNT];
+	ZeroMemory(&tmpCard, sizeof(tmpCard));
+	CopyMemory(tmpCard, HandCardData, sizeof(BYTE)*HandCardNum);
+
+	//当癞子牌做普通牌
+	if (!LaiFlag && LaiZiNum != 0)
+	{
+		for (int a = 0; a < HandCardNum; a++)
+		{
+			if (m_playing_para.magic_card == GetCardLogicValueLaiZi(HandCardData[a]))
+			{
+				cout << "==============OneLai================" << endl;
+				//一张癞子
+				for (int b = 0; b < 13; b++)
+				{
+					//牌替换
+					tmpCard[a] = m_cbCardData[b] + 0x50;
+
+					//两张癞子
+					if (LaiZiNum >= 2)
+					{
+						for (int c = a + 1; c < HandCardNum; c++)
+						{
+							if (m_playing_para.magic_card == GetCardLogicValueLaiZi(HandCardData[c]))
+							{
+								cout << "==============TwoLai================" << endl;
+								for (int d = 0; d < 13; d++)
+								{
+									//牌替换
+									tmpCard[c] = m_cbCardData[d] + 0x50;
+
+									//三张癞子
+									if (LaiZiNum >= 3)
+									{
+										for (int e = c + 1; e < HandCardNum; e++)
+										{
+											if (m_playing_para.magic_card == GetCardLogicValueLaiZi(HandCardData[e]))
+											{
+												cout << "==============ThreeLai================" << endl;
+												for (int f = 0; f < 13; f++)
+												{
+													//牌替换
+													tmpCard[e] = m_cbCardData[f] + 0x50;
+
+													//四张癞子
+													if (LaiZiNum >= 4)
+													{
+														for (int g = e + 1; g < HandCardNum; g++)
+														{
+															if (m_playing_para.magic_card == GetCardLogicValueLaiZi(HandCardData[g]))
+															{
+																cout << "==============FourLai================" << endl;
+																for (int h = 0; h < 13; h++)
+																{
+																	//牌替换
+																	tmpCard[g] = m_cbCardData[h] + 0x50;
+
+																	//五张癞子  写天地癞子清在这里加
+
+																	//判断是否要的起
+																	if (LaiZiCompareCard(tmpCard, HandCardNum, OutCardData, OutCardNum))
+																		return true;
+																	else
+																		continue;
+																}
+																break;
+															}
+														}
+													}
+
+													//判断是否要的起
+													if (LaiZiCompareCard(tmpCard, HandCardNum, OutCardData, OutCardNum))
+														return true;
+													else
+														continue;
+												}
+												break;
+											}
+										}
+									}
+
+									//判断是否要的起
+									if (LaiZiCompareCard(tmpCard, HandCardNum, OutCardData, OutCardNum))
+										return true;
+									else
+										continue;
+								}
+								break;
+							}
+						}
+					}
+
+					//判断是否要的起
+					if (LaiZiCompareCard(tmpCard, HandCardNum, OutCardData, OutCardNum))
+						return true;
+					else
+						continue;
+				}
+				break;
+			}
+		}
+	}
+	else
+	{
+		if (LaiZiCompareCard(HandCardData, HandCardNum, OutCardData, OutCardNum))
+			return true;
+		else
+			return false;
+	}
+
+	return false;
+}
+
+//癞子：分析比较手牌
+bool CGameData::LaiZiCompareCard(BYTE Card[], BYTE CardCount, BYTE OutCardData[]/*out*/, BYTE *OutCardNum)
+{
+	//校验
+	if (Card == NULL || OutCardData == NULL)
+		return false;
+
+	//Card数组
+	BYTE tmpCard[MAX_CARD_COUNT];
+	ZeroMemory(&tmpCard, sizeof(tmpCard));
+	CopyMemory(tmpCard, Card, sizeof(BYTE)*CardCount);
+
+	//卡牌排序
+	SortCardListNoLaiZi(tmpCard, CardCount, ST_ORDER);
+
+	//构建值
+	BYTE tmpOutCardData[MAX_CARD_COUNT];
+	BYTE tmpOutCardNum = 0;
+	ZeroMemory(&tmpOutCardData, sizeof(tmpOutCardData));
+
+	//获得该轮最大出牌数据
+	BYTE TurnCardNum = m_playing_para.turn_cards_num;
+	BYTE TurnCardData[MAX_CARD_COUNT];
+	ZeroMemory(&TurnCardData, sizeof(TurnCardData));
+	CopyMemory(TurnCardData, m_playing_para.turn_max_cards, sizeof(TurnCardData));
+
+	//获取当前玩家的手牌数据
+	BYTE CurCardNum = CardCount;
+	BYTE CurCardData[MAX_CARD_COUNT];
+	ZeroMemory(&CurCardData, sizeof(CurCardData));
+
+	for (int i = 0; i < CurCardNum; i++)
+	{
+		CurCardData[i] = tmpCard[i];
+	}
+
+	//分析两个扑克牌型
+	tagAnalyseResult TurnResult;
+	tagAnalyseResult CurResult;
+
+	ZeroMemory(&TurnResult, sizeof(TurnResult));
+	ZeroMemory(&CurResult, sizeof(CurResult));
+
+	AnalysebCardData(CurCardData, CurCardNum, CurResult);
+	AnalysebCardData(TurnCardData, TurnCardNum, TurnResult);
+
+	//获取出牌玩家的牌型
+	int TurnCardType = GetType(TurnResult, TurnCardData, TurnCardNum, TurnCardData);
+	TurnCardType = TransListToInt(0, TurnCardType);
+
+	//对比判断牌型
+	if (TurnCardType == CT_ERROR)	return false;
+	if ((TurnCardType & (1 << CT_MISSILE_CARD)) != 0)    return false;    //王炸判断
+
+																		  //炸弹判断
+	if ((TurnCardType & (1 << CT_BOMB_CARD)) != 0)   //上家出炸弹
+	{
+		cout << "炸弹" << endl;
+
+		//获取上家出牌数值
+		BYTE TurnLogicValue = GetCardLogicValue(TurnResult.cbFourCardData[0]);
+		int index = 0;   //辅助标识
+
+						 //if (CurResult.cbFourCount == 0)    return false;
+		for (int i = 0; i < CurResult.cbFourCount; i++)
+		{
+			bool Ruanboom = false;
+			int  LaiZiFlag = 0;
+			for (int k = 0; k < 4; k++)
+			{
+				if (0x50 < CurResult.cbFourCardData[index + k])
+				{
+					Ruanboom = true;
+					LaiZiFlag++;
+				}
+			}
+
+			if ((GetCardLogicValue(CurResult.cbFourCardData[index]) > TurnLogicValue && !Ruanboom) || 4 == LaiZiFlag)
+			{
+				for (int j = 0; j < 4; j++)
+					tmpOutCardData[j] = CurResult.cbFourCardData[index++];
+				tmpOutCardNum = 4;
+
+				memcpy(OutCardData, tmpOutCardData, tmpOutCardNum*(sizeof(BYTE)));
+				*OutCardNum = tmpOutCardNum;
+
+				return true;
+			}
+
+			index += 4;
+		}
+
+		//王炸判断
+		if ((GetCardLogicValue(CurCardData[0]) == 17) && (GetCardLogicValue(CurCardData[1]) == 16))
+		{
+			for (int i = 0; i < 2; i++)
+			{
+				tmpOutCardData[i] = CurCardData[i];
+			}
+			tmpOutCardNum = 2;
+
+			memcpy(OutCardData, tmpOutCardData, tmpOutCardNum*(sizeof(BYTE)));
+			*OutCardNum = tmpOutCardNum;
+
+			return true;
+		}
+	}
+	else if ((TurnCardType & (1 << CT_RUAN_BOMB)) != 0)   //上家出软炸
+	{
+		cout << "软炸" << endl;
+
+		//获取上家出牌数值
+		BYTE TurnLogicValue = GetCardLogicValue(TurnResult.cbFourCardData[0]);
+		int index = 0;   //辅助标识
+
+						 //if (CurResult.cbFourCount == 0)    return false;
+		for (int i = 0; i < CurResult.cbFourCount; i++)
+		{
+			bool Ruanboom = false;
+			for (int k = 0; k < 4; k++)
+			{
+				if (0x50 < CurResult.cbFourCardData[index + k])
+					Ruanboom = true;
+			}
+
+			if ((Ruanboom && GetCardLogicValue(CurResult.cbFourCardData[index]) > TurnLogicValue) || !Ruanboom)
+			{
+				for (int j = 0; j < 4; j++)
+					tmpOutCardData[j] = CurResult.cbFourCardData[index++];
+				tmpOutCardNum = 4;
+
+				memcpy(OutCardData, tmpOutCardData, tmpOutCardNum*(sizeof(BYTE)));
+				*OutCardNum = tmpOutCardNum;
+
+				return true;
+			}
+
+			index += 4;
+		}
+
+		//王炸判断
+		if ((GetCardLogicValue(CurCardData[0]) == 17) && (GetCardLogicValue(CurCardData[1]) == 16))
+		{
+			for (int i = 0; i < 2; i++)
+			{
+				tmpOutCardData[i] = CurCardData[i];
+			}
+			tmpOutCardNum = 2;
+
+			memcpy(OutCardData, tmpOutCardData, tmpOutCardNum*(sizeof(BYTE)));
+			*OutCardNum = tmpOutCardNum;
+
+			return true;
+		}
+	}
+	else if ((TurnCardType & (1 << CT_LAIZI_BOMB)) != 0)   //癞子炸弹
+	{
+		//王炸判断
+		if ((GetCardLogicValue(CurCardData[0]) == 17) && (GetCardLogicValue(CurCardData[1]) == 16))
+		{
+			for (int i = 0; i < 2; i++)
+			{
+				tmpOutCardData[i] = CurCardData[i];
+			}
+			tmpOutCardNum = 2;
+
+			memcpy(OutCardData, tmpOutCardData, tmpOutCardNum*(sizeof(BYTE)));
+			*OutCardNum = tmpOutCardNum;
+
+			return true;
+		}
+	}
+	else if ((TurnCardType & (1 << CT_SINGLE)) != 0)   //单张
+	{
+		cout << "单张" << endl;
+
+		//获取上家出牌数值
+		BYTE TurnLogicValue = GetCardLogicValue(TurnResult.cbSignedCardData[0]);
+
+		cout << "获取上家出牌数值:" << (int)TurnLogicValue << endl;
+
+		int index = (CurResult.cbSignedCount - 1);
+		for (int i = 0; i < CurResult.cbSignedCount; i++)
+		{
+			if (GetCardLogicValue(CurResult.cbSignedCardData[index]) > TurnLogicValue)
+			{
+				for (int i = 0; i < 2; i++)
+					tmpOutCardData[i] = CurResult.cbSignedCardData[index++];
+				tmpOutCardNum = 1;
+
+				//cout << " tmpOutCardData[i]: " << tmpOutCardData[i] << endl;
+
+				memcpy(OutCardData, tmpOutCardData, tmpOutCardNum*(sizeof(BYTE)));
+				*OutCardNum = tmpOutCardNum;
+
+				return true;
+			}
+
+			index--;
+		}
+
+		for (int i = CurCardNum - 1; i > 0; i--)
+		{
+			if (GetCardLogicValue(CurCardData[i]) > TurnLogicValue)
+			{
+				tmpOutCardData[0] = CurCardData[i];
+				tmpOutCardNum = 1;
+
+				memcpy(OutCardData, tmpOutCardData, tmpOutCardNum*(sizeof(BYTE)));
+				*OutCardNum = tmpOutCardNum;
+
+				return true;
+			}
+		}
+
+		//炸弹判断
+		if (CurResult.cbFourCount != 0)
+		{
+			int index = 0;
+			for (int i = (CurResult.cbFourCount - 1) * 4; i < CurResult.cbFourCount * 4; i++)
+			{
+				tmpOutCardData[index++] = CurResult.cbFourCardData[i];
+			}
+			tmpOutCardNum = 4;
+
+			memcpy(OutCardData, tmpOutCardData, tmpOutCardNum*(sizeof(BYTE)));
+			*OutCardNum = tmpOutCardNum;
+
+			return true;
+		}
+
+		//王炸判断
+		if ((GetCardLogicValue(CurCardData[0]) == 17) && (GetCardLogicValue(CurCardData[1]) == 16))
+		{
+			for (int i = 0; i < 2; i++)
+				tmpOutCardData[i] = CurCardData[i];
+			tmpOutCardNum = 2;
+
+			memcpy(OutCardData, tmpOutCardData, tmpOutCardNum*(sizeof(BYTE)));
+			*OutCardNum = tmpOutCardNum;
+
+			return true;
+		}
+	}
+	else if ((TurnCardType & (1 << CT_DOUBLE)) != 0)   //对子
+	{
+		cout << "对子" << endl;
+
+		//获取上家出牌数值
+		BYTE TurnLogicValue = GetCardLogicValue(TurnResult.cbDoubleCardData[0]);
+
+		int index = (CurResult.cbDoubleCount - 1) * 2;
+		for (int i = 0; i < CurResult.cbDoubleCount; i++)
+		{
+			if (GetCardLogicValue(CurResult.cbDoubleCardData[index]) > TurnLogicValue)
+			{
+				for (int i = 0; i < 2; i++)
+					tmpOutCardData[i] = CurResult.cbDoubleCardData[index++];
+				tmpOutCardNum = 2;
+
+				//cout << " tmpOutCardData[i]: " << tmpOutCardData[i] << endl;
+
+				memcpy(OutCardData, tmpOutCardData, tmpOutCardNum*(sizeof(BYTE)));
+				*OutCardNum = tmpOutCardNum;
+
+				return true;
+			}
+
+			index -= 2;
+		}
+
+		index = (CurResult.cbThreeCount - 1) * 3;
+		for (int i = 0; i < CurResult.cbThreeCount; i++)
+		{
+			if (GetCardLogicValue(CurResult.cbThreeCardData[index]) > TurnLogicValue)
+			{
+				for (int i = 0; i < 2; i++)
+					tmpOutCardData[i] = CurResult.cbThreeCardData[index++];
+				tmpOutCardNum = 2;
+
+				memcpy(OutCardData, tmpOutCardData, tmpOutCardNum*(sizeof(BYTE)));
+				*OutCardNum = tmpOutCardNum;
+
+				return true;
+			}
+
+			index -= 3;
+		}
+
+		//炸弹判断
+		if (CurResult.cbFourCount != 0)
+		{
+			int index = 0;
+			for (int i = (CurResult.cbFourCount - 1) * 4; i < CurResult.cbFourCount * 4; i++)
+			{
+				tmpOutCardData[index++] = CurResult.cbFourCardData[i];
+			}
+			tmpOutCardNum = 4;
+
+			memcpy(OutCardData, tmpOutCardData, tmpOutCardNum*(sizeof(BYTE)));
+			*OutCardNum = tmpOutCardNum;
+
+			return true;
+		}
+
+		//王炸判断
+		if ((GetCardLogicValue(CurCardData[0]) == 17) && (GetCardLogicValue(CurCardData[1]) == 16))
+		{
+			for (int i = 0; i < 2; i++)
+				tmpOutCardData[i] = CurCardData[i];
+			tmpOutCardNum = 2;
+
+			memcpy(OutCardData, tmpOutCardData, tmpOutCardNum*(sizeof(BYTE)));
+			*OutCardNum = tmpOutCardNum;
+
+			return true;
+		}
+	}
+	else if ((TurnCardType & (1 << CT_THREE)) != 0)   //三张
+	{
+		cout << "三张" << endl;
+
+		//获取上家出牌数值
+		BYTE TurnLogicValue = GetCardLogicValue(TurnResult.cbThreeCardData[0]);
+
+		int index = (CurResult.cbThreeCount - 1) * 3;
+		for (int i = 0; i < CurResult.cbThreeCount; i++)
+		{
+			if (GetCardLogicValue(CurResult.cbThreeCardData[index]) > TurnLogicValue)
+			{
+				for (int i = 0; i < 3; i++)
+					tmpOutCardData[i] = CurResult.cbThreeCardData[index++];
+				tmpOutCardNum = 3;
+
+				memcpy(OutCardData, tmpOutCardData, tmpOutCardNum*(sizeof(BYTE)));
+				*OutCardNum = tmpOutCardNum;
+
+				return true;
+			}
+
+			index -= 3;
+		}
+
+		//炸弹判断
+		if (CurResult.cbFourCount != 0)
+		{
+			int index = 0;
+			for (int i = (CurResult.cbFourCount - 1) * 4; i < CurResult.cbFourCount * 4; i++)
+			{
+				tmpOutCardData[index++] = CurResult.cbFourCardData[i];
+			}
+			tmpOutCardNum = 4;
+
+			memcpy(OutCardData, tmpOutCardData, tmpOutCardNum*(sizeof(BYTE)));
+			*OutCardNum = tmpOutCardNum;
+
+			return true;
+		}
+
+		//王炸判断
+		if ((GetCardLogicValue(CurCardData[0]) == 17) && (GetCardLogicValue(CurCardData[1]) == 16))
+		{
+			for (int i = 0; i < 2; i++)
+				tmpOutCardData[i] = CurCardData[i];
+			tmpOutCardNum = 2;
+
+			memcpy(OutCardData, tmpOutCardData, tmpOutCardNum*(sizeof(BYTE)));
+			*OutCardNum = tmpOutCardNum;
+
+			return true;
+		}
+	}
+	else if ((TurnCardType & (1 << CT_SINGLE_LINE)) != 0)   //顺子
+	{
+		cout << "顺子" << endl;
+
+		//获取上家出牌数值  最大值
+		BYTE TurnLogicValue = GetCardLogicValue(TurnResult.cbSignedCardData[0]);
+		cout << "顺子:获取上家出牌数值:" << (int)TurnLogicValue << endl;
+
+		int flag = 0;
+		int index = 0;
+
+		for (int i = 0; i < CurCardNum; i++)     //计算顺子张数
+		{
+			if (flag != 0)    //连续不用比牌大小
+			{
+				if (GetCardLogicValue(CurCardData[i + 1]) == GetCardLogicValue(CurCardData[i]))
+				{
+					continue;
+				}
+				if (GetCardLogicValue(CurCardData[i + 1]) == (GetCardLogicValue(CurCardData[i]) - 1) && (GetCardLogicValue(CurCardData[i]) < 15))   //判断是否连续
+				{
+					tmpOutCardData[index++] = CurCardData[i];
+					tmpOutCardNum++;
+
+					flag++;
+
+					//跳出条件
+					if (flag == TurnResult.cbSignedCount - 1)
+					{
+						tmpOutCardData[index] = CurCardData[i + 1];
+						tmpOutCardNum++;
+						break;
+					}
+				}
+				else
+				{
+					ZeroMemory(&tmpOutCardData, sizeof(tmpOutCardData));
+					tmpOutCardNum = 0;
+
+					index = 0;
+					flag = 0;
+				}
+			}
+			else
+			{
+				if (GetCardLogicValue(CurCardData[i]) > TurnLogicValue)
+				{
+					if (GetCardLogicValue(CurCardData[i + 1]) == GetCardLogicValue(CurCardData[i]))
+					{
+						continue;
+					}
+					if (GetCardLogicValue(CurCardData[i + 1]) == (GetCardLogicValue(CurCardData[i]) - 1) && (GetCardLogicValue(CurCardData[i]) < 15))   //判断是否连续
+					{
+						tmpOutCardData[index++] = CurCardData[i];
+						tmpOutCardNum++;
+
+						flag++;
+
+						//跳出条件
+						if (flag == TurnResult.cbSignedCount - 1)
+							break;
+					}
+					else
+					{
+						ZeroMemory(&tmpOutCardData, sizeof(tmpOutCardData));
+						tmpOutCardNum = 0;
+
+						index = 0;
+						flag = 0;
+					}
+				}
+			}
+		}
+
+		if (flag >= TurnResult.cbSignedCount - 1)
+		{
+			memcpy(OutCardData, tmpOutCardData, tmpOutCardNum*(sizeof(BYTE)));
+			*OutCardNum = tmpOutCardNum;
+
+			return true;
+		}
+
+		//炸弹判断
+		if (CurResult.cbFourCount != 0)
+		{
+			int index = 0;
+			for (int i = (CurResult.cbFourCount - 1) * 4; i < CurResult.cbFourCount * 4; i++)
+			{
+				tmpOutCardData[index++] = CurResult.cbFourCardData[i];
+			}
+			tmpOutCardNum = 4;
+
+			memcpy(OutCardData, tmpOutCardData, tmpOutCardNum*(sizeof(BYTE)));
+			*OutCardNum = tmpOutCardNum;
+
+			return true;
+		}
+
+		//王炸判断
+		if ((GetCardLogicValue(CurCardData[0]) == 17) && (GetCardLogicValue(CurCardData[1]) == 16))
+		{
+			for (int i = 0; i < 2; i++)
+				tmpOutCardData[i] = CurCardData[i];
+			tmpOutCardNum = 2;
+
+			memcpy(OutCardData, tmpOutCardData, tmpOutCardNum*(sizeof(BYTE)));
+			*OutCardNum = tmpOutCardNum;
+
+			return true;
+		}
+	}
+	else if ((TurnCardType & (1 << CT_DOUBLE_LINE)) != 0)   //连对
+	{
+		cout << "连对" << endl;
+
+
+		//获取上家出牌数值  最大值
+		BYTE TurnLogicValue = GetCardLogicValue(TurnResult.cbDoubleCardData[0]);
+		int flag = 0;   //判断是否连续标志
+		int Numflag = 0;   //判断牌数是否达标的标志
+		int index = 0;
+
+		for (int i = 0; i < CurCardNum; i++)     //计算连对张数
+		{
+			if (flag != 0)    //连续不用比牌大小
+			{
+				if (GetCardLogicValue(CurCardData[i + 1]) == GetCardLogicValue(CurCardData[i]))
+				{
+					Numflag++;
+					continue;
+				}
+				if ((GetCardLogicValue(CurCardData[i + 1]) == (GetCardLogicValue(CurCardData[i]) - 1))
+					&& (Numflag > 0) && (GetCardLogicValue(CurCardData[i]) < 15))   //判断是否连续
+				{
+					tmpOutCardData[index++] = CurCardData[i];		//连对加两次
+					tmpOutCardNum++;
+
+					tmpOutCardData[index++] = CurCardData[i - 1];
+					tmpOutCardNum++;
+
+					flag++;
+
+					//跳出条件
+					if (flag == TurnResult.cbDoubleCount)
+						break;
+				}
+				else
+				{
+					ZeroMemory(&tmpOutCardData, sizeof(tmpOutCardData));
+					tmpOutCardNum = 0;
+
+					index = 0;
+					flag = 0;
+				}
+
+				if (GetCardLogicValue(CurCardData[i + 1]) != GetCardLogicValue(CurCardData[i]))
+				{
+					Numflag = 0;
+				}
+			}
+			else
+			{
+				if (GetCardLogicValue(CurCardData[i]) > TurnLogicValue)
+				{
+					if (GetCardLogicValue(CurCardData[i + 1]) == GetCardLogicValue(CurCardData[i]))
+					{
+						Numflag++;
+						continue;
+					}
+					if (GetCardLogicValue(CurCardData[i + 1]) == (GetCardLogicValue(CurCardData[i]) - 1)
+						&& (Numflag > 0) && (GetCardLogicValue(CurCardData[i]) < 15))   //判断是否连续
+					{
+						tmpOutCardData[index++] = CurCardData[i];		//连对加两次
+						tmpOutCardNum++;
+
+						tmpOutCardData[index++] = CurCardData[i - 1];
+						tmpOutCardNum++;
+
+						flag++;
+
+						//跳出条件
+						if (flag == TurnResult.cbDoubleCount)
+							break;
+					}
+					else
+					{
+						ZeroMemory(&tmpOutCardData, sizeof(tmpOutCardData));
+						tmpOutCardNum = 0;
+
+						index = 0;
+						flag = 0;
+					}
+
+					if (GetCardLogicValue(CurCardData[i + 1]) != GetCardLogicValue(CurCardData[i]))
+					{
+						Numflag = 0;
+					}
+				}
+			}
+		}
+
+		if (flag >= TurnResult.cbDoubleCount)
+		{
+			memcpy(OutCardData, tmpOutCardData, tmpOutCardNum*(sizeof(BYTE)));
+			*OutCardNum = tmpOutCardNum;
+
+			return true;
+		}
+
+		//炸弹判断
+		if (CurResult.cbFourCount != 0)
+		{
+			int index = 0;
+			for (int i = (CurResult.cbFourCount - 1) * 4; i < CurResult.cbFourCount * 4; i++)
+			{
+				tmpOutCardData[index++] = CurResult.cbFourCardData[i];
+			}
+			tmpOutCardNum = 4;
+
+			memcpy(OutCardData, tmpOutCardData, tmpOutCardNum*(sizeof(BYTE)));
+			*OutCardNum = tmpOutCardNum;
+
+			return true;
+		}
+
+		//王炸判断
+		if ((GetCardLogicValue(CurCardData[0]) == 17) && (GetCardLogicValue(CurCardData[1]) == 16))
+		{
+			for (int i = 0; i < 2; i++)
+				tmpOutCardData[i] = CurCardData[i];
+			tmpOutCardNum = 2;
+
+			memcpy(OutCardData, tmpOutCardData, tmpOutCardNum*(sizeof(BYTE)));
+			*OutCardNum = tmpOutCardNum;
+
+			return true;
+		}
+	}
+	else if ((TurnCardType & (1 << CT_THREE_LINE)) != 0)   //三连
+	{
+		cout << "三连" << endl;
+
+		//获取上家出牌数值  最大值
+		BYTE TurnLogicValue = GetCardLogicValue(TurnResult.cbThreeCardData[0]);
+		int flag = 0;   //判断是否连续标志
+		int Numflag = 0;   //判断牌数是否达标的标志
+		int index = 0;
+
+		for (int i = 0; i < CurCardNum; i++)     //计算连对张数
+		{
+			if (flag != 0)    //连续不用比牌大小
+			{
+				if (GetCardLogicValue(CurCardData[i + 1]) == GetCardLogicValue(CurCardData[i]))
+				{
+					Numflag++;
+					continue;
+				}
+				if ((GetCardLogicValue(CurCardData[i + 1]) == (GetCardLogicValue(CurCardData[i]) - 1))
+					&& (Numflag > 1) && (GetCardLogicValue(CurCardData[i]) < 15))   //判断是否连续
+				{
+					tmpOutCardData[index++] = CurCardData[i];		//三连加三次
+					tmpOutCardNum++;
+
+					tmpOutCardData[index++] = CurCardData[i - 1];
+					tmpOutCardNum++;
+
+					tmpOutCardData[index++] = CurCardData[i - 2];
+					tmpOutCardNum++;
+
+					flag++;
+
+					//跳出条件
+					if (flag == TurnResult.cbThreeCount)
+						break;
+				}
+				else
+				{
+					ZeroMemory(&tmpOutCardData, sizeof(tmpOutCardData));
+					tmpOutCardNum = 0;
+
+					index = 0;
+					flag = 0;
+				}
+
+				if (GetCardLogicValue(CurCardData[i + 1]) != GetCardLogicValue(CurCardData[i]))   //不是同牌了 标志位制零
+				{
+					Numflag = 0;
+				}
+			}
+			else
+			{
+				if (GetCardLogicValue(CurCardData[i]) > TurnLogicValue)
+				{
+					if (GetCardLogicValue(CurCardData[i + 1]) == GetCardLogicValue(CurCardData[i]))
+					{
+						Numflag++;
+						continue;
+					}
+					if (GetCardLogicValue(CurCardData[i + 1]) == (GetCardLogicValue(CurCardData[i]) - 1)
+						&& (Numflag > 1) && (GetCardLogicValue(CurCardData[i]) < 15))   //判断是否连续
+					{
+						tmpOutCardData[index++] = CurCardData[i];		//三连加三次
+						tmpOutCardNum++;
+
+						tmpOutCardData[index++] = CurCardData[i - 1];
+						tmpOutCardNum++;
+
+						tmpOutCardData[index++] = CurCardData[i - 2];
+						tmpOutCardNum++;
+
+						flag++;
+
+						//跳出条件
+						if (flag == TurnResult.cbThreeCount)
+							break;
+					}
+					else
+					{
+						ZeroMemory(&tmpOutCardData, sizeof(tmpOutCardData));
+						tmpOutCardNum = 0;
+
+						index = 0;
+						flag = 0;
+					}
+
+					if (GetCardLogicValue(CurCardData[i + 1]) != GetCardLogicValue(CurCardData[i]))   //不是同牌了 标志位制零
+					{
+						Numflag = 0;
+					}
+				}
+			}
+		}
+
+		if (flag >= TurnResult.cbThreeCount)
+		{
+			memcpy(OutCardData, tmpOutCardData, tmpOutCardNum*(sizeof(BYTE)));
+			*OutCardNum = tmpOutCardNum;
+
+			return true;
+		}
+
+		//炸弹判断
+		if (CurResult.cbFourCount != 0)
+		{
+			int index = 0;
+			for (int i = (CurResult.cbFourCount - 1) * 4; i < CurResult.cbFourCount * 4; i++)
+			{
+				tmpOutCardData[index++] = CurResult.cbFourCardData[i];
+			}
+			tmpOutCardNum = 4;
+
+			memcpy(OutCardData, tmpOutCardData, tmpOutCardNum*(sizeof(BYTE)));
+			*OutCardNum = tmpOutCardNum;
+
+			return true;
+		}
+
+		//王炸判断
+		if ((GetCardLogicValue(CurCardData[0]) == 17) && (GetCardLogicValue(CurCardData[1]) == 16))
+		{
+			for (int i = 0; i < 2; i++)
+				tmpOutCardData[i] = CurCardData[i];
+			tmpOutCardNum = 2;
+
+			memcpy(OutCardData, tmpOutCardData, tmpOutCardNum*(sizeof(BYTE)));
+			*OutCardNum = tmpOutCardNum;
+
+			return true;
+		}
+	}
+	else if ((TurnCardType & (1 << CT_THREE_LINE_TAKE_ONE)) != 0)   //三代一
+	{
+
+		cout << "三代一" << endl;
+
+
+		//获取上家出牌数值
+		BYTE TurnLogicValue = GetCardLogicValue(TurnResult.cbThreeCardData[0]);
+
+		if (CurResult.cbSignedCount >= TurnResult.cbThreeCount)     //没有单张就没必要出这个牌
+		{
+			if (TurnResult.cbThreeCount == 1)    //三代一
+			{
+				int index = 0;
+				for (int i = 0; i < CurResult.cbThreeCount; i++)
+				{
+					if (GetCardLogicValue(CurResult.cbThreeCardData[index]) > TurnLogicValue)
+					{
+						for (int j = 0; j < 3; j++)
+						{
+							tmpOutCardData[j] = CurResult.cbThreeCardData[j];
+						}
+						tmpOutCardData[3] = CurResult.cbSignedCardData[TurnResult.cbSignedCount - 1];
+						tmpOutCardNum = 4;
+
+						memcpy(OutCardData, tmpOutCardData, tmpOutCardNum*(sizeof(BYTE)));
+						*OutCardNum = tmpOutCardNum;
+
+						return true;
+					}
+
+					index += 3;
+				}
+			}
+			else		//飞机
+			{
+				int index = 0;
+				int flag = 1;   //判断飞机几个三张的标志
+								//判断三个是否连续
+				for (int i = 0; i < CurResult.cbThreeCount; i++)
+				{
+					if ((GetCardLogicValue(CurResult.cbThreeCardData[index]) - 1) == (GetCardLogicValue(CurResult.cbThreeCardData[index + 3])))  //连续
+					{
+						flag++;
+					}
+
+					if ((GetCardLogicValue(CurResult.cbThreeCardData[index]) >(TurnLogicValue - TurnResult.cbThreeCount + 2))
+						&& (flag == TurnResult.cbThreeCount))   //大小比较
+					{
+						index = index - TurnResult.cbThreeCount * 3 + 3;     //赋值的下标
+						for (int j = 0; j < TurnResult.cbThreeCount * 3; j++)
+						{
+							tmpOutCardData[j] = CurResult.cbThreeCardData[index++];
+						}
+
+						for (int j = 0; j < TurnResult.cbThreeCount; j++)
+						{
+							tmpOutCardData[TurnResult.cbThreeCount * 3 + j] = CurResult.cbSignedCardData[TurnResult.cbSignedCount - j - 1];   //飞机带的单
+						}
+
+						tmpOutCardNum = TurnResult.cbThreeCount * 4;
+
+						memcpy(OutCardData, tmpOutCardData, tmpOutCardNum*(sizeof(BYTE)));
+						*OutCardNum = tmpOutCardNum;
+
+						return true;
+					}
+
+					index += 3;
+				}
+			}
+		}
+
+		//炸弹判断
+		if (CurResult.cbFourCount != 0)
+		{
+			int index = 0;
+			for (int i = (CurResult.cbFourCount - 1) * 4; i < CurResult.cbFourCount * 4; i++)
+			{
+				tmpOutCardData[index++] = CurResult.cbFourCardData[i];
+			}
+			tmpOutCardNum = 4;
+
+			memcpy(OutCardData, tmpOutCardData, tmpOutCardNum*(sizeof(BYTE)));
+			*OutCardNum = tmpOutCardNum;
+
+			return true;
+		}
+
+		//王炸判断
+		if ((GetCardLogicValue(CurCardData[0]) == 17) && (GetCardLogicValue(CurCardData[1]) == 16))
+		{
+			for (int i = 0; i < 2; i++)
+				tmpOutCardData[i] = CurCardData[i];
+			tmpOutCardNum = 2;
+
+			memcpy(OutCardData, tmpOutCardData, tmpOutCardNum*(sizeof(BYTE)));
+			*OutCardNum = tmpOutCardNum;
+
+			return true;
+		}
+	}
+	else if ((TurnCardType & (1 << CT_THREE_LINE_TAKE_TWO)) != 0)   //三代二
+	{
+		cout << "三代二" << endl;
+
+		//获取上家出牌数值
+		BYTE TurnLogicValue = GetCardLogicValue(TurnResult.cbThreeCardData[0]);
+
+		if (CurResult.cbDoubleCount >= TurnResult.cbThreeCount)     //没有对子就没必要出这个牌
+		{
+			if (TurnResult.cbThreeCount == 1)    //三代二
+			{
+				int index = 0;
+				for (int i = 0; i < CurResult.cbThreeCount; i++)
+				{
+					if (GetCardLogicValue(CurResult.cbThreeCardData[index]) > TurnLogicValue)
+					{
+						for (int j = 0; j < 3; j++)
+						{
+							tmpOutCardData[j] = CurResult.cbThreeCardData[j];
+						}
+						tmpOutCardData[3] = CurResult.cbDoubleCardData[TurnResult.cbDoubleCount * 2 - 1];
+						tmpOutCardData[4] = CurResult.cbDoubleCardData[TurnResult.cbDoubleCount * 2 - 2];
+						tmpOutCardNum = 5;
+
+						memcpy(OutCardData, tmpOutCardData, tmpOutCardNum*(sizeof(BYTE)));
+						*OutCardNum = tmpOutCardNum;
+
+						return true;
+					}
+
+					index += 3;
+				}
+			}
+			else		//飞机
+			{
+				int index = 0;
+				int flag = 1;   //判断飞机几个三张的标志
+								//判断三个是否连续
+				for (int i = 0; i < CurResult.cbThreeCount; i++)
+				{
+					if ((GetCardLogicValue(CurResult.cbThreeCardData[index]) - 1) == (GetCardLogicValue(CurResult.cbThreeCardData[index + 3])))  //连续
+					{
+						flag++;
+					}
+
+					if ((GetCardLogicValue(CurResult.cbThreeCardData[index]) >(TurnLogicValue - TurnResult.cbThreeCount + 2))
+						&& (flag == TurnResult.cbThreeCount))   //大小比较
+					{
+						index = index - TurnResult.cbThreeCount * 3 + 3;     //赋值的下标
+						for (int j = 0; j < TurnResult.cbThreeCount * 3; j++)
+						{
+							tmpOutCardData[j] = CurResult.cbThreeCardData[index++];
+						}
+
+						for (int j = 0; j < TurnResult.cbThreeCount * 2; j += 2)
+						{
+							tmpOutCardData[TurnResult.cbThreeCount * 3 + j] = CurResult.cbDoubleCardData[TurnResult.cbDoubleCount * 2 - j - 1];   //飞机带的对
+							tmpOutCardData[TurnResult.cbThreeCount * 3 + j + 1] = CurResult.cbDoubleCardData[TurnResult.cbDoubleCount * 2 - j - 1];
+						}
+
+						tmpOutCardNum = TurnResult.cbThreeCount * 5;
+
+						memcpy(OutCardData, tmpOutCardData, tmpOutCardNum*(sizeof(BYTE)));
+						*OutCardNum = tmpOutCardNum;
+
+						return true;
+					}
+
+					index += 3;
+				}
+			}
+		}
+
+		//炸弹判断
+		if (CurResult.cbFourCount != 0)
+		{
+			int index = 0;
+			for (int i = (CurResult.cbFourCount - 1) * 4; i < CurResult.cbFourCount * 4; i++)
+			{
+				tmpOutCardData[index++] = CurResult.cbFourCardData[i];
+			}
+			tmpOutCardNum = 4;
+
+			memcpy(OutCardData, tmpOutCardData, tmpOutCardNum*(sizeof(BYTE)));
+			*OutCardNum = tmpOutCardNum;
+
+			return true;
+		}
+
+		//王炸判断
+		if ((GetCardLogicValue(CurCardData[0]) == 17) && (GetCardLogicValue(CurCardData[1]) == 16))
+		{
+			for (int i = 0; i < 2; i++)
+				tmpOutCardData[i] = CurCardData[i];
+			tmpOutCardNum = 2;
+
+			memcpy(OutCardData, tmpOutCardData, tmpOutCardNum*(sizeof(BYTE)));
+			*OutCardNum = tmpOutCardNum;
+
+			return true;
+		}
+	}
+	else if ((TurnCardType & (1 << CT_FOUR_LINE_TAKE_ONE)) != 0)   //四代二
+	{
+		cout << "四代二" << endl;
+
+		//炸弹判断
+		if (CurResult.cbFourCount != 0)
+		{
+			int index = 0;
+			for (int i = (CurResult.cbFourCount - 1) * 4; i < CurResult.cbFourCount * 4; i++)
+			{
+				tmpOutCardData[index++] = CurResult.cbFourCardData[i];
+			}
+			tmpOutCardNum = 4;
+
+			memcpy(OutCardData, tmpOutCardData, tmpOutCardNum*(sizeof(BYTE)));
+			*OutCardNum = tmpOutCardNum;
+
+			return true;
+		}
+
+		//王炸判断
+		if ((GetCardLogicValue(CurCardData[0]) == 17) && (GetCardLogicValue(CurCardData[1]) == 16))
+		{
+			for (int i = 0; i < 2; i++)
+				tmpOutCardData[i] = CurCardData[i];
+			tmpOutCardNum = 2;
+
+			memcpy(OutCardData, tmpOutCardData, tmpOutCardNum*(sizeof(BYTE)));
+			*OutCardNum = tmpOutCardNum;
+
+			return true;
+		}
+	}
+	else if ((TurnCardType & (1 << CT_FOUR_LINE_TAKE_TWO)) != 0)   //四代二对
+	{
+		cout << "四代二对" << endl;
+
+		//炸弹判断
+		if (CurResult.cbFourCount != 0)
+		{
+			int index = 0;
+			for (int i = (CurResult.cbFourCount - 1) * 4; i < CurResult.cbFourCount * 4; i++)
+			{
+				tmpOutCardData[index++] = CurResult.cbFourCardData[i];
+			}
+			tmpOutCardNum = 4;
+
+			memcpy(OutCardData, tmpOutCardData, tmpOutCardNum*(sizeof(BYTE)));
+			*OutCardNum = tmpOutCardNum;
+
+			return true;
+		}
+
+		//王炸判断
+		if ((GetCardLogicValue(CurCardData[0]) == 17) && (GetCardLogicValue(CurCardData[1]) == 16))
+		{
+			for (int i = 0; i < 2; i++)
+				tmpOutCardData[i] = CurCardData[i];
+			tmpOutCardNum = 2;
+
+			memcpy(OutCardData, tmpOutCardData, tmpOutCardNum*(sizeof(BYTE)));
+			*OutCardNum = tmpOutCardNum;
+
+			return true;
+		}
+
+	}
+
+	return false;
+
+}
+//================================================癞子场判断=================================================

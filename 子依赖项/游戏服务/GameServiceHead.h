@@ -529,9 +529,9 @@ static const GUID IID_IServerUserItem={0xb5ce01a7,0x5cd1,0x4788,0x94,0x6c,0xa1,0
 #endif
 
 //用户接口
-interface IServerUserItem : public IUnknownEx
+interface IServerUserItem
 {
-	//属性信息
+	/*//属性信息
 public:
 	//用户索引
 	virtual WORD GetBindIndex()=NULL;
@@ -581,8 +581,10 @@ public:
 public:
 	//桌子号码
 	virtual WORD GetTableID()=NULL;
+	*/
 	//椅子号码
 	virtual WORD GetChairID()=NULL;
+	/*
 	//用户状态
 	virtual BYTE GetUserStatus()=NULL;
 
@@ -716,7 +718,7 @@ public:
 	virtual VOID SetVirtualUser(bool bVirtual) = NULL;
 	//获取是否为虚拟用户
 	virtual bool IsVirtualUser() = NULL;
-
+	*/
 };
 
 //////////////////////////////////////////////////////////////////////////////////
@@ -903,9 +905,9 @@ public:
 	//开始游戏
 	virtual bool StartGame()=NULL;
 	//解散游戏
-	virtual bool DismissGame()=NULL;
+	//virtual bool DismissGame()=NULL;
 	//结束游戏
-	virtual bool ConcludeGame(BYTE cbGameStatus)=NULL;
+	//virtual bool ConcludeGame(BYTE cbGameStatus)=NULL;
 
 	//写分接口
 public:
@@ -1009,7 +1011,7 @@ public:
 	//复位接口
 	virtual VOID RepositionSink()=NULL;
 	//配置接口
-	virtual bool Initialization(IUnknownEx * pIUnknownEx)=NULL;
+	virtual bool Initialization(ITableFrame *pTableFrame) =NULL;
 
 	//查询接口
 public:
@@ -1019,6 +1021,8 @@ public:
 	virtual SCORE QueryLessEnterScore(WORD wChairID, IServerUserItem * pIServerUserItem)=NULL;
 	//查询是否扣服务费
 	virtual bool QueryBuckleServiceCharge(WORD wChairID)=NULL;
+	//获取KindID给框架
+	virtual DWORD GetKindIDToFrame() = NULL;
 
 	//游戏事件
 public:
@@ -1041,7 +1045,7 @@ public:
 	//网络接口
 public:
 	//游戏消息
-	virtual bool OnGameMessage(WORD wSubCmdID, VOID * pData, WORD wDataSize, IServerUserItem * pIServerUserItem)=NULL;
+	virtual bool OnGameMessage(WORD wSubCmdID, VOID * pData, WORD wDataSize, WORD wChairID) =NULL;
 	//框架消息
 	virtual bool OnFrameMessage(WORD wSubCmdID, VOID * pData, WORD wDataSize, IServerUserItem * pIServerUserItem)=NULL;
 

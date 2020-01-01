@@ -5,6 +5,7 @@
 
 static AFX_EXTENSION_MODULE GameServerDLL={NULL,NULL};
 
+/*
 //DLL 导出主函数
 extern "C" int APIENTRY DllMain(HINSTANCE hInstance, DWORD dwReason, LPVOID lpReserved)
 {
@@ -20,5 +21,5 @@ extern "C" int APIENTRY DllMain(HINSTANCE hInstance, DWORD dwReason, LPVOID lpRe
 	}
 	return 1;
 }
-
+*/
 //////////////////////////////////////////////////////////////////////////

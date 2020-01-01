@@ -1,9 +1,6 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup>
-    <ClCompile Include="AndroidUserItemSink.cpp">
-      <Filter>源文件</Filter>
-    </ClCompile>
     <ClCompile Include="GameCardConfig.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
@@ -19,12 +16,6 @@
     <ClCompile Include="GameServer.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
-    <ClCompile Include="GameServerManager.cpp">
-      <Filter>源文件</Filter>
-    </ClCompile>
-    <ClCompile Include="ServerLog.cpp">
-      <Filter>源文件</Filter>
-    </ClCompile>
     <ClCompile Include="Stdafx.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
@@ -37,11 +28,14 @@
     <ClCompile Include="IntelligentAI.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
+    <ClCompile Include="config.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="log.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="AndroidUserItemSink.h">
-      <Filter>头文件</Filter>
-    </ClInclude>
     <ClInclude Include="GameCardConfig.h">
       <Filter>头文件</Filter>
     </ClInclude>
@@ -54,13 +48,7 @@
     <ClInclude Include="GameInterface.h">
       <Filter>头文件</Filter>
     </ClInclude>
-    <ClInclude Include="GameServerManager.h">
-      <Filter>头文件</Filter>
-    </ClInclude>
     <ClInclude Include="Resource.h">
-      <Filter>头文件</Filter>
-    </ClInclude>
-    <ClInclude Include="ServerLog.h">
       <Filter>头文件</Filter>
     </ClInclude>
     <ClInclude Include="Stdafx.h">
@@ -75,16 +63,22 @@
     <ClInclude Include="..\消息定义\cardType.h">
       <Filter>消息定义</Filter>
     </ClInclude>
-    <ClInclude Include="..\消息定义\CMD_SubGame.h">
-      <Filter>消息定义</Filter>
-    </ClInclude>
     <ClInclude Include="..\消息定义\define.h">
       <Filter>消息定义</Filter>
     </ClInclude>
-    <ClInclude Include="GamePlayerConfig.h">
-      <Filter>源文件</Filter>
-    </ClInclude>
     <ClInclude Include="IntelligentAI.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="..\消息定义\CMD_SubGame.h">
+      <Filter>消息定义</Filter>
+    </ClInclude>
+    <ClInclude Include="config.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="GamePlayerConfig.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="log.h">
       <Filter>头文件</Filter>
     </ClInclude>
   </ItemGroup>
@@ -105,6 +99,9 @@
   <ItemGroup>
     <None Include="res\GameServer.rc2">
       <Filter>资源文件</Filter>
+    </None>
+    <None Include="9.cfg">
+      <Filter>头文件</Filter>
     </None>
   </ItemGroup>
   <ItemGroup>

@@ -6,7 +6,6 @@
 #include <iostream>
 #include "GameCardConfig.h"
 #include "GamePlayerConfig.h"
-#include "ServerLog.h"
 #include "IntelligentAI.h"
 
 //逻辑掩码
@@ -87,6 +86,8 @@ typedef struct _tagPLAYING_PARAMETERS
 	WORD	cur_jiaofen_player;				//当前正在叫分的玩家
 	WORD	turn_pass_count;				//不抢庄的轮数
 	WORD	leave_card_bet;					//底牌翻倍倍数 
+	BYTE	laizi_transport[MAX_LAIZI_COUNT];//癞子当成的普通牌
+	DWORD	transport_count;				//癞子当普通牌的张数
 
 	BYTE	turn_max_cards[MAX_CARD_COUNT];	// 一轮中最大的卡牌数据
 	BYTE	turn_cards_num;					// 一轮中最大的卡牌数据大小
@@ -253,6 +254,29 @@ interface CGameLogic
 	//计算底牌是否翻倍 并返回倍数
 	virtual DWORD __stdcall IsDoubleLeaveCard() = NULL;
 
+	//================================================癞子场判断=================================================
+
+	//获得于包含癞子的卡牌的逻辑数值
+	virtual BYTE GetCardLogicValueLaiZi(BYTE cbCardData) = NULL;
+
+	//将玩家手牌中的癞子进行牌值替换
+	virtual bool ReplaceLaiZiCard(WORD wChairID, BYTE cbCardNum) = NULL;
+
+	//斗地主不考虑癞子的排序
+	virtual void SortCardListNoLaiZi(BYTE cbCardData[], BYTE cbCardCount, BYTE cbSortType) = NULL;
+
+	//判断癞子场的玩家是否能出牌
+	virtual bool JudgeLaiZiPlayerOutCard(WORD wChairID) = NULL;
+
+	//癞子：玩家第一个出牌  判断他可以出的合适的牌
+	virtual bool LaiZiAnalysePlayerOutCardFirst(WORD OutCardUsr, BYTE OutCardData[], BYTE *OutCardNum) = NULL;
+
+	//癞子：玩家接牌
+	virtual bool LaiZiAnalysePlayerOutCard(WORD OutCardUsr, BYTE OutCardData[], BYTE *OutCardNum) = NULL;
+
+	//癞子：分析比较手牌
+	virtual bool LaiZiCompareCard(BYTE Card[], BYTE CardCount, BYTE OutCardData[]/*out*/, BYTE *OutCardNum) = NULL;
+
 	//辅助函数
 public:
 	//获得卡牌花色
@@ -333,7 +357,7 @@ interface CGameAccess
 	virtual BYTE __stdcall GetCurBankerCount() = NULL;
 
 	// 设置玩家抢庄做庄
-	virtual int __stdcall SetBankerState(WORD wChairID, BYTE type, BYTE state) = NULL;
+	virtual int __stdcall SetBankerState(WORD wChairID, BYTE cbResult) = NULL;
 
 	// 获取玩家抢庄状态
 	virtual BYTE __stdcall GetBankerState(WORD wChairID) = NULL;
@@ -425,7 +449,7 @@ interface CGameAccess
 	virtual DWORD __stdcall GetGameStatus() = NULL;
 
 	// 设置房间规则 added by lizhihu 2017.10.17 使用 void* + size 取代固定结构体
-	virtual bool __stdcall SetRoomRule(tagGameRoomItem * pRoomRuleOption) = NULL;
+	virtual bool __stdcall SetRoomRule(tagTableCfg * pRoomRuleOption) = NULL;
 
 	//设置游戏抢庄模式：0-抢庄		1-轮庄		2-固定庄
 	virtual int __stdcall SetRobBankMode(BYTE nMode) = NULL;
@@ -684,7 +708,35 @@ interface CGameAccess
 
 	//获取玩家连续超时出牌次数
 	virtual int __stdcall GetPlayerTimeOutNum(WORD wChairID) = NULL;
+
+	//================================================癞子场判断=================================================
+
+	//获得于包含癞子的卡牌的逻辑数值
+	virtual BYTE GetCardLogicValueLaiZi(BYTE cbCardData) = NULL;
+
+	//设置癞子当成的普通牌
+	virtual int SetLaiZiToCommon(BYTE LaiZiData[], BYTE Count) = NULL;
 	
+	//获取癞子当成的普通牌
+	virtual int GetLaiZiToCommon(BYTE LaiZiData[], BYTE &Count) = NULL;
+
+	//将玩家手牌中的癞子进行牌值替换
+	virtual bool ReplaceLaiZiCard(WORD wChairID, BYTE cbCardNum) = NULL;
+
+	//斗地主不考虑癞子的排序
+	virtual void SortCardListNoLaiZi(BYTE cbCardData[], BYTE cbCardCount, BYTE cbSortType) = NULL;
+
+	//判断癞子场的玩家是否能出牌
+	virtual bool JudgeLaiZiPlayerOutCard(WORD wChairID) = NULL;
+
+	//癞子：玩家第一个出牌  判断他可以出的合适的牌
+	virtual bool LaiZiAnalysePlayerOutCardFirst(WORD OutCardUsr, BYTE OutCardData[], BYTE *OutCardNum) = NULL;
+
+	//癞子：玩家接牌
+	virtual bool LaiZiAnalysePlayerOutCard(WORD OutCardUsr, BYTE OutCardData[], BYTE *OutCardNum) = NULL;
+
+	//癞子：分析比较手牌
+	virtual bool LaiZiCompareCard(BYTE Card[], BYTE CardCount, BYTE OutCardData[]/*out*/, BYTE *OutCardNum) = NULL;
 };
 
 #endif

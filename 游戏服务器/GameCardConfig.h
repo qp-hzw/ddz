@@ -1,5 +1,6 @@
 #pragma once
 #include <windows.h>
+#include "config.h"
 typedef BYTE *CARD_SCOR_RANK,	CARD_SCOR;	// 纸牌点数排序描述
 typedef BYTE *CARD_COLOR_RANK,	CARD_COLOR;	// 纸牌花色排序描述
 typedef BYTE *CARD_DESCS,		CARD_DESC;	// 纸牌描述
@@ -47,7 +48,7 @@ public:
  * return					0				正常
  *							-1				异常
  */
-static int LoadCardsSum( const wchar_t *configfile, DWORD &cards_sum, CServerLog *m_plog);
+static int LoadCardsSum(CConfigFile&ff, DWORD &cards_sum);
 
 
 /**
@@ -60,7 +61,7 @@ static int LoadCardsSum( const wchar_t *configfile, DWORD &cards_sum, CServerLog
 * return					0				正常
 *							-1				异常
 */
-static int LoadGameScoreTimes( const wchar_t *configfile, BYTE game_score_Mode, BYTE *game_score_times, CServerLog *m_plog);
+static int LoadGameScoreTimes(CConfigFile &ff, BYTE game_score_Mode, BYTE *game_score_times);
 
 
 /**
@@ -73,7 +74,7 @@ static int LoadGameScoreTimes( const wchar_t *configfile, BYTE game_score_Mode, 
  * return					0				正常
  *							-1				异常
  */
-static int LoadCardGroups(const wchar_t *configfile, CARD_GOURP *groups, DWORD &group_sum, CServerLog *m_plog);
+static int LoadCardGroups(CConfigFile &ff, CARD_GOURP *groups, DWORD &group_sum);
 
 /**
  * 提取所有组
@@ -85,8 +86,8 @@ static int LoadCardGroups(const wchar_t *configfile, CARD_GOURP *groups, DWORD &
  * @param		ppcards					[out]			扑克数组
  * @param		cardslen				[in-out]		扑克数组长度,输入估测长度，返回实际长度
  */
-static int TransGroups(	const CARD_GOURP group[MAX_CARD_GROUP_NUM], const int &nGroupLen,
-									CARD_DESC *pGameCards, DWORD &dwCardSum, CServerLog *m_plog);
+static int TransGroups(const CARD_GOURP group[MAX_CARD_GROUP_NUM], const int &nGroupLen,
+										CARD_DESC *pGameCards, DWORD &dwCardSum);
 
 // 工具类函数
 public:
@@ -99,11 +100,13 @@ public:
 	 * @param		src_cards			[in]			源牌数组， 由配置文件生成的游戏牌组
 	 * @param		src_len				[in]			源牌数量， 注意，此数据必须是牌组的实际长度
 	 */
-	static int OutOrder(	CARD_DESCS dest_cards, 
-							const DWORD dest_len, 
-							const CARD_DESCS source_cards, 
-							const DWORD src_len, 
-							const BYTE nMode);
+	static int OutOrder(CARD_DESCS dest_cards,
+									const DWORD dest_len,
+									const CARD_DESCS source_cards,
+									const DWORD src_len,
+									const BYTE nMode,
+									CARD_DESCS boom_cards,
+									BYTE &boomsum);
 
 // 
 public:
@@ -119,11 +122,10 @@ public:
 	 * @param		curlen					[in-out]		已经填充的长度， 注意，此参数会将现有值与填充进去的值相加
 	 *														所以此参数的输出值与输入值有关
 	 */
-	static int TransGroup(	const CARD_GOURP *group, 
-							CARD_DESCS cards, 
-							const DWORD cardslen, 
-							DWORD &curlen,
-							CServerLog *m_plog);
+	static int TransGroup(const CARD_GOURP *group,
+										CARD_DESCS cards,
+										const DWORD maxlen,
+										DWORD &curIndex);
 
 	/**
 	 * 生成一个乱序数组
@@ -180,5 +182,7 @@ public:
 
 	//两种牌型的牌值映射函数
 	static BYTE   MapOfCardValue(BYTE CardData);
+
+	static bool flushcard(BYTE card[], int &cardsum, BYTE boomcard[], int &boomsum);
 };
 

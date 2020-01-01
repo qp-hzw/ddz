@@ -4,10 +4,10 @@
 #include <windows.h>
 #include "GamePlayerConfig.h"
 #include "GameCardConfig.h"
-#include "ServerLog.h"
 #include "GameInterface.h"
 #include "GameData.h"
 #include "SubGameRule.h"
+#include "config.h"
 
 //从配置文件读取的玩法规则
 typedef struct _tagCommonProfilePara
@@ -38,7 +38,6 @@ extern  COM_PROFILE_RULE	gComGamePara;		//通用的游戏配置参数（从配置文件获得）
 extern	COM_CARD_CONFIG		gComCardPara;		// 卡牌配置
 extern	COM_PLAYER_CONFIG	gComPlayerPara;		// 玩家配置
 
-extern	CServerLog          *m_plog;			//日志文件
 extern	wchar_t             m_cfgFile[128];		//配置文件
 
 
@@ -50,11 +49,11 @@ public:
 	~CGameConfig(void);
 
 private:
-	static int CreateGameCards( );
+	//获取游戏卡牌配置
+	static int CreateGameCards(CConfigFile &ff);
 
-	static int CreatePlayers( );
-
-	static int CreateLog( const wchar_t *_logFile );
+	//获取游戏玩家配置
+	static int CreatePlayers(CConfigFile &ff);
 
 public:
 	//从配置文件中获取通用的游戏配置，在游戏开始前赋给全局变量

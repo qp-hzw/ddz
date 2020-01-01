@@ -51,6 +51,7 @@
 #include "../子依赖项/全局定义/Array.h"
 #include "../子依赖项/全局定义/Module.h"
 #include "../子依赖项/全局定义/PacketAide.h"
+#include "log.h"
 //#include "../子依赖项/全局定义/ServerRule.h"
 //#include "../子依赖项/全局定义/RightDefine.h"
 

@@ -1,6 +1,6 @@
 #pragma once
 #include <windows.h>
-#include "ServerLog.h"
+#include "config.h"
 typedef		WORD	PLAYER_TYPE;  // 玩家类型描述
 
 #define __GETCARDSUM( _type )		CGamePlayerConfig::GetPlayerCardSum( _type ) // 提取玩家手牌数量
@@ -65,7 +65,7 @@ public:
 	 * @param		player_sum				[in-out]		扑克组 数组
 	 * @param		m_plog					[in]			日志接口
 	 */
-	static int LoadPlayerDesc(	const wchar_t *configfile, PLAYER_TYPE &player_type, CServerLog *m_plog);
+	static int LoadPlayerDesc(CConfigFile& ff, PLAYER_TYPE &player_type);
 
 	/**
 	 * 根据玩家组描述数组构造玩家描述数组

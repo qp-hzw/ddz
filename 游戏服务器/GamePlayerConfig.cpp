@@ -13,97 +13,19 @@ using namespace MSXML2;
  * @param		player_sum				[in-out]		玩家组数组长度
  * @param		m_plog					[in]			日志接口
  */
-int CGamePlayerConfig::LoadPlayerDesc( const wchar_t *configfile, PLAYER_TYPE &player_type, CServerLog *m_plog )
+int CGamePlayerConfig::LoadPlayerDesc(CConfigFile& ff, PLAYER_TYPE &player_type)
 {
-	// 输入参数校验
-	if( NULL == configfile || NULL == m_plog )
-	{
-		// "输入参数异常"
-		return -1;
-	}
-
-	// 读取配置文件
-	MSXML2::IXMLDOMDocumentPtr pXMLDom;
-	HRESULT hr= pXMLDom.CreateInstance(__uuidof(MSXML2::DOMDocument60), NULL, CLSCTX_INPROC_SERVER);
-	if (FAILED(hr)) 
-	{
-		m_plog->LogSingleLine(L"xml解析器加载失败", NULL );
-		return -1;
-	}
-
 	// 初始化输出参数
 	int result = 0;
 
-	try
-	{
-		pXMLDom->async = VARIANT_FALSE;
-		pXMLDom->validateOnParse = VARIANT_FALSE;
-		pXMLDom->resolveExternals = VARIANT_FALSE; // 初始化标识
+	BYTE id = 0, _sum = 0, _card_sum = 0;
+	ff.GetItemValue("GAME", "CardGroupNum", id);
+	ff.GetItemValue("GAME", "CardGroupNum", _sum);
+	ff.GetItemValue("GAME", "CardGroupNum", _card_sum);
 
-		if(pXMLDom->load(configfile) == VARIANT_TRUE)
-		{
-			MSXML2::IXMLDOMNodeListPtr pnl = pXMLDom->selectNodes(L"//Game"); // 加载所有节点
-			if(NULL != pnl)
-			{
-				for( int i = 0; i < pnl->length; ++i )
-				{
-					if( 0 == wcsncmp( pnl->item[i]->Getattributes()->getNamedItem(L"name")->text, L"武汉四五趣游网络", wcslen(L"武汉四五趣游网络")))
-					{
-						MSXML2::IXMLDOMNodeListPtr pNodes;
-
-						// 解析玩家组
-						pNodes = pnl->item[i]->selectNodes(L"Players");
-						if( NULL != pNodes)	// 检查数组
-						{
-							for( int j = 0; j < pNodes->length; ++j )
-							{
-								if( NULL != pNodes->item[j]->selectSingleNode("id"))
-								{
-									SetPlayerGroupID( player_type, atoi(pNodes->item[j]->selectSingleNode("id")->text)); // id
-									if(NULL != pNodes->item[j]->selectSingleNode("card_sum"))
-									{
-										SetPlayerCardSum( player_type, atoi(pNodes->item[j]->selectSingleNode("card_sum")->text)); // card_sum
-										//added by lizhihu 玩家人数不从配置文件读取，从客户端传入，这里写死
-										SetPlayerSum( player_type, 0); // 解析player_sum
-									}
-									else
-									{
-										m_plog->LogSingleLine(L"玩家类型card_sum标签解析失败", NULL);
-										result = -1;
-									}
-								}
-								else
-								{
-									m_plog->LogSingleLine(L"玩家类型id标签解析失败", NULL);
-									result = -1;
-								}
-							}
-						}
-						else
-						{
-							m_plog->LogSingleLine(L"玩家类型数组太小", NULL);
-							result = -1;
-						}
-					}
-				}
-			}
-			else
-			{
-				m_plog->LogSingleLine(L"节点获取失败", NULL);
-				result = -1;
-			}
-		}
-		else
-		{
-			m_plog->LogSingleLine(L"配置文件加载失败", NULL);
-			result = -1;
-		}
-	}
-	catch(_com_error errorObject)
-	{
-		m_plog->LogSingleLine(L"异常代码：0x%08x", errorObject.Error());
-		result = -1;
-	}
+	SetPlayerGroupID(player_type, id); // id
+	SetPlayerCardSum(player_type, _sum); // card_sum
+	SetPlayerSum(player_type, 0); // 解析player_sum
 
 	return result;
 }

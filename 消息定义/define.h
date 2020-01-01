@@ -22,7 +22,7 @@
 
 
 //用户数据
-#define MAX_CARD_COUNT						42								//最大手牌扑克数目
+#define MAX_CARD_COUNT						20							//最大手牌扑克数目
 #define MAX_GAME_SCORE_TYPES				50								//最大游戏手牌倍数种类，不超过50
 
 //无效卡牌
@@ -86,9 +86,10 @@
 //////////////////////////////////////////////////////////////////////////
 //斗地主定义
 #define	ROB_TYPE_CALL			1			//叫地主
-#define	ROB_TYPE_ROB			2			//抢地主
+#define	ROB_TYPE_ROB			3			//抢地主
 #define	ROB_STATE_NON_RESPONE	0			//还未开始抢庄
-#define	ROB_STATE_PASS			1			//过
+#define	ROB_STATE_BUJIAO			0			//不叫
+#define	ROB_STATE_BUQIANG			2			//不抢
 #define	ROB_STATE_AGREE			2			//叫/抢
 
 #define JIAOFEN_START			15			//第一个玩家叫分  1111
@@ -103,8 +104,8 @@
 #define OUT_CARD_FAIL			0									//出牌失败
 #define OUT_CARD_SUCCESS		1									//出牌成功
 
-#define OUT_CARD_PASS			1									//出牌过（要不起）
-#define OUT_CARD_NORMAL			0									//正常出牌
+#define OUT_CARD_PASS			0									//出牌过（要不起）
+#define OUT_CARD_NORMAL			1									//正常出牌
 
 #define TURN_END				0									//一轮结束
 #define TURN_NOT_END			1									//一轮未结束
@@ -139,6 +140,7 @@
 #define BIG_JOKER_INDEX			66									//大王索引
 #define MAX_SCORE_CARD_NUM		24									//最大得分卡牌数（分牌 5 10 K）
 #define START_LEVEL_VALUE		2									//初始级牌大小
+#define MAX_LAIZI_COUNT			4									//目前最多四个癞子
 
 #define COLOR_MAIN_CARD			0x04								//主牌标志（包括大小王和级牌）
 #define COLOR_HEI_TAO			0x03								//黑桃
@@ -269,15 +271,6 @@ struct tagCardRecorder
 	BYTE							SmallJokerCount;			//牌小王的张数
 	BYTE							BigJokerCount;				//牌大王的张数
 };
-
-//房间规则
-struct tagTableCfg
-{
-	//tagCommonRoomRule com_rule; //通用房间规则
-	//MSG_SUB_ROOM_RULE sub_rule; //子游戏特有房间规则
-};
-
-
 
 //==============================机器人相关==================================================
 
