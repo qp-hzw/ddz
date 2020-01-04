@@ -266,20 +266,20 @@ struct STR_CMD_SC_DJ_GAME_END
 	WORD							wMaxWinChairID;							// 赢次数最多的玩家椅子号
 	WORD							wFangzhuID;								// 房主ID
 	SCORE							lUserScore[MAX_CHAIR_COUNT];			// 玩家总得分 
-	BYTE                            bWinTime[MAX_CHAIR_COUNT];				// 胜利次数
-	WORD							BankTime[MAX_CHAIR_COUNT];				//地主次数
+	//BYTE                            bWinTime[MAX_CHAIR_COUNT];				// 胜利次数
+	//WORD							BankTime[MAX_CHAIR_COUNT];				//地主次数
 
-	struct PlayerInfo
-	{
-		std::string		playerName;    //名字
-		WORD			playerID;   		//ID
-		std::string		szFaceUrl;			//头像框
-	};
+	//struct PlayerInfo
+	//{
+	//	std::string		playerName;    //名字
+	//	WORD			playerID;   		//ID
+	//	std::string		szFaceUrl;			//头像框
+	//};
 
-	struct PlayerInfo	playerinfo[MAX_CHAIR_COUNT];      			//玩家信息
-	SCORE				PlayerBigestBet[MAX_CHAIR_COUNT];			//玩家曾获得过的最大倍数
-	WORD				IsEnd;												//是否结束  0-结束  1-未结束
-	WORD				Rich_ID[MAX_CHAIR_COUNT];					//大土豪的椅子号 输得最多的
+	//struct PlayerInfo	playerinfo[MAX_CHAIR_COUNT];      			//玩家信息
+	//SCORE				PlayerBigestBet[MAX_CHAIR_COUNT];			//玩家曾获得过的最大倍数
+	//WORD				IsEnd;												//是否结束  0-结束  1-未结束
+	//WORD				Rich_ID[MAX_CHAIR_COUNT];					//大土豪的椅子号 输得最多的
 };
 
 //游戏结束 公共倍数

@@ -5428,6 +5428,7 @@ int CGameData::InitGameData()
 	m_playing_para.turn_cards_num = 0;   //最大出牌数据初始化
 	m_playing_para.jiaofen_count = 0;	 //初始化叫分次数
 	m_playing_para.leave_card_bet = 1;
+	m_playing_para.game_cur_count = 0;
 
 	//排序权位初始化
 	for (BYTE i = 0; i < LEN_SORT_RIGHT; i++)

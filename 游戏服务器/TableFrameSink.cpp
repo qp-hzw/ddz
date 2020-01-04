@@ -91,6 +91,17 @@ bool CTableFrameSink::Initialization(ITableFrame *pTableFrame)
 
 	//给状态设初值
 	m_GameAccess->SetGameStatus(GS_WK_FREE);
+
+	// 初始化房间-设置房间规则
+	if (!m_GameAccess->SetRoomRule(m_pRoomRuleOption))
+		return false;
+
+	// 加载读取的配置文件参数和创建日志,铁岭麻将-经典模式		
+	if (0 != m_GameLogic->LoadConfigParameter(L"MJ_GAMES_LOG.txt", GAME_SCORE_MODE_CLASSIC))
+	{
+		//未成功初始化,退出
+		return false;
+	}
 	
 	return true;
 }
@@ -107,6 +118,8 @@ VOID  CTableFrameSink::RepositionSink()
 // 小局游戏结束
 bool CTableFrameSink::XjGameConclude(int nTotalGameCount, int nCurGameCount)
 {
+	printf("小局结束\n");
+
 	// 玩家数目
 	BYTE _playersum = m_GameAccess->GetMaxChairCount();
 
@@ -231,11 +244,9 @@ bool CTableFrameSink::XjGameConclude(int nTotalGameCount, int nCurGameCount)
 						{
 							BankScore -= msg_singleGameScore[i];
 						}
-						cout << "msg_singleGameScore::::" << msg_singleGameScore[i] << endl;
 					}
 				}
 				msg_singleGameScore[BankID] = BankScore;
-				cout << "msg_singleGameScore[BankID]::::" << BankScore << endl;
 			}
 			else
 			{
@@ -494,30 +505,30 @@ bool CTableFrameSink::DjGameConclude(int nTotalGameCount, int nCurGameCount)
 	sDJGameEnd.wFangzhuID = m_GameAccess->GetRoomFangzhu();  //房主
 	sDJGameEnd.wMaxWinChairID = msg_wMaxWinChairID;			//大赢家
 
-	//判断大局局是否结束
-	if (nTotalGameCount == nCurGameCount)
-	{
-		sDJGameEnd.IsEnd = 1;    //1结束  0未结束
-	}
+	////判断大局局是否结束
+	//if (nTotalGameCount == nCurGameCount)
+	//{
+	//	sDJGameEnd.IsEnd = 1;    //1结束  0未结束
+	//}
 
 	for (int i = 0; i < _playersum; i++)
 	{
 		sDJGameEnd.lUserScore[i] = msg_userScore[i];  //总分
-		sDJGameEnd.bWinTime[i] = msg_winTime[i];     //赢次数
-		sDJGameEnd.BankTime[i] = msg_bankTime[i];	//地主次数
-		sDJGameEnd.PlayerBigestBet[i] = msg_BestBet[i];	 //记录最大倍数
-		sDJGameEnd.Rich_ID[i] = Rich[i];	 //记录大土豪
+		//sDJGameEnd.bWinTime[i] = msg_winTime[i];     //赢次数
+		//sDJGameEnd.BankTime[i] = msg_bankTime[i];	//地主次数
+		//sDJGameEnd.PlayerBigestBet[i] = msg_BestBet[i];	 //记录最大倍数
+		//sDJGameEnd.Rich_ID[i] = Rich[i];	 //记录大土豪
 
-		//玩家信息
-		auto player_info = m_pITableFrame->GetPlayerBaseInfo(i);
-		auto pInfo = sDJGameEnd.playerinfo;
+		////玩家信息
+		//auto player_info = m_pITableFrame->GetPlayerBaseInfo(i);
+		//auto pInfo = sDJGameEnd.playerinfo;
 
-		printf("ID:%d\n", player_info.m_PlayerID);
-		cout << player_info.m_szPlayerName << endl;
+		//printf("ID:%d\n", player_info.m_PlayerID);
+		//cout << player_info.m_szPlayerName << endl;
 
-		pInfo[i].playerID = player_info.m_PlayerID;   //ID 
-		pInfo[i].playerName = player_info.m_szPlayerName;   //名字
-		pInfo[i].szFaceUrl = player_info.m_szFaceUrl;	//头像框
+		//pInfo[i].playerID = player_info.m_PlayerID;   //ID 
+		//pInfo[i].playerName = player_info.m_szPlayerName;   //名字
+		//pInfo[i].szFaceUrl = player_info.m_szFaceUrl;	//头像框
 
 	}
 
@@ -558,7 +569,7 @@ bool CTableFrameSink::OnEventGameConclude(WORD wChairID, IServerUserItem * pISer
 	m_pITableFrame->KillGameTimer(IDI_OUT_CARD);
 
 	// 游戏当前局数
-	BYTE cbCurGameCount = m_GameAccess->GetCurGameCount();
+	WORD cbCurGameCount = m_GameAccess->GetCurGameCount();
 
 	// 总局数
 	WORD cbAllGameCount = m_GameAccess->GetAllCount();
@@ -646,30 +657,30 @@ bool CTableFrameSink::OnEventGameConclude(WORD wChairID, IServerUserItem * pISer
 			sDJGameEnd.wFangzhuID = m_GameAccess->GetRoomFangzhu();  //房主
 			sDJGameEnd.wMaxWinChairID = msg_wMaxWinChairID;			//大赢家
 
-			//判断大局局是否结束
-			if (cbAllGameCount == cbCurGameCount)
-			{
-				sDJGameEnd.IsEnd = 1;    //1结束  0未结束
-			}
+			////判断大局局是否结束
+			//if (cbAllGameCount == cbCurGameCount)
+			//{
+			//	sDJGameEnd.IsEnd = 1;    //1结束  0未结束
+			//}
 
 			for (int i = 0; i < _playersum; i++)
 			{
 				sDJGameEnd.lUserScore[i] = msg_userScore[i];  //总分
-				sDJGameEnd.bWinTime[i] = msg_winTime[i];     //赢次数
-				sDJGameEnd.BankTime[i] = msg_bankTime[i];	//地主次数
-				sDJGameEnd.PlayerBigestBet[i] = msg_BestBet[i];	 //记录最大倍数
-				sDJGameEnd.Rich_ID[i] = Rich[i];	 //记录大土豪
+				//sDJGameEnd.bWinTime[i] = msg_winTime[i];     //赢次数
+				//sDJGameEnd.BankTime[i] = msg_bankTime[i];	//地主次数
+				//sDJGameEnd.PlayerBigestBet[i] = msg_BestBet[i];	 //记录最大倍数
+				//sDJGameEnd.Rich_ID[i] = Rich[i];	 //记录大土豪
 
-				//玩家信息
-				auto player_info = m_pITableFrame->GetPlayerBaseInfo(i);
-				auto pInfo = sDJGameEnd.playerinfo;
+				////玩家信息
+				//auto player_info = m_pITableFrame->GetPlayerBaseInfo(i);
+				//auto pInfo = sDJGameEnd.playerinfo;
 
-				printf("ID:%d\n", player_info.m_PlayerID);
-				cout << player_info.m_szPlayerName << endl;
+				//printf("ID:%d\n", player_info.m_PlayerID);
+				//cout << player_info.m_szPlayerName << endl;
 
-				pInfo[i].playerID = player_info.m_PlayerID;   //ID 
-				pInfo[i].playerName = player_info.m_szPlayerName;   //名字
-				pInfo[i].szFaceUrl = player_info.m_szFaceUrl;	//头像框
+				//pInfo[i].playerID = player_info.m_PlayerID;   //ID 
+				//pInfo[i].playerName = player_info.m_szPlayerName;   //名字
+				//pInfo[i].szFaceUrl = player_info.m_szFaceUrl;	//头像框
 
 			}
 
@@ -697,6 +708,7 @@ bool CTableFrameSink::OnEventGameConclude(WORD wChairID, IServerUserItem * pISer
 		}
 	case GER_NORMAL:			//正常结束
 		{
+		cout << "dangqian :" << cbCurGameCount << "zong ju :" << cbAllGameCount << endl;
 			if (cbCurGameCount == cbAllGameCount)		// 大局结束		//金币场判断这里加上
 			{
 				XjGameConclude(cbAllGameCount, cbCurGameCount);
@@ -1699,7 +1711,7 @@ bool CTableFrameSink::OnGameMessage(WORD wSubCmdID, VOID * pData, WORD wDataSize
 			if (1 == pTuoGuan->TuoGuan_state)
 			{
 				m_pITableFrame->KillGameTimer(IDI_OUT_CARD);
-				m_pITableFrame->SetGameTimer(IDI_OUT_CARD, IDI_TIME_OUT_CARD*0.05, 0, 0);
+				m_pITableFrame->SetGameTimer(IDI_OUT_CARD, IDI_TIME_OUT_CARD*0.05, 1, 0);
 			}
 			//回客户端托管消息
 			STR_CMD_SC_TUO_GUAN  tuoguan;
@@ -1772,17 +1784,6 @@ bool CTableFrameSink::OnActionUserOnReady(WORD wChairID, IServerUserItem * pISer
 // 大局游戏开始				
 bool CTableFrameSink::OnEventGameStart()
 {
-	// 初始化房间-设置房间规则
-	if ( !m_GameAccess->SetRoomRule( m_pRoomRuleOption ))
-		return false;
-
-	// 加载读取的配置文件参数和创建日志,铁岭麻将-经典模式		
-	if ( 0 != m_GameLogic->LoadConfigParameter(L"MJ_GAMES_LOG.txt", GAME_SCORE_MODE_CLASSIC) )
-	{
-		//未成功初始化,退出
-		return false;
-	}
-
 	//开始游戏
 	StartGame();
 	
@@ -2003,16 +2004,16 @@ void CTableFrameSink::SendJiaoFenStart(WORD wChairID, const BYTE &ActionType)
 		//设置叫三分定时器  
 		m_pITableFrame->KillGameTimer(IDI_ROB_JiaoFen);
 
-		//判断机器人
-		if (m_pITableFrame->IsRobot(wChairID))     //待添加 机器人接口还没添加
-		{
-			WORD index = (rand() % 4) + 1;
-			m_pITableFrame->SetGameTimer(IDI_ROB_JiaoFen, IDI_TIME_ROB_JiaoFen*0.1*index, 0, 0);
-		}
-		else
-		{
-			m_pITableFrame->SetGameTimer(IDI_ROB_JiaoFen, IDI_TIME_ROB_JiaoFen, 0, 0);
-		}
+		////判断机器人
+		//if (m_pITableFrame->IsRobot(wChairID))     //待添加 机器人接口还没添加
+		//{
+		//	WORD index = (rand() % 4) + 1;
+		//	m_pITableFrame->SetGameTimer(IDI_ROB_JiaoFen, IDI_TIME_ROB_JiaoFen*0.1*index, 0, 0);
+		//}
+		//else
+		//{
+			m_pITableFrame->SetGameTimer(IDI_ROB_JiaoFen, IDI_TIME_ROB_JiaoFen, 1, 0);
+		//}
 	}
 }
 
@@ -2228,16 +2229,16 @@ void CTableFrameSink::SendRobStart(const WORD &wChairID, const BYTE &cbType)
 		//抢庄定时器
 		m_pITableFrame->KillGameTimer(IDI_ROB_BANKER);
 
-		//判断是不是机器人
-		if (m_pITableFrame->IsRobot(wChairID))     //机器人接口待添加
-		{
-			WORD index = (rand() % 3) + 1;
-			m_pITableFrame->SetGameTimer(IDI_ROB_BANKER, IDI_TIME_ROB_BANKER*0.1*index, 0, 0);
-		}
-		else
-		{
-			m_pITableFrame->SetGameTimer(IDI_ROB_BANKER, IDI_TIME_ROB_BANKER, 0, 0);
-		}
+		////判断是不是机器人
+		//if (m_pITableFrame->IsRobot(wChairID))     //机器人接口待添加
+		//{
+		//	WORD index = (rand() % 3) + 1;
+		//	m_pITableFrame->SetGameTimer(IDI_ROB_BANKER, IDI_TIME_ROB_BANKER*0.1*index, 0, 0);
+		//}
+		//else
+		//{
+			m_pITableFrame->SetGameTimer(IDI_ROB_BANKER, IDI_TIME_ROB_BANKER, 1, 0);
+		//}
 	}
 }
 
@@ -2313,9 +2314,18 @@ void CTableFrameSink::OnUserCallBanker(WORD wChairID, BYTE cbResult)	//0-不叫  1
 	////////////////////////////////////////////////////////////////////////
 	//两人斗地主测试用 
 	CLog::Log(log_debug, "cbResult: %d", cbResult);
-	m_GameLogic->AppointBanker(wChairID);
-	AllRobBankerOver();
+	if (cbResult == 1)
+	{
+		m_GameLogic->AppointBanker(wChairID);
+		AllRobBankerOver();
+	}
+	else
+	{
+		WORD wNextUser = m_GameAccess->GetNextUser(wChairID);
+		SendRobStart(wNextUser, ROB_TYPE_CALL);    //叫地主类型
+	}
 	return;
+	////////////////////////////////////////////////////////////////////////
 
 	//设置一个参数记录抢庄次数      为了判断过过抢地主的情况
 	BYTE robnum = m_GameAccess->GetCurBankerCount();
@@ -2660,16 +2670,16 @@ void CTableFrameSink::SendAddScoreStart(const WORD &wChairID)
 	// 下注定时器
 	m_pITableFrame->KillGameTimer(IDI_ADD_SCORE);
 
-	//判断机器人
-	if (m_pITableFrame->IsRobot(wChairID))
-	{
-		WORD index = (rand() % 3) + 1;
-		m_pITableFrame->SetGameTimer(IDI_ADD_SCORE_ROBOT, IDI_TIME_ADD_SCORE_ROBOT*index, 0, 0);
-	}
-	else
-	{
-		m_pITableFrame->SetGameTimer(IDI_ADD_SCORE, IDI_TIME_ADD_SCORE, 0, 0);
-	}
+	////判断机器人
+	//if (m_pITableFrame->IsRobot(wChairID))
+	//{
+	//	WORD index = (rand() % 3) + 1;
+	//	m_pITableFrame->SetGameTimer(IDI_ADD_SCORE_ROBOT, IDI_TIME_ADD_SCORE_ROBOT*index, 0, 0);
+	//}
+	//else
+	//{
+		m_pITableFrame->SetGameTimer(IDI_ADD_SCORE, IDI_TIME_ADD_SCORE, 1, 0);
+	//}
 }
 
 // 下注开始返回
@@ -3027,24 +3037,24 @@ void CTableFrameSink::HandleOutCardStart(const WORD &wOutCardUser)
 
 	// 出牌定时器
 	m_pITableFrame->KillGameTimer(IDI_OUT_CARD);
-	//判断是否是机器人
-	if (m_pITableFrame->IsRobot(wOutCardUser))
-	{
-		WORD index = (rand() % 4) + 1;
-		m_pITableFrame->SetGameTimer(IDI_OUT_CARD, IDI_TIME_OUT_CARD*0.05*index, 0, 0);
-	}
-	else
-	{
+	////判断是否是机器人
+	//if (m_pITableFrame->IsRobot(wOutCardUser))
+	//{
+	//	WORD index = (rand() % 4) + 1;
+	//	m_pITableFrame->SetGameTimer(IDI_OUT_CARD, IDI_TIME_OUT_CARD*0.05*index, 0, 0);
+	//}
+	//else
+	//{
 		//判断是否托管
 		if (1 == m_GameAccess->GetPlayerTuoGuan(wOutCardUser))
 		{
-			m_pITableFrame->SetGameTimer(IDI_OUT_CARD, IDI_TIME_OUT_CARD*0.05, 0 , 0);
+			m_pITableFrame->SetGameTimer(IDI_OUT_CARD, IDI_TIME_OUT_CARD*0.05, 1 , 0);
 		}
 		else
 		{
-			m_pITableFrame->SetGameTimer(IDI_OUT_CARD, IDI_TIME_OUT_CARD, 0, 0);
+			m_pITableFrame->SetGameTimer(IDI_OUT_CARD, IDI_TIME_OUT_CARD, 1, 0);
 		}
-	}
+	//}
 }
 
 //出牌事件
