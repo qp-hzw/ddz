@@ -2313,18 +2313,21 @@ void CTableFrameSink::OnUserCallBanker(WORD wChairID, BYTE cbResult)	//0-不叫  1
 
 	////////////////////////////////////////////////////////////////////////
 	//两人斗地主测试用 
-	CLog::Log(log_debug, "cbResult: %d", cbResult);
-	if (cbResult == 1)
+	if (2 == m_GameAccess->GetMaxChairCount())
 	{
-		m_GameLogic->AppointBanker(wChairID);
-		AllRobBankerOver();
+		CLog::Log(log_debug, "cbResult: %d", cbResult);
+		if (cbResult == 1)
+		{
+			m_GameLogic->AppointBanker(wChairID);
+			AllRobBankerOver();
+		}
+		else
+		{
+			WORD wNextUser = m_GameAccess->GetNextUser(wChairID);
+			SendRobStart(wNextUser, ROB_TYPE_CALL);    //叫地主类型
+		}
+		return;
 	}
-	else
-	{
-		WORD wNextUser = m_GameAccess->GetNextUser(wChairID);
-		SendRobStart(wNextUser, ROB_TYPE_CALL);    //叫地主类型
-	}
-	return;
 	////////////////////////////////////////////////////////////////////////
 
 	//设置一个参数记录抢庄次数      为了判断过过抢地主的情况
@@ -2450,7 +2453,8 @@ void CTableFrameSink::OnUserCallBanker(WORD wChairID, BYTE cbResult)	//0-不叫  1
 				}
 
 				else if ((ROB_TYPE_ROB == m_GameAccess->GetBankerState(wNextUser)
-					|| ROB_TYPE_CALL == m_GameAccess->GetBankerState(wNextUser))
+					|| ROB_TYPE_CALL == m_GameAccess->GetBankerState(wNextUser)
+					|| 10 == m_GameAccess->GetBankerState(wNextUser))	//初始状态
 					&& (int)cbPassNum != 2)   //和上面同理 914
 				{
 					if ((int)cbPassNum == 1 && robnum == 1)

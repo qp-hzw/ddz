@@ -552,6 +552,8 @@ unsigned int CConfigFile::LocateSection( const char *pszSectionName,
 
     /* ��SectionNameת����Сд */
     pszLowerSection = new char [strlen(pszSectionName) + 2 + 1];
+	if (pszLowerSection == NULL)
+		return false;
 
     sprintf(pszLowerSection, "[%s]", pszSectionName);
     ToLower(pszLowerSection, strlen(pszLowerSection));
@@ -592,7 +594,7 @@ unsigned int CConfigFile::LocateSection( const char *pszSectionName,
     }
 
     /* �ͷ���Դ */
-    delete [] pszLowerSection;
+	delete [] pszLowerSection;		//崩溃
 
     /* Ѱ����һ����Ч�ַ���'['��ͷ���� */
     bIsFirstValidCharOnLine = true;

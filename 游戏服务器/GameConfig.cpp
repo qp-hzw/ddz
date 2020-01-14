@@ -72,7 +72,6 @@ int CGameConfig::CreateGameCards(CConfigFile &ff)
 	{
 		// 获取配置中一副纸牌的总数和发到每个用户的牌数
 		result = CGameCardConfig::LoadCardsSum(ff, gComCardPara.game_cards_num);
-
 		if (0 == result)
 		{
 			result = CGameCardConfig::TransGroups(gComCardPara.group, gComCardPara.groupNum, gComCardPara.game_cards, gComCardPara.game_cards_num);	// 解析牌
@@ -80,7 +79,6 @@ int CGameConfig::CreateGameCards(CConfigFile &ff)
 			{
 				//读取配置文件对应的手牌倍数
 				CGameCardConfig::LoadGameScoreTimes(ff, GAME_SCORE_MODE_CLASSIC, gComGamePara.game_normal_times);
-
 				//获得疯狂加倍倍数
 				CGameCardConfig::LoadGameScoreTimes(ff, GAME_SCORE_MODE_CRAZY, gComGamePara.game_crazy_times);
 			}
@@ -100,7 +98,6 @@ int CGameConfig::CreateGameCards(CConfigFile &ff)
 		CLog::Log(log_error, "提组失败");
 		result = -1;
 	}
-
 	return result;
 }
 
@@ -117,7 +114,6 @@ int CGameConfig::CreatePlayers(CConfigFile &ff)
 
 	return result;
 
-	return result;
 }
 
 // 绑定配置文件

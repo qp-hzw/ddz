@@ -86,32 +86,27 @@ int CGameCardConfig::LoadCardsSum(CConfigFile&ff, DWORD &cards_sum)
 int CGameCardConfig::LoadGameScoreTimes(CConfigFile &ff, BYTE game_score_Mode, BYTE *game_score_times)
 {
 	int result = 0;
-	memset(game_score_times, 1, sizeof(BYTE)*MAX_GAME_SCORE_TYPES);
-
 	if (NULL == game_score_times)
 	{
 		return -1;
 	}
-
+	memset(game_score_times, 1, sizeof(BYTE)*MAX_GAME_SCORE_TYPES);
 
 	// 选出经典模式
 	BYTE type_sum = 0;
 	ff.GetItemValue("CAME_SCORE_MODE_CLASSIC", "sum", type_sum);
-
 	type_sum = (type_sum > MAX_GAME_SCORE_TYPES) ? MAX_GAME_SCORE_TYPES : type_sum;
 	if (type_sum == 0)
 	{
 		CLog::Log(log_error, "读取 得分模式失败");
 		return -2;
 	}
-
 	for (int j = 0; j < type_sum; j++)
 	{
 		char sz[20];
 		sprintf(sz, "FF_%d", j);
 		ff.GetItemValue("CAME_SCORE_MODE_CLASSIC", sz, game_score_times[j]);
 	}
-
 	// 选出疯狂加倍模式
 	// 暂时不需要增加
 
@@ -140,9 +135,7 @@ int CGameCardConfig::LoadCardGroups(CConfigFile &ff, CARD_GOURP *groups, DWORD &
 	}
 
 	BYTE card_group_num = 0;
-	ff.GetItemValue("GAME", "CardGroupNum", card_group_num);
-
-	cout << "card_group_num: " << (int)card_group_num << endl;
+	ff.GetItemValue("GAME", "CardGroupNum", card_group_num);  //崩溃
 
 	//取最小的卡牌牌组数
 	group_sum = (card_group_num > MAX_CARD_GROUP_NUM) ? MAX_CARD_GROUP_NUM : card_group_num;
