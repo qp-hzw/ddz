@@ -2,28 +2,25 @@
 
 --------------------------------------
 Platform依赖项 created by 自动化脚本
-/* CODE_VERSION: */      4;
-/* KERNEL_VERSION: */    5;
 
 
-commit b47144121f6c166cec4739c210fb8e52ef9a0cb4 Author: WangChengQing <377133665@qq.com> Date: Thu Dec 13 19:33:48 2018 +0800 【简要描述】删除无用字段 【详细描述】删除无用字段 【修 改 人】王成庆
+commit 99d841d260ee82154594628e4af68e82d4762e40 Author: wcq <377133665@qq.com> Date: Thu Jan 9 02:51:26 2020 +0800 增加端口ip
 
 author:  
 WangChengQing    
 
 date:  
-2019年 6月 3日 星期一 17时19分39秒 CST
+Fri Jan 10 14:31:44 CST 2020
 
 
 --------------------------------------
 SubGame依赖项 自动化脚本
-/* PLATFORM_VERSION: */      4;
 
 
-commit bec52300fce169b2132cb783c4217faf704eafa6 Author: WangChengQing <377133665@qq.com> Date: Mon Dec 17 15:40:15 2018 +0800 【简要描述】聚贤庄v1.0 版本 【详细描述】1. 缺少自动获取外网ip 【修 改 人】王成庆
+commit 59e2966ccbfd33579846e21790203c44dfed89fb Author: KeNNyResT <1142441064@qq.com> Date: Tue Jan 14 15:45:22 2020 +0800 金币场正常运行
 
 author:  
 WangChengQing    
 
 date:  
-2019年 6月12日 星期三 21时46分40秒 CST
+Tue Jan 14 17:22:47 CST 2020

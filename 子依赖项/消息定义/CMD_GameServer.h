@@ -2,7 +2,6 @@
 #define CMD_GAME_SERVER_HEAD_FILE
 
 #include "STR_CMD_GameServer.h"
-#pragma pack(1)
 
 /*
 ** 简要描述:  游戏服 与 其他进程的 消息
@@ -35,8 +34,6 @@
 #define SUB_CG_LOGON_USERID			1										//ID 登录
 #define CMD_GC_LOGON_USERID			101										//ID 登录返回
 
-#define CMD_GC_LOGON_GET_USER_INFO	102										//获得用户基本信息	USERID登录游戏服成功之后会发送给客户端
-
 #pragma endregion
 
 #pragma region MDM_USER 用户命令
@@ -47,7 +44,8 @@
 
 //子消息  *表示客户端未用到		#初步整理		
 #define SUB_CG_USER_RULE				1									//*用户规则		TODO 貌似是限制用户IP、胜率、逃跑率、积分，应该需要保留
-#define SUB_CG_USER_LOOKON				2									//*旁观请求		TODO 成功无返回，失败返回103请求失败
+//#define SUB_CG_USER_LOOKON				2									//*旁观请求		TODO 成功无返回，失败返回103请求失败
+#define SUB_CG_USER_READY				9									//用户准备
 #define SUB_CG_USER_SITDOWN				3									//*坐下请求（用户加入/创建房间成功后，服务器主动让玩家坐下，不需要请求）
 #define SUB_CG_USER_STANDUP				4									//#起立请求		TODO 非房主解散房间，发送的是该消息，放在15的处理流程中
 #define SUB_CG_USER_INVITE_USER			5									//*邀请用户进入桌子
@@ -94,27 +92,15 @@
 #define CMD_GC_USER_CREATE_GROUP_ROOM	205									//(可删除)#创建牌友圈房间返回
 
 #define SUB_GR_USER_SCORE				101									//用户分数		TODO 子游戏调用写分函数，大厅发送给客户端
-#define SUB_GR_USER_STATUS				102									//用户状态		TODO 设置用户状态时，会调用OnEventUserItemStatus，它会发送该消息给客户端
+#define SUB_GR_USER_STATUS				102									//用户动作
+#define CMD_ROOM_RULE					202									//房间信息
+
 #define SUB_GR_REQUEST_FAILURE			103									//请求失败		大部分失败消息都返回这个消息
 
 #define CMD_GC_USER_MODIFY_TREASURE		106									//修改用户财富信息返回
 
 #define SUB_GR_CREATE_OTHER_SUCCESS		129									//*替他人开房成功		TODO 删除，替他人开房成功放在开房成功中，不需要单独处理
 #define SUB_GR_JOIN_DWTABLE_SUCCESS		133									//*加入电玩房成功		逻辑处理和其他加入房间不同，貌似是加入成功就开始游戏了
-
-#define SUB_GF_ONLINE_PLAYERS			313									//*在线人数
-
-#pragma endregion
-
-#pragma region MDM_GR_STATUS 状态命令
-/* *********************************************************************************
-**						 MAIN:3   MDM_GR_STATUS    状态命令
-** *********************************************************************************/
-#define MDM_GR_STATUS				3									//状态信息
-
-#define CMD_GR_TABLE_INFO			100									//桌子信息
-#define CMD_GR_TABLE_STATUS			101									//桌子状态
-
 #pragma endregion
 
 #pragma region  MDM_GR_MATCH 比赛命令
@@ -162,9 +148,6 @@
 //IP校验
 #define SUB_CG_COM_CHECK_USER_IP			8								//请求校验用户IP信息
 #define CMD_GC_COM_CHECK_USER_IP			108								//校验用户IP信息返回
-
-//用户准备
-#define SUB_GF_USER_READY					4								//用户准备
 
 //用户聊天
 #define SUB_RG_FRAME_CHAT					7								//用户聊天

@@ -40,26 +40,22 @@
 /***全局文件***/
 //定义文件
 #include "../子依赖项/全局定义/Macro.h"
-#include "../子依赖项/全局定义/Define.h"
 
 //结构文件
-#include "../子依赖项/全局定义/Struct_Frame.h"
+#include "../子依赖项/游戏服务/Struct_Frame.h"
+#include "../子依赖项/游戏服务/Define.h"
+#include "../子依赖项/游戏服务/TableFrameBase.h"
 #include "../子依赖项/全局定义/Packet.h"
-//#include "../子依赖项/全局定义/Property.h"
 
 //模板文件
 #include "../子依赖项/全局定义/Array.h"
-#include "../子依赖项/全局定义/Module.h"
-#include "../子依赖项/全局定义/PacketAide.h"
-#include "log.h"
-//#include "../子依赖项/全局定义/ServerRule.h"
-//#include "../子依赖项/全局定义/RightDefine.h"
-
-#include "..\子依赖项\全局定义\Version.h"
-#include "..\子依赖项\游戏服务\GameServiceHead.h"
-
+#include "../子依赖项/服务核心/log.h"
 #include "..\消息定义\CMD_SubGame.h"
 
+
+//链接代码
+#pragma comment (lib,"../子依赖项/链接库/ServiceCore.lib")
+#pragma comment (lib,"../子依赖项/链接库/KernelEngine.lib")
 # include <iostream>
 using namespace std;
 

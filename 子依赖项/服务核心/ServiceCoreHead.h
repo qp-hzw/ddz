@@ -1,16 +1,9 @@
 #ifndef SERVICE_CORE_HEAD_FILE
 #define SERVICE_CORE_HEAD_FILE
 
-//////////////////////////////////////////////////////////////////////////////////
-//包含文件
-
 //MFC 文件
-#include <Nb30.h>
 #include <Afxmt.h>
 #include <AtlBase.h>
-
-//平台文件
-#include "..\全局定义\Version.h"
 
 //////////////////////////////////////////////////////////////////////////////////
 //公共定义
@@ -23,28 +16,5 @@
 		#define SERVICE_CORE_CLASS _declspec(dllimport)
 	#endif
 #endif
-
-//模块定义
-#ifndef _DEBUG
-	#define SERVICE_CORE_DLL_NAME	TEXT("ServiceCore.dll")			//组件名字
-#else
-	#define SERVICE_CORE_DLL_NAME	TEXT("ServiceCoreD.dll")		//组件名字
-#endif
-
-//////////////////////////////////////////////////////////////////////////////////
-//导出文件
-#ifndef INCLUDE_IMPORT_FILES
-	#ifndef SERVICE_CORE_DLL
-		#include "WHThread.h"
-		#include "WHEncrypt.h"
-		#include "WHService.h"
-		#include "WHIniData.h"
-		#include "WHDataQueue.h"
-		#include "WHDataLocker.h"
-	#endif
-#endif
-
-
-//////////////////////////////////////////////////////////////////////////////////
 
 #endif

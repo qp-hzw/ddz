@@ -11,9 +11,6 @@ CTableFrameSink::CTableFrameSink()
 
 	m_pITableFrame=NULL;
 
-	m_pGameServiceOption=NULL;
-	m_pGameServiceAttrib = NULL;
-
 	m_pRoomRuleOption = new tagTableCfg;
 
 	memset(m_dPlayerState, USER_NULL, sizeof(DWORD)*MAX_CHAIR_COUNT);
@@ -32,21 +29,10 @@ CTableFrameSink::~CTableFrameSink()
 
 	m_pITableFrame = NULL;
 
-	m_pGameServiceOption = NULL;
-	m_pGameServiceAttrib = NULL;
-
 	delete m_pRoomRuleOption;
 	m_pRoomRuleOption = NULL;
 }
 
-// 接口查询--检测相关信息版本
-VOID * CTableFrameSink::QueryInterface(const IID & Guid, DWORD dwQueryVer)
-{
-	QUERYINTERFACE(ITableFrameSink,Guid,dwQueryVer);
-	QUERYINTERFACE(ITableUserAction,Guid,dwQueryVer);
-	QUERYINTERFACE_IUNKNOWNEX(ITableFrameSink,Guid,dwQueryVer);
-	return NULL;
-}
 
 //获取KindID给框架
 DWORD CTableFrameSink::GetKindIDToFrame()
@@ -65,10 +51,6 @@ bool CTableFrameSink::Initialization(ITableFrame *pTableFrame)
 
 	m_pITableFrame = pTableFrame;
 	//m_pITableFrame->SetStartMode(START_MODE_FULL_READY);	//所有人准备开始
-
-	////游戏配置
-	//m_pGameServiceAttrib=m_pITableFrame->GetGameServiceAttrib();
-	//m_pGameServiceOption=m_pITableFrame->GetGameServiceOption();
 
 	//房卡配置
 	m_pRoomRuleOption->com_rule = (tagTableRule *)m_pITableFrame->GetCustomRule();

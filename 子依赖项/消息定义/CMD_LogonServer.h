@@ -2,7 +2,6 @@
 #define CMD_LONGON_HEAD_FILE
 
 #include "STR_CMD_LogonServer.h"
-#pragma pack(1)
 
 /*
 ** 简要描述:  登录服 与 客户端的 消息

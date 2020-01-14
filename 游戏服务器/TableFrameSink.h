@@ -32,7 +32,7 @@ struct GameRecord
 
 
 //游戏桌子类
-class CTableFrameSink : public ITableFrameSink, public ITableUserAction
+class CTableFrameSink : public ITableFrameSink
 {
 	//组件变量
 protected:
@@ -42,8 +42,6 @@ protected:
 	CGameAccess						* m_GameAccess;							//游戏查询接口
 
 	ITableFrame						* m_pITableFrame;						//框架接口
-	tagGameServiceOption            * m_pGameServiceOption;					//游戏配置
-	tagGameServiceAttrib            * m_pGameServiceAttrib;					//游戏属性
 
 	tagTableCfg						* m_pRoomRuleOption;					//房间规则
 
@@ -61,12 +59,6 @@ public:
 	//析构函数
 	virtual ~CTableFrameSink();
 
-	//基础接口
-public:
-	//释放对象
-	virtual VOID Release() { delete this; }
-	//接口查询
-	virtual VOID * QueryInterface(const IID & Guid, DWORD dwQueryVer);
 
 	//管理接口
 public:
@@ -92,28 +84,9 @@ public:
 	virtual bool OnTimerMessage(DWORD wTimerID, WPARAM wBindParam);
 	//游戏消息处理
 	virtual bool OnGameMessage(WORD wSubCmdID, VOID * pData, WORD wDataSize, WORD wChairID);
-	//框架消息处理
-	virtual bool OnFrameMessage(WORD wSubCmdID, VOID * pData, WORD wDataSize, IServerUserItem * pIServerUserItem) { return false; }
 	//数据事件
 	virtual bool OnGameDataBase(WORD wRequestID, VOID * pData, WORD wDataSize) { return false; }
 
-	//查询接口
-public:
-	//查询限额
-	virtual SCORE QueryConsumeQuota(IServerUserItem * pIServerUserItem){ return 0;}
-	//最少积分
-	virtual SCORE QueryLessEnterScore(WORD wChairID, IServerUserItem * pIServerUserItem){ return 0;}
-	//查询服务费
-	virtual bool QueryBuckleServiceCharge(WORD wChairID){ return true;}
-
-	//事件接口
-public:
-	//数据事件
-	virtual bool OnDataBaseMessage(WORD wRequestID, VOID * pData, WORD wDataSize){ return false;}
-	//积分事件
-	virtual bool OnUserScroeNotify(WORD wChairID, IServerUserItem * pIServerUserItem, BYTE cbReason){ return false;}
-	//设置积分
-	virtual void SetGameBaseScore(LONG lBaseScore) {}
 
 	//用户事件，框架传入
 public:

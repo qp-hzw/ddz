@@ -20,13 +20,13 @@ struct HandCardValue
 struct CardGroupData
 {
 	//枚举类型
-	CardGroupType cgType = cgERROR;
+	CardGroupType cgType;
 	//该牌的价值
-	int  nValue = 0;
+	int  nValue;
 	//含牌的个数
-	int  nCount = 0;
+	int  nCount ;
 	//牌中决定大小的牌值，用于对比
-	int nMaxCard = 0;
+	int nMaxCard ;
 };
 
 //游戏全局类
@@ -36,6 +36,21 @@ public:
 	//构造函数
 	GameSituation()
 	{
+			//地主玩家
+	 nDiZhuID = -1;
+	//本局叫分
+	 nLandScore = 0;
+
+	//当前地主玩家——还未确定
+	 nNowDiZhuID = -1;
+	//当前本局叫分——还未确定
+	 nNowLandScore = 0;
+
+	//本局当前底分倍数
+	 nMultiple = 0;
+	//当前控手对象（用于区分是否可以自身任意出牌以及是否地主已经放弃出牌从而不去管队友）
+	 nCardDroit = 0;
+
 	}
 	//析构函数
 	virtual ~GameSituation()
@@ -43,36 +58,34 @@ public:
 	}
 
 public:
-
-
 	//地主玩家
-	int nDiZhuID = -1;
+	int nDiZhuID;
 	//本局叫分
-	int nLandScore = 0;
+	int nLandScore;
 
 	//当前地主玩家——还未确定
-	int nNowDiZhuID = -1;
+	int nNowDiZhuID;
 	//当前本局叫分——还未确定
-	int nNowLandScore = 0;
+	int nNowLandScore ;
 
 	//三张底牌
-	int DiPai[3] = { 0 };
+	int DiPai[3] ;
 	//已经打出的牌——状态记录，便于一些计算，值域为该index牌对应的数量0~4
-	int value_aAllOutCardList[18] = { 0 };
+	int value_aAllOutCardList[18] ;
 	//三名玩家已经打出的手牌记录
 	//int value_aUnitOutCardList[3][18] = { 0 };
 	//三名玩家已经剩余手牌个数
-	int value_aUnitHandCardCount[3] = { 0 };
+	int value_aUnitHandCardCount[3] ;
 	//本局当前底分倍数
-	int nMultiple = 0;
+	int nMultiple ;
 	//当前控手对象（用于区分是否可以自身任意出牌以及是否地主已经放弃出牌从而不去管队友）
-	int nCardDroit = 0;
+	int nCardDroit ;
 	//当前出牌玩家
 	int NowOutUser;
 	//当前打出牌的类型数据，被动出牌时玩家根据这里做出筛选
 	CardGroupData uctNowCardGroup;
 	//本局游戏是否结束
-	bool Over = false;
+	bool Over ;
 
 
 };
@@ -95,11 +108,11 @@ public:
 public:
 
 	vector <int>		value_nHandCardList;					//手牌序列——无花色，值域3~17
-	int					value_aHandCardList[18] = { 0 };				//手牌序列——状态记录，便于一些计算，值域为该index牌对应的数量0~4
+	int					value_aHandCardList[18] ;				//手牌序列——状态记录，便于一些计算，值域为该index牌对应的数量0~4
 	vector <int>		color_nHandCardList;					//手牌序列——有花色，按照从大到小的排列  56，52：大王小王……4~0：红3黑3方3花3
-	int					nHandCardCount = 17;							//手牌个数
-	int					nGameRole = -1;									//玩家角色地位       0：地主    1：农民——地主下家   2：农民——地主上家
-	int					nOwnIndex = -1;									//玩家座位ID 
+	int					nHandCardCount ;							//手牌个数
+	int					nGameRole ;									//玩家角色地位       0：地主    1：农民——地主下家   2：农民——地主上家
+	int					nOwnIndex ;									//玩家座位ID 
 	CardGroupData		uctPutCardType;						//玩家要打出去的牌类型
 	vector <int>		value_nPutCardList;					//要打出去的牌——无花色
 	vector <int>		color_nPutCardList;					//要打出去的牌——有花色

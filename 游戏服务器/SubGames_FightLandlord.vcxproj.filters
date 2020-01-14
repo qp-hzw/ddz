@@ -16,9 +16,6 @@
     <ClCompile Include="GameServer.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
-    <ClCompile Include="Stdafx.cpp">
-      <Filter>源文件</Filter>
-    </ClCompile>
     <ClCompile Include="SubGameRule.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
@@ -29,9 +26,6 @@
       <Filter>源文件</Filter>
     </ClCompile>
     <ClCompile Include="config.cpp">
-      <Filter>源文件</Filter>
-    </ClCompile>
-    <ClCompile Include="log.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
   </ItemGroup>
@@ -76,9 +70,6 @@
       <Filter>头文件</Filter>
     </ClInclude>
     <ClInclude Include="GamePlayerConfig.h">
-      <Filter>头文件</Filter>
-    </ClInclude>
-    <ClInclude Include="log.h">
       <Filter>头文件</Filter>
     </ClInclude>
   </ItemGroup>

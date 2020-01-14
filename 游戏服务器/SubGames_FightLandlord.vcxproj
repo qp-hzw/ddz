@@ -20,7 +20,7 @@
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release_Unicode|Win32'" Label="Configuration">
     <ConfigurationType>DynamicLibrary</ConfigurationType>
-    <PlatformToolset>v141</PlatformToolset>
+    <PlatformToolset>v110</PlatformToolset>
     <UseOfMfc>Dynamic</UseOfMfc>
     <CharacterSet>Unicode</CharacterSet>
   </PropertyGroup>
@@ -94,7 +94,7 @@
       <PreprocessorDefinitions>WIN32;_WINDOWS;NDEBUG;_AFXEXT;_UNICODE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>
       <TreatWChar_tAsBuiltInType>true</TreatWChar_tAsBuiltInType>
-      <PrecompiledHeader>Use</PrecompiledHeader>
+      <PrecompiledHeader>NotUsing</PrecompiledHeader>
       <WarningLevel>Level3</WarningLevel>
       <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
     </ClCompile>
@@ -131,12 +131,7 @@
     <ClCompile Include="GamePlayerConfig.cpp" />
     <ClCompile Include="GameServer.cpp" />
     <ClCompile Include="IntelligentAI.cpp" />
-    <ClCompile Include="log.cpp" />
     <ClCompile Include="SubGameRule.cpp" />
-    <ClCompile Include="Stdafx.cpp">
-      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug_Unicode|Win32'">Create</PrecompiledHeader>
-      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release_Unicode|Win32'">Create</PrecompiledHeader>
-    </ClCompile>
     <ClCompile Include="TableFrameSink.cpp">
       <DisableSpecificWarnings Condition="'$(Configuration)|$(Platform)'=='Debug_Unicode|Win32'">4244;%(DisableSpecificWarnings)</DisableSpecificWarnings>
     </ClCompile>
@@ -152,7 +147,6 @@
     <ClInclude Include="GameInterface.h" />
     <ClInclude Include="GamePlayerConfig.h" />
     <ClInclude Include="IntelligentAI.h" />
-    <ClInclude Include="log.h" />
     <ClInclude Include="Resource.h" />
     <ClInclude Include="SubGameRule.h" />
     <ClInclude Include="Stdafx.h" />

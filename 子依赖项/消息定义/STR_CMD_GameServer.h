@@ -1,6 +1,6 @@
 #ifndef STR_CMD_GAME_SERVER_HEAD_FILE
 #define STR_CMD_GAME_SERVER_HEAD_FILE
-
+#include "../服务器组件/游戏服务器/TableFrameBase.h" //因为改结构体tagTableRule
 #pragma pack(1)
 
 #pragma region 辅助宏
@@ -56,6 +56,7 @@ struct STR_CMD_GC_LOGON_USERID
 {
 	LONG							lResultCode;								//错误代码
 	TCHAR							szDescribeString[LEN_MESSAGE_DESCRIBE];		//消息描述
+	DWORD							dwKindID;									//游戏KindID
 	DWORD							dwOffLineGameID;							//断线重连的游戏ID, 非0表示是断线重连
 };
 #pragma endregion
@@ -69,78 +70,6 @@ struct STR_SUB_CG_USER_CREATE_ROOM
 	BYTE SubGameRule[LEN_PRIVATE_TABLE_RULE/2];						//子游戏房间规则
 };
 
-//通用房间规则
-struct tagTableRule
-{
-	/********************************* 大厅使用 ************************************/
-	BYTE	GameMode;				//游戏模式 0-房卡模式; 1-竞技模式;  2-金币模式;  3-房卡金币;
-	BYTE	RobBankType;			//坐庄模式 0-抢庄（抢注高者坐庄） 1-轮庄（轮流坐庄）2-固定（固定房主坐庄）  3-赢庄（赢的人坐庄） 4-摇骰子定庄（随机庄家）
-	BYTE	GameCount;				//游戏局数 0-无限局
-	BYTE	GameCountType;			//大局类型 是第一大局, 第二大局, 还是第三大局
-	BYTE	PlayerCount;			//玩家数量 0-任意人数可开
-	BYTE	cbPayType;				//支付方式，0房主支付、1AA制
-	DWORD	lSinglePayCost;			//金币场 入场门票  TODONOW 该字段仅在扣除门票的时候有用，其他的调用均是以前的, 可以删除
-	WORD	CellScore;				//*底分	  默认为1 -- 子游戏使用的是该字段
-	DWORD	MaxFan;					//*封顶番数 0-不封顶 
-	DWORD	LeaveScore;				//*离场分数 0-无限制         -- 已舍弃
-	DWORD	JoinScore;				//*入场设定 0-无限制         -- 已舍弃
-	BYTE	bRefuseSameIP;			//允许同IP    0-不允许 1-允许
-	BYTE	bDistanceIn300;			//允许300米	  0-不许云 1-允许
-	double	dLongitude;				//经度	
-	double	dLatitude;				//纬度	
-	BYTE	bCreateToOther;			//是否为他人开房 0-否 1-是
-	DWORD	FangZhu;				//*房主
-	BYTE	bAllowStranger;			//允许陌生人加入
-
-	/********************************** 牌友圈相关 ************************************/
-	BYTE	byClubCreate;			//0大厅创建 1 牌友圈普通创建  2牌友圈私密创建
-	DWORD	dwUserID;				//群主ID
-    DWORD	dwClubID;				//牌友群/俱乐部编号
-	DWORD	dwKindID;			    //游戏ID
-	BYTE	byGoldOrFK;				//(2.金币 1.房卡)
-
-	BYTE	bDissolve;				//是否允许解散 0允许 1不允许
-	DWORD	dwDissolveTime;			//解散时长 (分钟)
-
-	//金币房特用
-	DWORD	dwAmount;				//最低额度
-	DWORD	dwOwnerPercentage;		//群主提成
-    
-	BYTE	byMask;					//1 AA支付;  2大赢家支付
-	DWORD	dwDizhu;				//底注
-	//TODONOW 如果是在俱乐部的金币场,这里就是房主设置的; 
-	//如果是在大厅的房卡金币场,这里就是系统设置的; 
-	//如果是在大厅的金币场, 这里就是系统设置的
-    DWORD	dwLevelGold;			//进场的最小身价 
-
-	/************************************ 备用字段 ************************************/
-	BYTE byRetain1;
-    BYTE byRetain2;
-    BYTE byRetain3;
-	BYTE byRetain4;
-
-	DWORD szRetain1;
-    DWORD szRetain2;
-	DWORD szRetain3;
-    DWORD szRetain4;
-	DWORD szRetain5;
-    DWORD szRetain6;
-	DWORD szRetain7;
-    DWORD szRetain8;
-    DWORD szRetain9;
-    DWORD szRetain10;
-};
-
-//创建房间成功返回
-struct STR_CMD_GC_USER_CREATE_ROOM_SUCCESS
-{
-	DWORD							dwPassword;				//房间密码
-	WORD							wChairID;				//用户椅子号
-	BYTE							byAllGameCount;			//总局数
-	BYTE							byGameMode;				//游戏模式 0-经典 1-疯狂加被
-	BYTE							byZhuangType;			//坐庄模式 0-抢庄 1-轮庄 2-固定庄
-	//BYTE							byMask;					//0 无动作; 1子游戏跳转场景
-};
 
 //club牌友圈创建桌子
 struct STR_SUB_CG_USER_CREATE_TABLE
@@ -175,25 +104,12 @@ struct STR_SUB_CG_USER_JOIN_TABLE_NO_PASS
 	double							dLongitude;		//经度
 	double							dLatitude;		//纬度
 };
-//加入房间成功返回
-struct STR_CMD_GC_USER_JOIN_ROOM_SUCCESS
-{
-	tagTableRule					strTableRule;			//大厅的房间规则
-	DWORD							dwRoomID;				//这里实际为TableID
-	WORD							wChairID;
-	WORD							wPlayerCount;
-	BYTE							byAllGameCount;			//总局数
-	BYTE							byGameMode;				//麻将：0-房卡模式  1-竞技模式 2-金币模式；  游戏模式 0-经典 1-疯狂加倍
-	BYTE							byZhuangType;			//坐庄模式 0-抢庄 1-轮庄 2-固定庄
-};
 
 //加入桌子 -- 加入大厅金币场桌子
 struct STR_SUB_CG_USER_JOIN_GOLD_HALL_ROOM
 {
-	DWORD							dwUserID;		//玩家ID
 	BYTE							byGameMod;		//游戏模式 金币大厅2
 	BYTE							byType;			//1.初级场   2.中级场   3.高级场   4.富豪场
-	DWORD							dwKindID;		//游戏ID
 };
 
 //断线重连
@@ -385,27 +301,6 @@ struct CMD_GR_UserInviteReq
 	DWORD							dwUserID;							//用户 I D
 };
 
-//用户分数
-struct CMD_GR_UserScore
-{
-	DWORD							dwUserID;							//用户标识
-	tagUserScore					UserScore;							//积分信息
-};
-
-//用户分数
-struct CMD_GR_MobileUserScore
-{
-	DWORD							dwUserID;							//用户标识
-	tagMobileUserScore				UserScore;							//积分信息
-};
-
-//用户状态
-struct CMD_GR_UserStatus
-{
-	DWORD							dwUserID;							//用户标识
-	tagUserStatus					UserStatus;							//用户状态
-};
-
 //请求失败
 struct CMD_GR_RequestFailure
 {
@@ -441,6 +336,16 @@ struct CMD_GF_OnlinePlayers
 	WORD wOnlinePlayers;			//在线人数
 };
 
+//用户准备
+struct STR_SUB_CG_USER_READY
+{
+};
+
+struct STR_CMD_ROOM_RULE
+{
+	tagTableRule common;			 //创建房间 frame通用房间规则
+	DWORD TableID;                   //房间号
+};
 //////////////////////////////////////////////////////////////////////////////////
 
 //规则标志
@@ -471,22 +376,6 @@ struct CMD_GR_ChairUserInfoReq
 {
 	WORD							wTableID;							//桌子号码
 	WORD							wChairID;							//椅子位置
-};
-#pragma endregion
-
-#pragma region MDM_GR_STATUS 状态命令
-//桌子信息
-struct CMD_GR_TableInfo
-{
-	WORD							wTableCount;						//桌子数目
-	tagTableStatus					TableStatusArray[512];				//桌子状态
-};
-
-//桌子状态
-struct CMD_GR_TableStatus
-{
-	WORD							wTableID;							//桌子号码
-	tagTableStatus					TableStatus;						//桌子状态
 };
 #pragma endregion
 
@@ -543,19 +432,6 @@ struct CMD_GR_SetUserRight
 	BYTE							cbLimitPlayGame;					//游戏权限
 	BYTE							cbLimitSendWisper;					//发送消息
 	BYTE							cbLimitLookonGame;					//旁观权限
-};
-
-//房间设置
-struct CMD_GR_OptionCurrent
-{
-	DWORD							dwRuleMask;							//规则掩码
-	tagServerOptionInfo				ServerOptionInfo;					//房间配置
-};
-
-//房间设置
-struct CMD_GR_ServerOption
-{
-	tagServerOptionInfo				ServerOptionInfo;					//房间配置
 };
 
 //踢出所有用户
@@ -638,9 +514,6 @@ struct CMD_GR_MatchDesc
 //游戏配置
 struct CMD_GF_GameOption
 {
-	BYTE							cbAllowLookon;						//旁观标志
-	DWORD							dwFrameVersion;						//框架版本
-	DWORD							dwClientVersion;					//游戏版本
 };
 
 //旁观配置
@@ -659,8 +532,8 @@ struct CMD_GF_LookonStatus
 //游戏环境
 struct CMD_GF_GameStatus
 {
-	BYTE							cbGameStatus;						//游戏状态
-	BYTE							cbAllowLookon;						//旁观标志
+	BYTE							cbUserAction;							//游戏状态
+	tagUserInfo				UserInfo;								//玩家信息
 };
 
 //用户聊天

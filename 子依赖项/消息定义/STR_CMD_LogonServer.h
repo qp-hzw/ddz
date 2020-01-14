@@ -11,7 +11,7 @@ struct tagClubTableUserInfo
 	TCHAR	szUserName[LEN_NICKNAME];					//玩家名字
 	BYTE	bySex;										//性别
 	WORD	wLevel;										//等级
-	TCHAR	szHeadUrl[LEN_URL];							//头像地址
+	TCHAR	szHeadUrl[LEN_HEAD_URL];							//头像地址
 
 	BYTE	byClubRole;									//玩家职务 0 群主; 1管理; 2一般成员
 	BYTE	byClubReputation;							//玩家在工会中的声望等级
@@ -36,7 +36,6 @@ struct STR_SUB_CL_LOGON_ACCOUNTS
 	TCHAR							szMachineID[LEN_MACHINE_ID];		//机器序列
 	DWORD							dwProxyID;							//代理ID
 };
-
 //注册帐号
 struct STR_SUB_CL_LOGON_REGISTER
 {
@@ -49,7 +48,6 @@ struct STR_SUB_CL_LOGON_REGISTER
 	TCHAR							szMachineID[LEN_MACHINE_ID];		//机器序列
 	DWORD							dwProxyID;							//代理ID
 };
-
 //平台登录  
 struct STR_SUB_CL_LOGON_PLATFORM
 {
@@ -62,7 +60,8 @@ struct STR_SUB_CL_LOGON_PLATFORM
 	TCHAR							szMachineID[LEN_MACHINE_ID];		//机器序列
 	DWORD							dwProxyID;							//代理ID
 };
-//平台登录 返回
+
+//账号|平台登陆 返回
 struct STR_CMD_LC_LOGON_PLATFORM
 {
 	//操作结果
@@ -739,7 +738,7 @@ struct STR_CMD_LC_CLUB_TABLE_USER_LIST
 	TCHAR	szUserName[LEN_NICKNAME];					//玩家名字
 	BYTE	bySex;										//性别
 	WORD	wLevel;										//等级
-	TCHAR	szHeadUrl[LEN_URL];							//头像地址
+	TCHAR	szHeadUrl[LEN_HEAD_URL];							//头像地址
 
 	BYTE	byClubRole;									//玩家职务 0 群主; 1管理; 2一般成员
 	BYTE	byClubReputation;							//玩家在工会中的声望等级
@@ -982,7 +981,7 @@ struct STR_CMD_LC_CLUB_MEMBER_MANAGER
 	BYTE	byClubReputation;							//玩家在工会中的声望等级
 
 	BYTE	byUserState;								//玩家状态  0在线 1离线 2游戏中
-	TCHAR	szHeadUrl[LEN_URL];							//头像地址
+	TCHAR	szHeadUrl[LEN_HEAD_URL];							//头像地址
 };
 
 //请求成员数据 完成
@@ -1063,7 +1062,7 @@ struct STR_CMD_LC_CLUB_APPLICANT_LIST
 	BYTE	byUserLevel;									//玩家等级
 	TCHAR	szNote[128];								//加入说明
 
-	TCHAR	szHeadUrl[LEN_URL];							//头像地址
+	TCHAR	szHeadUrl[LEN_HEAD_URL];							//头像地址
 };
 
 //申请人列表 结束
@@ -1286,7 +1285,7 @@ struct STR_CMD_LC_ROOM_STATE
 	DWORD	dwChairID;
 
 	DWORD	dwCustomID;
-	TCHAR	szHeadUrl[LEN_URL];
+	TCHAR	szHeadUrl[LEN_HEAD_URL];
 	TCHAR	szUserName[LEN_NICKNAME];
 	TCHAR	szKindName[LEN_KIND];
 
@@ -1310,9 +1309,15 @@ struct STR_SUB_CL_SHOP_QUERY
 struct STR_CMD_LC_SHOP_QUERY_RESULT
 {
 	DWORD dwGoodsID;							//商品编号
+	TCHAR szGoodsName[LEN_NICKNAME];			//商品名字
+	BYTE  byExtraGiftType;						//额外赠送的财富类型1rmb 2金币 3房卡 4积分
+	DWORD dwExtraGiftCount;						//额外赠送的财富数量
+	BYTE  byMoneyType;							//购买需要的财富类型 1rmb 2金币 3房卡 4积分
+	DWORD dwMoneyCount;							//购买需要的财富数量
 	BYTE  byDiscount;							//折扣
-	DWORD dbSpreadScore;						//推广积分
-	DWORD dwPrice;								//价格, rmb购买则是rmb的值， 金币购买则是金币值， 积分购买则是积分值
+	DWORD dwLoveLiness;							//增加的魅力值
+	TCHAR szDescripe[128];						//商品描述
+	TCHAR szUrl[256];							//商品url地址
 };
 
 //查询商城结束
@@ -1407,8 +1412,10 @@ struct STR_CMD_LC_GAME_QUERY_GAMEID
 	TCHAR							szDescribeString[LEN_MESSAGE_DESCRIBE];	//描述消息
 
 	DWORD	dwGameID;				//可用的GameID;
+	TCHAR							szIPAddr[LEN_IP_ADDR];					//ip地址
+	DWORD							dwPort;									//ip端口
+
 };
 #pragma endregion
-#pragma pack()
 
 #endif

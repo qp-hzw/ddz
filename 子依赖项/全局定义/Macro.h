@@ -1,6 +1,14 @@
 #ifndef MACRO_HEAD_FILE
 #define MACRO_HEAD_FILE
 
+interface IUnknownEx
+{
+	//启动服务
+	virtual bool StartService()=NULL;
+	//停止服务
+	virtual bool ConcludeService()=NULL;
+};
+
 //////////////////////////////////////////////////////////////////////////////////
 //常用常量
 
@@ -33,7 +41,7 @@
 //////////////////////////////////////////////////////////////////////////////////
 
 //接口释放
-#define SafeRelease(pObject) { if (pObject!=NULL) { pObject->Release(); pObject=NULL; } }
+//#define SafeRelease(pObject) { if (pObject!=NULL) { delete pObject; pObject=NULL; } }
 
 //删除指针
 #define SafeDelete(pData) { try { delete pData; } catch (...) { ASSERT(FALSE); } pData=NULL; } 
@@ -44,6 +52,5 @@
 //删除数组
 #define SafeDeleteArray(pData) { try { delete [] pData; } catch (...) { ASSERT(FALSE); } pData=NULL; } 
 
-//////////////////////////////////////////////////////////////////////////////////
 
 #endif

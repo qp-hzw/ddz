@@ -4,22 +4,24 @@
 #pragma pack(1)
 
 #pragma region  MDM_REGISTER 注册模块
-//注册登录服
-struct STR_CPR_LP_REGISTER_LOGON
+//游戏房间
+struct tagServerItem
 {
-	TCHAR							szServerAddr[32];					//登陆服务地址
+	DWORD							dwServerID;							//server id
+	DWORD                           dwSocketID;                         //socket id
+	BYTE                            byServerType;                       //1.lobbyServer;  2.GameServer
+	TCHAR							szServerName[LEN_SERVER];			//
+	
+	TCHAR							szServerAddr[LEN_IP_ADDR];		    //服务器地址
+	WORD							wServerPort;					    //服务器端口
 };
 
-//注册游戏服
-struct STR_CPR_GP_REGISTER_GAME
+//服务类型
+enum enServerType
 {
-	DWORD							dwServerID;							//房间索引
-	TCHAR							szServerName[LEN_SERVER];			//房间名称
-
-	TCHAR							szGameServerAddr[32];				//游戏服地址
-	WORD							wGameServerPort;					//游戏服端口
-	
-	DWORD							dwSubGameVersion;					//子游戏版本
+	NULL_TYPE = 1,				//无效服务
+	GAME_TYPE = 2,				//游戏服
+	LOBBY_TYPE = 3,				//登录服
 };
 
 //注册失败
@@ -31,29 +33,7 @@ struct STR_CPO_PGPL_REGISTER_FAILURE
 
 #pragma endregion
 
-#pragma region MDM_CPD_LIST 列表命令
-//房间人数
-struct STR_CPR_GP_LIST_GAME_ONLINE
-{
-	DWORD							dwOnLineCount;						//在线人数
-};
-
-//房间人数
-struct STR_CPR_PL_LIST_GAME_ONLINE
-{
-	DWORD							wServerID;							//房间标识
-	DWORD							dwOnLineCount;						//在线人数
-};
-
-//房间删除
-struct STR_CPO_PL_LIST_REMOVE_GAME
-{
-	DWORD							dwServerID;							//房间标识
-};
-#pragma endregion
-
 #pragma region MDM_TRANSFER 中转服务
-
 //登录服通知协调服, 协调服通知游戏服 解散桌子
 struct STR_CPR_LP_CLUB_TABLE_DISSOLVE
 {
@@ -86,26 +66,27 @@ struct STR_CPO_PL_CREATE_TABLE
 	DWORD	dwGameID;				//可用的GameID;
 
 	DWORD	dwSocketID;									//客户端SocketID
+
+	TCHAR	szIPAddr[LEN_IP_ADDR];					//ip地址
+	DWORD	dwPort;									//ip端口
 };
 #pragma endregion
 
-#pragma region  玩家状态
-
-#pragma endregion 
-
-#pragma region MDM_WEB 后台管理
-//跑马灯消息
-struct STR_CPR_WP_WEB_MARQUEE
+#pragma region MDM_TRANSFER 用户
+//断线重连
+struct tagOfflineUser 
 {
-	BYTE							byMask;								//标志
+	DWORD dwUserID;
+	DWORD dwServerID;	
+	BYTE  byMask;		//1表示在list中增加用户；  2表示在list中删除用户
 };
 
-//聊天频道 -- 系统消息
-struct STR_CPR_WP_WEB_SYSTEM_MESSAGE
+struct STR_SUB_CS_C_USER_OFFLINE
 {
-	TCHAR							szMessage[50];						//聊天频道 -- 系统消息
+	DWORD dwUserID;
+	DWORD dwGameID;
+	BYTE  byMask;		//1表示在list中增加用户；  2表示在list中删除用户
 };
 #pragma endregion
-#pragma pack()
 
 #endif

@@ -1,10 +1,6 @@
 #ifndef ARRAY_HEAD_FILE
 #define ARRAY_HEAD_FILE
 
-#pragma once
-
-//////////////////////////////////////////////////////////////////////////////////
-
 //数组模板类
 template <class TYPE, class ARG_TYPE=const TYPE &> class CWHArray
 {
@@ -438,7 +434,5 @@ VOID CWHArray<TYPE,ARG_TYPE>::AllocMemory(INT_PTR nNewCount)
 
 	return;
 }
-
-//////////////////////////////////////////////////////////////////////////////////
 
 #endif
