@@ -690,8 +690,7 @@ bool CTableFrameSink::OnEventGameConclude(WORD wChairID, IServerUserItem * pISer
 		}
 	case GER_NORMAL:			//正常结束
 		{
-		cout << "dangqian :" << cbCurGameCount << "zong ju :" << cbAllGameCount << endl;
-			if (cbCurGameCount == cbAllGameCount)		// 大局结束		//金币场判断这里加上
+			if (cbCurGameCount == cbAllGameCount || 2 == m_pITableFrame->GameType())		// 大局结束		//金币场判断这里加上
 			{
 				XjGameConclude(cbAllGameCount, cbCurGameCount);
 				DjGameConclude(cbAllGameCount, cbCurGameCount);
@@ -3694,9 +3693,6 @@ extern "C" __declspec(dllexport) VOID * CreateTableFrameSink()
 			throw TEXT("创建失败");
 		}
 
-		//从配置文件读取游戏配置
-		CGameConfig::LoadGameCommonConfig();
-
 		return pTableFrameSink;
 	}
 	catch (...) {}
@@ -3704,6 +3700,17 @@ extern "C" __declspec(dllexport) VOID * CreateTableFrameSink()
 	//清理对象
 	SafeDelete(pTableFrameSink);
 	return NULL;
+}
+
+//读取配置文件
+extern "C" __declspec(dllexport) DWORD ReadSubCfgConfig()
+{
+	//从配置文件读取游戏配置
+	int ret = CGameConfig::LoadGameCommonConfig();
+	if (ret != 0)
+		return 0;
+
+	return KIND_ID;
 }
 
 ////////////////////////////////////////////////////////////////////////////////////

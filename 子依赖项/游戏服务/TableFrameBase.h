@@ -304,7 +304,7 @@ struct BASE_PLAYERINFO
 interface ITableFrame : public IUnknownEx
 {
 public:
-	// 1金币; 2私有; 3比赛
+	// 游戏模式 0-房卡模式; 1-竞技模式;  2-金币模式;  3-房卡金币;
 	virtual int GameType() = 0;
 	//is roboot
 	virtual bool IsRobot(WORD wChairID) = 0;

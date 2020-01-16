@@ -25,7 +25,7 @@
     <ClCompile Include="IntelligentAI.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
-    <ClCompile Include="config.cpp">
+    <ClCompile Include="cfg.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
   </ItemGroup>
@@ -66,10 +66,10 @@
     <ClInclude Include="..\消息定义\CMD_SubGame.h">
       <Filter>消息定义</Filter>
     </ClInclude>
-    <ClInclude Include="config.h">
+    <ClInclude Include="GamePlayerConfig.h">
       <Filter>头文件</Filter>
     </ClInclude>
-    <ClInclude Include="GamePlayerConfig.h">
+    <ClInclude Include="cfg.h">
       <Filter>头文件</Filter>
     </ClInclude>
   </ItemGroup>

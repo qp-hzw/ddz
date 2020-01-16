@@ -47,7 +47,7 @@ BYTE    CGameCardConfig::MapOfCardValue(BYTE CardData)
  * return					0				正常
  *							-1				异常
  */
-int CGameCardConfig::LoadCardsSum(CConfigFile&ff, DWORD &cards_sum)
+int CGameCardConfig::LoadCardsSum(CCfg &ff, DWORD &cards_sum)
 {
 	int result = 0;
 
@@ -56,7 +56,7 @@ int CGameCardConfig::LoadCardsSum(CConfigFile&ff, DWORD &cards_sum)
 
 	// 初始化输出参数
 	cards_sum = MAX_TOTAL_CARD_NUM;			//默认值
-
+	
 	ff.GetItemValue("GAME", "CardSum", cards_sum);
 	if (cards_sum == 0)
 	{
@@ -83,7 +83,7 @@ int CGameCardConfig::LoadCardsSum(CConfigFile&ff, DWORD &cards_sum)
 * return					0				正常
 *							-1				异常
 */
-int CGameCardConfig::LoadGameScoreTimes(CConfigFile &ff, BYTE game_score_Mode, BYTE *game_score_times)
+int CGameCardConfig::LoadGameScoreTimes(CCfg &ff, BYTE game_score_Mode, BYTE *game_score_times)
 {
 	int result = 0;
 	if (NULL == game_score_times)
@@ -125,7 +125,7 @@ int CGameCardConfig::LoadGameScoreTimes(CConfigFile &ff, BYTE game_score_Mode, B
  * return							 0				正常
  *							        -1				异常
  */
-int CGameCardConfig::LoadCardGroups(CConfigFile &ff, CARD_GOURP *groups, DWORD &group_sum)
+int CGameCardConfig::LoadCardGroups(CCfg &ff, CARD_GOURP *groups, DWORD &group_sum)
 {
 	int result = 0;
 

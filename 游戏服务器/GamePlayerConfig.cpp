@@ -13,12 +13,12 @@ using namespace MSXML2;
  * @param		player_sum				[in-out]		玩家组数组长度
  * @param		m_plog					[in]			日志接口
  */
-int CGamePlayerConfig::LoadPlayerDesc(CConfigFile& ff, PLAYER_TYPE &player_type)
+int CGamePlayerConfig::LoadPlayerDesc(CCfg& ff, PLAYER_TYPE &player_type)
 {
 	// 初始化输出参数
 	int result = 0;
 
-	BYTE id = 0, _sum = 0, _card_sum = 0;
+	long id = 0, _sum = 0, _card_sum = 0;
 	ff.GetItemValue("GAME", "CardGroupNum", id);
 	ff.GetItemValue("GAME", "CardGroupNum", _sum);
 	ff.GetItemValue("GAME", "CardGroupNum", _card_sum);

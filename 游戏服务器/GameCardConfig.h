@@ -1,6 +1,6 @@
 #pragma once
 #include <windows.h>
-#include "config.h"
+#include "cfg.h"
 typedef BYTE *CARD_SCOR_RANK,	CARD_SCOR;	// 纸牌点数排序描述
 typedef BYTE *CARD_COLOR_RANK,	CARD_COLOR;	// 纸牌花色排序描述
 typedef BYTE *CARD_DESCS,		CARD_DESC;	// 纸牌描述
@@ -48,7 +48,7 @@ public:
  * return					0				正常
  *							-1				异常
  */
-static int LoadCardsSum(CConfigFile&ff, DWORD &cards_sum);
+static int LoadCardsSum(CCfg &ff, DWORD &cards_sum);
 
 
 /**
@@ -61,7 +61,7 @@ static int LoadCardsSum(CConfigFile&ff, DWORD &cards_sum);
 * return					0				正常
 *							-1				异常
 */
-static int LoadGameScoreTimes(CConfigFile &ff, BYTE game_score_Mode, BYTE *game_score_times);
+static int LoadGameScoreTimes(CCfg &ff, BYTE game_score_Mode, BYTE *game_score_times);
 
 
 /**
@@ -74,7 +74,7 @@ static int LoadGameScoreTimes(CConfigFile &ff, BYTE game_score_Mode, BYTE *game_
  * return					0				正常
  *							-1				异常
  */
-static int LoadCardGroups(CConfigFile &ff, CARD_GOURP *groups, DWORD &group_sum);
+static int LoadCardGroups(CCfg &ff, CARD_GOURP *groups, DWORD &group_sum);
 
 /**
  * 提取所有组

@@ -36,7 +36,7 @@ int CGameConfig::LoadGameCommonConfig()
 	}
 
 	//打开文件
-	CConfigFile ff;
+	CCfg ff;
 	ff.OpenFile(cfg_file.c_str());
 
 	// 创建游戏卡牌和玩家，并获得手牌倍数配置
@@ -61,7 +61,7 @@ int CGameConfig::LoadGameCommonConfig()
 }
 
 // 根据游戏配置创建卡牌数据
-int CGameConfig::CreateGameCards(CConfigFile &ff)
+int CGameConfig::CreateGameCards(CCfg &ff)
 {
 	int result = 0;
 
@@ -102,7 +102,7 @@ int CGameConfig::CreateGameCards(CConfigFile &ff)
 }
 
 // 根据游戏配置创建玩家数据
-int CGameConfig::CreatePlayers(CConfigFile &ff)
+int CGameConfig::CreatePlayers(CCfg &ff)
 {
 	int result = 0;
 

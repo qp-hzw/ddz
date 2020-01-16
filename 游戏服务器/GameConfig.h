@@ -7,7 +7,7 @@
 #include "GameInterface.h"
 #include "GameData.h"
 #include "SubGameRule.h"
-#include "config.h"
+#include "cfg.h"
 
 //从配置文件读取的玩法规则
 typedef struct _tagCommonProfilePara
@@ -50,10 +50,10 @@ public:
 
 private:
 	//获取游戏卡牌配置
-	static int CreateGameCards(CConfigFile &ff);
+	static int CreateGameCards(CCfg &ff);
 
 	//获取游戏玩家配置
-	static int CreatePlayers(CConfigFile &ff);
+	static int CreatePlayers(CCfg &ff);
 
 public:
 	//从配置文件中获取通用的游戏配置，在游戏开始前赋给全局变量
