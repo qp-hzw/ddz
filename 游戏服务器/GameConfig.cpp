@@ -1,8 +1,6 @@
 #include "stdafx.h"
 #include "GameConfig.h"
 
-#import "msxml6.dll"
-using namespace MSXML2;
 #include <time.h>
 
 std::string      CGameConfig::cfg_file;             // ≈‰÷√Œƒº˛
@@ -11,7 +9,6 @@ COM_PROFILE_RULE	CGameConfig::gComGamePara ;	    // ”Œœ∑≈‰÷√
 COM_CARD_CONFIG		CGameConfig::gComCardPara;		// ø®≈∆≈‰÷√
 COM_PLAYER_CONFIG	CGameConfig::gComPlayerPara;    // ÕÊº“≈‰÷√
  
-
 
 CGameConfig::CGameConfig(void)
 {

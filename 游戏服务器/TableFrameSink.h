@@ -49,7 +49,7 @@ protected:
 
 	GameRecord						m_GameRec;								//游戏录像数据结构体
 
-	AILogic							m_AILogic;							//AI出牌逻辑类
+	AILogic							m_AILogic;							    //AI出牌逻辑类
 	HandCardData					m_HandCardData[3];						//AI手牌数据类
 
 	//函数定义
