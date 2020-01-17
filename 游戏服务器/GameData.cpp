@@ -5267,18 +5267,18 @@ int CGameData::LoadGameCards()
 	int result = 0;
 
 	//根据全局配置文件变量，赋值给成员变量
-	if ((NULL != gComCardPara.group) &&
-		(0 != gComCardPara.groupNum) &&
-		(0 != gComCardPara.game_cards_num))
+	if ((NULL != CGameConfig::gComCardPara.group) &&
+		(0 != CGameConfig::gComCardPara.groupNum) &&
+		(0 != CGameConfig::gComCardPara.game_cards_num))
 	{
 		//实际卡牌总数
-		m_card_config.game_cards_sum = gComCardPara.game_cards_num;
+		m_card_config.game_cards_sum = CGameConfig::gComCardPara.game_cards_num;
 
 		//游戏内卡牌
 		m_card_config.game_cards = new CARD_DESC[m_card_config.game_cards_sum];
 		for (int i = 0; i < m_card_config.game_cards_sum; i++)
 		{
-			m_card_config.game_cards[i] = gComCardPara.game_cards[i];
+			m_card_config.game_cards[i] = CGameConfig::gComCardPara.game_cards[i];
 		}
 
 		//玩家初始手牌数
@@ -5300,7 +5300,7 @@ int CGameData::LoadPlayers()
 	PLAYER_TYPE _play_type = 0;		//一个word存储了玩家的2个数据card_sum，player_sum
 
 	//从全局配置文件中读取玩家类型
-	_play_type = gComPlayerPara.type;
+	_play_type = CGameConfig::gComPlayerPara.type;
 
 	// 创建所有玩家，玩家数目固定为最大椅子数，从服务器框架获得
 	m_players_config.players = new PLAYER_DESC[m_players_config.player_sum];
@@ -5317,11 +5317,11 @@ int  CGameData::LoadGameRule(const BYTE cbGameScoreMode)
 	//或得分倍数
 	if (cbGameScoreMode == GAME_SCORE_MODE_CLASSIC)	//经典模式
 	{
-		memcpy(&m_room_config.game_score_times, &gComGamePara.game_normal_times, sizeof(m_room_config.game_score_times));
+		memcpy(&m_room_config.game_score_times, &CGameConfig::gComGamePara.game_normal_times, sizeof(m_room_config.game_score_times));
 	}
 	else if (cbGameScoreMode == GAME_SCORE_MODE_CRAZY)	//疯狂模式
 	{
-		memcpy(&m_room_config.game_score_times, &gComGamePara.game_crazy_times, sizeof(m_room_config.game_score_times));
+		memcpy(&m_room_config.game_score_times, &CGameConfig::gComGamePara.game_crazy_times, sizeof(m_room_config.game_score_times));
 	}
 
 	return 0;

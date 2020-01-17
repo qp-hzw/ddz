@@ -1,6 +1,6 @@
 #ifndef GAME_CONFIG_L
 #define GAME_CONFIG_L
-#pragma once
+
 #include <windows.h>
 #include "GamePlayerConfig.h"
 #include "GameCardConfig.h"
@@ -32,18 +32,17 @@ typedef struct _tagCommonCardPara
 	DWORD game_cards_num;						//实际卡牌总数
 }COM_CARD_CONFIG;
 
-//通用配置文件全局变量
-
-extern  COM_PROFILE_RULE	gComGamePara;		//通用的游戏配置参数（从配置文件获得）
-extern	COM_CARD_CONFIG		gComCardPara;		// 卡牌配置
-extern	COM_PLAYER_CONFIG	gComPlayerPara;		// 玩家配置
-
-extern	wchar_t             m_cfgFile[128];		//配置文件
-
 
 //在dll加载的时候 读取配置文件
 class CGameConfig
 {
+public:
+	static std::string      cfg_file;              // 配置文件
+
+	static COM_PROFILE_RULE	   gComGamePara;	  	// 游戏配置
+	static COM_CARD_CONFIG		gComCardPara;		// 卡牌配置
+	static COM_PLAYER_CONFIG	gComPlayerPara;		// 玩家配置
+
 public:
 	CGameConfig(void);
 	~CGameConfig(void);

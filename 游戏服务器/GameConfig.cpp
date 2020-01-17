@@ -5,12 +5,12 @@
 using namespace MSXML2;
 #include <time.h>
 
-COM_PROFILE_RULE	gComGamePara;		// 游戏配置
-COM_CARD_CONFIG		gComCardPara;		// 卡牌配置
-COM_PLAYER_CONFIG	gComPlayerPara;		// 玩家配置
+std::string      CGameConfig::cfg_file;             // 配置文件
 
-CServerLog          *m_plog;			//日志文件
-std::string      cfg_file;              // 配置文件
+COM_PROFILE_RULE	CGameConfig::gComGamePara ;	    // 游戏配置
+COM_CARD_CONFIG		CGameConfig::gComCardPara;		// 卡牌配置
+COM_PLAYER_CONFIG	CGameConfig::gComPlayerPara;    // 玩家配置
+ 
 
 
 CGameConfig::CGameConfig(void)
