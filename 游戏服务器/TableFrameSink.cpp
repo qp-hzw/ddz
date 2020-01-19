@@ -669,8 +669,11 @@ bool CTableFrameSink::OnEventGameConclude(WORD wChairID, IServerUserItem * pISer
 			//广播数据
 			m_pITableFrame->SendTableData(INVALID_CHAIR,CMD_SC_DJ_GAME_END, &sDJGameEnd, sizeof(STR_CMD_SC_DJ_GAME_END));
 		
-			//通知frame
-			m_pITableFrame->HandleDJGameEnd(cbReason);
+			//设置游戏为【空闲】状态
+			m_GameAccess->SetGameStatus(GS_WK_FREE);
+
+			//直接结束游戏
+			m_pITableFrame->HandleDJGameEnd(GAME_CONCLUDE_NORMAL);
 
 			// 清理数据
 			m_GameLogic->ClearRoom();
@@ -2202,7 +2205,7 @@ void CTableFrameSink::SendRobStart(const WORD &wChairID, const BYTE &cbType)
 
 	if (INVALID_CHAIR != wChairID)
 	{
-		m_pITableFrame->SendTableData(INVALID_CHAIR, CMD_SC_ROB_START, &RobStart, sizeof(STR_CMD_SC_ROB_BANKER_START));
+		m_pITableFrame->SendTableData(wChairID, CMD_SC_ROB_START, &RobStart, sizeof(STR_CMD_SC_ROB_BANKER_START));
 
 		//设置游戏状态为【抢庄状态】
 		m_GameAccess->SetGameStatus(GS_WK_ROB);
@@ -3245,7 +3248,7 @@ bool CTableFrameSink::JudgeUserOutCard(const WORD &wLastOutCardUser, BYTE *cbOut
 
 //发送出牌结果
 void CTableFrameSink::SendOutCardResult(WORD wOutCardUser, BYTE *cbOutCard, BYTE cbOutCardNum, 
-										 const BYTE &cbCardType, const BYTE &cbSuccess, const BYTE &cbFlag)
+										 const int &cbCardType, const BYTE &cbSuccess, const BYTE &cbFlag)
 {
 	//构造出牌数据
 	STR_CMD_SC_OUT_CARD_RESULT OutCard;
@@ -3293,9 +3296,14 @@ void CTableFrameSink::SendOutCardResult(WORD wOutCardUser, BYTE *cbOutCard, BYTE
 			OutCard.cbOutCardNum = cbOutCardNum;	
 			memcpy(OutCard.cbOutCard, cbOutCard, sizeof(BYTE)*cbOutCardNum);	
 			OutCard.cbHandCardNum = m_GameAccess->GetUserCurCardNum(wOutCardUser);	
-			OutCard.cbCardType = cbCardType;	//牌型
+			
+			for (int i = 14; i >= 0; i--)
+			{
+				if (cbCardType & (1<<i) != 0)
+					OutCard.cbCardType = i;	//牌型
+			}
 
-			CLog::Log(log_debug, "cbOutCard: %d", OutCard.cbOutCard[0]);
+			CLog::Log(log_debug, "cbCardType: %d", OutCard.cbCardType);
 
 			//得分
 		/*	BYTE cbPlayerNum = m_GameAccess->GetMaxChairCount();

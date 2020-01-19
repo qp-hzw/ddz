@@ -182,7 +182,7 @@ protected:
 	void SendMingPaiStart(const WORD &wChairID, const BYTE &cbMPType);
 	//发送出牌结果
 	void SendOutCardResult(WORD wOutCardUser, BYTE *cbOutCard, BYTE cbOutCardNum, 
-						const BYTE &cbCardType, const BYTE &cbSuccess, const BYTE &cbFlag);
+						const int &cbCardType, const BYTE &cbSuccess, const BYTE &cbFlag);
 	//判断玩家是否能出牌
 	bool JudgeUserOutCard(const WORD &wLastOutCardUser, BYTE *cbOutCard, BYTE cbOutCardNum);
 };
