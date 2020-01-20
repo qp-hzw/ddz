@@ -221,6 +221,7 @@ struct STR_CMD_SC_OUT_CARD_RESULT
 	//SCORE		lSingleGameScore[MAX_CHAIR_COUNT];	//玩家单局得分
 
 	DWORD		RoomBet[MAX_CHAIR_COUNT];			//房间倍数
+	BYTE		cbIsOneTurnEnd;						//0-一轮结束 1-一轮未结束
 };	
 
 ////一轮积分结算

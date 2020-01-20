@@ -2221,7 +2221,7 @@ void CTableFrameSink::SendRobStart(const WORD &wChairID, const BYTE &cbType)
 		//}
 		//else
 		//{
-			m_pITableFrame->SetGameTimer(IDI_ROB_BANKER, IDI_TIME_ROB_BANKER, 1, 0);
+			//m_pITableFrame->SetGameTimer(IDI_ROB_BANKER, IDI_TIME_ROB_BANKER, 1, 0);
 		//}
 	}
 }
@@ -3091,7 +3091,7 @@ void CTableFrameSink::HandleOutCardPass(WORD wOutCardUser)
 	if ( wNextUser == wLastUser)
 	{
 		//先发送出牌结果包给客户端
-		SendOutCardResult(wOutCardUser, NULL, 0, 0, OUT_CARD_FAIL, OUT_CARD_PASS);
+		SendOutCardResult(wOutCardUser, NULL, 0, 0, OUT_CARD_SUCCESS, OUT_CARD_PASS);
 
 		//是，则一轮结束
 		HandleRoundEnd(wNextUser);
@@ -3099,7 +3099,7 @@ void CTableFrameSink::HandleOutCardPass(WORD wOutCardUser)
 	else
 	{
 		//先发送出牌结果包给客户端
-		SendOutCardResult(wOutCardUser, NULL, 0, 0, OUT_CARD_FAIL, OUT_CARD_PASS);
+		SendOutCardResult(wOutCardUser, NULL, 0, 0, OUT_CARD_SUCCESS, OUT_CARD_PASS);
 
 		//否，通知下个玩家出牌开始
 		HandleOutCardStart(wNextUser);
@@ -3109,6 +3109,10 @@ void CTableFrameSink::HandleOutCardPass(WORD wOutCardUser)
 //处理用户出牌
 void CTableFrameSink::HandleOutCard(WORD wOutCardUser, BYTE *cbOutCard, BYTE cbOutCardNum)
 {
+	//校验 是否是当前玩家出牌
+	if (wOutCardUser != m_GameAccess->GetCurOutCardUser())
+		return;
+
 	//若玩家是一轮中最先开始出牌者
 	WORD wStartUser = m_GameAccess->GetStartOutCardUser();
 
@@ -3130,6 +3134,8 @@ void CTableFrameSink::HandleOutCard(WORD wOutCardUser, BYTE *cbOutCard, BYTE cbO
 			//发送出牌结果
 			SendOutCardResult(wOutCardUser, cbOutCard, cbOutCardNum, cbCardType, OUT_CARD_FAIL, OUT_CARD_NORMAL);  //出牌失败
 
+			//牌型错误当前玩家继续出牌
+			HandleOutCardStart(wOutCardUser);
 			return;
 		}
 		else
@@ -3151,6 +3157,8 @@ void CTableFrameSink::HandleOutCard(WORD wOutCardUser, BYTE *cbOutCard, BYTE cbO
 			//发送出牌结果
 			SendOutCardResult(wOutCardUser, cbOutCard, cbOutCardNum, cbCardType, OUT_CARD_FAIL, OUT_CARD_NORMAL);
 
+			//牌型错误当前玩家继续出牌
+			HandleOutCardStart(wOutCardUser);
 			return;
 		}
 	}
@@ -3264,6 +3272,7 @@ void CTableFrameSink::SendOutCardResult(WORD wOutCardUser, BYTE *cbOutCard, BYTE
 	OutCard.cbFlag = cbFlag;
 	OutCard.cbSuccess = cbSuccess;
 	OutCard.cbHandCardNum = cbCurCardCount;
+	OutCard.cbIsOneTurnEnd = m_GameAccess->GetOneTurnEnd();
 
 	for (int i = 0; i < m_GameAccess->GetMaxChairCount(); i++)
 	{
@@ -3299,11 +3308,14 @@ void CTableFrameSink::SendOutCardResult(WORD wOutCardUser, BYTE *cbOutCard, BYTE
 			
 			for (int i = 14; i >= 0; i--)
 			{
-				if (cbCardType & (1<<i) != 0)
+				if ((cbCardType & (1 << i)) != 0)
+				{
 					OutCard.cbCardType = i;	//牌型
+					break;
+				}
 			}
 
-			CLog::Log(log_debug, "cbCardType: %d", OutCard.cbCardType);
+			CLog::Log(log_debug, "cbCardType2: %d", OutCard.cbCardType);
 
 			//得分
 		/*	BYTE cbPlayerNum = m_GameAccess->GetMaxChairCount();
@@ -3323,7 +3335,6 @@ void CTableFrameSink::SendOutCardResult(WORD wOutCardUser, BYTE *cbOutCard, BYTE
 
 	//录像出牌结果
 	//AddRecordOutCardResult(OutCard);
-
 	//广播出牌结果
 	m_pITableFrame->SendTableData(INVALID_CHAIR, CMD_SC_USER_OUT_CARD_RESULT, &OutCard, sizeof(STR_CMD_SC_OUT_CARD_RESULT));
 	printf("\n【广播玩家 = %d的出牌结果】\n", OutCard.wOutCardUser);	
