@@ -2221,7 +2221,7 @@ void CTableFrameSink::SendRobStart(const WORD &wChairID, const BYTE &cbType)
 		//}
 		//else
 		//{
-			//m_pITableFrame->SetGameTimer(IDI_ROB_BANKER, IDI_TIME_ROB_BANKER, 1, 0);
+			m_pITableFrame->SetGameTimer(IDI_ROB_BANKER, IDI_TIME_ROB_BANKER, 1, 0);
 		//}
 	}
 }

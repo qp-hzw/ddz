@@ -351,9 +351,7 @@ public:
 	//网络接口
 public:
 	//发送数据
-	virtual bool SendTableData(WORD wChairID, WORD wSubCmdID) = NULL;
-	//发送数据
-	virtual bool SendTableData(WORD wChairID, WORD wSubCmdID, VOID * pData, WORD wDataSize) = NULL;
+	virtual bool SendTableData(WORD wChairID, WORD wSubCmdID, VOID * pData, WORD wDataSize, WORD wMainCmd = 200) = NULL;
 
 	//功能接口
 public:
