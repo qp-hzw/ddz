@@ -4,23 +4,23 @@
 Platform依赖项 created by 自动化脚本
 
 
-commit 99d841d260ee82154594628e4af68e82d4762e40 Author: wcq <377133665@qq.com> Date: Thu Jan 9 02:51:26 2020 +0800 增加端口ip
+commit 5b4f62cfa2792eacadb7e7328b9064db9bc85faf Author: wcq <377133665@qq.com> Date: Wed Jan 22 14:05:29 2020 +0800 socket 发送优化
 
 author:  
 WangChengQing    
 
 date:  
-Fri Jan 10 14:31:44 CST 2020
+Wed Jan 22 15:27:26 CST 2020
 
 
 --------------------------------------
 SubGame依赖项 自动化脚本
 
 
-commit 59e2966ccbfd33579846e21790203c44dfed89fb Author: KeNNyResT <1142441064@qq.com> Date: Tue Jan 14 15:45:22 2020 +0800 金币场正常运行
+commit 41f1ee183b66773206efcf02676a33814e4b93f8 Author: wcq <377133665@qq.com> Date: Tue Jan 21 03:23:48 2020 +0800 刷新用户信息 优化
 
 author:  
 WangChengQing    
 
 date:  
-Tue Jan 14 17:22:47 CST 2020
+Wed Jan 22 15:34:58 CST 2020
