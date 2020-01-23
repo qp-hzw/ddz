@@ -569,38 +569,32 @@ struct CMD_GF_S_UserExpression
 //申请解散房间
 struct STR_SUB_RG_FRAME_ASK_DISMISS
 {
-	DWORD					dwApplyUserID;					//申请解散用户ID
-	//added by WangChengQing 服务端不再校验该字段, 收到此消息号即可处理
-	BYTE					cbAgree;						//是否同意解散		0-不同意	1-同意
+	
 };
 //广播申请解散房间
 struct STR_CMD_GR_FRMAE_VOTE_DISMISS
 {
-	DWORD					dwVoteUser[5];					//需要投票解散的玩家	//客户端目前最多显示5个人
-	TCHAR					szApplyUserNick[LEN_NICKNAME];	//申请解散用户昵称
+	BYTE							cbChairID;		//id
+	BYTE							cbAgree;		//0-同意  1-不同意
+	BYTE							cbApplyChair;	//申请解散者的chair
 };
 
 //申请解散房间 结果
 struct STR_CMD_GR_FRMAE_ASK_DISMISS_RESULT
 {
-	LONG							lResultCode;								//错误代码 非0表示不能解散房间
+	LONG							lResultCode;								//错误代码 0-投票解散房间
 	TCHAR							szDescribeString[LEN_MESSAGE_DESCRIBE];		//消息描述
 };
 
 //表决解散房间
 struct STR_SUB_RG_FRAME_VOTE_DISMISS
 {
-	DWORD					dwVoteUserID;					//表决解散房间用户ID
 	BYTE					cbAgree;						//是否同意解散		0-不同意	1-同意
 };
 //广播解散房间结果
 struct STR_CMD_GR_FRAME_DISMISS_RESULT
 {
 	BYTE					cbDismiss;						//0-未解散  1-解散成功（用户起立）	2-解散失败
-	DWORD					dwVoteUserID;					//表决解散房间用户ID
-	TCHAR					szVoteUserNick[LEN_NICKNAME];	//申请解散用户昵称
-	BYTE					cbAgree;						//是否同意解散
-	BYTE					cbClubQuit;						//牌友圈解散 1-非空闲状态需要弹出大局面板（只有牌友圈会用到,）	
 };
 
 //请求校验用户GPS位置信息

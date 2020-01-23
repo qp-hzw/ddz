@@ -81,12 +81,6 @@ struct tagOfflineUser
 	BYTE  byMask;		//1表示在list中增加用户；  2表示在list中删除用户
 };
 
-struct STR_SUB_CS_C_USER_OFFLINE
-{
-	DWORD dwUserID;
-	DWORD dwGameID;
-	BYTE  byMask;		//1表示在list中增加用户；  2表示在list中删除用户
-};
 #pragma endregion
 
 #endif

@@ -92,7 +92,6 @@ struct tagUserInfo
 	//辅助变量
 	bool							bAndroidUser;						//机器用户
 	TCHAR							szPassword[LEN_MD5];				//桌子密码
-	DWORD							dwSocketId;							//socket id
 };
 
 //////////////////////////////////////////////////////////////////////////////////

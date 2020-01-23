@@ -49,10 +49,10 @@ public:
 
 private:
 	//获取游戏卡牌配置
-	static int CreateGameCards(CCfg &ff);
+	static int CreateGameCards();
 
 	//获取游戏玩家配置
-	static int CreatePlayers(CCfg &ff);
+	static int CreatePlayers();
 
 public:
 	//从配置文件中获取通用的游戏配置，在游戏开始前赋给全局变量

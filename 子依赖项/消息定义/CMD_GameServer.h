@@ -91,6 +91,13 @@
 #define SUB_CG_USER_CREATE_GROUP_ROOM	25									//(可删除)#创建牌友圈房间（只有圈主才能创建房间）	TODO 牌友圈放在单独的消息号中
 #define CMD_GC_USER_CREATE_GROUP_ROOM	205									//(可删除)#创建牌友圈房间返回
 
+//解散房间
+#define SUB_RG_USER_ASK_DISMISS				26								//发起申请解散房间
+#define CMD_GR_USER_ASK_DISMISS_RESULT		126								//发起申请解散房间 结果
+#define	SUB_RG_USER_VOTE_DISMISS			27								//表决解散房间
+#define CMD_GR_USER_VOTE_DISMISS			127								//广播房间申请解散
+#define	CMD_GR_USER_DISMISS_RESULT			226								//广播表决解散房间结果
+
 #define SUB_GR_USER_SCORE				101									//用户分数		TODO 子游戏调用写分函数，大厅发送给客户端
 #define SUB_GR_USER_STATUS				102									//用户动作
 #define CMD_ROOM_RULE					202									//房间信息
@@ -132,14 +139,6 @@
 #define CMD_GR_FRAME_GAME_OPTION			101								//游戏场景
 #define CMD_GR_FRAME_GAME_STATUS			102								//游戏状态
 #define CMD_GR_FRAME_GAME_DISSMISS			301							    //解散面板状态
-
-//解散房间
-#define SUB_RG_FRAME_ASK_DISMISS			2								//发起申请解散房间
-#define CMD_GR_FRMAE_VOTE_DISMISS			103								//广播房间申请解散
-#define CMD_GR_FRMAE_ASK_DISMISS_RESULT     202								//发起申请解散房间 结果
-
-#define	SUB_RG_FRAME_VOTE_DISMISS			3								//表决解散房间
-#define	CMD_GR_FRAME_DISMISS_RESULT			104								//广播表决解散房间结果
 
 //GPS测距
 #define SUB_CG_COM_CHECK_USER_GPS			5								//请求校验用户GPS位置信息

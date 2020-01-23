@@ -65,7 +65,7 @@ public:
 	 * @param		player_sum				[in-out]		扑克组 数组
 	 * @param		m_plog					[in]			日志接口
 	 */
-	static int LoadPlayerDesc(CCfg& ff, PLAYER_TYPE &player_type);
+	static int LoadPlayerDesc(PLAYER_TYPE &player_type);
 
 	/**
 	 * 根据玩家组描述数组构造玩家描述数组

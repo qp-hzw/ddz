@@ -49,7 +49,7 @@ public:
  * return					0				正常
  *							-1				异常
  */
-static int LoadCardsSum(CCfg &ff, DWORD &cards_sum);
+static int LoadCardsSum(DWORD &cards_sum);
 
 
 /**
@@ -62,7 +62,7 @@ static int LoadCardsSum(CCfg &ff, DWORD &cards_sum);
 * return					0				正常
 *							-1				异常
 */
-static int LoadGameScoreTimes(CCfg &ff, BYTE game_score_Mode, BYTE *game_score_times);
+static int LoadGameScoreTimes(BYTE game_score_Mode, BYTE *game_score_times);
 
 
 /**
@@ -75,7 +75,7 @@ static int LoadGameScoreTimes(CCfg &ff, BYTE game_score_Mode, BYTE *game_score_t
  * return					0				正常
  *							-1				异常
  */
-static int LoadCardGroups(CCfg &ff, CARD_GOURP *groups, DWORD &group_sum);
+static int LoadCardGroups(CARD_GOURP *groups, DWORD &group_sum);
 
 /**
  * 提取所有组

@@ -47,7 +47,7 @@ BYTE    CGameCardConfig::MapOfCardValue(BYTE CardData)
  * return					0				正常
  *							-1				异常
  */
-int CGameCardConfig::LoadCardsSum(CCfg &ff, DWORD &cards_sum)
+int CGameCardConfig::LoadCardsSum(DWORD &cards_sum)
 {
 	int result = 0;
 
@@ -57,10 +57,10 @@ int CGameCardConfig::LoadCardsSum(CCfg &ff, DWORD &cards_sum)
 	// 初始化输出参数
 	cards_sum = MAX_TOTAL_CARD_NUM;			//默认值
 	
-	ff.GetItemValue("GAME", "CardSum", cards_sum);
+	CCfg::Instance()->GetItemValue("GAME", "CardSum", cards_sum);
 	if (cards_sum == 0)
 	{
-		CLog::Log(log_error, "获取失败");
+		//CLog::Log(log_error, "获取失败");
 		result = -1;
 	}
 
@@ -83,7 +83,7 @@ int CGameCardConfig::LoadCardsSum(CCfg &ff, DWORD &cards_sum)
 * return					0				正常
 *							-1				异常
 */
-int CGameCardConfig::LoadGameScoreTimes(CCfg &ff, BYTE game_score_Mode, BYTE *game_score_times)
+int CGameCardConfig::LoadGameScoreTimes(BYTE game_score_Mode, BYTE *game_score_times)
 {
 	int result = 0;
 	if (NULL == game_score_times)
@@ -94,18 +94,18 @@ int CGameCardConfig::LoadGameScoreTimes(CCfg &ff, BYTE game_score_Mode, BYTE *ga
 
 	// 选出经典模式
 	BYTE type_sum = 0;
-	ff.GetItemValue("CAME_SCORE_MODE_CLASSIC", "sum", type_sum);
+	CCfg::Instance()->GetItemValue("CAME_SCORE_MODE_CLASSIC", "sum", type_sum);
 	type_sum = (type_sum > MAX_GAME_SCORE_TYPES) ? MAX_GAME_SCORE_TYPES : type_sum;
 	if (type_sum == 0)
 	{
-		CLog::Log(log_error, "读取 得分模式失败");
+		//CLog::Log(log_error, "读取 得分模式失败");
 		return -2;
 	}
 	for (int j = 0; j < type_sum; j++)
 	{
 		char sz[20];
 		sprintf(sz, "FF_%d", j);
-		ff.GetItemValue("CAME_SCORE_MODE_CLASSIC", sz, game_score_times[j]);
+		CCfg::Instance()->GetItemValue("CAME_SCORE_MODE_CLASSIC", sz, game_score_times[j]);
 	}
 	// 选出疯狂加倍模式
 	// 暂时不需要增加
@@ -125,7 +125,7 @@ int CGameCardConfig::LoadGameScoreTimes(CCfg &ff, BYTE game_score_Mode, BYTE *ga
  * return							 0				正常
  *							        -1				异常
  */
-int CGameCardConfig::LoadCardGroups(CCfg &ff, CARD_GOURP *groups, DWORD &group_sum)
+int CGameCardConfig::LoadCardGroups(CARD_GOURP *groups, DWORD &group_sum)
 {
 	int result = 0;
 
@@ -135,14 +135,14 @@ int CGameCardConfig::LoadCardGroups(CCfg &ff, CARD_GOURP *groups, DWORD &group_s
 	}
 
 	BYTE card_group_num = 0;
-	ff.GetItemValue("GAME", "CardGroupNum", card_group_num);  //崩溃
+	CCfg::Instance()->GetItemValue("GAME", "CardGroupNum", card_group_num);  //崩溃
 
 	//取最小的卡牌牌组数
 	group_sum = (card_group_num > MAX_CARD_GROUP_NUM) ? MAX_CARD_GROUP_NUM : card_group_num;
 
 	if (group_sum <= 0)
 	{
-		CLog::Log(log_error, "读取配置文件, card group num失败");
+		//CLog::Log(log_error, "读取配置文件, card group num失败");
 		return -1;
 	}
 
@@ -150,10 +150,10 @@ int CGameCardConfig::LoadCardGroups(CCfg &ff, CARD_GOURP *groups, DWORD &group_s
 	{
 		char psz[20];
 		sprintf(psz, "CARD_GROUP_%d", j);
-		ff.GetItemValue(psz, "color", groups[j].color);
-		ff.GetItemValue(psz, "begin", groups[j].begin);
-		ff.GetItemValue(psz, "end", groups[j].end);
-		ff.GetItemValue(psz, "sum", groups[j].sum);
+		CCfg::Instance()->GetItemValue(psz, "color", groups[j].color);
+		CCfg::Instance()->GetItemValue(psz, "begin", groups[j].begin);
+		CCfg::Instance()->GetItemValue(psz, "end", groups[j].end);
+		CCfg::Instance()->GetItemValue(psz, "sum", groups[j].sum);
 	}
 
 	return result;

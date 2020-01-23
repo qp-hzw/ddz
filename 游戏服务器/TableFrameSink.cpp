@@ -1063,13 +1063,13 @@ bool CTableFrameSink::OnTimerMessage(DWORD wTimerID, WPARAM wBindParam)
 				if ((USER_PLAYING == m_GameAccess->GetPlayerState(i))
 					&& (i == m_GameAccess->GetCurRobUser()))
 				{
-					CLog::Log(log_debug, "定时器到：默认不抢庄");
+					//CLog::Log(log_debug, "定时器到：默认不抢庄");
 
 					WORD wNextUser = m_GameAccess->GetNextUser(i);
 
 					if (wNextUser < 0 || wNextUser >= m_GameAccess->GetMaxChairCount())
 					{
-						CLog::Log(log_error, "func 抢庄定时器 err : wChairID < 0 && wChairID >= m_GameAccess->GetMaxChairCount(): chairID:%d", wNextUser);
+						//CLog::Log(log_error, "func 抢庄定时器 err : wChairID < 0 && wChairID >= m_GameAccess->GetMaxChairCount(): chairID:%d", wNextUser);
 						return false;
 					}
 
@@ -1197,7 +1197,7 @@ bool CTableFrameSink::OnTimerMessage(DWORD wTimerID, WPARAM wBindParam)
 					&& (0 == m_GameAccess->GetAddScoreState(i)))
 				{
 					printf("定时器到，默认不下注\n");
-					CLog::Log(log_error, "定时器到：默认不下注 %d\n", i);
+					//CLog::Log(log_error, "定时器到：默认不下注 %d\n", i);
 
 					BYTE CurCardData[MAX_CARD_COUNT] = { 0 };
 					BYTE CurCardNum = m_GameAccess->GetUserCurCardNum(i);
@@ -1233,7 +1233,7 @@ bool CTableFrameSink::OnTimerMessage(DWORD wTimerID, WPARAM wBindParam)
 					&& (0 == m_GameAccess->GetMingPaiState(i)))
 				{
 					printf("定时器到，默认不明牌\n");
-					CLog::Log(log_error, "定时器到：默认不明牌 %d\n", i);
+					//CLog::Log(log_error, "定时器到：默认不明牌 %d\n", i);
 
 					//处理不明牌消息
 					On_Sub_UserMingPai(i, 0, 0);
@@ -1347,7 +1347,7 @@ bool CTableFrameSink::OnTimerMessage(DWORD wTimerID, WPARAM wBindParam)
 						if (!m_GameLogic->EfficacyOutCard(OutCardUser, OutCardData, OutCardNum))
 						{
 							cout << "判断 玩家可以出的牌 err" << endl;
-							CLog::Log(log_error, "func 判断 玩家可以出的牌 err : 校验失败");
+							//CLog::Log(log_error, "func 判断 玩家可以出的牌 err : 校验失败");
 							return false;
 						}
 						On_Sub_UserOutCard(OutCardUser, OutCardData, OutCardNum, 0);
@@ -1390,7 +1390,7 @@ bool CTableFrameSink::OnTimerMessage(DWORD wTimerID, WPARAM wBindParam)
 					m_GameLogic->GetCardColorValue(OutCardUser, m_HandCardData[OutCardUser], OutCardData, OutCardNum);
 					if (CT_ERROR == m_GameLogic->GetCardLogicType(OutCardData, OutCardNum))
 					{
-						CLog::Log(log_error, "CT_ERROR == m_GameLogic->GetCardLogicType!!!!!!!!!\n");
+						//CLog::Log(log_error, "CT_ERROR == m_GameLogic->GetCardLogicType!!!!!!!!!\n");
 						//如果机器人出牌出现错误
 						BYTE UOutCardData[MAX_CARD_COUNT];
 						BYTE UOutCardNum;
@@ -2299,7 +2299,7 @@ void CTableFrameSink::OnUserCallBanker(WORD wChairID, BYTE cbResult)	//0-不叫  1
 	//两人斗地主测试用 
 	if (2 == m_GameAccess->GetMaxChairCount())
 	{
-		CLog::Log(log_debug, "cbResult: %d", cbResult);
+		//CLog::Log(log_debug, "cbResult: %d", cbResult);
 		if (cbResult == 1)
 		{
 			m_GameLogic->AppointBanker(wChairID);
@@ -3315,7 +3315,7 @@ void CTableFrameSink::SendOutCardResult(WORD wOutCardUser, BYTE *cbOutCard, BYTE
 				}
 			}
 
-			CLog::Log(log_debug, "cbCardType2: %d", OutCard.cbCardType);
+			//CLog::Log(log_debug, "cbCardType2: %d", OutCard.cbCardType);
 
 			//得分
 		/*	BYTE cbPlayerNum = m_GameAccess->GetMaxChairCount();
@@ -3465,7 +3465,7 @@ void CTableFrameSink::OnUserPublicBet(WORD wChairID)
 	//椅子号校验
 	if (wChairID < 0 || wChairID >= m_GameAccess->GetMaxChairCount())
 	{
-		CLog::Log(log_error, "func OnUserPublicBet err : wChairID < 0 && wChairID >= m_GameAccess->GetMaxChairCount(): chairID:%d", wChairID);
+		//CLog::Log(log_error, "func OnUserPublicBet err : wChairID < 0 && wChairID >= m_GameAccess->GetMaxChairCount(): chairID:%d", wChairID);
 		return;
 	}
 

@@ -12,7 +12,7 @@ int __stdcall CSubGameRule::AnsysCardsType( )
 	{
 		default:
 		{
-			CLog::Log(log_error, "分析函数中游戏类型错误", NULL);
+			//CLog::Log(log_error, "分析函数中游戏类型错误", NULL);
 			break;
 		}
 	}
@@ -34,7 +34,7 @@ int __stdcall CSubGameRule::Settle()
 		}
 		default:
 		{
-			CLog::Log(log_error, "结算得分游戏类型不支持");
+			//CLog::Log(log_error, "结算得分游戏类型不支持");
 			break;
 		}
 	}

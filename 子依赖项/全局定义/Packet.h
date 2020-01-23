@@ -4,7 +4,9 @@
 //内核命令
 #define MDM_KN_COMMAND				0									//内核命令
 #define SUB_KN_DETECT_SOCKET		1									//检测命令
-//#define SUB_KN_VALIDATE_SOCKET		2									//验证命令
+#define CMD_KN_CLOSE_SOCKET			2									//关闭连接 s->c
+#define SUB_KN_CLOSE_SOCKET			3									//关闭连接 c->s
+
 
 
 //////////////////////////////////////////////////////////////////////////////////

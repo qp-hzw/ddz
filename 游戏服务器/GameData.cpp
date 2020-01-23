@@ -63,12 +63,12 @@ int __stdcall CGameData::LoadConfigParameter(const wchar_t *_logFile, const BYTE
 		}
 		else
 		{
-			CLog::Log(log_error, "≈‰÷√ÕÊº““Ï≥£\n");
+			//CLog::Log(log_error, "≈‰÷√ÕÊº““Ï≥£\n");
 		}
 	}
 	else
 	{
-		CLog::Log(log_error, "≈‰÷√ø®≈∆“Ï≥£\n");
+		//CLog::Log(log_error, "≈‰÷√ø®≈∆“Ï≥£\n");
 	}
 
 	return result;

@@ -3,6 +3,7 @@
 #include "cfg.h"
 
 using std::cout;
+using std::endl;
 using std::unitbuf;
 using std::stringstream;
 
@@ -20,7 +21,7 @@ CCfg * CCfg::Instance()
 int CCfg::OpenFile(const string& file_name)
 {
     //reset buffers
-    cout << unitbuf;
+	//cout << unitbuf;
     
     //open file
     m_fstream.open(file_name, fstream::out|fstream::in);
