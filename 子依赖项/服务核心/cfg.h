@@ -1,38 +1,38 @@
 #ifndef _CCFG_H_
 #define _CCFG_H_
 
+#include "ServiceCoreHead.h"
 #include <string>
 #include <fstream>
-#include <winsock2.h>
-#define byte BYTE
 
 using std::string;
 using std::fstream;
 
 //r&w file
-class CCfg
+class SERVICE_CORE_CLASS CWHCfg
 {
 
 public:    
-	CCfg(){};  
-    ~CCfg(){};
+	CWHCfg(){};  
+    ~CWHCfg(){};
 
-    static CCfg * Instance();
+    static CWHCfg * Instance();
 
     int  OpenFile(const string& file_name);
 	void CloseFile();
 
 public:
     //get long/int/short/byte (u)
-    byte GetItemValue(const string& section_name,
+    BYTE GetItemValue(const string& section_name,
                       const string& key_name,
                       long &result);
 
     //get char*
-    byte GetItemValue( const string& section_name,
+    BYTE GetItemValue( const string& section_name,
                        const string& key_name,
                        string& key_value);
 
+	//get byte
 	byte GetItemValue(const string& section_name,
 						const string& key_name,
 						BYTE& result);
@@ -42,21 +42,21 @@ public:
 						DWORD& result);
 
     //set long/int/short/byte (u)
-    byte SetItemValue( const string& section_name,
+    BYTE SetItemValue( const string& section_name,
                        const string& key_name,
                        const long& key_value);
 
     //set char *
-    byte SetItemValue( const string& section_name,
+    BYTE SetItemValue( const string& section_name,
                        const string& key_name,
                        const string& key_value);
        
 private:
     //locate section
-    byte LocateSection(const string& section_name, string &section_range);
+    BYTE LocateSection(const string& section_name, string &section_range);
 
     //locate key value
-    byte LocateKeyValue(const string& key_name,
+    BYTE LocateKeyValue(const string& key_name,
                         const string& section_range,
                         string& key_value);
         
@@ -68,7 +68,7 @@ private:
     size_t m_key_val_start_position;
 
 private:
-    static CCfg* s_instance;
+    static CWHCfg* s_instance;
 };
 
 #endif /* _CCFG_H_ */

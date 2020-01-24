@@ -39,6 +39,21 @@
 //////////////////////////////////////////////////////////////////////////////////
 #pragma endregion
 
+#pragma region 辅助结构体
+//单条房间规则
+struct rule_item
+{
+	TCHAR	                       szHeadName[15];						//房间头
+	TCHAR	                       szItemValue[4][10];				    //房间选择值
+};
+//房间规则
+struct rule_arry
+{
+	rule_item	                   ItemArry[20];						//房间规则
+};
+
+#pragma endregion
+
 #pragma region MDM_LOGON 登录模块
 //ID 登录
 struct STR_SUB_CG_LOGON_USERID
@@ -377,89 +392,11 @@ struct CMD_GR_ChairUserInfoReq
 	WORD							wTableID;							//桌子号码
 	WORD							wChairID;							//椅子位置
 };
-#pragma endregion
-
-#pragma region MDM_GR_MANAGE 管理命令
-//发送警告
-struct CMD_GR_SendWarning
-{
-	WORD							wChatLength;						//信息长度
-	DWORD							dwTargetUserID;						//目标用户
-	TCHAR							szWarningMessage[LEN_USER_CHAT];	//警告消息
-};
-
-//系统消息
-struct CMD_GR_SendMessage
-{
-	BYTE							cbGame;								//游戏消息
-	BYTE							cbRoom;								//游戏消息
-	BYTE							cbAllRoom;							//游戏消息
-	WORD							wChatLength;						//信息长度
-	TCHAR							szSystemMessage[LEN_USER_CHAT];		//系统消息
-};
-
-//查看地址
-struct CMD_GR_LookUserIP
-{
-	DWORD							dwTargetUserID;						//目标用户
-};
 
 //踢出用户
 struct CMD_GR_KickUser
 {
 	DWORD							dwTargetUserID;						//目标用户
-};
-
-//禁用帐户
-struct CMD_GR_LimitAccounts
-{
-	DWORD							dwTargetUserID;						//目标用户
-};
-
-//权限设置
-struct CMD_GR_SetUserRight
-{
-	//目标用户
-	DWORD							dwTargetUserID;						//目标用户
-
-	//绑定变量
-	BYTE							cbGameRight;						//帐号权限
-	BYTE							cbAccountsRight;					//帐号权限
-
-	//权限变化
-	BYTE							cbLimitRoomChat;					//大厅聊天
-	BYTE							cbLimitGameChat;					//游戏聊天
-	BYTE							cbLimitPlayGame;					//游戏权限
-	BYTE							cbLimitSendWisper;					//发送消息
-	BYTE							cbLimitLookonGame;					//旁观权限
-};
-
-//踢出所有用户
-struct CMD_GR_KickAllUser
-{
-	TCHAR							szKickMessage[LEN_USER_CHAT];		//踢出提示
-};
-
-//解散游戏
-struct CMD_GR_DismissGame
-{
-	WORD							wDismissTableNum;		            //解散桌号
-};
-//////////////////////////////////////////////////////////////////////////////////
-
-//房间设置
-struct CMD_GR_OptionServer
-{
-	BYTE							cbOptionFlags;						//设置标志
-	BYTE							cbOptionValue;						//设置标志
-};
-
-//限制聊天
-struct CMD_GR_LimitUserChat
-{
-	DWORD							dwTargetUserID;						//目标用户
-	BYTE							cbLimitFlags;						//限制标志
-	BYTE							cbLimitValue;						//限制与否
 };
 #pragma endregion
 

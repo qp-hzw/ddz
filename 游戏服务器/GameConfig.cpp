@@ -33,7 +33,7 @@ int CGameConfig::LoadGameCommonConfig()
 	}
 
 	//打开文件
-	result = CCfg::Instance()->OpenFile(cfg_file.c_str());
+	result = CWHCfg::Instance()->OpenFile(cfg_file.c_str());
 	if(result != 0)
 	{
 		cout << result << endl;
@@ -56,7 +56,7 @@ int CGameConfig::LoadGameCommonConfig()
 	}
 
 	//关闭文件
-	CCfg::Instance()->CloseFile();
+	CWHCfg::Instance()->CloseFile();
 
 	return result;
 }

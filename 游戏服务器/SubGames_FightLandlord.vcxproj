@@ -124,7 +124,6 @@
     </ResourceCompile>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="cfg.cpp" />
     <ClCompile Include="GameCardConfig.cpp" />
     <ClCompile Include="GameConfig.cpp" />
     <ClCompile Include="GameData.cpp" />
@@ -140,7 +139,6 @@
     <ClInclude Include="..\消息定义\cardType.h" />
     <ClInclude Include="..\消息定义\CMD_SubGame.h" />
     <ClInclude Include="..\消息定义\define.h" />
-    <ClInclude Include="cfg.h" />
     <ClInclude Include="GameCardConfig.h" />
     <ClInclude Include="GameConfig.h" />
     <ClInclude Include="GameData.h" />

@@ -57,7 +57,7 @@ int CGameCardConfig::LoadCardsSum(DWORD &cards_sum)
 	// 初始化输出参数
 	cards_sum = MAX_TOTAL_CARD_NUM;			//默认值
 	
-	CCfg::Instance()->GetItemValue("GAME", "CardSum", cards_sum);
+	CWHCfg::Instance()->GetItemValue("GAME", "CardSum", cards_sum);
 	if (cards_sum == 0)
 	{
 		//CLog::Log(log_error, "获取失败");
@@ -94,7 +94,7 @@ int CGameCardConfig::LoadGameScoreTimes(BYTE game_score_Mode, BYTE *game_score_t
 
 	// 选出经典模式
 	BYTE type_sum = 0;
-	CCfg::Instance()->GetItemValue("CAME_SCORE_MODE_CLASSIC", "sum", type_sum);
+	CWHCfg::Instance()->GetItemValue("CAME_SCORE_MODE_CLASSIC", "sum", type_sum);
 	type_sum = (type_sum > MAX_GAME_SCORE_TYPES) ? MAX_GAME_SCORE_TYPES : type_sum;
 	if (type_sum == 0)
 	{
@@ -105,7 +105,7 @@ int CGameCardConfig::LoadGameScoreTimes(BYTE game_score_Mode, BYTE *game_score_t
 	{
 		char sz[20];
 		sprintf(sz, "FF_%d", j);
-		CCfg::Instance()->GetItemValue("CAME_SCORE_MODE_CLASSIC", sz, game_score_times[j]);
+		CWHCfg::Instance()->GetItemValue("CAME_SCORE_MODE_CLASSIC", sz, game_score_times[j]);
 	}
 	// 选出疯狂加倍模式
 	// 暂时不需要增加
@@ -135,7 +135,7 @@ int CGameCardConfig::LoadCardGroups(CARD_GOURP *groups, DWORD &group_sum)
 	}
 
 	BYTE card_group_num = 0;
-	CCfg::Instance()->GetItemValue("GAME", "CardGroupNum", card_group_num);  //崩溃
+	CWHCfg::Instance()->GetItemValue("GAME", "CardGroupNum", card_group_num);
 
 	//取最小的卡牌牌组数
 	group_sum = (card_group_num > MAX_CARD_GROUP_NUM) ? MAX_CARD_GROUP_NUM : card_group_num;
@@ -150,10 +150,10 @@ int CGameCardConfig::LoadCardGroups(CARD_GOURP *groups, DWORD &group_sum)
 	{
 		char psz[20];
 		sprintf(psz, "CARD_GROUP_%d", j);
-		CCfg::Instance()->GetItemValue(psz, "color", groups[j].color);
-		CCfg::Instance()->GetItemValue(psz, "begin", groups[j].begin);
-		CCfg::Instance()->GetItemValue(psz, "end", groups[j].end);
-		CCfg::Instance()->GetItemValue(psz, "sum", groups[j].sum);
+		CWHCfg::Instance()->GetItemValue(psz, "color", groups[j].color);
+		CWHCfg::Instance()->GetItemValue(psz, "begin", groups[j].begin);
+		CWHCfg::Instance()->GetItemValue(psz, "end", groups[j].end);
+		CWHCfg::Instance()->GetItemValue(psz, "sum", groups[j].sum);
 	}
 
 	return result;

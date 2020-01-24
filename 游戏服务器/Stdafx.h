@@ -50,6 +50,7 @@
 //模板文件
 #include "../子依赖项/全局定义/Array.h"
 #include "../子依赖项/服务核心/log.h"
+#include "../子依赖项/服务核心/cfg.h"
 #include "..\消息定义\CMD_SubGame.h"
 
 

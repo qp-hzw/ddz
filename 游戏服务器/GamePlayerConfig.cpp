@@ -19,9 +19,9 @@ int CGamePlayerConfig::LoadPlayerDesc(PLAYER_TYPE &player_type)
 	int result = 0;
 
 	long id = 0, _sum = 0, _card_sum = 0;
-	CCfg::Instance()->GetItemValue("GAME", "CardGroupNum", id);
-	CCfg::Instance()->GetItemValue("GAME", "CardGroupNum", _sum);
-	CCfg::Instance()->GetItemValue("GAME", "CardGroupNum", _card_sum);
+	CWHCfg::Instance()->GetItemValue("GAME", "CardGroupNum", id);
+	CWHCfg::Instance()->GetItemValue("GAME", "CardGroupNum", _sum);
+	CWHCfg::Instance()->GetItemValue("GAME", "CardGroupNum", _card_sum);
 
 	SetPlayerGroupID(player_type, id); // id
 	SetPlayerCardSum(player_type, _sum); // card_sum
