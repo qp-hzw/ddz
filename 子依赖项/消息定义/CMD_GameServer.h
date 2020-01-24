@@ -42,72 +42,54 @@
 ** *********************************************************************************/
 #define MDM_USER						2									//用户信息
 
-//子消息  *表示客户端未用到		#初步整理		
-#define SUB_CG_USER_RULE				1									//*用户规则		TODO 貌似是限制用户IP、胜率、逃跑率、积分，应该需要保留
-//#define SUB_CG_USER_LOOKON				2									//*旁观请求		TODO 成功无返回，失败返回103请求失败
-#define SUB_CG_USER_READY				9									//用户准备
-#define SUB_CG_USER_SITDOWN				3									//*坐下请求（用户加入/创建房间成功后，服务器主动让玩家坐下，不需要请求）
-#define SUB_CG_USER_STANDUP				4									//#起立请求		TODO 非房主解散房间，发送的是该消息，放在15的处理流程中
-#define SUB_CG_USER_INVITE_USER			5									//*邀请用户进入桌子
-#define CMD_GC_USER_INVITE_USER			6									//*邀请用户进入桌子返回
-#define SUB_CG_USER_REFUSE_SIT  		7									//*拒绝玩家坐下	TODO 让玩家起立，返回系统消息，不让用户坐下
-#define SUB_CG_USER_KICK_USER			8                                   //*踢出用户		TODO 让玩家起立，返回系统消息，踢出用户
+//
+#define CMD_GC_USER_MODIFY_TREASURE		1									//修改用户财富信息返回
+#define CMD_ROOM_RULE					2									//房间信息
+#define SUB_GR_USER_STATUS				3									//用户动作
+#define SUB_GR_REQUEST_FAILURE			4									//请求失败		大部分失败消息都返回这个消息
 
-#define SUB_GR_USER_CHAIR_REQ			10                                  //*请求更换位置
-#define SUB_GR_USER_WAIT_DISTRIBUTE		12									//等待分配		TODO 再用户准备后，发送的空包，客户端如何处理了？
 
-#pragma region 房间 && 桌子
-#define SUB_CG_USER_CREATE_ROOM			13									//#创建房间
-#define CMD_GC_USER_CREATE_ROOM_SUCCESS	121									//#创建成功		TODO 创建房卡房间和牌友圈房间的返回，其实创建房间的成功返回应该都用该消息
+//玩家动作	
+#define SUB_CG_USER_SITDOWN				10									//*坐下请求（用户加入/创建房间成功后，服务器主动让玩家坐下，不需要请求）
+#define SUB_CG_USER_READY				11									//用户准备
+#define SUB_CG_USER_STANDUP				12									//#起立请求		TODO 非房主解散房间，发送的是该消息，放在15的处理流程中
+#define SUB_GR_USER_CHAIR_REQ			13                                  //*请求更换位置
 
-#define SUB_CG_CLUB_CREATE_TABLE		15									//#创建桌子 牌友圈特有
-#define CMD_GC_CLUB_CREATE_TABKE		115									//#创建桌子 返回
+#define SUB_CG_USER_INVITE_USER			14									//*邀请用户进入桌子
+#define CMD_GC_USER_INVITE_USER			15									//*邀请用户进入桌子返回
+#define SUB_CG_USER_KICK_USER			16                                   //*踢出用户		TODO 让玩家起立，返回系统消息，踢出用户
 
-#define SUB_CG_USER_JOIN_FK_ROOM		14									//#加入桌子 需要密码
-#define CMD_GC_USER_JOIN_ROOM_SUCCESS	122									//#加入成功		加入房卡/金币/牌友圈房间的返回
+//创建|加入 房间
+#define SUB_CG_USER_CREATE_ROOM			17									//申请创建房间
+#define CMD_GC_USER_GET_ROOM_RULE		117									//房间规则选择, 申请创建房间成功后发送
+#define SUB_CG_USER_SET_ROOM_RULE		217									//房间规则设置 返回
+#define CMD_GC_USER_ENTER_SUBGAME_ROOM	317									//进入子游戏
 
-#define SUB_CG_USER_JOIN_TABLE_NO_PASS	16									//#加入桌子,不需要密码, 即快速开始
-//返回的为 2, CMD_GC_USER_JOIN_ROOM_SUCCESS;								不需要加入桌子返回
+#define SUB_CG_USER_JOIN_FK_ROOM		18									//#加入桌子 需要密码
+#define CMD_GC_USER_JOIN_ROOM_SUCCESS	118									//#加入成功		加入房卡/金币/牌友圈房间的返回
 
-#define SUB_CG_USER_JOIN_GOLD_HALL_ROOM	17									//加入大厅金币场桌子
+#define SUB_CG_USER_JOIN_TABLE_NO_PASS	19									//#加入桌子,不需要密码, 即快速开始
+//返回的为 2, CMD_GC_USER_JOIN_ROOM_SUCCESS;								//不需要加入桌子返回
+
+#define SUB_CG_USER_JOIN_GOLD_HALL_ROOM	20									//加入大厅金币场桌子
 //如果没有空桌, 返回的是 2, CMD_GC_CLUB_CREATE_TABKE
 //如果有空桌子, 返回的为 2, CMD_GC_USER_JOIN_ROOM_SUCCESS
 
-#pragma endregion
+#define SUB_CG_CLUB_CREATE_TABLE		21									//#创建桌子 牌友圈特有
+#define CMD_GC_CLUB_CREATE_TABKE		121									//#创建桌子 返回
 
-#define SUB_CG_USER_JOIN_GROUP_ROOM		18									//(可删除)加入牌友圈房间 返回加入房间成功 （老大厅）
-#define SUB_CG_USER_JOIN_GOLD_ROOM		19									//(可删除)加入金币房（没有空位置金币房，则先创建） TODO 为了大厅通用性，房间规则由客户端游戏决定
 
-#define SUB_GR_GET_TABLELIST			21									//获取房间列表		TODO 指的是竞技场的已开房间列表
-#define SUB_GR_GET_TABLELIST_RESULT		131									//房间列表返回		
+#define SUB_GR_GET_TABLELIST			22									//获取房间列表		TODO 指的是竞技场的已开房间列表
+#define SUB_GR_GET_TABLELIST_RESULT		122									//房间列表返回		
 
-#define SUB_GR_LOTTERY_NOTIFY			22									//抽奖通知 CMD TODO 发送的空包
-#define SUB_GR_QUERY_LOTTERY			23									//请求抽奖 SUB
-#define SUB_GR_LOTTERY_RESULT			132									//抽奖结果 CMD
-
-#define SUB_CG_USER_RECONNECT_ROOM		24									//#断线重连
-#define CMD_GC_USER_RECONNECT_ROOM		134									//#断线重连返回
-
-#define SUB_CG_USER_CREATE_GROUP_ROOM	25									//(可删除)#创建牌友圈房间（只有圈主才能创建房间）	TODO 牌友圈放在单独的消息号中
-#define CMD_GC_USER_CREATE_GROUP_ROOM	205									//(可删除)#创建牌友圈房间返回
 
 //解散房间
-#define SUB_RG_USER_ASK_DISMISS				26								//发起申请解散房间
-#define CMD_GR_USER_ASK_DISMISS_RESULT		126								//发起申请解散房间 结果
-#define	SUB_RG_USER_VOTE_DISMISS			27								//表决解散房间
-#define CMD_GR_USER_VOTE_DISMISS			127								//广播房间申请解散
-#define	CMD_GR_USER_DISMISS_RESULT			226								//广播表决解散房间结果
+#define SUB_RG_USER_ASK_DISMISS			24									//发起申请解散房间
+#define CMD_GR_USER_ASK_DISMISS_RESULT	124									//发起申请解散房间 结果
+#define	SUB_RG_USER_VOTE_DISMISS		25									//表决解散房间
+#define CMD_GR_USER_VOTE_DISMISS		125									//广播房间申请解散
+#define	CMD_GR_USER_DISMISS_RESULT		224									//广播表决解散房间结果
 
-#define SUB_GR_USER_SCORE				101									//用户分数		TODO 子游戏调用写分函数，大厅发送给客户端
-#define SUB_GR_USER_STATUS				102									//用户动作
-#define CMD_ROOM_RULE					202									//房间信息
-
-#define SUB_GR_REQUEST_FAILURE			103									//请求失败		大部分失败消息都返回这个消息
-
-#define CMD_GC_USER_MODIFY_TREASURE		106									//修改用户财富信息返回
-
-#define SUB_GR_CREATE_OTHER_SUCCESS		129									//*替他人开房成功		TODO 删除，替他人开房成功放在开房成功中，不需要单独处理
-#define SUB_GR_JOIN_DWTABLE_SUCCESS		133									//*加入电玩房成功		逻辑处理和其他加入房间不同，貌似是加入成功就开始游戏了
 #pragma endregion
 
 #pragma region  MDM_GR_MATCH 比赛命令

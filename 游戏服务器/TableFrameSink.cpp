@@ -734,8 +734,8 @@ bool CTableFrameSink::OnEventSendGameScene(WORD wChairID, IServerUserItem * pISe
 			// 设置变量
 			StatusFree.GameCount = m_pRoomRuleOption->com_rule->GameCount;
 			StatusFree.PlayerCount = m_pRoomRuleOption->com_rule->PlayerCount;
-			StatusFree.CellScore = m_pRoomRuleOption->com_rule->CellScore;
-			StatusFree.FangZhu = m_pRoomRuleOption->com_rule->FangZhu;
+			//StatusFree.CellScore = m_pRoomRuleOption->com_rule->CellScore;
+			//StatusFree.FangZhu = m_pRoomRuleOption->com_rule->FangZhu;
 
 			// 发送场景
 			return m_pITableFrame->SendGameScene( pIServerUserItem, &StatusFree, sizeof(StatusFree));
@@ -1027,7 +1027,6 @@ bool CTableFrameSink::OnEventSendGameScene(WORD wChairID, IServerUserItem * pISe
 					printf("\n赢家：%d，单局得分 = %lld\n",i, StatusXJEnd.nSingleGameScore[i]);
 				}		
 			}
-
 			return m_pITableFrame->SendGameScene(pIServerUserItem, &StatusXJEnd, sizeof(STR_CMD_SC_STATUS_XJ_END));
 		}
 	default:break;

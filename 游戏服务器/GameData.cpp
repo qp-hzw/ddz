@@ -4779,7 +4779,7 @@ bool __stdcall CGameData::SetRoomRule(tagTableCfg * pRoomRuleOption)
 	SetMaxChairCount(pRoomRuleOption->com_rule->PlayerCount);
 
 	// 设置下注底分
-	SetCellScore(pRoomRuleOption->com_rule->CellScore);
+	SetCellScore(1);
 
 	//设置游戏得分模式，经典模式或不洗牌   ---------子游戏规则待设定
 	SetGameScoreMode(0);
@@ -4788,7 +4788,7 @@ bool __stdcall CGameData::SetRoomRule(tagTableCfg * pRoomRuleOption)
 	SetRobBankMode(0);
 
 	//设置房主
-	SetRoomFangzhu(pRoomRuleOption->com_rule->FangZhu);
+	//SetRoomFangzhu(pRoomRuleOption->com_rule->FangZhu);
 
 	m_card_config.leave_card_num = NORMAL_LEAVE_CARD_NUM;
 	m_card_config.init_card_num = NORMAL_HAND_CARD_NUM;

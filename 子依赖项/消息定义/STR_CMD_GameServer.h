@@ -23,10 +23,10 @@
 //////////////////////////////////////////////////////////////////////////////////
 //桌子模式
 #define TABLE_MODE_FK				0									//房卡模式
-#define TABLE_MODE_JJC				1									//竞技场模式
+#define TABLE_MODE_MATCH			1									//比赛模式
 #define TABLE_MODE_GOLD				2									//金币模式
 #define TABLE_MODE_FK_GOLD			3									//房卡金币模式
-#define TABLE_MODE_DW				4									//电玩模式
+#define TABLE_MODE_CLUB				4									//牌友圈模式
 
 //请求错误
 #define REQUEST_FAILURE_NORMAL		0									//常规原因
@@ -78,11 +78,16 @@ struct STR_CMD_GC_LOGON_USERID
 
 #pragma region MDM_USER 用户命令
 
-//创建房间
+//申请创建房间
 struct STR_SUB_CG_USER_CREATE_ROOM
 {
-	BYTE CommonRule[LEN_PRIVATE_TABLE_RULE/2];						//通用房间规则
-	BYTE SubGameRule[LEN_PRIVATE_TABLE_RULE/2];						//子游戏房间规则
+	BYTE							byGameMode;				//游戏模式 0房卡约局; 1比赛模式; 2金币模式; 3金币约局; 4牌友圈
+};
+
+//设置房间规则
+struct STR_SUB_CG_USER_SET_ROOM_RULE
+{
+	BYTE							byChoose[20];			//规则选择
 };
 
 
