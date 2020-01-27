@@ -6,7 +6,6 @@
 #include "cardType.h"
 #include <string>
 
-
 #pragma region 游戏配置
 //游戏属性配置Attribute
 #define KIND_ID								9												//Kind I D
@@ -705,16 +704,27 @@ struct CMD_C_Admin_ChangeCard
 
 };
 
+//子游戏房间规则
 struct tagSubGameRule
 {
-
+	SCORE		Cellscore;                  //游戏底分(1/2/5)
+	//WORD		Balancemode;                //结算方式(0:积分结算 1:金币结算)
+	//WORD		GameChuPai;                 //游戏出牌(限时-->15秒出牌/25秒出牌/不限制出牌)
+	WORD		GameWanFa;                  //游戏玩法(经典玩法/癞子玩法/天地癞子)
+	WORD		GameDiZhu;                  //游戏地主模式(0-抢地主 1-叫三分)
+	SCORE		GameFengDing;               //游戏封顶模式(32/64/128/不封顶)
+	//WORD		Preventcheat;               //防作弊
+	WORD		DontCutCards;			    //不洗牌		 0-洗牌 1-不洗牌
+	WORD		AddMultiple;                //是否加倍	 0-不加倍 1-加倍
+	WORD		ShowCards;                  //是否明牌	 0-不名牌 1-明牌
+	WORD		BaseCardAddMultiple;        //底牌是否翻倍 0-不翻倍 1-翻倍
 };
 
 //房间规则
 struct tagTableCfg
 {
 	tagTableRule			*com_rule;		//通用房间规则
-	tagSubGameRule	*sub_rule;			//子游戏特有规则
+	tagSubGameRule			sub_rule;		//子游戏特有规则
 };
 
 # endif

@@ -2,6 +2,7 @@
 #include "TableFrameSink.h"
 #include "SubGameRule.h"
 #include "GameConfig.h"
+#include "SubRuleManager.h"
 
 // 构造函数
 CTableFrameSink::CTableFrameSink()
@@ -52,9 +53,9 @@ bool CTableFrameSink::Initialization(ITableFrame *pTableFrame)
 	m_pITableFrame = pTableFrame;
 	//m_pITableFrame->SetStartMode(START_MODE_FULL_READY);	//所有人准备开始
 
-	//房卡配置
+	//规则配置
 	m_pRoomRuleOption->com_rule = (tagTableRule *)m_pITableFrame->GetCustomRule();
-	m_pRoomRuleOption->sub_rule = (tagSubGameRule *)m_pITableFrame->GetSubGameRule();
+	CopyMemory(&m_pRoomRuleOption->sub_rule, &CSubRuleManager::GetSubGameRule(), sizeof(tagSubGameRule));
 
 	//校验
 	if (NULL != m_GameLogic)
@@ -724,7 +725,7 @@ bool CTableFrameSink::OnEventSendGameScene(WORD wChairID, IServerUserItem * pISe
 			if ( NULL == m_pRoomRuleOption )
 			{
 				m_pRoomRuleOption->com_rule = (tagTableRule *)m_pITableFrame->GetCustomRule();
-				m_pRoomRuleOption->sub_rule  = (tagSubGameRule *)m_pITableFrame->GetSubGameRule();
+				CopyMemory(&m_pRoomRuleOption->sub_rule, &CSubRuleManager::GetSubGameRule(), sizeof(tagSubGameRule));
 			}
 
 			//空闲状态
@@ -734,7 +735,7 @@ bool CTableFrameSink::OnEventSendGameScene(WORD wChairID, IServerUserItem * pISe
 			// 设置变量
 			StatusFree.GameCount = m_pRoomRuleOption->com_rule->GameCount;
 			StatusFree.PlayerCount = m_pRoomRuleOption->com_rule->PlayerCount;
-			//StatusFree.CellScore = m_pRoomRuleOption->com_rule->CellScore;
+			StatusFree.CellScore = m_pRoomRuleOption->sub_rule.Cellscore;
 			//StatusFree.FangZhu = m_pRoomRuleOption->com_rule->FangZhu;
 
 			// 发送场景

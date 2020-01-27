@@ -4521,11 +4521,11 @@ DWORD __stdcall CGameData::GetTurnOutCardType(const WORD wChairID)
 	return m_playing_para.out_card_type[wChairID];
 }
 
-//设置游戏得分模式
+//设置游戏洗牌模式
 int __stdcall CGameData::SetGameScoreMode(BYTE nMode)
 {
 	//校验
-	if (GAME_SCORE_MODE_CLASSIC != nMode && GAME_SCORE_MODE_CRAZY != nMode)
+	if (GAME_SCORE_MODE_CLASSIC != nMode && GAME_SCORE_MODE_BUXIPAI != nMode)
 	{
 		nMode = GAME_SCORE_MODE_CLASSIC;
 	}
@@ -4533,7 +4533,7 @@ int __stdcall CGameData::SetGameScoreMode(BYTE nMode)
 	return 0;
 }
 
-//获得游戏得分模式
+//获得游戏洗牌模式
 BYTE __stdcall CGameData::GetGameScoreMode()
 {
 	return m_room_config.game_score_mode;
@@ -4778,35 +4778,35 @@ bool __stdcall CGameData::SetRoomRule(tagTableCfg * pRoomRuleOption)
 	//设置椅子和玩家数目
 	SetMaxChairCount(pRoomRuleOption->com_rule->PlayerCount);
 
-	// 设置下注底分
-	SetCellScore(1);
+	// 设置游戏底分
+	SetCellScore(pRoomRuleOption->sub_rule.Cellscore);
 
-	//设置游戏得分模式，经典模式或不洗牌   ---------子游戏规则待设定
-	SetGameScoreMode(0);
+	//设置游戏模式，经典模式或不洗牌   ---------子游戏规则待设定
+	SetGameScoreMode(pRoomRuleOption->sub_rule.DontCutCards);
 
 	//设置游戏抢庄模式：0 - 抢庄		1 - 叫三分
-	SetRobBankMode(0);
+	SetRobBankMode(pRoomRuleOption->sub_rule.GameDiZhu);
 
 	//设置房主
-	//SetRoomFangzhu(pRoomRuleOption->com_rule->FangZhu);
+	SetRoomFangzhu(0);		//先默认为0
 
 	m_card_config.leave_card_num = NORMAL_LEAVE_CARD_NUM;
 	m_card_config.init_card_num = NORMAL_HAND_CARD_NUM;
 
 	//设置封顶倍数
-	SetRoomMaxBet(0);
+	SetRoomMaxBet(pRoomRuleOption->sub_rule.GameFengDing);
 
 	//设置游戏癞子模式  0-经典  1-癞子  2-天地癞子
-	SetLaiZiMode(0);
+	SetLaiZiMode(pRoomRuleOption->sub_rule.GameWanFa);
 
 	//设置底牌翻倍   0-不翻倍  1-翻倍
-	SetISLeaveCardDouble(0);
+	SetISLeaveCardDouble(pRoomRuleOption->sub_rule.BaseCardAddMultiple);
 
 	//设置是否明牌   0-不明牌   1-明牌
-	SetMingPaiMode(0);
+	SetMingPaiMode(pRoomRuleOption->sub_rule.ShowCards);
 
 	//设置是否加倍   0-不加倍   1-加倍
-	SetAddBetMode(0);
+	SetAddBetMode(pRoomRuleOption->sub_rule.AddMultiple);
 
 	return true;
 }
@@ -5319,10 +5319,10 @@ int  CGameData::LoadGameRule(const BYTE cbGameScoreMode)
 	{
 		memcpy(&m_room_config.game_score_times, &CGameConfig::gComGamePara.game_normal_times, sizeof(m_room_config.game_score_times));
 	}
-	else if (cbGameScoreMode == GAME_SCORE_MODE_CRAZY)	//疯狂模式
-	{
-		memcpy(&m_room_config.game_score_times, &CGameConfig::gComGamePara.game_crazy_times, sizeof(m_room_config.game_score_times));
-	}
+	//else if (cbGameScoreMode == GAME_SCORE_MODE_CRAZY)	//疯狂模式
+	//{
+	//	memcpy(&m_room_config.game_score_times, &CGameConfig::gComGamePara.game_crazy_times, sizeof(m_room_config.game_score_times));
+	//}
 
 	return 0;
 }

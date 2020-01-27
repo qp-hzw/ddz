@@ -81,7 +81,7 @@ int CGameConfig::CreateGameCards()
 				//读取配置文件对应的手牌倍数
 				CGameCardConfig::LoadGameScoreTimes(GAME_SCORE_MODE_CLASSIC, gComGamePara.game_normal_times);
 				//获得疯狂加倍倍数
-				CGameCardConfig::LoadGameScoreTimes(GAME_SCORE_MODE_CRAZY, gComGamePara.game_crazy_times);
+				//CGameCardConfig::LoadGameScoreTimes(GAME_SCORE_MODE_CRAZY, gComGamePara.game_crazy_times);
 			}
 			if (result == -1)
 			{

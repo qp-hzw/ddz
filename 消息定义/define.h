@@ -10,7 +10,7 @@
 //得分模式
 #define GAME_SCORE_NUM						2								//得分模式类型数目
 #define GAME_SCORE_MODE_CLASSIC				0								//经典模式
-#define GAME_SCORE_MODE_CRAZY				1								//疯狂加倍模式
+#define GAME_SCORE_MODE_BUXIPAI				1								//不洗牌模式
 
 //桌子类型
 #define TABLE_MODE_FANG_KA					0								//房卡模式
