@@ -5,15 +5,10 @@ tagSubGameRule						CSubRuleManager::m_SubRule;			//房间子游戏规则
 
 
 //设置子游戏规则
-void CSubRuleManager::SetSubGameRule(string key_name[20], string key_value[20])
+void CSubRuleManager::SetSubGameRule(string key_name, string key_value)
 {
-	for(int i=0; i<20; i++)
-	{
-		if(!key_name[i].empty())
-		{
-			SetRoomRule(m_SubRule, key_name[i], key_value[i]);
-		}
-	}
+	if (!key_name.empty())
+		SetRoomRule(m_SubRule, key_name, key_value);
 }
 
 //sub获取子游戏规则
@@ -100,12 +95,15 @@ void CSubRuleManager::SetRoomRule(tagSubGameRule &subrule, string key_name, stri
 }
 
 //导出定义
-extern "C" _declspec(dllexport) void SetSubGameRule(string key_name[20], string key_value[20])
+extern "C" __declspec(dllexport) VOID * SetSubGameRule(string key_name, string key_value)
 {
+	std::cout << "key_name: " << key_name << "key_value: "<< key_value <<  std::endl;
 	CSubRuleManager::SetSubGameRule(key_name, key_value);
+	return NULL;
 }
 
-extern "C" _declspec(dllexport) void GetDescribe(string key_name)
+extern "C" __declspec(dllexport) string GetDescribe(string key_name)
 {
-	CSubRuleManager::GetDescribe(key_name);
+	std::cout << "key_name: " << key_name << std::endl;
+	return CSubRuleManager::GetDescribe(key_name);
 }

@@ -18,7 +18,7 @@ public:
 	//frame接口函数
 public:
 	//设置子游戏规则
-	static void SetSubGameRule(string key_name[20], string key_value[20]);
+	static void SetSubGameRule(string key_name, string key_value);
 	//获取字段对应的描述
 	static string GetDescribe(string key_name);
 

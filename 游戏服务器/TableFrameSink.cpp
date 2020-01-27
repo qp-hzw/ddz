@@ -1988,16 +1988,16 @@ void CTableFrameSink::SendJiaoFenStart(WORD wChairID, const BYTE &ActionType)
 		//设置叫三分定时器  
 		m_pITableFrame->KillGameTimer(IDI_ROB_JiaoFen);
 
-		////判断机器人
-		//if (m_pITableFrame->IsRobot(wChairID))     //待添加 机器人接口还没添加
-		//{
-		//	WORD index = (rand() % 4) + 1;
-		//	m_pITableFrame->SetGameTimer(IDI_ROB_JiaoFen, IDI_TIME_ROB_JiaoFen*0.1*index, 0, 0);
-		//}
-		//else
-		//{
+		//判断机器人
+		if (m_pITableFrame->IsRobot(wChairID))     //待添加 机器人接口还没添加
+		{
+			WORD index = (rand() % 4) + 1;
+			m_pITableFrame->SetGameTimer(IDI_ROB_JiaoFen, IDI_TIME_ROB_JiaoFen*0.1*index, 1, 0);
+		}
+		else
+		{
 			m_pITableFrame->SetGameTimer(IDI_ROB_JiaoFen, IDI_TIME_ROB_JiaoFen, 1, 0);
-		//}
+		}
 	}
 }
 
@@ -2213,16 +2213,16 @@ void CTableFrameSink::SendRobStart(const WORD &wChairID, const BYTE &cbType)
 		//抢庄定时器
 		m_pITableFrame->KillGameTimer(IDI_ROB_BANKER);
 
-		////判断是不是机器人
-		//if (m_pITableFrame->IsRobot(wChairID))     //机器人接口待添加
-		//{
-		//	WORD index = (rand() % 3) + 1;
-		//	m_pITableFrame->SetGameTimer(IDI_ROB_BANKER, IDI_TIME_ROB_BANKER*0.1*index, 0, 0);
-		//}
-		//else
-		//{
+		//判断是不是机器人
+		if (m_pITableFrame->IsRobot(wChairID))     //机器人接口待添加
+		{
+			WORD index = (rand() % 3) + 1;
+			m_pITableFrame->SetGameTimer(IDI_ROB_BANKER, IDI_TIME_ROB_BANKER*0.1*index, 1, 0);
+		}
+		else
+		{
 			m_pITableFrame->SetGameTimer(IDI_ROB_BANKER, IDI_TIME_ROB_BANKER, 1, 0);
-		//}
+		}
 	}
 }
 
@@ -2658,16 +2658,16 @@ void CTableFrameSink::SendAddScoreStart(const WORD &wChairID)
 	// 下注定时器
 	m_pITableFrame->KillGameTimer(IDI_ADD_SCORE);
 
-	////判断机器人
-	//if (m_pITableFrame->IsRobot(wChairID))
-	//{
-	//	WORD index = (rand() % 3) + 1;
-	//	m_pITableFrame->SetGameTimer(IDI_ADD_SCORE_ROBOT, IDI_TIME_ADD_SCORE_ROBOT*index, 0, 0);
-	//}
-	//else
-	//{
+	//判断机器人
+	if (m_pITableFrame->IsRobot(wChairID))
+	{
+		WORD index = (rand() % 3) + 1;
+		m_pITableFrame->SetGameTimer(IDI_ADD_SCORE_ROBOT, IDI_TIME_ADD_SCORE_ROBOT*index, 1, 0);
+	}
+	else
+	{
 		m_pITableFrame->SetGameTimer(IDI_ADD_SCORE, IDI_TIME_ADD_SCORE, 1, 0);
-	//}
+	}
 }
 
 // 下注开始返回
@@ -3025,14 +3025,14 @@ void CTableFrameSink::HandleOutCardStart(const WORD &wOutCardUser)
 
 	// 出牌定时器
 	m_pITableFrame->KillGameTimer(IDI_OUT_CARD);
-	////判断是否是机器人
-	//if (m_pITableFrame->IsRobot(wOutCardUser))
-	//{
-	//	WORD index = (rand() % 4) + 1;
-	//	m_pITableFrame->SetGameTimer(IDI_OUT_CARD, IDI_TIME_OUT_CARD*0.05*index, 0, 0);
-	//}
-	//else
-	//{
+	//判断是否是机器人
+	if (m_pITableFrame->IsRobot(wOutCardUser))
+	{
+		WORD index = (rand() % 4) + 1;
+		m_pITableFrame->SetGameTimer(IDI_OUT_CARD, IDI_TIME_OUT_CARD*0.05*index, 1, 0);
+	}
+	else
+	{
 		//判断是否托管
 		if (1 == m_GameAccess->GetPlayerTuoGuan(wOutCardUser))
 		{
@@ -3042,7 +3042,7 @@ void CTableFrameSink::HandleOutCardStart(const WORD &wOutCardUser)
 		{
 			m_pITableFrame->SetGameTimer(IDI_OUT_CARD, IDI_TIME_OUT_CARD, 1, 0);
 		}
-	//}
+	}
 }
 
 //出牌事件

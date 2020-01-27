@@ -1,0 +1,57 @@
+[RULE_0]
+head = GameCount
+value_0 =1
+value_1 =2
+value_2 =3
+value_3 =8
+
+[RULE_1]
+head = PlayerCount
+value_0 =2
+value_1 =3
+value_2 =4
+
+//SubRule
+[RULE_2]
+head = Cellscore
+value_0 =1
+value_1 =2
+value_2 =5
+
+[RULE_3]
+head = GameWanFa
+value_0 =0
+value_1 =1
+value_2 =2
+
+[RULE_4]
+head = GameDiZhu
+value_0 =0
+value_1 =1
+
+[RULE_5]
+head = GameFengDing
+value_0 =32
+value_1 =64
+value_2 =128
+value_3 =0
+
+[RULE_6]
+head = DontCutCards
+value_0 =0
+value_1 =1
+
+[RULE_7]
+head = AddMultiple
+value_0 =0
+value_1 =1
+
+[RULE_8]
+head = ShowCards
+value_0 =0
+value_1 =1
+
+[RULE_9]
+head = BaseCardAddMultiple
+value_0 =0
+value_1 =1

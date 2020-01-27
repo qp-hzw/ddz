@@ -206,7 +206,7 @@ int __stdcall CGameData::Deal()
 		m_card_config.game_cards, m_card_config.game_cards_sum,
 		m_room_config.game_score_mode, boomCards, boomSum); // Ï´ÅÆ
 
-	///*
+	/*
 	BYTE cardssum = m_card_config.game_cards_sum;
 	//²âÊÔ¹Ì¶¨ÅÆ
 	BYTE tmpcards[54] = {
@@ -215,7 +215,7 @@ int __stdcall CGameData::Deal()
 		0x0C, 0x1C, 0x2C, 0x3C, 0x0D, 0x1D, 0x2D, 0x3D,
 	};
 	memcpy(cards, tmpcards, cardssum * sizeof(BYTE));
-	//*/
+	*/
 
 	//»ñµÃ¿Ûµ×¿¨ÅÆ
 	m_playing_para.leave_card[MAX_LEAVE_CARD_NUM];

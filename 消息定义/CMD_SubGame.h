@@ -710,7 +710,7 @@ struct tagSubGameRule
 	SCORE		Cellscore;                  //游戏底分(1/2/5)
 	//WORD		Balancemode;                //结算方式(0:积分结算 1:金币结算)
 	//WORD		GameChuPai;                 //游戏出牌(限时-->15秒出牌/25秒出牌/不限制出牌)
-	WORD		GameWanFa;                  //游戏玩法(经典玩法/癞子玩法/天地癞子)
+	WORD		GameWanFa;                  //游戏玩法(经典玩法/癞子玩法/天地癞子) 0 1 2 
 	WORD		GameDiZhu;                  //游戏地主模式(0-抢地主 1-叫三分)
 	SCORE		GameFengDing;               //游戏封顶模式(32/64/128/不封顶)
 	//WORD		Preventcheat;               //防作弊
