@@ -1,8 +1,8 @@
 #include "stdafx.h"
 #include "SubRuleManager.h"
 
+CSubRuleManager	*					CSubRuleManager::s_instance = NULL;
 tagSubGameRule						CSubRuleManager::m_SubRule;			//房间子游戏规则
-
 
 //设置子游戏规则
 void CSubRuleManager::SetSubGameRule(string key_name, string key_value)
@@ -15,6 +15,16 @@ void CSubRuleManager::SetSubGameRule(string key_name, string key_value)
 tagSubGameRule CSubRuleManager::GetSubGameRule()
 {
 	return m_SubRule;
+}
+
+CSubRuleManager * CSubRuleManager::instance()
+{
+	if (s_instance == NULL)
+	{
+		s_instance = new CSubRuleManager();
+	}
+
+	return s_instance;
 }
 
 //获取字段 对应的描述
@@ -94,16 +104,15 @@ void CSubRuleManager::SetRoomRule(tagSubGameRule &subrule, string key_name, stri
 	}
 }
 
+
 //导出定义
 extern "C" __declspec(dllexport) VOID * SetSubGameRule(string key_name, string key_value)
 {
-	std::cout << "key_name: " << key_name << "key_value: "<< key_value <<  std::endl;
-	CSubRuleManager::SetSubGameRule(key_name, key_value);
+	CSubRuleManager::instance()->SetSubGameRule(key_name, key_value);
 	return NULL;
 }
 
 extern "C" __declspec(dllexport) string GetDescribe(string key_name)
 {
-	std::cout << "key_name: " << key_name << std::endl;
-	return CSubRuleManager::GetDescribe(key_name);
+	return CSubRuleManager::instance()->GetDescribe(key_name);
 }

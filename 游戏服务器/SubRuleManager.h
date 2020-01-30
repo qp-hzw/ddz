@@ -7,13 +7,19 @@ using std::string;
 
 class CSubRuleManager
 {
-public:
+private:
 	static tagSubGameRule			m_SubRule;				//子游戏规则
+
+private:
+	static CSubRuleManager			* s_instance;
 
 	//sub接口
 public:
 	//sub获取子游戏规则
 	static tagSubGameRule GetSubGameRule();
+
+	// instance()
+	static CSubRuleManager * instance();
 
 	//frame接口函数
 public:
