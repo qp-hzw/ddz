@@ -45,6 +45,7 @@
 #include "../子依赖项/游戏服务/Struct_Frame.h"
 #include "../子依赖项/游戏服务/Define.h"
 #include "../子依赖项/游戏服务/TableFrameBase.h"
+#include "../子依赖项/游戏服务/RoomRuleManager.h"
 #include "../子依赖项/全局定义/Packet.h"
 
 //模板文件

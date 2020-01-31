@@ -25,6 +25,9 @@
     <ClCompile Include="IntelligentAI.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
+    <ClCompile Include="SubRuleManager.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="GameCardConfig.h">
@@ -64,6 +67,9 @@
       <Filter>消息定义</Filter>
     </ClInclude>
     <ClInclude Include="GamePlayerConfig.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="SubRuleManager.h">
       <Filter>头文件</Filter>
     </ClInclude>
   </ItemGroup>

@@ -2,29 +2,22 @@
 #include "SubRuleManager.h"
 
 CSubRuleManager	*					CSubRuleManager::s_instance = NULL;
-tagSubGameRule						CSubRuleManager::m_SubRule;			//房间子游戏规则
-
-//设置子游戏规则
-void CSubRuleManager::SetSubGameRule(string key_name, string key_value)
-{
-	if (!key_name.empty())
-		SetRoomRule(m_SubRule, key_name, key_value);
-}
-
-//sub获取子游戏规则
-tagSubGameRule CSubRuleManager::GetSubGameRule()
-{
-	return m_SubRule;
-}
 
 CSubRuleManager * CSubRuleManager::instance()
 {
 	if (s_instance == NULL)
 	{
 		s_instance = new CSubRuleManager();
+		memset(&(s_instance->m_SubRule), 0, sizeof(s_instance->m_SubRule));
 	}
 
 	return s_instance;
+}
+
+//初始化
+void CSubRuleManager::Init()
+{
+	memset(&(s_instance->m_SubRule), 0, sizeof(s_instance->m_SubRule));
 }
 
 //获取字段 对应的描述
@@ -66,53 +59,64 @@ string CSubRuleManager::GetDescribe(string key_name)
 
 	return describe;
 }
-
 //根据字段名字, 为结构体对应字段赋值
-void CSubRuleManager::SetRoomRule(tagSubGameRule &subrule, string key_name, string value)
+void CSubRuleManager::SetRoomRule( string key_name, string value)
 {
 	if(key_name == "Cellscore")
 	{
-		subrule.Cellscore = atoi(value.c_str());
+		m_SubRule.Cellscore = atoi(value.c_str());
 	}
 	else if(key_name == "GameWanFa")
 	{
-		subrule.GameWanFa = atoi(value.c_str());
+		m_SubRule.GameWanFa = atoi(value.c_str());
 	}
 	else if(key_name == "GameDiZhu")
 	{
-		subrule.GameDiZhu = atoi(value.c_str());
+		m_SubRule.GameDiZhu = atoi(value.c_str());
 	}
 	else if(key_name == "GameFengDing")
 	{
-		subrule.GameFengDing = atoi(value.c_str());
+		m_SubRule.GameFengDing = atoi(value.c_str());
 	}
 	else if(key_name == "DontCutCards")
 	{
-		subrule.DontCutCards = atoi(value.c_str());
+		m_SubRule.DontCutCards = atoi(value.c_str());
 	}
 	else if(key_name == "AddMultiple")
 	{
-		subrule.AddMultiple = atoi(value.c_str());
+		m_SubRule.AddMultiple = atoi(value.c_str());
 	}
 	else if(key_name == "ShowCards")
 	{
-		subrule.ShowCards = atoi(value.c_str());
+		m_SubRule.ShowCards = atoi(value.c_str());
 	}
 	else if(key_name == "BaseCardAddMultiple")
 	{
-		subrule.BaseCardAddMultiple = atoi(value.c_str());
+		m_SubRule.BaseCardAddMultiple = atoi(value.c_str());
 	}
 }
 
-
-//导出定义
-extern "C" __declspec(dllexport) VOID * SetSubGameRule(string key_name, string key_value)
+//sub获取子游戏规则
+tagSubGameRule CSubRuleManager::GetSubGameRule()
 {
-	CSubRuleManager::instance()->SetSubGameRule(key_name, key_value);
-	return NULL;
+	return m_SubRule;
 }
 
-extern "C" __declspec(dllexport) string GetDescribe(string key_name)
+extern "C" __declspec(dllexport) VOID * GetSubRuleManager()
 {
-	return CSubRuleManager::instance()->GetDescribe(key_name);
+	//建立对象
+	CSubRuleManager * pSubRoleManger = NULL;
+	try
+	{
+		pSubRoleManger = CSubRuleManager::instance();
+		if (pSubRoleManger == NULL)
+			throw TEXT("创建失败");
+
+		return pSubRoleManger;
+	}
+	catch (...) {}
+
+	//清理对象
+	SafeDelete(pSubRoleManger);
+	return NULL;
 }

@@ -55,7 +55,10 @@ bool CTableFrameSink::Initialization(ITableFrame *pTableFrame)
 
 	//规则配置
 	m_pRoomRuleOption->com_rule = (tagTableRule *)m_pITableFrame->GetCustomRule();
-	CopyMemory(&m_pRoomRuleOption->sub_rule, &CSubRuleManager::GetSubGameRule(), sizeof(tagSubGameRule));
+
+	CLog::Log(log_debug, "subgame  begin!!!!!!");
+	CopyMemory(&(m_pRoomRuleOption->sub_rule), &(CSubRuleManager::instance()->GetSubGameRule()), sizeof(tagSubGameRule));
+	CLog::Log(log_debug, "subgame  end!!!!!!");
 
 	//校验
 	if (NULL != m_GameLogic)
@@ -725,7 +728,7 @@ bool CTableFrameSink::OnEventSendGameScene(WORD wChairID, IServerUserItem * pISe
 			if ( NULL == m_pRoomRuleOption )
 			{
 				m_pRoomRuleOption->com_rule = (tagTableRule *)m_pITableFrame->GetCustomRule();
-				CopyMemory(&m_pRoomRuleOption->sub_rule, &CSubRuleManager::GetSubGameRule(), sizeof(tagSubGameRule));
+				CopyMemory(&(m_pRoomRuleOption->sub_rule), &(CSubRuleManager::instance()->GetSubGameRule()), sizeof(tagSubGameRule));
 			}
 
 			//空闲状态

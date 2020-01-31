@@ -4,23 +4,23 @@
 Platform依赖项 created by 自动化脚本
 
 
-commit 9ba8fe2da79951f614712f1d330c4c8300106441 Author: wcq <377133665@qq.com> Date: Fri Jan 24 19:50:43 2020 +0800 内核增加 cfg文件
+commit 26189c98c7e42a9aaea64354a1171565c4d101c6 Author: wcq <377133665@qq.com> Date: Thu Jan 30 00:13:02 2020 +0800 log文件输出优化
 
 author:  
 WangChengQing    
 
 date:  
-Fri Jan 24 23:17:58 CST 2020
+Fri Jan 31 16:56:50 CST 2020
 
 
 --------------------------------------
 SubGame依赖项 自动化脚本
 
 
-commit 6a1c7f909229b5f83b8d1ac07970e0db0efae3f6 Author: wcq <377133665@qq.com> Date: Fri Jan 24 22:29:21 2020 +0800 房间规则 优化1
+commit f7eed7387e50283e538a7b7473273b3c58e11c95 Author: wcq <377133665@qq.com> Date: Thu Jan 30 00:14:03 2020 +0800 log日志文件
 
 author:  
 WangChengQing    
 
 date:  
-Fri Jan 24 23:30:41 CST 2020
+Fri Jan 31 17:05:43 CST 2020

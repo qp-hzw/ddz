@@ -87,6 +87,7 @@ struct STR_SUB_CG_USER_CREATE_ROOM
 //设置房间规则
 struct STR_SUB_CG_USER_SET_ROOM_RULE
 {
+	BYTE							byGameMode;				//游戏模式 0房卡约局; 1比赛模式; 2金币模式; 3金币约局; 4牌友圈
 	BYTE							byChoose[20];			//规则选择
 };
 
@@ -112,8 +113,6 @@ struct STR_CMD_GC_USER_CREATE_TABLE
 struct STR_SUB_CG_USER_JOIN_FK_ROOM
 {
 	DWORD							dwPassword;		//房间密码
-	double							dLongitude;		//经度
-	double							dLatitude;		//纬度
 };
 
 //加入桌子 -- 不需要密码
@@ -128,7 +127,6 @@ struct STR_SUB_CG_USER_JOIN_TABLE_NO_PASS
 //加入桌子 -- 加入大厅金币场桌子
 struct STR_SUB_CG_USER_JOIN_GOLD_HALL_ROOM
 {
-	BYTE							byGameMod;		//游戏模式 金币大厅2
 	BYTE							byType;			//1.初级场   2.中级场   3.高级场   4.富豪场
 };
 

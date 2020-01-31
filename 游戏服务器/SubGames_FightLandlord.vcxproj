@@ -131,6 +131,7 @@
     <ClCompile Include="GameServer.cpp" />
     <ClCompile Include="IntelligentAI.cpp" />
     <ClCompile Include="SubGameRule.cpp" />
+    <ClCompile Include="SubRuleManager.cpp" />
     <ClCompile Include="TableFrameSink.cpp">
       <DisableSpecificWarnings Condition="'$(Configuration)|$(Platform)'=='Debug_Unicode|Win32'">4244;%(DisableSpecificWarnings)</DisableSpecificWarnings>
     </ClCompile>
@@ -148,6 +149,7 @@
     <ClInclude Include="Resource.h" />
     <ClInclude Include="SubGameRule.h" />
     <ClInclude Include="Stdafx.h" />
+    <ClInclude Include="SubRuleManager.h" />
     <ClInclude Include="TableFrameSink.h" />
   </ItemGroup>
   <ItemGroup>
