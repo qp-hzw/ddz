@@ -96,6 +96,19 @@ void CSubRuleManager::SetRoomRule( string key_name, string value)
 	}
 }
 
+//设置Gold场规则
+void CSubRuleManager::SetGoldRule(BYTE byType)  //这里可以加特殊规则的字段
+{
+	m_SubRule.Cellscore = 1;
+	m_SubRule.BaseCardAddMultiple = 1;
+	m_SubRule.GameWanFa = 0;
+	m_SubRule.GameDiZhu = 0;
+	m_SubRule.GameFengDing = 64;
+	m_SubRule.DontCutCards = 1;
+	m_SubRule.AddMultiple = 0;
+	m_SubRule.ShowCards = 0;
+}
+
 //sub获取子游戏规则
 tagSubGameRule CSubRuleManager::GetSubGameRule()
 {

@@ -29,6 +29,8 @@ public:
 	virtual void SetRoomRule(string key, string value);
 	//初始化
 	virtual void Init();
+	//设置Gold场规则
+	virtual void SetGoldRule(BYTE byType);
 
 	//sub接口
 public:

@@ -168,7 +168,7 @@ WORD __stdcall CGameData::GetAppointBanker()
 */
 int __stdcall CGameData::SetBankerState(WORD wChairID, BYTE cbResult)
 {
-	m_players_config.players[wChairID].bank_state = cbResult;   // //0-不叫  1-叫地主  2-不抢  3-抢地主
+	m_players_config.players[wChairID].bank_state = cbResult;   // //1-不叫  2-叫地主  3-不抢  4-抢地主
 
 	return 0;
 }
@@ -4351,6 +4351,9 @@ int __stdcall CGameData::SetXjReadyState(WORD wChairID, BYTE ready)
 //记录玩家庄家次数  大局结算
 int __stdcall CGameData::SetPlayerBankCount(WORD wChairID)
 {
+	if (wChairID > GetMaxChairCount() || wChairID < 0)
+		return -1;
+	
 	m_players_config.players[wChairID].bank_count++;
 	return 0;
 }
@@ -5940,7 +5943,7 @@ void __stdcall CGameData::GetCardColorValue(WORD OutCardUser, HandCardData &m_Ha
 	int index = 0;
 
 	//一个一个作比较交换
-	for (vector<int>::iterator it = m_HandCardData.value_nPutCardList.begin(); it < m_HandCardData.value_nPutCardList.end(); it++)
+	for (list<int>::iterator it = m_HandCardData.value_nPutCardList.begin(); it != m_HandCardData.value_nPutCardList.end(); it++)
 	{
 		for (int i = 0; i < CurCardNum; i++)
 		{
@@ -6165,6 +6168,29 @@ int __stdcall CGameData::SetPlayerTimeOutNum(WORD wChairID, WORD num)
 int __stdcall CGameData::GetPlayerTimeOutNum(WORD wChairID)
 {
 	return m_players_config.players[wChairID].out_time_num;
+}
+
+//获取出牌玩家动作行为
+BYTE __stdcall CGameData::GetOutCardActionType(WORD wChairID)
+{
+	if (0 == GetOneTurnEnd())
+	{
+		return 1;  //第一个出牌   显示出牌和提示按钮         0101  
+	}
+	else
+	{
+		//判断是不是要不起
+		if (JudgePlayerOutCard(wChairID))
+		{
+			cout << "出牌" << endl;
+			return  (1 + (1 << 1) + (1 << 2));    //0111
+		}
+		else
+		{
+			cout << "要不起" << endl;
+			return (1 << 3);    //1000
+		}
+	}
 }
 
 //================================================癞子场判断=================================================   add by lih

@@ -82,7 +82,7 @@ struct STR_CMD_SC_ROB_RESULT
 	WORD		wChairID;					//椅子号
 	//BYTE		cbType;						//玩家抢庄类型	0-未开始	1-叫地主	2-抢地主
 	//BYTE		cbRobState;					//玩家抢庄标志	0-过	1-叫/抢
-	BYTE			cbResult;					//0-不叫  1-叫地主  2-不抢  3-抢地主
+	BYTE			cbResult;					//1-不叫  2-叫地主  3-不抢  4-抢地主
 	DWORD	room_bet[MAX_CHAIR_COUNT];					//房间倍数
 };
 
@@ -476,15 +476,15 @@ struct STR_CMD_SC_STATUS_FREE
 //抢庄状态
 struct STR_CMD_SC_STATUS_ROB
 {
-	WORD			CurRobUsr;					//当前正在抢庄的玩家
-	WORD 			robstate[MAX_CHAIR_COUNT];	//各玩家的抢庄状态
+	BYTE			CurRobUsr;					//当前正在抢庄的玩家
+	BYTE 			robstate[MAX_CHAIR_COUNT];	//各玩家的抢庄状态
 	BYTE			HandCardData[MAX_CARD_COUNT];	//当前玩家的手牌
-	DWORD			HandCardNum[MAX_CHAIR_COUNT];	//各玩家的手牌个数
-	WORD			CurJuShu;		//当前房间局数
-	SCORE			room_bet[MAX_CHAIR_COUNT];	//当前房间倍数
-	SCORE			All_bet[MAX_CHAIR_COUNT];	//总积分
-	SCORE			GoldCoin[MAX_CHAIR_COUNT];	//各玩家的金币
-	DWORD		    replay_code;			//回放码
+	BYTE			HandCardNum[MAX_CHAIR_COUNT];	//各玩家的手牌个数
+	BYTE			CurJuShu;		//当前房间局数
+	SCORE			room_bet;	//当前房间倍数
+	SCORE			PlayerScore[MAX_CHAIR_COUNT];	//总积分
+	//SCORE			GoldCoin[MAX_CHAIR_COUNT];	//各玩家的金币
+	//DWORD		    replay_code;			//回放码
 };
 
 //叫分状态
@@ -518,10 +518,11 @@ struct STR_CMD_SC_STATUS_ADD_SCORE
 
 struct player_op_info
 {
-   WORD					op_type;    //操作类型 0-过 1-出牌
+   DWORD					op_type;    //操作类型 0-过 1-出牌
    BYTE 				op_result[MAX_CARD_COUNT]; //出牌结果, 牌数据; 只在op_type=1时才有效
    DWORD				op_cardscount;   //当前牌数量
-   BYTE					MingPaiCardData[MAX_CARD_COUNT];   //明牌玩家的手牌
+   //BYTE					MingPaiCardData[MAX_CARD_COUNT];   //明牌玩家的手牌
+   BYTE					op_outCardCount;				//出牌数量
 };
 
 //出牌状态
@@ -530,24 +531,29 @@ struct STR_CMD_SC_STATUS_OUTCARD
 	struct	player_op_info		players_op[MAX_CHAIR_COUNT];     //玩家信息
 	WORD						outcardid;						//当前出牌玩家
 	BYTE 						brokenoutcarddata[MAX_CARD_COUNT];					//自己的手牌数据
-	WORD						CurJuShu;             //当前房间局数
-	SCORE 						room_bet[MAX_CHAIR_COUNT];		//当前房间的倍数
+	BYTE						CurJuShu;             //当前房间局数
+	SCORE 						room_bet;		//当前房间的倍数
 	WORD						bankID;		//庄家ID
-	WORD 						MingPaiState[MAX_CHAIR_COUNT];		//各玩家的明牌状态
+	//WORD 						MingPaiState[MAX_CHAIR_COUNT];		//各玩家的明牌状态
 	BYTE 						LeaveCard[MAX_LEAVE_CARD_NUM];		//底牌
-	SCORE						All_bet[MAX_CHAIR_COUNT];		//总积分
-	BYTE						TurnCardData[MAX_CARD_COUNT];	//当前轮最大出牌
-	SCORE 						GoldCoin[MAX_CHAIR_COUNT];	//各玩家的金币
-	WORD						Add_bet[MAX_CHAIR_COUNT];		//玩家是否加倍
+	SCORE						PlayerScore[MAX_CHAIR_COUNT];		//总积分
+	//BYTE						TurnCardData[MAX_CARD_COUNT];	//当前轮最大出牌
+	//SCORE 						GoldCoin[MAX_CHAIR_COUNT];	//各玩家的金币
+	//WORD						Add_bet[MAX_CHAIR_COUNT];		//玩家是否加倍
 	SCORE						Leave_bet;		//底牌倍数
-	DWORD					    replay_code;			//回放码
+	BYTE						IsTurnEnd;			//是否是第一个出牌的玩家
+	BYTE						ActionType;			//出牌二进制动作行为
+	//DWORD					    replay_code;			//回放码
 };
 
 
 //小局结算状态
 struct STR_CMD_SC_STATUS_XJ_END
 {
-	SCORE 		nSingleGameScore[MAX_CHAIR_COUNT];				//玩家单局得分	
+	STR_CMD_SC_XJ_GAME_END	XjGameEnd;
+	WORD					Banker;		//当前地主
+	BYTE					GameCount;	//当前局数
+	BYTE					LeaveCard[MAX_LEAVE_CARD_NUM];
 };
 
 //子游戏房间规则

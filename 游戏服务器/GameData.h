@@ -165,6 +165,9 @@ public:
 	//计算底牌是否翻倍 并返回倍数
 	virtual DWORD __stdcall IsDoubleLeaveCard();
 
+	//获取出牌玩家动作行为
+	virtual BYTE __stdcall GetOutCardActionType(WORD wChairID);
+
 	//================================================癞子场判断=================================================
 
 	//获得于包含癞子的卡牌的逻辑数值

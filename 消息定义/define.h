@@ -85,10 +85,10 @@
 #define USER_PLAYING             4         //用户状态-游戏中           --房主点开始后,所有准备过的玩家进入开始状态    
 //////////////////////////////////////////////////////////////////////////
 //斗地主定义
-#define	ROB_STATE_BUJIAO		0			//不叫
-#define	ROB_TYPE_CALL			1			//叫地主
-#define	ROB_STATE_BUQIANG		2			//不抢
-#define	ROB_TYPE_ROB			3			//抢地主
+#define	ROB_STATE_BUJIAO		1			//不叫
+#define	ROB_TYPE_CALL			2			//叫地主
+#define	ROB_STATE_BUQIANG		3			//不抢
+#define	ROB_TYPE_ROB			4			//抢地主
 
 #define	ROB_STATE_NON_RESPONE	0			//还未开始抢庄
 #define	ROB_STATE_AGREE			2			//叫/抢

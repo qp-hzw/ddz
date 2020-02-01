@@ -4,6 +4,7 @@
 
 # include <ctime>
 # include <vector>
+# include <list>
 # include "Stdafx.h"
 # include <iostream>
 using namespace std;
@@ -114,7 +115,7 @@ public:
 	int					nGameRole ;									//玩家角色地位       0：地主    1：农民——地主下家   2：农民——地主上家
 	int					nOwnIndex ;									//玩家座位ID 
 	CardGroupData		uctPutCardType;						//玩家要打出去的牌类型
-	vector <int>		value_nPutCardList;					//要打出去的牌——无花色
+	list <int>			value_nPutCardList;					//要打出去的牌——无花色
 	vector <int>		color_nPutCardList;					//要打出去的牌——有花色
 	HandCardValue		 uctHandCardValue;
 

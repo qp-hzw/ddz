@@ -28,7 +28,7 @@ void  HandCardData::Init(BYTE * CurCardData, BYTE CurCardNum)
 //判断要打出去的牌是否合法
 bool  HandCardData::PutCards()
 {
-	for (vector<int>::iterator iter = value_nPutCardList.begin(); iter != value_nPutCardList.end(); iter++)
+	for (list<int>::iterator iter = value_nPutCardList.begin(); iter != value_nPutCardList.end(); iter++)
 	{
 		int color_nCard = -1;
 		if (PutOneCard(*iter, color_nCard))
@@ -645,7 +645,7 @@ HandCardValue AILogic::get_HandCardValue(HandCardData &clsHandCardData)
 
 	//要保存当前的clsHandCardData.value_nPutCardList及clsHandCardData.uctPutCardType用于回溯
 	CardGroupData NowPutCardType = clsHandCardData.uctPutCardType;
-	vector<int> NowPutCardList = clsHandCardData.value_nPutCardList;
+	list<int> NowPutCardList = clsHandCardData.value_nPutCardList;
 
 	if (clsHandCardData.uctPutCardType.cgType == cgERROR)
 	{
@@ -655,7 +655,7 @@ HandCardValue AILogic::get_HandCardValue(HandCardData &clsHandCardData)
 
 
 	//---回溯↓
-	for (vector<int>::iterator iter = NowPutCardList.begin();
+	for (list<int>::iterator iter = NowPutCardList.begin();
 		iter != NowPutCardList.end(); iter++)
 	{
 		clsHandCardData.value_aHandCardList[*iter]--;
@@ -666,7 +666,7 @@ HandCardValue AILogic::get_HandCardValue(HandCardData &clsHandCardData)
 	HandCardValue tmp_SurValue = get_HandCardValue(clsHandCardData);//递归剩余牌价值
 
 	//---回溯↓	
-	for (vector<int>::iterator iter = NowPutCardList.begin();
+	for (list<int>::iterator iter = NowPutCardList.begin();
 		iter != NowPutCardList.end(); iter++)
 	{
 		clsHandCardData.value_aHandCardList[*iter]++;
