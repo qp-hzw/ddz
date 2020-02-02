@@ -736,13 +736,15 @@ bool CTableFrameSink::OnEventSendGameScene(WORD wChairID, IServerUserItem * pISe
 			ZeroMemory( &StatusFree, sizeof( StatusFree ) );
 
 			// 设置变量
-			StatusFree.GameCount = m_pRoomRuleOption->com_rule->GameCount;
-			StatusFree.PlayerCount = m_pRoomRuleOption->com_rule->PlayerCount;
-			StatusFree.CellScore = m_pRoomRuleOption->sub_rule.Cellscore;
+			//StatusFree.GameCount = m_pRoomRuleOption->com_rule->GameCount;
+			//StatusFree.PlayerCount = m_pRoomRuleOption->com_rule->PlayerCount;
+			//StatusFree.CellScore = m_pRoomRuleOption->sub_rule.Cellscore;
 			//StatusFree.FangZhu = m_pRoomRuleOption->com_rule->FangZhu;
 
 			// 发送场景
-			return m_pITableFrame->SendGameScene( pIServerUserItem, &StatusFree, sizeof(StatusFree));
+			m_pITableFrame->SendGameScene( pIServerUserItem, &StatusFree, sizeof(StatusFree));
+
+			break;
 		}
 		case GS_WK_ROB:   //抢庄状态
 		{
@@ -775,6 +777,7 @@ bool CTableFrameSink::OnEventSendGameScene(WORD wChairID, IServerUserItem * pISe
 			statusRob.CurJuShu = m_GameAccess->GetCurGameCount();
 			//statusRob.replay_code = m_pITableFrame->GetRoomBaseInfo().replay_code;
 			statusRob.room_bet = m_GameAccess->GetAllBet(wChairID);
+			statusRob.GameStatue = m_GameAccess->GetGameStatus();
 
 			for (int i = 0; i < nPlayerNum; i++)
 			{
@@ -792,7 +795,9 @@ bool CTableFrameSink::OnEventSendGameScene(WORD wChairID, IServerUserItem * pISe
 				statusRob.PlayerScore[i] = m_GameAccess->GetPlayerTotalScore(i);   //总分
 			}
 
-			m_pITableFrame->SendTableData(wChairID, CMD_SC_STATUS_ROB, &statusRob, sizeof(STR_CMD_SC_STATUS_ROB));
+			//m_pITableFrame->SendTableData(wChairID, CMD_SC_STATUS_ROB, &statusRob, sizeof(STR_CMD_SC_STATUS_ROB));
+			// 发送场景
+			m_pITableFrame->SendGameScene( pIServerUserItem, &statusRob, sizeof(STR_CMD_SC_STATUS_ROB));
 
 			delete[] UserCardNum;
 
@@ -842,7 +847,7 @@ bool CTableFrameSink::OnEventSendGameScene(WORD wChairID, IServerUserItem * pISe
 				statusAddStore.All_bet[i] = m_GameAccess->GetPlayerTotalScore(i);   //总分
 			}
 
-			m_pITableFrame->SendTableData(wChairID, CMD_SC_STATUS_ADD_SCORE, &statusAddStore, sizeof(STR_CMD_SC_STATUS_ADD_SCORE));
+			//m_pITableFrame->SendTableData(wChairID, CMD_SC_STATUS_ADD_SCORE, &statusAddStore, sizeof(STR_CMD_SC_STATUS_ADD_SCORE));
 
 			delete[] UserCardNum;
 
@@ -859,8 +864,10 @@ bool CTableFrameSink::OnEventSendGameScene(WORD wChairID, IServerUserItem * pISe
 				return false;
 			}
 
-			//椅子号
+			//如果用户重连上了 清除他的连续超时次数
+			m_GameAccess->SetPlayerTuoGuan(wChairID, 0);
 
+			//构造数据
 			STR_CMD_SC_STATUS_OUTCARD StatusOutCard;
 			ZeroMemory(&StatusOutCard, sizeof(STR_CMD_SC_STATUS_OUTCARD)); 
 
@@ -897,14 +904,12 @@ bool CTableFrameSink::OnEventSendGameScene(WORD wChairID, IServerUserItem * pISe
 			}
 
 			//断线玩家的手牌
-			BYTE *BrokenCardData = new BYTE[m_GameAccess->GetUserCurCardNum(wChairID)]();
-			m_GameAccess->GetClientHandCards(wChairID, BrokenCardData, m_GameAccess->GetUserCurCardNum(wChairID));
-
+			m_GameAccess->GetClientHandCards(wChairID, StatusOutCard.brokenoutcarddata, m_GameAccess->GetUserCurCardNum(wChairID));
 			for (int i = 0; i < m_GameAccess->GetUserCurCardNum(wChairID); i++)
 			{
-				StatusOutCard.brokenoutcarddata[i] = BrokenCardData[i];
+				cout << ' ' << (int)StatusOutCard.brokenoutcarddata[i];
 			}
-
+			cout << endl;
 
 			for (int i = 0; i < nPlayerNum; i++)
 			{
@@ -940,6 +945,7 @@ bool CTableFrameSink::OnEventSendGameScene(WORD wChairID, IServerUserItem * pISe
 			StatusOutCard.room_bet = m_GameAccess->GetAllBet(wChairID);   //房间倍数
 			StatusOutCard.IsTurnEnd = m_GameAccess->GetOneTurnEnd();
 			StatusOutCard.ActionType = m_GameLogic->GetOutCardActionType(wChairID);
+			StatusOutCard.GameStatue = m_GameAccess->GetGameStatus();
 
 			for (int i = 0; i < nPlayerNum; i++)
 			{
@@ -959,11 +965,10 @@ bool CTableFrameSink::OnEventSendGameScene(WORD wChairID, IServerUserItem * pISe
 			//}
 
 			// 发送场景
-			m_pITableFrame->SendTableData(wChairID, CMD_SC_STATUS_OUTCARD, &StatusOutCard, sizeof(STR_CMD_SC_STATUS_OUTCARD));
+			m_pITableFrame->SendGameScene( pIServerUserItem, &StatusOutCard, sizeof(STR_CMD_SC_STATUS_OUTCARD));
 
 			delete [] msg_cbCardData;
 			delete [] msg_CardData;
-			delete []  BrokenCardData;
 
 			break;
 		}
@@ -1011,7 +1016,7 @@ bool CTableFrameSink::OnEventSendGameScene(WORD wChairID, IServerUserItem * pISe
 				statusJiaofen.All_bet[i] = m_GameAccess->GetPlayerTotalScore(i);   //总分
 			}
 
-			m_pITableFrame->SendTableData(wChairID, CMD_SC_STATUS_JIAOFEN, &statusJiaofen, sizeof(STR_CMD_SC_STATUS_JIAOFEN));
+			//m_pITableFrame->SendTableData(wChairID, CMD_SC_STATUS_JIAOFEN, &statusJiaofen, sizeof(STR_CMD_SC_STATUS_JIAOFEN));
 
 			delete[] UserCardNum;
 
@@ -1030,6 +1035,7 @@ bool CTableFrameSink::OnEventSendGameScene(WORD wChairID, IServerUserItem * pISe
 			StatusXJEnd.Banker = m_GameAccess->GetBankerID();
 			StatusXJEnd.GameCount = m_GameAccess->GetCurGameCount();
 			m_GameAccess->GetLeaveCard(StatusXJEnd.LeaveCard, MAX_LEAVE_CARD_NUM);
+			StatusXJEnd.GameStatue = m_GameAccess->GetGameStatus();
 
 			for (BYTE i = 0; i < nPlayerNum && m_GameAccess != NULL; i++)
 			{
@@ -1045,7 +1051,10 @@ bool CTableFrameSink::OnEventSendGameScene(WORD wChairID, IServerUserItem * pISe
 				StatusXJEnd.XjGameEnd.nUserBet[i] = m_GameAccess->GetAllBet(i);
 			}
 
-			return m_pITableFrame->SendGameScene(pIServerUserItem, &StatusXJEnd, sizeof(STR_CMD_SC_STATUS_XJ_END));
+			// 发送场景
+			m_pITableFrame->SendGameScene( pIServerUserItem, &StatusXJEnd, sizeof(STR_CMD_SC_STATUS_XJ_END));
+
+			break;
 		}
 		default:break;
 	}
@@ -1329,12 +1338,7 @@ bool CTableFrameSink::OnTimerMessage(DWORD wTimerID, WPARAM wBindParam)
 					//调用电脑人被动出牌函数
 					m_AILogic.get_PutCardList_2_limit(m_GameSituation, m_HandCardData[OutCardUser]);
 
-					cout << "OutCard:";
-					for (list<int>::iterator it = m_HandCardData[OutCardUser].value_nPutCardList.begin(); it != m_HandCardData[OutCardUser].value_nPutCardList.end(); it++)
-					{
-						cout << ' ' << (int)*it;
-					}
-					cout << endl;
+					cout << "OutCard:" << endl;
 
 					//判断出不出牌
 					if (m_HandCardData[OutCardUser].uctPutCardType.cgType == cgERROR || m_HandCardData[OutCardUser].uctPutCardType.cgType == cgZERO)
@@ -1354,13 +1358,6 @@ bool CTableFrameSink::OnTimerMessage(DWORD wTimerID, WPARAM wBindParam)
 					//判断 玩家可以出的牌
 					if (m_GameLogic->AnalysePlayerOutCard(OutCardUser, OutCardData, &OutCardNum))
 					{
-						cout << "OutCard::::";
-						for (int i = 0; i < OutCardNum; i++)
-						{
-							printf("%d ", OutCardData[i]);
-						}
-						cout << endl;
-
 						if (!m_GameLogic->EfficacyOutCard(OutCardUser, OutCardData, OutCardNum))
 						{
 							cout << "判断 玩家可以出的牌 err" << endl;
@@ -1395,15 +1392,9 @@ bool CTableFrameSink::OnTimerMessage(DWORD wTimerID, WPARAM wBindParam)
 					//调用电脑人主动出牌函数
 					m_AILogic.get_PutCardList_2_unlimit(m_HandCardData[OutCardUser]);
 
-					cout << endl << "OutCard:::::::";
-					for (list<int>::iterator it = m_HandCardData[OutCardUser].value_nPutCardList.begin(); it != m_HandCardData[OutCardUser].value_nPutCardList.end(); it++)
-					{
-						cout << ' ' << *it;
-					}
-					cout << endl << endl;
+					cout << "OutCard:" << endl;
 
 					//将要出的牌从逻辑值转换成有花色
-
 					m_GameLogic->GetCardColorValue(OutCardUser, m_HandCardData[OutCardUser], OutCardData, OutCardNum);
 					if (CT_ERROR == m_GameLogic->GetCardLogicType(OutCardData, OutCardNum))
 					{

@@ -440,10 +440,7 @@ struct STR_SUB_CS_TUO_GUAN
 //空闲状态
 struct STR_CMD_SC_STATUS_FREE
 {
-	BYTE	GameCount;				//游戏局数 0-无限局
-	BYTE	PlayerCount;			//游戏人数
-	WORD	CellScore;				//底分	  默认为1
-	DWORD	FangZhu;				//房主    创建用户
+
 };
 
 ////亮主状态
@@ -476,6 +473,7 @@ struct STR_CMD_SC_STATUS_FREE
 //抢庄状态
 struct STR_CMD_SC_STATUS_ROB
 {
+	BYTE			GameStatue;					//重连状态
 	BYTE			CurRobUsr;					//当前正在抢庄的玩家
 	BYTE 			robstate[MAX_CHAIR_COUNT];	//各玩家的抢庄状态
 	BYTE			HandCardData[MAX_CARD_COUNT];	//当前玩家的手牌
@@ -528,6 +526,7 @@ struct player_op_info
 //出牌状态
 struct STR_CMD_SC_STATUS_OUTCARD
 {
+	BYTE						GameStatue;					//重连状态
 	struct	player_op_info		players_op[MAX_CHAIR_COUNT];     //玩家信息
 	WORD						outcardid;						//当前出牌玩家
 	BYTE 						brokenoutcarddata[MAX_CARD_COUNT];					//自己的手牌数据
@@ -550,6 +549,7 @@ struct STR_CMD_SC_STATUS_OUTCARD
 //小局结算状态
 struct STR_CMD_SC_STATUS_XJ_END
 {
+	BYTE					GameStatue;					//重连状态
 	STR_CMD_SC_XJ_GAME_END	XjGameEnd;
 	WORD					Banker;		//当前地主
 	BYTE					GameCount;	//当前局数

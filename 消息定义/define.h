@@ -32,14 +32,14 @@
 //游戏状态（与断线重连相关）
 #define GS_WK_FREE				    GAME_STATUS_FREE					//游戏状态-等待开始
 #define GS_WK_ROB					GAME_STATUS_PLAY+1					//游戏状态-抢庄
-#define GS_WK_ADD_SCORE				GAME_STATUS_PLAY+2					//游戏状态-抢庄
-#define GS_WK_ADDSCORE				GAME_STATUS_PLAY+3					//游戏状态-下注
+//#define GS_WK_ADD_SCORE				GAME_STATUS_PLAY+2					//游戏状态-加倍
+#define GS_WK_ADDSCORE				GAME_STATUS_PLAY+2					//游戏状态-加倍
 #define GS_WK_JIAO_FEN				GAME_STATUS_PLAY+7					//叫分状态
 
 #define GS_WK_FANZHU				GAME_STATUS_PLAY+3					//游戏状态-反主
 #define GS_WK_KOUDI					GAME_STATUS_PLAY+4					//游戏状态-扣底（盖底牌）
-#define GS_WK_OUT_CARD				GAME_STATUS_PLAY+5					//游戏状态-出牌
-#define GS_WK_XJ_GAMEEND			GAME_STATUS_PLAY+6					//游戏状态-小局结束
+#define GS_WK_OUT_CARD				GAME_STATUS_PLAY+3					//游戏状态-出牌
+#define GS_WK_XJ_GAMEEND			GAME_STATUS_PLAY+4					//游戏状态-小局结束
 //////////////////////////////////////////////////////////////////////////
 
 //////////////////////////////////////////////////////////////////////////
