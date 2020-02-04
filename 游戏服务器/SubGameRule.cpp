@@ -8,15 +8,6 @@ int __stdcall CSubGameRule::AnsysCardsType( )
 {
 	int result = 0;
 
-	switch (m_room_config.kind_id)
-	{
-		default:
-		{
-			//CLog::Log(log_error, "分析函数中游戏类型错误", NULL);
-			break;
-		}
-	}
-
 	return result;
 }
 

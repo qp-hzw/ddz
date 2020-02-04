@@ -130,8 +130,8 @@ bool CTableFrameSink::XjGameConclude(int nTotalGameCount, int nCurGameCount)
 
 
 	// 构建数据
-	SCORE *msg_totalGameScore = new SCORE[_playersum]();
-	SCORE *msg_singleGameScore = new SCORE[_playersum]();
+	SCORE msg_totalGameScore[MAX_CHAIR_COUNT] = {'\0'};
+	SCORE msg_singleGameScore[MAX_CHAIR_COUNT] = {'\0'};
 	WORD  Winner = m_GameAccess->GetLastGameWinner();   //获取赢家
 	WORD  BankID = m_GameLogic->GetAppointBanker();     //获取庄家 
 
@@ -270,13 +270,13 @@ bool CTableFrameSink::XjGameConclude(int nTotalGameCount, int nCurGameCount)
 
 	//通知frame处理
 	BYTE cbCurGameCount = m_GameAccess->GetCurGameCount();
-	std::vector<SCORE> vec_score;
+	//std::vector<SCORE> vec_score;
 
-	//写入vector
-	for (int i = 0; i < _playersum; i++)
-	{
-		vec_score.push_back(msg_singleGameScore[i]);
-	}
+	////写入vector
+	//for (int i = 0; i < _playersum; i++)
+	//{
+	//	vec_score.push_back(msg_singleGameScore[i]);
+	//}
 
 	//通知框架小局游戏结束
 	m_pITableFrame->HandleXJGameEnd(cbCurGameCount, 0, NULL);
@@ -396,9 +396,6 @@ bool CTableFrameSink::XjGameConclude(int nTotalGameCount, int nCurGameCount)
 	//设置框架状态
 	m_pITableFrame->SetGameStatus(GAME_STATUS_FREE);
 
-	delete[]	msg_totalGameScore;
-	delete[]	msg_singleGameScore;
-
 	return true;
 }
 
@@ -431,11 +428,7 @@ bool CTableFrameSink::DjGameConclude(int nTotalGameCount, int nCurGameCount)
 
 
 	// 构造数据
-	SCORE	*msg_userScore = new SCORE[_playersum]();
-	BYTE	*msg_winTime = new BYTE[_playersum]();
-	BYTE	*msg_bankTime = new BYTE[_playersum]();
-	SCORE	*msg_BestBet = new SCORE[_playersum]();
-	WORD	*Rich = new WORD[_playersum]();    //大土豪
+	SCORE	msg_userScore[MAX_CHAIR_COUNT] = {'\0'};
 	WORD msg_wMaxWinChairID;
 
 
@@ -449,21 +442,21 @@ bool CTableFrameSink::DjGameConclude(int nTotalGameCount, int nCurGameCount)
 			msg_userScore[i] = m_GameAccess->GetPlayerTotalScore(i);    //总分
 			//player_info[i] = m_GameAccess->GetPlayerInfo(i);	//玩家信息
 
-			m_GameAccess->GetWinSum(i, msg_winTime[i]);					//赢次数
-			msg_bankTime[i] = m_GameAccess->GetPlayerBankCount(i);		//做庄次数
-			msg_BestBet[i] = m_GameAccess->GetDJPlayerBestBet(i);		//最大倍数
+			//m_GameAccess->GetWinSum(i, msg_winTime[i]);					//赢次数
+			//msg_bankTime[i] = m_GameAccess->GetPlayerBankCount(i);		//做庄次数
+			//msg_BestBet[i] = m_GameAccess->GetDJPlayerBestBet(i);		//最大倍数
 
-			//获得大赢家（最大赢次数）
-			if (msg_winTime[i] > nMaxWinNum)
-			{
-				nMaxWinNum = msg_winTime[i];
-				msg_wMaxWinChairID = i;
-			}
+			////获得大赢家（最大赢次数）
+			//if (msg_winTime[i] > nMaxWinNum)
+			//{
+			//	nMaxWinNum = msg_winTime[i];
+			//	msg_wMaxWinChairID = i;
+			//}
 		}
 	}
 
 	//判断大土豪
-	SCORE Loser = 0;
+	/*SCORE Loser = 0;
 	WORD chair = 0;
 	for (BYTE i = 0; i < _playersum; ++i)
 	{
@@ -473,16 +466,16 @@ bool CTableFrameSink::DjGameConclude(int nTotalGameCount, int nCurGameCount)
 			Loser = msg_userScore[i];
 		}
 	}
-	Rich[chair] = 1;
+	Rich[chair] = 1;*/
 
-	//判断是否有两个大土豪
-	for (BYTE i = 0; i < _playersum; ++i)
-	{
-		if (chair != i && msg_userScore[chair] == msg_userScore[i])
-		{
-			Rich[i] = 1;
-		}
-	}
+	////判断是否有两个大土豪
+	//for (BYTE i = 0; i < _playersum; ++i)
+	//{
+	//	if (chair != i && msg_userScore[chair] == msg_userScore[i])
+	//	{
+	//		Rich[i] = 1;
+	//	}
+	//}
 
 	//构造数据
 	STR_CMD_SC_DJ_GAME_END  sDJGameEnd;
@@ -530,12 +523,6 @@ bool CTableFrameSink::DjGameConclude(int nTotalGameCount, int nCurGameCount)
 	//直接结束游戏，不要续费
 	m_pITableFrame->HandleDJGameEnd(GAME_CONCLUDE_NORMAL);
 
-	delete[]	msg_userScore;
-	delete[]	msg_winTime;
-	delete[]	msg_bankTime;
-	delete[]	msg_BestBet;
-	delete[]	Rich;
-
 	// 清理游戏数据
 	m_GameLogic->ClearXjGame();
 
@@ -573,11 +560,11 @@ bool CTableFrameSink::OnEventGameConclude(WORD wChairID, IServerUserItem * pISer
 			BYTE _playersum = m_GameAccess->GetCurPlayerCount();
 
 			//消息构造
-			SCORE	*msg_userScore = new SCORE[_playersum]();
-			BYTE	*msg_winTime = new BYTE[_playersum]();
-			BYTE	*msg_bankTime = new BYTE[_playersum]();
-			SCORE	*msg_BestBet = new SCORE[_playersum]();
-			WORD	*Rich = new WORD[_playersum]();    //大土豪
+			SCORE	msg_userScore[MAX_CHAIR_COUNT] = {'\0'};
+			BYTE	msg_winTime[MAX_CHAIR_COUNT] = {'\0'};
+			BYTE	msg_bankTime[MAX_CHAIR_COUNT] = {'\0'}; 
+			SCORE	msg_BestBet[MAX_CHAIR_COUNT] = {'\0'};
+			WORD	Rich[MAX_CHAIR_COUNT] = {'\0'};
 			WORD msg_wMaxWinChairID;
 
 
@@ -687,12 +674,6 @@ bool CTableFrameSink::OnEventGameConclude(WORD wChairID, IServerUserItem * pISer
 			m_GameLogic = NULL;
 			m_GameAccess = NULL;
 
-			delete[]	msg_userScore;
-			delete[]	msg_winTime;
-			delete[]	msg_bankTime;
-			delete[]	msg_BestBet;
-			delete[]	Rich;
-
 			break;
 		}
 	case GER_NORMAL:			//正常结束
@@ -762,8 +743,8 @@ bool CTableFrameSink::OnEventSendGameScene(WORD wChairID, IServerUserItem * pISe
 			ZeroMemory(&statusRob, sizeof(STR_CMD_SC_STATUS_ROB));
 
 			int		nPlayerNum = m_GameAccess->GetCurPlayerCount();
-			BYTE	*UserCardNum = new BYTE[nPlayerNum]();
-			BYTE	wCardData[MAX_CARD_COUNT];
+			BYTE	UserCardNum[MAX_CHAIR_COUNT] = {'\0'};
+			BYTE	wCardData[MAX_CARD_COUNT] = {'\0'};
 
 			for (int i = 0; i < nPlayerNum; i++)
 			{
@@ -799,8 +780,6 @@ bool CTableFrameSink::OnEventSendGameScene(WORD wChairID, IServerUserItem * pISe
 			// 发送场景
 			m_pITableFrame->SendGameScene( pIServerUserItem, &statusRob, sizeof(STR_CMD_SC_STATUS_ROB));
 
-			delete[] UserCardNum;
-
 			break;
 		}
 
@@ -816,8 +795,8 @@ bool CTableFrameSink::OnEventSendGameScene(WORD wChairID, IServerUserItem * pISe
 			ZeroMemory(&statusAddStore, sizeof(STR_CMD_SC_STATUS_ADD_SCORE));
 
 			int		nPlayerNum = m_GameAccess->GetCurPlayerCount();
-			BYTE	*UserCardNum = new BYTE[nPlayerNum]();
-			BYTE	wCardData[MAX_CARD_COUNT];
+			BYTE	UserCardNum[MAX_CHAIR_COUNT] = {'\0'};
+			BYTE	wCardData[MAX_CARD_COUNT] = {'\0'};
 
 			for (int i = 0; i < nPlayerNum; i++)
 			{
@@ -849,8 +828,6 @@ bool CTableFrameSink::OnEventSendGameScene(WORD wChairID, IServerUserItem * pISe
 
 			//m_pITableFrame->SendTableData(wChairID, CMD_SC_STATUS_ADD_SCORE, &statusAddStore, sizeof(STR_CMD_SC_STATUS_ADD_SCORE));
 
-			delete[] UserCardNum;
-
 			break;
 		}
 
@@ -872,10 +849,10 @@ bool CTableFrameSink::OnEventSendGameScene(WORD wChairID, IServerUserItem * pISe
 			ZeroMemory(&StatusOutCard, sizeof(STR_CMD_SC_STATUS_OUTCARD)); 
 
 			int nPlayerNum = m_GameAccess->GetCurPlayerCount();
-			BYTE (*msg_cbCardData)[MAX_CARD_COUNT] = new BYTE[nPlayerNum][MAX_CARD_COUNT]();	//记录出牌
-			BYTE (*msg_CardData)[MAX_CARD_COUNT] = new BYTE[nPlayerNum][MAX_CARD_COUNT]();		//记录名牌玩家的手牌
-			BYTE msg_LeaveCardData[MAX_LEAVE_CARD_NUM];   //底牌
-			BYTE msg_TurnCardData[MAX_CARD_COUNT];			//记录当前轮的最大出牌GetTurnMaxCards
+			BYTE msg_cbCardData[MAX_CHAIR_COUNT][MAX_CARD_COUNT] = {'\0'};	//记录出牌
+			BYTE msg_CardData[MAX_CHAIR_COUNT][MAX_CARD_COUNT] = {'\0'};		//记录名牌玩家的手牌
+			BYTE msg_LeaveCardData[MAX_LEAVE_CARD_NUM] = {'\0'};   //底牌
+			BYTE msg_TurnCardData[MAX_CARD_COUNT] = {'\0'};			//记录当前轮的最大出牌GetTurnMaxCards
 			BYTE max_card_count = MAX_CARD_COUNT;
 
 			//最大出牌数量
@@ -967,9 +944,6 @@ bool CTableFrameSink::OnEventSendGameScene(WORD wChairID, IServerUserItem * pISe
 			// 发送场景
 			m_pITableFrame->SendGameScene( pIServerUserItem, &StatusOutCard, sizeof(STR_CMD_SC_STATUS_OUTCARD));
 
-			delete [] msg_cbCardData;
-			delete [] msg_CardData;
-
 			break;
 		}
 		case GS_WK_JIAO_FEN:   //叫分状态
@@ -984,8 +958,8 @@ bool CTableFrameSink::OnEventSendGameScene(WORD wChairID, IServerUserItem * pISe
 			ZeroMemory(&statusJiaofen, sizeof(STR_CMD_SC_STATUS_JIAOFEN));
 
 			int		nPlayerNum = m_GameAccess->GetMaxChairCount();
-			BYTE	*UserCardNum = new BYTE[nPlayerNum]();
-			BYTE	wCardData[MAX_CARD_COUNT];
+			BYTE	UserCardNum[MAX_CHAIR_COUNT] = {'\0'};
+			BYTE	wCardData[MAX_CARD_COUNT] = {'\0'};
 
 			for (int i = 0; i < nPlayerNum; i++)
 			{
@@ -1017,8 +991,6 @@ bool CTableFrameSink::OnEventSendGameScene(WORD wChairID, IServerUserItem * pISe
 			}
 
 			//m_pITableFrame->SendTableData(wChairID, CMD_SC_STATUS_JIAOFEN, &statusJiaofen, sizeof(STR_CMD_SC_STATUS_JIAOFEN));
-
-			delete[] UserCardNum;
 
 			break;
 		}
@@ -1315,7 +1287,7 @@ bool CTableFrameSink::OnTimerMessage(DWORD wTimerID, WPARAM wBindParam)
 			//不是第一个出牌  
 			if (1 == m_GameAccess->GetOneTurnEnd())
 			{
-				BYTE OutCardData[MAX_CARD_COUNT];
+				BYTE OutCardData[MAX_CARD_COUNT] = {'\0'};
 				BYTE OutCardNum;
 
 				ZeroMemory(&OutCardData, sizeof(OutCardData));
@@ -1374,7 +1346,7 @@ bool CTableFrameSink::OnTimerMessage(DWORD wTimerID, WPARAM wBindParam)
 			else
 			{
 
-				BYTE OutCardData[MAX_CARD_COUNT];
+				BYTE OutCardData[MAX_CARD_COUNT] = {'\0'};
 				BYTE OutCardNum;
 
 				ZeroMemory(&OutCardData, sizeof(OutCardData));
@@ -1400,7 +1372,7 @@ bool CTableFrameSink::OnTimerMessage(DWORD wTimerID, WPARAM wBindParam)
 					{
 						//CLog::Log(log_error, "CT_ERROR == m_GameLogic->GetCardLogicType!!!!!!!!!\n");
 						//如果机器人出牌出现错误
-						BYTE UOutCardData[MAX_CARD_COUNT];
+						BYTE UOutCardData[MAX_CARD_COUNT] = {'\0'};
 						BYTE UOutCardNum;
 						ZeroMemory(&UOutCardData, sizeof(UOutCardData));
 						//判断 第一个玩家可以出的牌
@@ -1875,9 +1847,9 @@ void CTableFrameSink::HandleDeal()
 			m_GameAccess->GetClientHandCards(i, SendCard.cbHandCardData, _cardsum);
 
 			//设置各卡牌的数量
-			for (int i = 0; i < cbMaxChairCount; i++)
+			for (int j = 0; j < cbMaxChairCount; j++)
 			{
-				SendCard.cbHandCardNum[i] = m_GameAccess->GetUserCurCardNum(i);
+				SendCard.cbHandCardNum[j] = m_GameAccess->GetUserCurCardNum(j);
 			}
 
 			// 发牌给对应客户端 -- 每个客户端应该只能收到自己的牌
@@ -2600,14 +2572,14 @@ void CTableFrameSink::HandleSendLeaveCard(const WORD &wSendCardUser)
 
 			//赋值底牌
 			cout << "打印要发送的底牌" << endl;
-			for (int i = 0; i < MAX_LEAVE_CARD_NUM; i++)
+			for (int j = 0; j < MAX_LEAVE_CARD_NUM; j++)
 			{
-				SendLeaveCard.cbLeaveCard[i] = leavecards[i];
-				printf("%d ", leavecards[i]);
+				SendLeaveCard.cbLeaveCard[j] = leavecards[j];
+				printf("%d ", leavecards[j]);
 			}
 			cout << endl;
 
-			BYTE tmpcards[MAX_CARD_COUNT];
+			BYTE tmpcards[MAX_CARD_COUNT] = {'\0'};
 			
 			//玩家手牌数
 			BYTE cbCardNum = m_GameAccess->GetUserCurCardNum(i);
@@ -2898,7 +2870,7 @@ void CTableFrameSink::On_Sub_UserMingPai(WORD wChairID, const BYTE &cbMPType, BY
 			}
 		}
 
-		BYTE msg_cbHandCard[MAX_CARD_COUNT];
+		BYTE msg_cbHandCard[MAX_CARD_COUNT] = {'\0'};
 
 		m_GameAccess->GetClientHandCards(wChairID, msg_cbHandCard, MAX_CARD_COUNT);
 
@@ -2985,7 +2957,7 @@ void CTableFrameSink::HandleOutCardStart(const WORD &wOutCardUser)
 
 	//获取当前轮最大出牌数据和数目
 	BYTE TurnCardNum = 0;
-	BYTE TurnCardData[MAX_CARD_COUNT];
+	BYTE TurnCardData[MAX_CARD_COUNT] = {'\0'};
 	ZeroMemory(&TurnCardData, sizeof(TurnCardData));
 
 	m_GameAccess->GetTurnMaxCards(TurnCardData, TurnCardNum);
@@ -3255,7 +3227,7 @@ void CTableFrameSink::SendOutCardResult(WORD wOutCardUser, BYTE *cbOutCard, BYTE
 
 	//获取当前玩家手牌数量和手牌数据
 	BYTE cbCurCardCount = m_GameAccess->GetUserCurCardNum(wOutCardUser);
-	BYTE *cbCurCardData = new BYTE[cbCurCardCount]();
+	BYTE cbCurCardData[MAX_CARD_COUNT] = {'\0'};
 	m_GameAccess->GetClientHandCards(wOutCardUser, cbCurCardData, cbCurCardCount);
 
 	//赋值
@@ -3330,7 +3302,6 @@ void CTableFrameSink::SendOutCardResult(WORD wOutCardUser, BYTE *cbOutCard, BYTE
 	m_pITableFrame->SendTableData(INVALID_CHAIR, CMD_SC_USER_OUT_CARD_RESULT, &OutCard, sizeof(STR_CMD_SC_OUT_CARD_RESULT));
 	printf("\n【广播玩家 = %d的出牌结果】\n", OutCard.wOutCardUser);	
 
-	delete[] cbCurCardData;
 }
 
 //处理一轮出牌结束
@@ -3654,7 +3625,7 @@ void CTableFrameSink::WriteGameRecord()
 {
 	//获得玩家单局游戏得分
 	int _playersum = m_GameAccess->GetMaxChairCount();
-	LONG *lGameScore = new LONG [_playersum];
+	LONG lGameScore[MAX_CHAIR_COUNT] = {'\0'};
 	for (BYTE i = 0; i < _playersum; ++i)
 	{
 		if ( USER_PLAYING == m_GameAccess->GetPlayerState(i) )
@@ -3672,10 +3643,6 @@ void CTableFrameSink::WriteGameRecord()
 		_sntprintf(szTemp,10,TEXT(",%d"),lGameScore[i]);
 		str.Append(szTemp);
 	}
-
-	//释放
-	delete [] lGameScore;
-	lGameScore = NULL;
 
 	//调用框架方法		//暂时只写小局得分
 	m_pITableFrame->WriteRecordInfo(m_GameAccess->GetCurGameCount(), str.GetBuffer(str.GetLength()), NULL, 0);

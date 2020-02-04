@@ -3152,7 +3152,7 @@ int CGameData::GetCardLogicType(const BYTE *cbCardData, BYTE cbCardCount)
 	cout << "LaiZiNum::" << (int)LaiZiNum << endl;
 
 	//定时器出牌事件炸弹类型的判断
-	if (dCardType&(1 << CT_BOMB_CARD) != 0)
+	if (((dCardType)&(1 << CT_BOMB_CARD)) != 0)
 	{
 		int index = 0;
 		for (int i = 0; i < cbCardCount; i++)
@@ -4077,7 +4077,7 @@ bool CGameData::IsHaveSpecificType(const WORD &wChairID, const BYTE &color, cons
 		if ((CT_SINGLE == cbOutCardType) && (1 == cbOutCardNum))
 		{
 			//能出的牌为该花色全部的牌
-			for (int i = 0; i < vecColorCard.size(); i++)
+			for (BYTE i = 0; i < vecColorCard.size(); i++)
 			{
 				cbOutCardNotify.cbMustOutCard[i] = vecColorCard[i];
 			}
@@ -4097,7 +4097,7 @@ bool CGameData::IsHaveSpecificType(const WORD &wChairID, const BYTE &color, cons
 				}
 
 				//可选出的卡牌为：其他花色卡牌
-				for (int i = 0; i < vecNotColorCard.size(); i++)
+				for (BYTE i = 0; i < vecNotColorCard.size(); i++)
 				{
 					cbOutCardNotify.cbOptionalCard[i] = vecNotColorCard[i];
 				}
@@ -4168,7 +4168,7 @@ bool CGameData::IsHaveSpecificType(const WORD &wChairID, const BYTE &color, cons
 				}
 
 				//再出任意卡牌
-				for (int i = 0; i < vecNotColorCard.size(); i++)
+				for (BYTE i = 0; i < vecNotColorCard.size(); i++)
 				{
 					cbOutCardNotify.cbOptionalCard[i] = vecNotColorCard[i];
 				}
@@ -5120,6 +5120,8 @@ BYTE __stdcall CGameData::GetTurnMaxCards(BYTE *cbCardData, BYTE &cbCardNum)
 	{
 		cbCardData[i] = m_playing_para.turn_max_cards[i];
 	}
+
+	return cbCardNum;
 }
 
 // 获得赖子数目
@@ -5279,7 +5281,7 @@ int CGameData::LoadGameCards()
 
 		//游戏内卡牌
 		m_card_config.game_cards = new CARD_DESC[m_card_config.game_cards_sum];
-		for (int i = 0; i < m_card_config.game_cards_sum; i++)
+		for (BYTE i = 0; i < m_card_config.game_cards_sum; i++)
 		{
 			m_card_config.game_cards[i] = CGameConfig::gComCardPara.game_cards[i];
 		}
