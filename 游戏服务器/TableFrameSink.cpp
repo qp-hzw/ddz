@@ -42,7 +42,7 @@ DWORD CTableFrameSink::GetKindIDToFrame()
 }
 
 // 初始化
-bool CTableFrameSink::Initialization(ITableFrame *pTableFrame)
+bool CTableFrameSink::Initialization(ITableFrame *pTableFrame, tagTableRule *comRule)
 {
 	//查询接口
 	if (pTableFrame == NULL)
@@ -54,7 +54,7 @@ bool CTableFrameSink::Initialization(ITableFrame *pTableFrame)
 	//m_pITableFrame->SetStartMode(START_MODE_FULL_READY);	//所有人准备开始
 
 	//规则配置
-	m_pRoomRuleOption->com_rule = (tagTableRule *)m_pITableFrame->GetCustomRule();
+	m_pRoomRuleOption->com_rule = comRule;
 
 	CLog::Log(log_debug, "subgame  begin!!!!!!");
 	CopyMemory(&(m_pRoomRuleOption->sub_rule), &(CSubRuleManager::instance()->GetSubGameRule()), sizeof(tagSubGameRule));
@@ -270,22 +270,8 @@ bool CTableFrameSink::XjGameConclude(int nTotalGameCount, int nCurGameCount)
 
 	//通知frame处理
 	BYTE cbCurGameCount = m_GameAccess->GetCurGameCount();
-	//std::vector<SCORE> vec_score;
 
-	////写入vector
-	//for (int i = 0; i < _playersum; i++)
-	//{
-	//	vec_score.push_back(msg_singleGameScore[i]);
-	//}
-
-	//通知框架小局游戏结束
-	m_pITableFrame->HandleXJGameEnd(cbCurGameCount, 0, NULL);
-
-	//最后一局不发送小局游戏结束，客户端不显示小局结算页面
-	//if (cbCurGameCount != m_GameAccess->GetAllCount())					//lih   最后一局也要显示小局结算 
-
-		//数据构造	三个玩家三份
-
+	//数据构造	三个玩家三份
 	for (BYTE j = 0; j < _playersum && m_GameAccess != NULL; j++)
 	{
 		//构造数据
@@ -365,8 +351,8 @@ bool CTableFrameSink::XjGameConclude(int nTotalGameCount, int nCurGameCount)
 		m_pITableFrame->SendTableData(j, CMD_SC_XJ_GAME_END, &sXJGameEnd, sizeof(STR_CMD_SC_XJ_GAME_END));
 	}
 
-	//小局数据写入数据库
-	//WriteGameRecord(vec_score);
+	 //通知框架小局游戏结束
+	m_pITableFrame->HandleXJGameEnd(cbCurGameCount, 0, NULL, 0);
 
 	//清空玩家是否是开始游戏明牌
 	for (int i = 0; i < _playersum; i++)
@@ -392,9 +378,6 @@ bool CTableFrameSink::XjGameConclude(int nTotalGameCount, int nCurGameCount)
 
 	//设置游戏状态为小局结束状态
 	m_GameAccess->SetGameStatus(GS_WK_XJ_GAMEEND);    //以免被清空
-
-	//设置框架状态
-	m_pITableFrame->SetGameStatus(GAME_STATUS_FREE);
 
 	return true;
 }
@@ -536,7 +519,7 @@ bool CTableFrameSink::DjGameConclude(int nTotalGameCount, int nCurGameCount)
 }
 
 // 游戏结束
-bool CTableFrameSink::OnEventGameConclude(WORD wChairID, IServerUserItem * pIServerUserItem, BYTE cbReason)
+bool CTableFrameSink::OnEventGameConclude(BYTE cbReason)
 {
 	//关闭摊牌定时器
 	m_pITableFrame->KillGameTimer(IDI_OUT_CARD);
@@ -699,19 +682,12 @@ bool CTableFrameSink::OnEventGameConclude(WORD wChairID, IServerUserItem * pISer
 }
 
 // 断线重连时发送场景
-bool CTableFrameSink::OnEventSendGameScene(WORD wChairID, IServerUserItem * pIServerUserItem, BYTE cbGameStatus, bool bSendSecret)
+bool CTableFrameSink::OnEventSendGameScene(WORD wChairID)
 {
 	switch (m_GameAccess->GetGameStatus())
 	{
 		case GS_WK_FREE:		//空闲状态
 		{
-			//如果房间配置为空，获取房间配置
-			if ( NULL == m_pRoomRuleOption )
-			{
-				m_pRoomRuleOption->com_rule = (tagTableRule *)m_pITableFrame->GetCustomRule();
-				CopyMemory(&(m_pRoomRuleOption->sub_rule), &(CSubRuleManager::instance()->GetSubGameRule()), sizeof(tagSubGameRule));
-			}
-
 			//空闲状态
 			STR_CMD_SC_STATUS_FREE StatusFree;
 			ZeroMemory( &StatusFree, sizeof( StatusFree ) );
@@ -723,7 +699,7 @@ bool CTableFrameSink::OnEventSendGameScene(WORD wChairID, IServerUserItem * pISe
 			//StatusFree.FangZhu = m_pRoomRuleOption->com_rule->FangZhu;
 
 			// 发送场景
-			m_pITableFrame->SendGameScene( pIServerUserItem, &StatusFree, sizeof(StatusFree));
+			m_pITableFrame->SendGameScene( wChairID, &StatusFree, sizeof(StatusFree));
 
 			break;
 		}
@@ -778,7 +754,7 @@ bool CTableFrameSink::OnEventSendGameScene(WORD wChairID, IServerUserItem * pISe
 
 			//m_pITableFrame->SendTableData(wChairID, CMD_SC_STATUS_ROB, &statusRob, sizeof(STR_CMD_SC_STATUS_ROB));
 			// 发送场景
-			m_pITableFrame->SendGameScene( pIServerUserItem, &statusRob, sizeof(STR_CMD_SC_STATUS_ROB));
+			m_pITableFrame->SendGameScene( wChairID, &statusRob, sizeof(STR_CMD_SC_STATUS_ROB));
 
 			break;
 		}
@@ -942,7 +918,7 @@ bool CTableFrameSink::OnEventSendGameScene(WORD wChairID, IServerUserItem * pISe
 			//}
 
 			// 发送场景
-			m_pITableFrame->SendGameScene( pIServerUserItem, &StatusOutCard, sizeof(STR_CMD_SC_STATUS_OUTCARD));
+			m_pITableFrame->SendGameScene( wChairID, &StatusOutCard, sizeof(STR_CMD_SC_STATUS_OUTCARD));
 
 			break;
 		}
@@ -1024,7 +1000,7 @@ bool CTableFrameSink::OnEventSendGameScene(WORD wChairID, IServerUserItem * pISe
 			}
 
 			// 发送场景
-			m_pITableFrame->SendGameScene( pIServerUserItem, &StatusXJEnd, sizeof(STR_CMD_SC_STATUS_XJ_END));
+			m_pITableFrame->SendGameScene( wChairID, &StatusXJEnd, sizeof(STR_CMD_SC_STATUS_XJ_END));
 
 			break;
 		}
@@ -1693,58 +1669,6 @@ bool CTableFrameSink::OnGameMessage(WORD wSubCmdID, VOID * pData, WORD wDataSize
 	return true;
 }
 
-// 用户坐下
-bool CTableFrameSink::OnActionUserSitDown( WORD wChairID, IServerUserItem * pIServerUserItem, bool bLookonUser )
-{
-	if( bLookonUser == false )	
-	{		
-		m_dPlayerState[wChairID] = USER_SITDOWN;
-	}
-
-	return true;
-
-}
-
-// 用户起立
-bool CTableFrameSink::OnActionUserStandUp( WORD wChairID, IServerUserItem * pIServerUserItem, bool bLookonUser)
-{
-	if( bLookonUser == false )
-		m_dPlayerState[wChairID] = USER_STANDUP;
-
-	return true;
-}
-
-// 用户准备  待删除
-bool CTableFrameSink::OnActionUserOnReady(WORD wChairID, IServerUserItem * pIServerUserItem, VOID * pData, WORD wDataSize)
-{ 
-	//printf("\n【用户游戏状态 = %d】\n", pIServerUserItem->GetUserStatus());
-	//if ( pIServerUserItem->GetUserStatus() == USER_SITDOWN )
-	if (m_dPlayerState[wChairID] == USER_SITDOWN)
-	{
-		//从框架获得大局游戏用户状态
-		m_dPlayerState[wChairID] = USER_ONREADY;
-	}
-
-	//设置用户准备状态，将框架传来的用户状态付给子游戏变量
-	int nReadyNum = 0;
-	for (int i = 0; i < m_GameAccess->GetMaxChairCount(); i++)
-	{
-		if (USER_ONREADY == m_dPlayerState[i])
-		{
-			m_GameAccess->SetPlayerState(i, USER_ONREADY);
-			nReadyNum++;
-		}
-	}
-
-	//大于最小人数游戏开始
-	if (MIN_CHAIR_COUNT <= nReadyNum)
-	{
-		m_pITableFrame->StartGame();
-	}
-
-	return true; 
-}
-
 // 大局游戏开始				
 bool CTableFrameSink::OnEventGameStart()
 {
@@ -1888,9 +1812,6 @@ void CTableFrameSink::HandleRobBanker()
 {
 	//删除明牌定时器
 	m_pITableFrame->KillGameTimer(IDI_MING_PAI);
-
-	// 设置游戏【亮主状态】
-	m_pITableFrame->SetGameStatus(GS_WK_ROB);
 
 	//根据房间规则判断抢庄模式
 	BYTE cbRobBankMode = m_GameAccess->GetRobBankMode();   
@@ -2632,9 +2553,6 @@ void CTableFrameSink::SendAddScoreStart(const WORD &wChairID)
 	// 广播消息 用户下注开始
 	m_pITableFrame->SendTableData(INVALID_CHAIR, CMD_SC_ADD_SCORE_START, &sAddScoreStart, sizeof(STR_CMD_SC_ADD_SCORE_START));
 		
-	//房间状态
-	m_pITableFrame->SetGameStatus(GS_WK_ADDSCORE);
-
 	// 下注定时器
 	m_pITableFrame->KillGameTimer(IDI_ADD_SCORE);
 
@@ -3352,7 +3270,7 @@ void CTableFrameSink::HandleRoundEnd(const WORD &wWinner)
 		m_GameLogic->Settle();
 
 		//一轮结束，当前赢家牌全部出完，游戏结束
-		OnEventGameConclude(INVALID_CHAIR, NULL, GER_NORMAL);
+		OnEventGameConclude(GER_NORMAL);
 	}
 }
 
@@ -3611,41 +3529,6 @@ void CTableFrameSink::OnUserJiPaiQi(WORD wChairID)
 *************************************************/
 void CTableFrameSink::StartRecord()
 {
-}
-
-/*************************************************
-@Description:     写入录像数据，除了定时器
-				 ,在小局结束后调用，否则有些数据为空
-@Input:           无
-@Output:          无
-@Return:          无
-@author & data:	lizhihu 2017.11.2
-*************************************************/
-void CTableFrameSink::WriteGameRecord()
-{
-	//获得玩家单局游戏得分
-	int _playersum = m_GameAccess->GetMaxChairCount();
-	LONG lGameScore[MAX_CHAIR_COUNT] = {'\0'};
-	for (BYTE i = 0; i < _playersum; ++i)
-	{
-		if ( USER_PLAYING == m_GameAccess->GetPlayerState(i) )
-		{
-			lGameScore[i] = m_GameAccess->GetPlayerSingleScore(i);
-		}	
-	}
-	
-	//构造单局得分字符串
-	CString str;
-	str.Format(TEXT("%d"),lGameScore[0]);
-	for(int i=1; i < _playersum; ++i)
-	{
-		TCHAR szTemp[10];
-		_sntprintf(szTemp,10,TEXT(",%d"),lGameScore[i]);
-		str.Append(szTemp);
-	}
-
-	//调用框架方法		//暂时只写小局得分
-	m_pITableFrame->WriteRecordInfo(m_GameAccess->GetCurGameCount(), str.GetBuffer(str.GetLength()), NULL, 0);
 }
 
 ///*************************************************

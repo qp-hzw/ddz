@@ -70,6 +70,35 @@ struct STR_CPO_PL_CREATE_TABLE
 	TCHAR	szIPAddr[LEN_IP_ADDR];					//ip地址
 	DWORD	dwPort;									//ip端口
 };
+
+//查询断线玩家
+struct STR_CPR_LP_OFFLINE_PLAYERQUERY
+{
+	DWORD  dwUserID;                               //断线玩家
+};
+
+//查询断线玩家
+struct STR_CPR_PG_OFFLINE_PLAYERQUERY
+{
+	DWORD  dwSocketID;                             //查询的logon socket
+	DWORD  dwUserID;                               //查询断线玩家
+};
+
+//查询断线玩家 返回
+struct STR_CPO_GP_OFFLINE_FINISH
+{
+	DWORD  dwSocketID;                             //查询的logon socket
+	DWORD  dwUserID;                               //查询断线玩家
+	BYTE   bOffline;                               //0本服务器没有该玩家; 1本服务器有该玩家
+};
+
+//查询断线玩家返回
+struct STR_CPO_PL_OFFLINE_FiNISH
+{
+	DWORD  dwUserID;                               //查询断线玩家
+	DWORD  dwGameID;                               //GameID
+};
+
 #pragma endregion
 
 #pragma region MDM_TRANSFER 用户

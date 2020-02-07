@@ -30,6 +30,7 @@
 ** *********************************************************************************/
 #define MDM_GR_LOGON				1										//登录信息
 
+#define CMD_GC_COMMON_ERROR		    0									    //通用错误 
 //登录
 #define SUB_CG_LOGON_USERID			1										//ID 登录
 #define CMD_GC_LOGON_USERID			101										//ID 登录返回
@@ -44,8 +45,6 @@
 
 //
 #define CMD_GC_USER_MODIFY_TREASURE		1									//修改用户财富信息返回
-#define CMD_ROOM_RULE					2									//房间信息
-#define SUB_GR_USER_STATUS				3									//用户动作
 #define SUB_GR_REQUEST_FAILURE			4									//请求失败		大部分失败消息都返回这个消息
 
 
@@ -59,33 +58,37 @@
 #define CMD_GC_USER_INVITE_USER			15									//*邀请用户进入桌子返回
 #define SUB_CG_USER_KICK_USER			16                                   //*踢出用户		TODO 让玩家起立，返回系统消息，踢出用户
 
-//创建|加入 房间
+#pragma region 创建| 加入 房间
+//房卡场, 房卡金币场
 #define SUB_CG_USER_CREATE_ROOM			17									//申请创建房间
 #define CMD_GC_USER_GET_ROOM_RULE		117									//房间规则选择, 申请创建房间成功后发送
 #define SUB_CG_USER_SET_ROOM_RULE		217									//房间规则设置 返回
 #define CMD_GC_USER_ENTER_SUBGAME_ROOM	317									//进入子游戏
 
-#define SUB_CG_USER_JOIN_FK_ROOM		18									//#加入桌子 需要密码 -- 返回317
+#define SUB_CG_USER_JOIN_FK_ROOM		18									//加入桌子 需要密码
 
-#define SUB_CG_USER_JOIN_TABLE_NO_PASS	19									//#加入桌子,不需要密码, 即快速开始
-//返回的为 2, CMD_GC_USER_JOIN_ROOM_SUCCESS;								//不需要加入桌子返回
+//金币场
+#define SUB_CG_USER_JOIN_GOLD_HALL_ROOM	20									//加入金币大厅 金币场桌子
 
-#define SUB_CG_USER_JOIN_GOLD_HALL_ROOM	20									//加入大厅金币场桌子 -- 返回317
-
+//牌友圈
+#define SUB_CG_USER_JOIN_TABLE_NO_PASS	19									//#加入桌子,不需要密码, 即快速开始 -- 仅牌友群使用
 #define SUB_CG_CLUB_CREATE_TABLE		21									//#创建桌子 牌友圈特有
 #define CMD_GC_CLUB_CREATE_TABKE		121									//#创建桌子 返回
-
+#pragma endregion
 
 #define SUB_GR_GET_TABLELIST			22									//获取房间列表		TODO 指的是竞技场的已开房间列表
 #define SUB_GR_GET_TABLELIST_RESULT		122									//房间列表返回		
 
-
 //解散房间
 #define SUB_RG_USER_ASK_DISMISS			24									//发起申请解散房间
 #define CMD_GR_USER_ASK_DISMISS_RESULT	124									//发起申请解散房间 结果
-#define	SUB_RG_USER_VOTE_DISMISS		25									//表决解散房间
-#define CMD_GR_USER_VOTE_DISMISS		125									//广播房间申请解散
-#define	CMD_GR_USER_DISMISS_RESULT		224									//广播表决解散房间结果
+#define	SUB_RG_USER_VOTE_DISMISS		224									//表决解散房间
+#define CMD_GR_USER_VOTE_DISMISS		324									//广播房间申请解散
+#define	CMD_GR_USER_DISMISS_RESULT		424									//广播表决解散房间结果
+
+#define SUB_CG_USER_GOLD_INFO		    25									//请求金币大厅信息
+#define CMD_GC_USER_GOLD_INFO		    125									//请求金币大厅信息 返回
+#define CMD_GC_USER_GOLD_INFO_FINISH	225									//请求金币大厅信息 结束
 
 #pragma endregion
 
@@ -114,10 +117,16 @@
 #define MDM_G_FRAME					100									//框架命令
 
 //房间信息
-#define SUB_RG_FRAME_OPTION					1								//游戏配置
-#define CMD_GR_FRAME_GAME_OPTION			101								//游戏场景
+#define SUB_RG_ROOM_RULE					1								//请求房间规则
+#define CMD_GR_ROOM_RULE					101								//房间规则
+#define SUB_RG_PLAYER_INFO					201								//请求用户信息
+#define CMD_GR_USER_STATUS					301								//用户动作结果
+#define CMD_GR_USER_STATUS_FINISH			401								//请求用户信息完毕
+#define SUB_RG_FRAME_GAME_OPTION			501								//请求游戏场景
+#define CMD_GR_FRAME_GAME_OPTION			601								//请求用户场景返回
+
 #define CMD_GR_FRAME_GAME_STATUS			102								//游戏状态
-#define CMD_GR_FRAME_GAME_DISSMISS			301							    //解散面板状态
+#define CMD_GR_FRAME_GAME_DISSMISS			701							    //解散面板状态
 
 //GPS测距
 #define SUB_CG_COM_CHECK_USER_GPS			5								//请求校验用户GPS位置信息
@@ -131,6 +140,11 @@
 #define SUB_RG_FRAME_CHAT					7								//用户聊天
 #define CMD_GR_FRAME_CHAT					107								//用户聊天
 
+
+//道具消耗
+#define SUB_CG_EFFECT						9								//道具消耗 -- 子游戏中扔鸡蛋, 鲜花, 炸弹
+#define CMD_GC_EFFECT_RESULT				109								//操作失败
+#define CMD_GC_EFFECT_BRODCAST				209								//操作广播
 
 //下面client没有
 #define SUB_GF_LOOKON_CONFIG			803									//旁观配置

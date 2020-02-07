@@ -1,6 +1,7 @@
 #ifndef TABLE_FRAME_BASE_H
 #define TABLE_FRAME_BASE_H
 
+#include <string>
 #define GAME_CONCLUDE_CONTINUE  0xFF //大局结束并续费
 #define GAME_CONCLUDE_NORMAL    0xFE //正常结束
 
@@ -20,6 +21,7 @@ struct tagTableRule
 {
 	/********************************* 大厅使用 ************************************/
 	BYTE	GameMode;				//游戏模式 0房卡约局; 1比赛模式; 2金币模式; 3金币约局; 4牌友圈
+	BYTE    GameRoomLevel;          //房间等级 （金币场专用）
 
 	BYTE	GameCount;				//游戏局数 0-无限局
 	BYTE	PlayerCount;			//玩家数量 0-任意人数可开
@@ -47,16 +49,6 @@ struct tagTableRule
 	DWORD	dwDizhu;				//底注
 };
 
-/////////////////////////////////////////////////////////////////////
-//测试通过用  
-
-//用户接口
-class IServerUserItem
-{
-public:
-//	//椅子号码
-	virtual WORD GetChairID() = NULL;
-};
 
 //玩家基础信息 DB use player base info
 struct BASE_PLAYERINFO
@@ -101,31 +93,10 @@ public:
 	//get player base info
 	virtual BASE_PLAYERINFO GetPlayerBaseInfo(WORD wChairID) = 0;
 
-	//配置参数
+	//流程接口
 public:
-	//读取通用房间规则
-	virtual void* GetCustomRule() = NULL;
-	//读取子游戏特有房间规则
-	virtual void * GetSubGameRule() = NULL;
-
-	//状态接口
-public:
-	//获取状态
-	virtual BYTE GetGameStatus() = NULL;
-	//设置状态
-	virtual void SetGameStatus(BYTE bGameStatus) = NULL;
-
-	//控制接口
-public:
-	//开始游戏
-	virtual bool StartGame() = NULL;
-
-	//写分接口
-public:
-	//写入录像记录 参数 小局数,数据和长度
-	virtual bool WriteRecordInfo(WORD wXJCount, TCHAR strScore[], VOID* pData, DWORD dwDataSize) = NULL;
 	//处理小局结束
-	virtual bool HandleXJGameEnd(BYTE cbCurGameCount, BYTE cbGameMode, SCORE *lGameScore) = NULL;
+	virtual bool HandleXJGameEnd(BYTE cbCurGameCount, SCORE *lGameScore, VOID* pData, DWORD dwDataSize) = NULL;
 	//处理大局结束
 	virtual bool HandleDJGameEnd(BYTE cbGameStatus) = NULL;
 
@@ -143,11 +114,11 @@ public:
 	//发送数据
 	virtual bool SendTableData(WORD wChairID, WORD wSubCmdID, void * pData, WORD wDataSize, WORD wMainCmd =200) = NULL;
 	//发送场景
-	virtual bool SendGameScene(IServerUserItem * pIServerUserItem, void * pData, WORD wDataSize) = NULL;
+	virtual bool SendGameScene(WORD wChairID, VOID * pData, WORD wDataSize) = NULL;
 };
 
 //////////////////////////////////////////////////////////////////////////////////
-//回调接口
+//子游戏接口
 class ITableFrameSink : public IUnknownEx
 {
 	//管理接口
@@ -159,34 +130,46 @@ public:
 
 	//管理接口
 public:
-	//复位接口
-	virtual void RepositionSink() = NULL;
 	//配置接口
-	virtual bool Initialization(ITableFrame *pTableFrame) = NULL;
-
-	//查询接口
-public:
-	//获取KindID	frame交互
-	virtual DWORD GetKindIDToFrame() = NULL;
+	virtual bool Initialization(ITableFrame *pTableFrame, tagTableRule *comRule) = NULL;
 
 	//游戏事件
 public:
 	//游戏开始
 	virtual bool OnEventGameStart() = NULL;
 	//游戏结束
-	virtual bool OnEventGameConclude(WORD wChairID, IServerUserItem * pIServerUserItem, BYTE cbReason) = NULL;
+	virtual bool OnEventGameConclude(BYTE cbReason) = NULL;
 	//发送场景
-	virtual bool OnEventSendGameScene(WORD wChairID, IServerUserItem *pIServerUserItem, BYTE cbGameStatus, bool bSendSecret) = NULL;
+	virtual bool OnEventSendGameScene(WORD wChairID) = NULL;
 
 	//事件接口
 public:
 	//时间事件
 	virtual bool OnTimerMessage(DWORD dwTimerID, WPARAM dwBindParameter) = NULL;
-
-	//网络接口
-public:
 	//游戏消息
 	virtual bool OnGameMessage(WORD wSubCmdID, void * pData, WORD wDataSize, WORD wChairID) = NULL;
+};
+
+//子游戏规则读取
+class ISubRoomRuleManager : public IUnknownEx
+{
+	//管理接口
+public:
+	//启动服务
+	virtual bool StartService(){return true;}
+	//停止服务
+	virtual bool ConcludeService(){return true;}
+
+	//
+public:
+	//获取字段 对应的描述
+	virtual std::string GetDescribe(std::string key_name)= NULL;
+	//根据字段名字, 为结构体对应字段赋值
+	virtual void SetRoomRule(std::string key, std::string value)= NULL;
+	//
+	virtual void Init() = NULL;
+	//设置Gold场规则
+	virtual void SetGoldRule(BYTE byType) = NULL;
 };
 
 #endif

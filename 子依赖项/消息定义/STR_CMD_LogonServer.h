@@ -24,6 +24,11 @@ struct STR_CMD_LC_LIST_ROOM_ONLINE
 	DWORD	dwOnlineCount;					//在线
 };
 
+//通用错误提示
+struct STR_SUB_CL_COMMON_ERROR
+{
+	TCHAR szMsg[20];            //通用错误提示
+};
 #pragma endregion
 
 #pragma region MDM_LOGON 登录模块
@@ -64,41 +69,11 @@ struct STR_SUB_CL_LOGON_PLATFORM
 //账号|平台登陆 返回
 struct STR_CMD_LC_LOGON_PLATFORM
 {
-	//操作结果
 	DWORD                           dwResultCode;							//结果标识
-	//描述信息
 	TCHAR							szDescribeString[LEN_MESSAGE_DESCRIBE];	//描述消息
-	//用户标识
-	DWORD							dwUserID;							//用户标识
-	//基本属性
-	TCHAR							szNickName[LEN_NICKNAME];			//用户昵称
-	BYTE							cbGender;							//用户性别
-	TCHAR							szHeadUrl[LEN_HEAD_URL];			//头像地址
-	TCHAR							szMySignature[LEN_MY_SIGNATURE];	//个性签名
-	//荣誉属性
-	SCORE                           dwUserDiamond;						//用户元宝
-	DWORD							dwUserMedal;						//用户奖牌
-	BYTE							byLevel;						//经验数值
-	DWORD							dwLoveLiness;						//用户魅力
-	//用户权限
-	BYTE                            cbMasterOrder;                      //管理员等级 0表示非管理员
-	BYTE							cbMemberOrder;						//会员等级   0表示非管理员
-	SYSTEMTIME						MemberOverDate;						//会员到期时间
-	TCHAR                           szIdentityName[LEN_IDENTITY_NAME];  //真实姓名
-	TCHAR                           szIdentityNum[LEN_IDENTITY_NUM];    //身份证号
-	TCHAR                           szMobilePhone[LEN_MOBILE_PHONE];    //手机号码	
-	//账号信息
-	TCHAR							szLasLogonIp[LEN_IP_ADDR];			//最后登录地址
-	SYSTEMTIME						LasLogonDate;						//最后上线时间
-	//财富信息
-	SCORE							lUserScore;							//用户游戏币
-	SCORE							lUserGold;							//用户金币
-	SCORE							lOpenRoomCard;						//用户房卡
 
-	//额外信息. 
-	DWORD							dwOffLineGameID;					//断线重连的GameID, 非空表示是断线重连
-
-	//TODO 增加代理ID
+	tagUserInfo                     useInfo;                                //玩家信息 
+	DWORD							dwOffLineGameID;					    //断线重连的GameID, 非空表示是断线重连
 };
 
 //重复登录
@@ -123,19 +98,45 @@ struct STR_CMD_LC_LOGON_LOGON_REWARD
 };
 #pragma endregion
 
-#pragma region MDM_LIST 列表命令
-struct STR_SUB_CL_LIST_QUERY_GAMEID
-{
-	DWORD		kindID; //TODONOW 具体类型 再定
-};
-
-struct STR_CMD_LC_LIST_QUERY_GAMEID
-{
-	DWORD		dwGameID;	//可用的gameID
-};
-#pragma endregion
-
 #pragma region MDM_SERVICE 用户命令
+//关注, 粉丝 
+struct STR_SUB_CL_SERVICE_FLOWER
+{
+	DWORD   dwTargetID;  //查看对象的useID
+};
+
+//关注, 粉丝 
+struct STR_CMD_LC_SERVICE_FLOWER_P
+{
+	DWORD							dwUserID;							//用户ID
+	TCHAR							szNickName[LEN_NICKNAME];			//用户昵称
+	BYTE							cbGender;							//用户性别
+	TCHAR							szHeadUrl[LEN_HEAD_URL];			//头像地址
+	DWORD                           dwLoveValue;                        //爱心值
+};
+//关注, 粉丝 
+struct STR_CMD_LC_SERVICE_FLOWER
+{
+	DWORD   dwFolwerNum;  //我的关注
+	DWORD   dwFolwingNum; //我的粉丝
+	BYTE    cbIsGuanzhu;  //1显示关注按钮; 其他不显示关注按钮
+
+	STR_CMD_LC_SERVICE_FLOWER_P folwingInfo[5];
+};
+
+//关注, 取消关注
+struct STR_SUB_CL_SERVICE_FLOWER_ACT
+{
+	DWORD   dwTargetID;  //查看对象的useID
+	BYTE    cbMask;      //1关注, 2取消关注
+};
+//关注， 取消关注 返回
+struct STR_CMD_LC_SERVICE_FLOWER_ACT
+{
+	BYTE    cbResult;    //0成功， 其他失败
+	BYTE    cbMask;      //1关注, 2取消关注
+};
+
 
 //玩家反馈
 struct STR_SUB_CL_SERVICE_FEEDBACK
@@ -213,22 +214,16 @@ struct STR_CMD_LC_SERVICE_QUERY_ROOMLIST
 //修改个人资料	
 struct STR_SUB_CL_SERVICE_MODIFY_PERSONAL_INFO
 {
-	//用户标识
-	DWORD							dwUserID;							//用户ID
-	TCHAR							szOldLogonPassword[LEN_PASSWORD];	//旧的登陆密码
-	//基本信息
-	TCHAR							szNewLogonPassword[LEN_PASSWORD];	//新的登陆密码（若无修改，和旧的一样）
 	TCHAR							szNickName[LEN_NICKNAME];			//用户昵称
 	BYTE							cbGender;							//用户性别	
-	TCHAR							szHeadImageUrl[LEN_HEAD_URL];			//头像地址
+	TCHAR							szHeadImageUrl[LEN_HEAD_URL];		//头像地址
 	TCHAR							szSignature[LEN_MY_SIGNATURE];		//个性签名
 	//联系方式
 	TCHAR							szRealName[LEN_IDENTITY_NAME];		//真实姓名
 	TCHAR							szIDCardNum[LEN_IDENTITY_NUM];		//身份证号
 	TCHAR							szPhoneNum[LEN_MOBILE_PHONE];		//绑定手机号
-	//附加属性
-	DWORD							dwProxyUserID;						//代理用户ID		//TODO 代理ID在数据库中暂时未增加，后面增加
 };
+
 //修改个人资料返回
 struct STR_CMD_LC_SERVICE_MODIFY_PERSONL_INFO
 {
@@ -1298,57 +1293,18 @@ struct STR_CMD_LC_ROOM_STATE
 #pragma endregion
 
 #pragma region MDM_SHOP 商城道具
-//查询商城物品打折情况
-struct STR_SUB_CL_SHOP_QUERY
+//商城购买
+struct STR_SUB_CL_SHOP_BUY
 {
-	DWORD dwUserID;								//玩家ID
-	BYTE byGoodsType;							//商城物品类型 1房卡 2金币 3金币礼物 4积分礼物
+	DWORD dwGoodsID;							//物品ID
+	DWORD dwGoodsNum;                           //物品数量
+	BYTE byTreasureType;						//财富类型
 };
 
-//查询商城返回
-struct STR_CMD_LC_SHOP_QUERY_RESULT
+//商城购买返回
+struct STR_CMD_LC_SHOP_BUY_RESULT
 {
-	DWORD dwGoodsID;							//商品编号
-	TCHAR szGoodsName[LEN_NICKNAME];			//商品名字
-	BYTE  byExtraGiftType;						//额外赠送的财富类型1rmb 2金币 3房卡 4积分
-	DWORD dwExtraGiftCount;						//额外赠送的财富数量
-	BYTE  byMoneyType;							//购买需要的财富类型 1rmb 2金币 3房卡 4积分
-	DWORD dwMoneyCount;							//购买需要的财富数量
-	BYTE  byDiscount;							//折扣
-	DWORD dwLoveLiness;							//增加的魅力值
-	TCHAR szDescripe[128];						//商品描述
-	TCHAR szUrl[256];							//商品url地址
-};
-
-//查询商城结束
-struct STR_CMD_LC_SHOP_QUERY_FINISH
-{
-	BYTE byMask;								//结束标志 1			
-};
-
-//钻石购买道具
-struct STR_SUB_CL_SHOP_DIAMOND
-{
-	DWORD dwShopper;							//购买人
-	DWORD byGoodsType;							//商品类型
-	DWORD dwGoodsID;							//商品编号
-	DWORD dwGoodsNum;							//购买商品的数量
-
-	BYTE  byMask;								//0为自己购买;  1为他人代付
-	DWORD dwTargetID;							//赠送对象
-};
-
-//钻石购买道具 返回
-struct STR_CMD_LC_SHOP_DIAMOND_RESULT
-{
-	LONG	lResultCode;						//0-购买成功  其他失败
-	TCHAR	szDescribe[128];					//失败原因
-};
-
-//背包物品查询
-struct STR_SUB_CL_BAG_QUERY
-{
-	DWORD dwUserID;				//玩家ID
+	BYTE  byResult;        //返回结果 0成功， 其他失败
 };
 
 //背包物品查询 返回
@@ -1356,13 +1312,6 @@ struct STR_CMD_LC_BAG_RESULT
 {
 	DWORD dwGoodsID;		//物品ID
 	DWORD dwGoodsNum;		//物品数量
-	BYTE  byGoodsType;		//物品类型
-};
-
-//背包物品查询 结束
-struct STR_CMD_LC_BAG_FINISH
-{
-	DWORD dwLoveness;		//玩家魅力值
 };
 
 #pragma endregion

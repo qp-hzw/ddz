@@ -63,7 +63,7 @@ public:
 	//管理接口
 public:
 	//初始化
-	virtual bool Initialization(ITableFrame *pTableFrame);
+	virtual bool Initialization(ITableFrame *pTableFrame, tagTableRule *comRule);
 	//复位桌子
 	virtual VOID RepositionSink();
 	//获取KindID给框架
@@ -74,9 +74,9 @@ public:
 	//游戏开始
 	virtual bool OnEventGameStart();
 	//游戏结束
-	virtual bool OnEventGameConclude(WORD wChairID, IServerUserItem * pIServerUserItem, BYTE cbReason);
+	virtual bool OnEventGameConclude(BYTE cbReason);
 	//发送场景
-	virtual bool OnEventSendGameScene(WORD wChairID, IServerUserItem * pIServerUserItem, BYTE cbGameStatus, bool bSendSecret);
+	virtual bool OnEventSendGameScene(WORD wChairID);
 
 	//事件接口
 public:
@@ -86,23 +86,6 @@ public:
 	virtual bool OnGameMessage(WORD wSubCmdID, VOID * pData, WORD wDataSize, WORD wChairID);
 	//数据事件
 	virtual bool OnGameDataBase(WORD wRequestID, VOID * pData, WORD wDataSize) { return false; }
-
-
-	//用户事件，框架传入
-public:
-	//用户断线
-	virtual bool OnActionUserOffLine(WORD wChairID, IServerUserItem * pIServerUserItem) { return true; }
-	//用户重入
-	virtual bool OnActionUserConnect(WORD wChairID, IServerUserItem * pIServerUserItem) { return true; }
-	//用户坐下
-	virtual bool OnActionUserSitDown(WORD wChairID, IServerUserItem * pIServerUserItem, bool bLookonUser);
-	//用户起立
-	virtual bool OnActionUserStandUp(WORD wChairID, IServerUserItem * pIServerUserItem, bool bLookonUser);
-	//用户准备
-	virtual bool OnActionUserOnReady(WORD wChairID, IServerUserItem * pIServerUserItem, VOID * pData, WORD wDataSize);
-	//用户下注
-	virtual bool OnActionUserPour(WORD wChairID, IServerUserItem * pIServerUserItem) { return true; }
-
 
 	//响应client事件
 protected:
@@ -146,8 +129,6 @@ protected:
 	void StartGame();
 	//开始录像
 	void StartRecord();
-	//写入录像数据，除了定时器
-	void WriteGameRecord();
 	//结束录像
 	void CloseRecord();
 	//处理发牌流程

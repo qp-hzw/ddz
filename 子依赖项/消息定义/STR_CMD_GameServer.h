@@ -28,13 +28,16 @@
 #define TABLE_MODE_FK_GOLD			3									//房卡金币模式
 #define TABLE_MODE_CLUB				4									//牌友圈模式
 
+//财富类型
+#define TREASURE_FK					1									//房卡
+#define TREASURE_GOLD				2									//金币
+#define TREASURE_DIAMOND			3									//钻石
+#define TREASURE_JF					4									//积分
+
+
 //请求错误
 #define REQUEST_FAILURE_NORMAL		0									//常规原因
-#define REQUEST_FAILURE_NOGOLD		1									//金币不足
-#define REQUEST_FAILURE_NOSCORE		2									//积分不足
 #define REQUEST_FAILURE_PASSWORD	3									//密码错误
-#define REQUEST_FAILURE_END			4									//游戏结束
-#define REQUEST_FAILURE_NOROOMCARD	5									//钻石不足
 
 //////////////////////////////////////////////////////////////////////////////////
 #pragma endregion
@@ -62,9 +65,6 @@ struct STR_SUB_CG_LOGON_USERID
 	TCHAR							szPassword[LEN_MD5];						//登录密码
 	TCHAR							szMachineID[LEN_MACHINE_ID];				//机器序列
 	DWORD							dwSubGameVersion;							//子游戏版本
-
-	double							dLongitude;									//登录游戏服时GPS经度
-	double							dLatitude;									//登录游戏服时GPS纬度
 };
 //ID 登录返回
 struct STR_CMD_GC_LOGON_USERID
@@ -72,7 +72,6 @@ struct STR_CMD_GC_LOGON_USERID
 	LONG							lResultCode;								//错误代码
 	TCHAR							szDescribeString[LEN_MESSAGE_DESCRIBE];		//消息描述
 	DWORD							dwKindID;									//游戏KindID
-	DWORD							dwOffLineGameID;							//断线重连的游戏ID, 非0表示是断线重连
 };
 #pragma endregion
 
@@ -364,6 +363,16 @@ struct STR_CMD_ROOM_RULE
 	tagTableRule common;			 //创建房间 frame通用房间规则
 	DWORD TableID;                   //房间号
 };
+
+//金币场房间信息 返回
+struct STR_CMD_GC_USER_GOLD_INFO
+{
+	BYTE bGoldMod;// 房间等级 1.初级 2.中级 3.高级 4.富豪
+
+	DWORD dwScore;  //底分
+	DWORD dwGold;  //入场金币
+};
+
 //////////////////////////////////////////////////////////////////////////////////
 
 //规则标志
@@ -473,7 +482,7 @@ struct CMD_GF_LookonStatus
 struct CMD_GF_GameStatus
 {
 	BYTE							cbUserAction;							//游戏状态
-	tagUserInfo				UserInfo;								//玩家信息
+	tagUserInfo						UserInfo;								//玩家信息
 };
 
 //用户聊天
@@ -589,9 +598,22 @@ struct STR_CMD_GR_FRAME_GAME_DISSMISS
 	BYTE					cbAgree[MAX_CHAIR];						    //是否同意解散		0-不同意	1-同意   2-未表决
 };
 
-#pragma endregion
 
-#pragma region MDM_GF_GAME 子游戏命令
+//消耗道具
+struct STR_SUB_CG_EFFECT
+{
+	BYTE					target_chair;						    //目标玩家 椅子号
+	DWORD					dwGoodsID;								//物品ID
+};
+
+
+//消耗道具广播
+struct STR_CMD_GC_EFFECT_BRODCAST
+{
+	BYTE					from_chair;								//from 椅子号
+	BYTE					target_chair;						    //to 椅子号
+	DWORD					dwGoodsID;								//物品ID
+};
 
 #pragma endregion
 

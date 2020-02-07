@@ -33,36 +33,17 @@
 ** *********************************************************************************/
 #define MDM_LOGON					1									//主消息
 
+#define CMD_LC_COMMON_ERROR		    0									//通用错误 
+
 #define SUB_CL_LOGON_ACCOUNTS		1									//帐号登录
-#define CMD_LC_LOGON_ACCOUNTS		101									//账号登录
-
-#define SUB_CL_LOGON_REGISTER	    2									//帐号注册（返回的是账号登录）
-
+#define SUB_CL_LOGON_REGISTER	    2									//帐号注册（返回的是登录成功）
 #define SUB_CL_LOGON_PLATFORM		3									//平台登陆（第三方登录）
+
+#define CMD_LC_LOGON_ACCOUNTS		101									//登录成功
 #define CMD_LC_LOGON_PLATFORM       103                                 //平台登陆返回
-
 #define CMD_LC_LOGON_REPEAT_LOGON	104									//重复登录
-
 #define CMD_LC_LOGON_LOGON_REWARD   105                                 //登录奖励（老玩家回归 + 节日奖励）
 
-#define CMD_LC_LOGON_UPDATE_NOTIFY	106									//升级提示（登录 + 注册 + 平台登录都会用到）
-
-
-#pragma endregion
-
-#pragma region MDM_LIST 列表命令
-/* *********************************************************************************
-**         MAIN:2    MDM_LIST    列表命令（登录成功后主动发送给客户端，客户端无需请求)
-** *********************************************************************************/
-#define MDM_LIST					2									//列表信息
-
-//列表信息返回
-#define CMD_LC_LIST_TYPE			101									//类型列表TypeItem
-#define CMD_LC_LIST_KIND			102									//种类列表KindItem
-#define CMD_LC_LIST_NODE			103									//节点列表NodeItem
-#define CMD_LC_LIST_ROOM			104									//房间列表RoomItem
-
-#define CMD_LC_LIST_ROOM_ONLINE		105									//房间人数 TODONOW client需要增加
 
 #pragma endregion
 
@@ -77,22 +58,26 @@
 #define MDM_SERVICE								3							//服务
 
 //【子消息号】
-#define SUB_CL_SERVICE_USER_FEEDBACK			1							//玩家反馈
-#define CMD_LC_SERVICE_USER_FEEDBACK			101							//玩家反馈返回
+#define SUB_CL_SERVICE_FLOWER					1							//粉丝, 关注
+#define CMD_LC_SERVICE_FLOWER					101							//粉丝, 关注 返回
 
-#define SUB_CL_SERVICE_REFRESH_USER_INFO		2							//刷新用户信息
-#define CMD_CL_SERVICE_REFRESH_USER_INFO		102							//刷新用户信息返回
+#define SUB_CL_SERVICE_FLOWER_QUERY				2							//查看关注
+#define CMD_LC_SERVICE_FLOWER_QUERY				102							//查看关注 返回
+#define CMD_LC_SERVICE_FLOWER_QUERY_FINISH		202							//查看关注 返回
 
-#define SUB_CL_SERVICE_QUERY_ROOM_LIST			3							//查询开房信息列表
-#define CMD_LC_SERVICE_QUERY_ROOM_LIST			103							//开房信息返回
+#define SUB_CL_SERVICE_FLOWING_QUERY			3							//查看粉丝
+#define CMD_LC_SERVICE_FLOWING_QUERY			103							//查看粉丝 返回
+#define CMD_LC_SERVICE_FLOWING_QUERY_FINISH		203							//查看关注 返回
 
-#define SUB_CL_SERVICE_MODIFY_PERSONAL_INFO		4							//修改个人资料（所有用户能修改的资料都在这里处理）
-#define CMD_LC_SERVICE_MODIFY_PERSONAL_INFO		104							//修改个人资料返回
+#define SUB_CL_SERVICE_FLOWER_ACT			    4							//关注, 取消关注
+#define CMD_LC_SERVICE_FLOWER_ACT			    104							//关注, 取消关注 返回
 
-/* START 老大厅的排行榜, 之后可以删除 */
-#define SUB_CL_SERVICE_GET_RICH_LIST			5							//获取富豪榜
-#define CMD_LC_SERVICE_GET_RICH_LIST			105							//富豪榜返回
-/* END */
+#define SUB_CL_SERVICE_REFRESH_USER_INFO		5							//刷新用户信息
+#define CMD_CL_SERVICE_REFRESH_USER_INFO		105							//刷新用户信息返回
+
+#define SUB_CL_SERVICE_MODIFY_PERSONAL_INFO		12							//修改个人资料（所有用户能修改的资料都在这里处理）
+#define CMD_LC_SERVICE_MODIFY_PERSONAL_INFO		112							//修改个人资料返回
+
 
 /* START 老大厅的战绩, 之后可以删除掉 */
 #define SUB_CL_SERVICE_GET_DJ_RECORD_LIST		6							//获取大局录像列表
@@ -114,12 +99,6 @@
 #define SUB_CL_SERVICE_REQUEST_LOTTERY			11							//请求抽奖
 #define CMD_LC_SERVICE_REQUEST_LOTTERY			111							//请求抽奖返回
 
-#define SUB_CL_SERVICE_GET_RANK_LIST			12							//获取指定排行榜			TOOD 真正的数据是从子游戏获取的，小局结算，但只有今日的数据，没有更新到昨日之类的
-#define CMD_LC_SERVICE_GET_RANK_LIST			112							//获取指定排行榜返回
-
-#define SUB_CL_SERVICE_GET_RANK_REWARD			13							//领取排行榜奖励
-#define CMD_LC_SERVICE_GET_RANK_REWARD			113							//领取排行榜奖励返回
-
 #define CMD_LC_USER_QUERY_SCORE_INFO			114							//查询（修改）用户金币房卡钻石信息返回(涉及到金币房卡改变的都会用到这个消息)
 
 #define SUB_CL_SERVICE_PURE_STANDING_LIST		15							//pure大厅排行版 查询
@@ -138,15 +117,18 @@
 
 #define CMD_LC_SERVICE_MARQUEE					18							//跑马灯消息
 
-#define SUB_CL_SERVICE_GOLD_INFO				19							//请求金币大厅信息
-#define CMD_LC_SERVICE_GOLD_INFO				119							//请求金币大厅信息 返回
-#define CMD_LC_SERVICE_GOLD_INFO_FINISH			219							//请求金币大厅信息 结束
+#define SUB_CL_SERVICE_MATCH_INFO				22							//请求比赛场信息
+#define CMD_LC_SERVICE_MATCH_INFO				122							//请求比赛场信息  返回
+#define CMD_LC_SERVICE_MATCH_INFO_FINISH		222							//请求比赛场信息  结束
 
 #define SUB_CL_SERVICE_XJ_RECORD_PLAYBACK		20							//小局录像回放
 #define CMD_LC_SERVICE_XJ_RECORD_PLAYBACK		120							//小局录像回放 返回
 
-#define SUB_CL_SERVICE_CUSTOMER_MESSEGE			21							//客服提示消息
-#define CMD_LC_SERVICE_CUSTOMER_MESSEGE			121							//客服提示消息 返回
+#define SUB_CL_SERVICE_GET_RANK_LIST			21							//获取指定排行榜			TOOD 真正的数据是从子游戏获取的，小局结算，但只有今日的数据，没有更新到昨日之类的
+#define CMD_LC_SERVICE_GET_RANK_LIST			121							//获取指定排行榜返回
+
+#define SUB_CL_SERVICE_GET_RANK_REWARD			22							//领取排行榜奖励
+#define CMD_LC_SERVICE_GET_RANK_REWARD			122							//领取排行榜奖励返回
 
 #pragma endregion
 
@@ -274,40 +256,22 @@
 #define MDM_SHOP								7							//商城道具
 
 //【子消息号】
-#define SUB_CL_SHOP_QUERY						1							//商城查询 -- 查询商品打折情况
-#define CMD_LC_SHOP_QUERY_RESULT				101							//查询返回
-#define CMD_LC_SHOP_QUERY_FINISH				201							//查询结束
+#define SUB_CL_SHOP_BUY							1							//商城购买
+#define CMD_LC_SHOP_BUY_RESULT					101							//商城购买返回
 
-#define SUB_CL_SHOP_MONEY						2							//(暂未用到)金钱购买道具
-#define CMD_LC_SHOP_MONEY_RESULT				102							//(暂未用到)金钱购买道具 返回
+#define SUB_CL_BAG_QUERY						2							//背包物品查询
+#define CMD_LC_BAG_RESULT						102							//背包物品返回
+#define CMD_LC_BAG_FINISH						202							//背包物品查询结束
 
-#define SUB_CL_SHOP_DIAMOND						3							//钻石购买道具
-#define CMD_LC_SHOP_DIAMOND_RESULT				103							//钻石购买道具 返回
+#define SUB_CL_GIFT_GIVE_PROPS					3							//赠送道具
+#define CMD_LC_GIFT_GIVE_PROPS					103							//赠送道具返回
+#define CMD_LC_GIFT_GIVE_PROPS_SHOW				203							//被赠送人的提醒
 
-#define SUB_CL_BAG_QUERY						4							//背包物品查询
-#define CMD_LC_BAG_RESULT						104							//背包物品返回
-#define CMD_LC_BAG_FINISH						204							//背包物品查询结束
+#define SUB_CL_OTHERS_RECHARGE_INFO				4							//充值信息
+#define CMD_LC_OTHERS_RECHARGE_INFO				104							//充值信息 返回
 
-#pragma endregion 
-
-#pragma region MDM_GIFT 礼物道具
-
-/* *******************************************************************************
-**          MAIN:5      MDM_GIFT   礼物道具
-** ******************************************************************************/
-//【主消息号】
-#define MDM_GIFT								5							//礼物道具
-
-//【子消息号】
-#define SUB_CL_GIFT_GIVE_PROPS					1							//赠送道具
-#define CMD_LC_GIFT_GIVE_PROPS					101							//赠送道具返回
-#define CMD_LC_GIFT_GIVE_PROPS_SHOW				201							//被赠送人的提醒
-
-#define SUB_CL_OTHERS_RECHARGE_INFO				2							//充值信息
-#define CMD_LC_OTHERS_RECHARGE_INFO				102							//赠送道具返回
-
-#define SUB_CL_OTHERS_EXCHANGE_INFO				3							//兑换信息（钱->道具）
-#define CMD_LC_OTHERS_EXCHANGE_INFO				3							//兑换信息返回
+#define SUB_CL_OTHERS_EXCHANGE_INFO				5							//兑换信息（钱->道具）
+#define CMD_LC_OTHERS_EXCHANGE_INFO				105							//兑换信息返回
 
 
 //充值信息

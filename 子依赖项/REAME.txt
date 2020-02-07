@@ -4,23 +4,23 @@
 Platform依赖项 created by 自动化脚本
 
 
-commit 26189c98c7e42a9aaea64354a1171565c4d101c6 Author: wcq <377133665@qq.com> Date: Thu Jan 30 00:13:02 2020 +0800 log文件输出优化
+commit 655d9bd5e6bcdfd43d5bfa9978dfe159304a606d Author: wcq <377133665@qq.com> Date: Wed Feb 5 00:48:46 2020 +0800 删除platform数据库
 
 author:  
 WangChengQing    
 
 date:  
-Fri Jan 31 16:56:50 CST 2020
+Wed Feb 5 14:04:24 CST 2020
 
 
 --------------------------------------
 SubGame依赖项 自动化脚本
 
 
-commit f7eed7387e50283e538a7b7473273b3c58e11c95 Author: wcq <377133665@qq.com> Date: Thu Jan 30 00:14:03 2020 +0800 log日志文件
+commit 4a18cf379b2a878644d38c047f37d65ca39a8d1f Author: wcq <377133665@qq.com> Date: Thu Feb 6 20:44:31 2020 +0800 delete useless
 
 author:  
 WangChengQing    
 
 date:  
-Fri Jan 31 17:05:43 CST 2020
+Fri Feb 7 18:05:30 CST 2020
