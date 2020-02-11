@@ -109,6 +109,14 @@ void CSubRuleManager::SetGoldRule(BYTE byType)  //这里可以加特殊规则的字段
 	m_SubRule.ShowCards = 0;
 }
 
+//设置match规则
+void CSubRuleManager::SetMatchRule(VOID *config)
+{
+	MATCH_CONFIG *cfg = (MATCH_CONFIG *)config;
+	cout << cfg->llBaseScore << endl;
+	m_SubRule.Cellscore = cfg->llBaseScore;
+}
+
 //sub获取子游戏规则
 tagSubGameRule CSubRuleManager::GetSubGameRule()
 {

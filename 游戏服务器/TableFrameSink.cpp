@@ -352,7 +352,7 @@ bool CTableFrameSink::XjGameConclude(int nTotalGameCount, int nCurGameCount)
 	}
 
 	 //通知框架小局游戏结束
-	m_pITableFrame->HandleXJGameEnd(cbCurGameCount, 0, NULL, 0);
+	m_pITableFrame->HandleXJGameEnd(cbCurGameCount, msg_singleGameScore, NULL, 0);
 
 	//清空玩家是否是开始游戏明牌
 	for (int i = 0; i < _playersum; i++)
@@ -369,11 +369,11 @@ bool CTableFrameSink::XjGameConclude(int nTotalGameCount, int nCurGameCount)
 		}
 	}
 
-	//如果是比赛场 清空小局数据
-	if (3 == m_pITableFrame->GameType())
-	{
-		m_GameLogic->ClearXjGame();
-	}
+	////如果是比赛场 清空小局数据
+	//if (3 == m_pITableFrame->GameType())
+	//{
+	//	m_GameLogic->ClearXjGame();
+	//}
 
 
 	//设置游戏状态为小局结束状态

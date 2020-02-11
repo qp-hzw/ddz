@@ -251,11 +251,11 @@ int __stdcall CGameData::Deal()
 				SortCardList(m_players_config.hand_cards[i], nCardNum, ST_ORDER);
 				cout << "2" << endl;
 
-				for (int j = 0; j < nCardNum; j++)
+				/*for (int j = 0; j < nCardNum; j++)
 				{
 					cout << (int)m_players_config.hand_cards[i][j] << " ";
 				}
-				cout << endl;
+				cout << endl;*/
 
 				card_index += nCardNum;
 			}
