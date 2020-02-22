@@ -108,15 +108,15 @@ public:
 
 public:
 
-	vector <int>		value_nHandCardList;					//手牌序列——无花色，值域3~17
+	list <int>		value_nHandCardList;					//手牌序列——无花色，值域3~17
 	int					value_aHandCardList[18] ;				//手牌序列——状态记录，便于一些计算，值域为该index牌对应的数量0~4
-	vector <int>		color_nHandCardList;					//手牌序列——有花色，按照从大到小的排列  56，52：大王小王……4~0：红3黑3方3花3
+	list <int>		color_nHandCardList;					//手牌序列——有花色，按照从大到小的排列  56，52：大王小王……4~0：红3黑3方3花3
 	int					nHandCardCount ;							//手牌个数
 	int					nGameRole ;									//玩家角色地位       0：地主    1：农民——地主下家   2：农民——地主上家
 	int					nOwnIndex ;									//玩家座位ID 
 	CardGroupData		uctPutCardType;						//玩家要打出去的牌类型
 	list <int>			value_nPutCardList;					//要打出去的牌——无花色
-	vector <int>		color_nPutCardList;					//要打出去的牌——有花色
+	list <int>		color_nPutCardList;					//要打出去的牌——有花色
 	HandCardValue		 uctHandCardValue;
 
 
@@ -126,7 +126,7 @@ public:
 	void ClearPutCardList();
 
 	//手牌排序，大牌靠前
-	void SortAsList(vector <int> &arr);
+	void SortAsList(list <int> &arr);
 
 	//出一张牌，返回操作是否合法
 	bool PutOneCard(int value_nCard, int &clear_nCard);
@@ -170,7 +170,7 @@ public:
 	CardGroupData ins_SurCardsType(int arr[]);
 
 	//vector重载
-	CardGroupData ins_SurCardsType(vector<int> list);
+	CardGroupData ins_SurCardsType(list<int> mlist);
 
 	/*
 	封装好的获取各类牌型组合结构函数

@@ -82,35 +82,22 @@ int CSubGameRule::SettleFightLandLord()
 	//获得游戏所有得分
 	SCORE lGameScore = m_room_config.room_cell;
 
-	//获得炸弹倍数
-	for (int i = 0; i < m_room_config.max_chair_sum; i++)
-	{
-		if ( USER_PLAYING == m_players_config.players[i].play_state )
-		{
-			for (int j = 0; j < m_players_config.players[i].boom_info.cbBoomNum; j++)
-			{
-				BYTE bCardType = m_players_config.players[i].boom_info.cbBoomType[j];
-				if ( (bCardType&(1<<CT_BOMB_CARD)) != 0 ||(bCardType&(1<<CT_MISSILE_CARD)) != 0||(bCardType&(1<<CT_LAIZI_BOMB))!= 0  )
-				{
-					lGameScore *= HARD_BOOM_TIMES;
-				}
-				else if((bCardType&(1<<CT_RUAN_BOMB))!= 0)
-				{
-					lGameScore *= RUAN_BOOM_TIMES;
-				}
-			}
-		}
-	}
-
 	//庄家赢了
-	if ( wWinner == m_playing_para.banker_id )
+	if ( wWinner == m_playing_para.appointbanker )
 	{
+
 		for (int i = 0; i < m_room_config.max_chair_sum; i++)
 		{
-			if ( (USER_PLAYING == m_players_config.players[i].play_state) && (i != m_playing_para.banker_id) )
+			if ( (USER_PLAYING == m_players_config.players[i].play_state) && (i != m_playing_para.appointbanker) )
 			{
-				m_players_config.players[i].single_score -= lGameScore;
-				m_players_config.players[m_playing_para.banker_id].single_score += lGameScore;
+				SCORE PlayerGameScore = m_players_config.players[i].bet * lGameScore;				//计算两个输家的分数  地主分
+
+				//判断封顶
+				if (PlayerGameScore > m_playing_para.max_room_bet)
+					PlayerGameScore = m_playing_para.max_room_bet;
+
+				m_players_config.players[i].single_score -= PlayerGameScore;
+				m_players_config.players[m_playing_para.appointbanker].single_score += PlayerGameScore;
 			}
 		}		
 	}
@@ -118,10 +105,16 @@ int CSubGameRule::SettleFightLandLord()
 	{
 		for (int i = 0; i < m_room_config.max_chair_sum; i++)
 		{
-			if ( (USER_PLAYING == m_players_config.players[i].play_state) && (i != m_playing_para.banker_id) )
+			if ( (USER_PLAYING == m_players_config.players[i].play_state) && (i != m_playing_para.appointbanker) )
 			{
-				m_players_config.players[i].single_score += lGameScore;
-				m_players_config.players[m_playing_para.banker_id].single_score -= lGameScore;
+				SCORE PlayerGameScore = m_players_config.players[i].bet * lGameScore;				//计算两个赢家的分数
+
+				//判断封顶
+				if (PlayerGameScore > m_playing_para.max_room_bet)
+					PlayerGameScore = m_playing_para.max_room_bet;
+
+				m_players_config.players[i].single_score += PlayerGameScore;
+				m_players_config.players[m_playing_para.appointbanker].single_score -= PlayerGameScore;
 			}
 		}
 	}

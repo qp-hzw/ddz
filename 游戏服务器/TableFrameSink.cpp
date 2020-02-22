@@ -56,9 +56,7 @@ bool CTableFrameSink::Initialization(ITableFrame *pTableFrame, tagTableRule *com
 	//规则配置
 	m_pRoomRuleOption->com_rule = comRule;
 
-	CLog::Log(log_debug, "subgame  begin!!!!!!");
 	CopyMemory(&(m_pRoomRuleOption->sub_rule), &(CSubRuleManager::instance()->GetSubGameRule()), sizeof(tagSubGameRule));
-	CLog::Log(log_debug, "subgame  end!!!!!!");
 
 	//校验
 	if (NULL != m_GameLogic)
@@ -104,7 +102,7 @@ VOID  CTableFrameSink::RepositionSink()
 // 小局游戏结束
 bool CTableFrameSink::XjGameConclude(int nTotalGameCount, int nCurGameCount)
 {
-	printf("小局结束\n");
+	CLog::Log(log_debug, "小局结束");
 
 	// 玩家数目
 	BYTE _playersum = m_GameAccess->GetMaxChairCount();
@@ -145,17 +143,18 @@ bool CTableFrameSink::XjGameConclude(int nTotalGameCount, int nCurGameCount)
 			//玩家单局得分
 			msg_singleGameScore[i] = m_GameAccess->GetPlayerSingleScore(i);
 
-			//如果是金币场，总分设置成 金币 + 总分
-			if (m_pITableFrame->GameType() == 1)
-			{
-				BASE_PLAYERINFO info = m_pITableFrame->GetPlayerBaseInfo(i);
-				msg_totalGameScore[i] += info.m_goldCoin;
-				//不能为0
-				if (msg_totalGameScore[i] < 0)
-				{
-					msg_totalGameScore[i] = 0;
-				}
-			}
+			CLog::Log(log_debug, "chair: %d, singleGameScore: %d", i, msg_singleGameScore[i]);
+			////如果是金币场，总分设置成 金币 + 总分
+			//if (m_pITableFrame->GameType() == 1)
+			//{
+			//	BASE_PLAYERINFO info = m_pITableFrame->GetPlayerBaseInfo(i);
+			//	msg_totalGameScore[i] += info.m_goldCoin;
+			//	//不能为0
+			//	if (msg_totalGameScore[i] < 0)
+			//	{
+			//		msg_totalGameScore[i] = 0;
+			//	}
+			//}
 		}
 	}
 
@@ -170,7 +169,7 @@ bool CTableFrameSink::XjGameConclude(int nTotalGameCount, int nCurGameCount)
 	}
 
 	//判断地主或农民是否金币输干了
-	if (m_pITableFrame->GameType() == 1)
+	if (m_pITableFrame->GameType() == 6)
 	{
 		SCORE BankScore = 0;
 		if (Winner == BankID)		//庄赢了
@@ -250,7 +249,7 @@ bool CTableFrameSink::XjGameConclude(int nTotalGameCount, int nCurGameCount)
 	}
 
 	//金币场 总分=单局分
-	if (m_pITableFrame->GameType() == 1)
+	if (m_pITableFrame->GameType() == 6)
 	{
 		for (BYTE i = 0; i < _playersum; ++i)
 		{
@@ -385,7 +384,7 @@ bool CTableFrameSink::XjGameConclude(int nTotalGameCount, int nCurGameCount)
 // 大局游戏结束
 bool CTableFrameSink::DjGameConclude(int nTotalGameCount, int nCurGameCount)
 {
-	printf("大局结束\n");
+	CLog::Log(log_debug, "大局结束");
 
 	//游戏还没开始状态下的解散房间
 	if (GS_WK_FREE == m_GameAccess->GetGameStatus())
@@ -412,8 +411,8 @@ bool CTableFrameSink::DjGameConclude(int nTotalGameCount, int nCurGameCount)
 
 	// 构造数据
 	SCORE	msg_userScore[MAX_CHAIR_COUNT] = {'\0'};
-	WORD msg_wMaxWinChairID;
-
+	WORD	msg_wMaxWinChairID;
+	BYTE	msg_winTime[MAX_CHAIR_COUNT] = {'\0'};
 
 	//赢次数
 	int nMaxWinNum = 0;
@@ -425,16 +424,16 @@ bool CTableFrameSink::DjGameConclude(int nTotalGameCount, int nCurGameCount)
 			msg_userScore[i] = m_GameAccess->GetPlayerTotalScore(i);    //总分
 			//player_info[i] = m_GameAccess->GetPlayerInfo(i);	//玩家信息
 
-			//m_GameAccess->GetWinSum(i, msg_winTime[i]);					//赢次数
+			m_GameAccess->GetWinSum(i, msg_winTime[i]);					//赢次数
 			//msg_bankTime[i] = m_GameAccess->GetPlayerBankCount(i);		//做庄次数
 			//msg_BestBet[i] = m_GameAccess->GetDJPlayerBestBet(i);		//最大倍数
 
-			////获得大赢家（最大赢次数）
-			//if (msg_winTime[i] > nMaxWinNum)
-			//{
-			//	nMaxWinNum = msg_winTime[i];
-			//	msg_wMaxWinChairID = i;
-			//}
+			//获得大赢家（最大赢次数）
+			if (msg_winTime[i] > nMaxWinNum)
+			{
+				nMaxWinNum = msg_winTime[i];
+				msg_wMaxWinChairID = i;
+			}
 		}
 	}
 
@@ -579,7 +578,6 @@ bool CTableFrameSink::OnEventGameConclude(BYTE cbReason)
 			WORD chair = 0;
 			for (BYTE i = 0; i < _playersum; ++i)
 			{
-				cout << "1 ";
 				if (Loser > msg_userScore[i])
 				{
 					chair = i;
@@ -587,11 +585,9 @@ bool CTableFrameSink::OnEventGameConclude(BYTE cbReason)
 				}
 			}
 			Rich[chair] = 1;
-			cout << "2 ";
 			//判断是否有两个大土豪
 			for (BYTE i = 0; i < _playersum; ++i)
 			{
-				cout << "3 ";
 				if (chair != i && msg_userScore[chair] == msg_userScore[i])
 				{
 					Rich[i] = 1;
@@ -601,7 +597,6 @@ bool CTableFrameSink::OnEventGameConclude(BYTE cbReason)
 			//如果是第一局  不显示大土豪
 			if (1 == cbCurGameCount)
 			{
-				cout << "4 ";
 				for (BYTE i = 0; i < _playersum; ++i)
 					Rich[i] = 0;
 			}
@@ -858,11 +853,6 @@ bool CTableFrameSink::OnEventSendGameScene(WORD wChairID)
 
 			//断线玩家的手牌
 			m_GameAccess->GetClientHandCards(wChairID, StatusOutCard.brokenoutcarddata, m_GameAccess->GetUserCurCardNum(wChairID));
-			for (int i = 0; i < m_GameAccess->GetUserCurCardNum(wChairID); i++)
-			{
-				cout << ' ' << (int)StatusOutCard.brokenoutcarddata[i];
-			}
-			cout << endl;
 
 			for (int i = 0; i < nPlayerNum; i++)
 			{
@@ -1220,6 +1210,8 @@ bool CTableFrameSink::OnTimerMessage(DWORD wTimerID, WPARAM wBindParam)
 		{
 			m_pITableFrame->KillGameTimer(IDI_OUT_CARD);
 
+			CLog::Log(log_debug, "Timer OUT_CARD func begin!!!");
+
 			WORD OutCardUser = m_GameAccess->GetCurOutCardUser();
 			if (OutCardUser == INVALID_CHAIR)
 			{
@@ -1271,6 +1263,8 @@ bool CTableFrameSink::OnTimerMessage(DWORD wTimerID, WPARAM wBindParam)
 				//判断机器人的情况
 				if (m_pITableFrame->IsRobot(OutCardUser))
 				{
+					CLog::Log(log_debug, "Turn Not End Robot!! One");
+
 					BYTE CurCardData[MAX_CARD_COUNT] = { 0 };
 					BYTE CurCardNum = m_GameAccess->GetUserCurCardNum(OutCardUser);
 
@@ -1278,27 +1272,30 @@ bool CTableFrameSink::OnTimerMessage(DWORD wTimerID, WPARAM wBindParam)
 
 					//初始化机器人手牌数据
 					m_HandCardData[OutCardUser].Init(CurCardData, CurCardNum);
-
+					CLog::Log(log_debug, "Turn Not End Robot!! Two");
 					//初始化当前轮手牌
 					GameSituation m_GameSituation;
 					m_GameLogic->GetTurnMaxCardToRobot(m_GameSituation, m_AILogic);
 
 					//调用电脑人被动出牌函数
 					m_AILogic.get_PutCardList_2_limit(m_GameSituation, m_HandCardData[OutCardUser]);
-
-					cout << "OutCard:" << endl;
+					CLog::Log(log_debug, "Turn Not End Robot!! Three");
 
 					//判断出不出牌
 					if (m_HandCardData[OutCardUser].uctPutCardType.cgType == cgERROR || m_HandCardData[OutCardUser].uctPutCardType.cgType == cgZERO)
 					{
 						On_Sub_UserOutCard(OutCardUser, NULL, 0, 1);   //出牌过
+						break;
 					}
 					else
 					{
+						CLog::Log(log_debug, "Turn Not End Robot!! Four");
+
 						//将要出的牌从逻辑值转换成有花色
 						m_GameLogic->GetCardColorValue(OutCardUser, m_HandCardData[OutCardUser], OutCardData, OutCardNum);
 
 						On_Sub_UserOutCard(OutCardUser, OutCardData, OutCardNum, 0);     //出牌
+						break;
 					}
 				}
 				else
@@ -1313,9 +1310,13 @@ bool CTableFrameSink::OnTimerMessage(DWORD wTimerID, WPARAM wBindParam)
 							return false;
 						}
 						On_Sub_UserOutCard(OutCardUser, OutCardData, OutCardNum, 0);
+						break;
 					}
 					else
-						On_Sub_UserOutCard(OutCardUser, NULL, 0, 1);   //出牌过	
+						{
+							On_Sub_UserOutCard(OutCardUser, NULL, 0, 1);   //出牌过	
+							break;
+						}
 				}
 			}
 			//是第一个出牌  
@@ -1329,6 +1330,8 @@ bool CTableFrameSink::OnTimerMessage(DWORD wTimerID, WPARAM wBindParam)
 
 				if (m_pITableFrame->IsRobot(OutCardUser))
 				{
+					CLog::Log(log_debug, "Turn End Robot!! One");
+
 					BYTE CurCardData[MAX_CARD_COUNT] = { 0 };
 					BYTE CurCardNum = m_GameAccess->GetUserCurCardNum(OutCardUser);
 
@@ -1336,16 +1339,17 @@ bool CTableFrameSink::OnTimerMessage(DWORD wTimerID, WPARAM wBindParam)
 
 					//初始化机器人手牌数据
 					m_HandCardData[OutCardUser].Init(CurCardData, CurCardNum);
-
+					CLog::Log(log_debug, "Turn End Robot!! Two");
 					//调用电脑人主动出牌函数
 					m_AILogic.get_PutCardList_2_unlimit(m_HandCardData[OutCardUser]);
 
-					cout << "OutCard:" << endl;
+					CLog::Log(log_debug, "Turn End Robot!! Three");
 
 					//将要出的牌从逻辑值转换成有花色
 					m_GameLogic->GetCardColorValue(OutCardUser, m_HandCardData[OutCardUser], OutCardData, OutCardNum);
 					if (CT_ERROR == m_GameLogic->GetCardLogicType(OutCardData, OutCardNum))
 					{
+						CLog::Log(log_debug, "Turn End Robot!! Four");
 						//CLog::Log(log_error, "CT_ERROR == m_GameLogic->GetCardLogicType!!!!!!!!!\n");
 						//如果机器人出牌出现错误
 						BYTE UOutCardData[MAX_CARD_COUNT] = {'\0'};
@@ -1356,11 +1360,13 @@ bool CTableFrameSink::OnTimerMessage(DWORD wTimerID, WPARAM wBindParam)
 
 						//执行出牌消息
 						On_Sub_UserOutCard(OutCardUser, UOutCardData, UOutCardNum, 0);
+						break;
 					}
 					else
 					{
 						//执行出牌消息
 						On_Sub_UserOutCard(OutCardUser, OutCardData, OutCardNum, 0);
+						break;
 					}
 				}
 				else
@@ -1371,6 +1377,7 @@ bool CTableFrameSink::OnTimerMessage(DWORD wTimerID, WPARAM wBindParam)
 
 					//执行出牌消息
 					On_Sub_UserOutCard(OutCardUser, OutCardData, OutCardNum, 0);
+					break;
 				}
 
 			}
@@ -1681,7 +1688,7 @@ bool CTableFrameSink::OnEventGameStart()
 // 开始游戏
 void CTableFrameSink::StartGame()
 {
-	printf("\n【开始游戏】\n");
+	CLog::Log(log_debug, "\n【开始游戏】\n");
 
 	// 设置玩家状态【游戏中】
 	BYTE cbPlayerNum = m_GameAccess->GetMaxChairCount();
@@ -1718,11 +1725,11 @@ void CTableFrameSink::HandleDeal()
 	// 洗牌并发牌
 	m_GameLogic->Deal();		//洗牌算法增加洗牌和不洗牌两种策略
 
-	//给玩家倍数乘上底分
-	for (int i = 0; i < m_GameAccess->GetCurPlayerCount(); i++)
-	{
-		m_GameLogic->Wager(i, 15);    //目前默认为15   以后估计要改
-	}
+	////给玩家倍数乘上底分
+	//for (int i = 0; i < m_GameAccess->GetCurPlayerCount(); i++)
+	//{
+	//	m_GameLogic->Wager(i, m_GameAccess->GetCellScore());    //目前默认为15   以后估计要改
+	//}
 
 	// 构造发牌数据
 	STR_CMD_SC_SEND_CARD SendCard;
@@ -1755,6 +1762,8 @@ void CTableFrameSink::HandleDeal()
 			//赋值	
 			SendCard.wChairID = i;
 			SendCard.CurJuShu = m_GameAccess->GetCurGameCount();
+
+			CLog::Log(log_debug, "ChairID: %d, CardNum: %d", i, m_GameAccess->GetUserCurCardNum(i));
 
 			//设置是否明牌开始
 			if (5 == m_GameAccess->GetStartMingPai(i))
@@ -1816,11 +1825,11 @@ void CTableFrameSink::HandleRobBanker()
 	//根据房间规则判断抢庄模式
 	BYTE cbRobBankMode = m_GameAccess->GetRobBankMode();   
 
-	//给第一轮的玩家发送记牌器
-	for (int i = 0; i < m_GameAccess->GetCurPlayerCount(); i++)
-	{
-		OnUserJiPaiQi(i);
-	}
+	////给第一轮的玩家发送记牌器
+	//for (int i = 0; i < m_GameAccess->GetCurPlayerCount(); i++)
+	//{
+	//	OnUserJiPaiQi(i);
+	//}
 
 	//发送房间倍数信息
 	STR_CMD_SC_FANGJIAN_BET fangjian_bet;
@@ -1937,7 +1946,6 @@ void CTableFrameSink::OnUserJiaoFen(WORD wChairID, BYTE Score)
 	//设置一个参数记录叫分次数 
 	WORD JiaoNum = m_GameAccess->GetJiaoFenCount();
 	m_GameAccess->SetJiaoFenCount(++JiaoNum);
-	cout << "叫分次数：" << JiaoNum << endl;
 
 	//记录当前玩家的叫分状态
 	m_GameAccess->SetCurJiaoFenState(wChairID, Score);
@@ -1971,7 +1979,6 @@ void CTableFrameSink::OnUserJiaoFen(WORD wChairID, BYTE Score)
 			}
 		}
 
-		cout << "不叫的玩家数：" << (int)cbPassNum << endl;
 
 		//如果所有人不叫 重新发牌
 		if (3 == cbPassNum)
@@ -2055,7 +2062,6 @@ void CTableFrameSink::OnUserJiaoFen(WORD wChairID, BYTE Score)
 					}
 				}
 
-				cout << "传的二进制参数：" << m_Score << endl;
 
 				//给下个玩家发送叫分消息
 				SendJiaoFenStart(m_GameAccess->GetNextUser(wChairID), m_Score);
@@ -2102,7 +2108,6 @@ void CTableFrameSink::SendRobStart(const WORD &wChairID, const BYTE &cbType)
 
 	//设置当前正在抢庄的玩家
 	m_GameAccess->SetCurRobUser(wChairID);
-	printf("当前正在抢庄的玩家：%d\n", wChairID);
 
 	if (INVALID_CHAIR != wChairID)
 	{
@@ -2130,7 +2135,7 @@ void CTableFrameSink::SendRobStart(const WORD &wChairID, const BYTE &cbType)
 // 处理客户端发来的【抢庄】消息
 void CTableFrameSink::OnUserCallBanker(WORD wChairID, BYTE cbResult)	//1-不叫  2-叫地主  3-不抢  4-抢地主
 {
-	printf("\n【服务器】：接收用户 = %d, 抢庄类型 = %d\n", wChairID, cbResult);
+	CLog::Log(log_debug, "【服务器】：接收用户 = %d, 抢庄类型 = %d", wChairID, cbResult);
 
 	//判断玩家叫抢
 	int flag = 0;
@@ -2158,7 +2163,7 @@ void CTableFrameSink::OnUserCallBanker(WORD wChairID, BYTE cbResult)	//1-不叫  2
 	}
 
 	//如果抢设置房间倍数和抢庄倍数
-	if (ROB_TYPE_CALL == cbResult)
+	if (ROB_TYPE_ROB == cbResult)
 	{
 		m_GameAccess->SetCurRoomBet(2);
 		for (int i = 0; i < m_GameAccess->GetMaxChairCount(); i++)
@@ -2229,7 +2234,6 @@ void CTableFrameSink::OnUserCallBanker(WORD wChairID, BYTE cbResult)	//1-不叫  2
 	{
 		m_GameAccess->SetUserRobNum(wChairID, ++cbRobNum);
 	}
-	printf("玩家抢庄次数 %d\n", cbRobNum);
 
 	//若玩家两次都抢庄，则他为庄家
 	if (2 == cbRobNum)
@@ -2252,7 +2256,6 @@ void CTableFrameSink::OnUserCallBanker(WORD wChairID, BYTE cbResult)	//1-不叫  2
 				cbPassNum++;
 			}
 		}
-		printf("不抢庄的玩家数:%d\n", cbPassNum);
 
 		//所有人放弃抢庄，则重新发牌
 		if (cbPassNum == cbMaxChairCount)
@@ -2443,7 +2446,7 @@ void CTableFrameSink::AllRobBankerOver()
 //处理发送底牌
 void CTableFrameSink::HandleSendLeaveCard(const WORD &wSendCardUser)
 {
-	printf("\n【给玩家 = %d发送底牌】\n", wSendCardUser);
+	CLog::Log(log_debug, "【给玩家 = %d发送底牌】", wSendCardUser);
 
 	//根据规则判断是否底牌加倍
 	if (1 == m_GameAccess->GetISLeaveCardDouble())
@@ -2460,7 +2463,6 @@ void CTableFrameSink::HandleSendLeaveCard(const WORD &wSendCardUser)
 		DWORD index = rand() % (15 - 2);
 		BYTE LaiZi = m_GameLogic->GetCardLogicValue(CGameData::m_cbCardData[index]);
 		m_GameAccess->SetMagicCard(LaiZi);
-		cout << "癞子" << (int)m_GameAccess->GetMagicCard() << endl;
 	}
 
 	//给其他玩家发送庄家拿到底牌的消息
@@ -2492,13 +2494,10 @@ void CTableFrameSink::HandleSendLeaveCard(const WORD &wSendCardUser)
 			ZeroMemory(&SendLeaveCard, sizeof(STR_CMD_SC_SEND_LEAVE_CARD));	
 
 			//赋值底牌
-			cout << "打印要发送的底牌" << endl;
 			for (int j = 0; j < MAX_LEAVE_CARD_NUM; j++)
 			{
 				SendLeaveCard.cbLeaveCard[j] = leavecards[j];
-				printf("%d ", leavecards[j]);
 			}
-			cout << endl;
 
 			BYTE tmpcards[MAX_CARD_COUNT] = {'\0'};
 			
@@ -2548,7 +2547,7 @@ void CTableFrameSink::SendAddScoreStart(const WORD &wChairID)
 	//赋值		
 	sAddScoreStart.cbStart = 1;
 
-	printf("\n【服务器】：广播【下注开始】\n");
+	CLog::Log(log_debug, "【服务器】：广播【下注开始】");
 
 	// 广播消息 用户下注开始
 	m_pITableFrame->SendTableData(INVALID_CHAIR, CMD_SC_ADD_SCORE_START, &sAddScoreStart, sizeof(STR_CMD_SC_ADD_SCORE_START));
@@ -2571,12 +2570,11 @@ void CTableFrameSink::SendAddScoreStart(const WORD &wChairID)
 // 下注开始返回
 void CTableFrameSink::OnUserAddScore( WORD wChairID, SCORE lScore )
 {
-	printf("\n【服务器】：接收【下注】，玩家 = %d，下注 = %ld\n", wChairID, lScore);
+	CLog::Log(log_debug, "【服务器】：接收【下注】，玩家 = %d，下注 = %ld", wChairID, lScore);
 
 	//游戏状态效验
 	if (GS_WK_ADDSCORE != m_GameAccess->GetGameStatus())   //已设定为下注状态
 	{
-		cout << "-1" << endl;
 		return;
 	}
 
@@ -2710,7 +2708,7 @@ void CTableFrameSink::SendMingPaiStart(const WORD &wChairID, const BYTE &cbMPTyp
 	MingPaiStart.wChairID = wChairID;
 	MingPaiStart.cbType = cbMPType;
 
-	printf("\n【服务器】：通知用户 = %d【明牌开始】\n", wChairID);
+	CLog::Log(log_debug, "【服务器】：通知用户 = %d【明牌开始】", wChairID);
 
 	// 通知用户明牌开始
 	m_pITableFrame->SendTableData(wChairID, CMD_SC_MING_PAI_START, &MingPaiStart, sizeof(STR_CMD_SC_MING_PAI_START));
@@ -2757,8 +2755,6 @@ void CTableFrameSink::On_Sub_UserMingPai(WORD wChairID, const BYTE &cbMPType, BY
 		}
 		else if (MING_PAI_TYPE_DEAL == cbMPType)   //发牌明牌
 		{
-			cout << "FlushCardBet:" << FlushCardBet << endl;
-
 			MPResult.cbTimes = FlushCardBet;	
 
 			// 设置当前房间倍数
@@ -2830,7 +2826,6 @@ void CTableFrameSink::On_Sub_UserMingPai(WORD wChairID, const BYTE &cbMPType, BY
 					mingbet = m_GameAccess->GetPlayerMingPaiBet(i);
 				}
 			}
-			cout << "mingbet: " << mingbet << endl;
 			if (1 == mingbet)
 			{
 				for (int i = 0; i < m_GameAccess->GetCurPlayerCount(); i++)
@@ -2895,7 +2890,7 @@ void CTableFrameSink::HandleOutCardStart(const WORD &wOutCardUser)
 	}*/
 
 	//判断当前出牌回合是否结束
-	printf("判断当前回合是否结束: %d(0-结束	1-未结束)\n", m_GameAccess->GetOneTurnEnd());         //0001-出牌  0010-不出  0100-提示  1000-要不起
+	CLog::Log(log_debug, "判断当前回合是否结束: %d(0-结束	1-未结束)", m_GameAccess->GetOneTurnEnd());         //0001-出牌  0010-不出  0100-提示  1000-要不起
 	OutCardStart.ActionType = m_GameLogic->GetOutCardActionType(wOutCardUser);
 
 	//广播出牌开始消息
@@ -2910,7 +2905,7 @@ void CTableFrameSink::HandleOutCardStart(const WORD &wOutCardUser)
 	if (m_pITableFrame->IsRobot(wOutCardUser))
 	{
 		WORD index = (rand() % 4) + 1;
-		m_pITableFrame->SetGameTimer(IDI_OUT_CARD, IDI_TIME_OUT_CARD*0.05*index, 1, 0);
+		m_pITableFrame->SetGameTimer(IDI_OUT_CARD, IDI_TIME_OUT_CARD*0.05/**index*/, 1, 0);
 	}
 	else
 	{
@@ -3007,11 +3002,9 @@ void CTableFrameSink::HandleOutCard(WORD wOutCardUser, BYTE *cbOutCard, BYTE cbO
 	if ((TURN_END == m_GameAccess->GetOneTurnEnd()) &&
 		(wOutCardUser == wStartUser))
 	{
-		cout << "第一个出牌的玩家，牌型：" << (int)cbCardType << endl;
 		//牌型校验
 		if (CT_ERROR == cbCardType)		  //出的空牌
 		{
-			cout << "第一个出牌玩家出牌格式错误:CT_ERROR == cbCardType" << endl;
 			//发送出牌结果
 			SendOutCardResult(wOutCardUser, cbOutCard, cbOutCardNum, cbCardType, OUT_CARD_FAIL, OUT_CARD_NORMAL);  //出牌失败
 
@@ -3026,15 +3019,10 @@ void CTableFrameSink::HandleOutCard(WORD wOutCardUser, BYTE *cbOutCard, BYTE cbO
 	}
 	else	//后面出牌玩家
 	{
-		cout << "后面出牌的玩家" << endl;
 		//校验出牌数目是否和此轮最后出牌玩家相同，出牌校验
 		if ( /*(cbOutCardNum != m_GameAccess->GetUserOutCard(wLastUser, NULL)) || */
 			!m_GameLogic->EfficacyOutCard(wOutCardUser, cbOutCard, cbOutCardNum))
 		{
-			cout << "后面出牌的玩家的牌型错误:" << endl;
-			//printf("当前出牌的数目：%d，上个玩家出牌的数目：%d\n", cbOutCardNum, m_GameAccess->GetUserOutCard(wLastUser, NULL));
-			printf("出牌校验返回值：%d\n", m_GameLogic->EfficacyOutCard(wOutCardUser, cbOutCard, cbOutCardNum));
-
 			//发送出牌结果
 			SendOutCardResult(wOutCardUser, cbOutCard, cbOutCardNum, cbCardType, OUT_CARD_FAIL, OUT_CARD_NORMAL);
 
@@ -3050,7 +3038,6 @@ void CTableFrameSink::HandleOutCard(WORD wOutCardUser, BYTE *cbOutCard, BYTE cbO
 	//从手牌中删除玩家扑克
 	if (!m_GameLogic->RemoveCard(wOutCardUser, cbOutCard, cbOutCardNum))
 	{
-		printf("从手牌中删除玩家扑克失败\n");
 		return;
 	}
 
@@ -3066,13 +3053,11 @@ void CTableFrameSink::HandleOutCard(WORD wOutCardUser, BYTE *cbOutCard, BYTE cbO
 		m_GameAccess->GetLaiZiToCommon(LaiZiData, LaiZiCount);
 
 		int index = 0;
-		cout << "癞子代替普牌" << endl;
 		for (int i = 0; i < cbOutCardNum; i++)
 		{
 			if (m_GameAccess->GetMagicCard() == m_GameLogic->GetCardLogicValueLaiZi(cbOutCard[i]) && INVALID_CARD != LaiZiData[index])
 			{
 				cbOutCard[i] = ((LaiZiData[index] >= 14) ? (LaiZiData[index] - 13) : LaiZiData[index]) + 16 * 5;
-				printf("%d ", cbOutCard[i]);
 				index++;
 			}
 		}
@@ -3103,26 +3088,20 @@ void CTableFrameSink::HandleOutCard(WORD wOutCardUser, BYTE *cbOutCard, BYTE cbO
 		(cbCardType&(1 << CT_LAIZI_BOMB)) != 0 ||
 		(cbCardType&(1 << CT_RUAN_BOMB)) != 0)
 	{
-		cout << "设置炸弹信息" << endl;
 		m_GameAccess->SetUserBoomInfo(wOutCardUser, cbCardType);
 	}
 
 	//发送出牌结果
 	SendOutCardResult(wOutCardUser, cbOutCard, cbOutCardNum, cbCardType, OUT_CARD_SUCCESS, OUT_CARD_NORMAL);
 
-	//校验是不是一轮出牌完成      //应该检测当前玩家的牌是不是出完了
-//	if ( wNextUser == m_GameAccess->GetStartOutCardUser() )
-	//printf("玩家当前手牌数量 : %d\n", m_GameAccess->GetUserCurCardNum(wOutCardUser));
 	if (m_GameAccess->GetUserCurCardNum(wOutCardUser) == 0)
 	{
-		cout << "一轮结束" << endl;
 		//一轮结束
 		m_GameAccess->SetCurOutCardUser(INVALID_CHAIR);
 		HandleRoundEnd(wOutCardUser);
 	}
 	else
 	{
-		cout << "通知下个玩家出牌" << endl;
 		//通知下个玩家出牌开始
 		m_GameAccess->SetCurOutCardUser(wNextUser);
 		HandleOutCardStart(wNextUser);
@@ -3162,7 +3141,7 @@ void CTableFrameSink::SendOutCardResult(WORD wOutCardUser, BYTE *cbOutCard, BYTE
 			OutCard.RoomBet[i] = m_GameAccess->GetAllBet(i);
 
 			//把记牌器发给客户端缓存
-			OnUserJiPaiQi(i);
+			//OnUserJiPaiQi(i);
 		}
 	}
 
@@ -3192,6 +3171,7 @@ void CTableFrameSink::SendOutCardResult(WORD wOutCardUser, BYTE *cbOutCard, BYTE
 				if ((cbCardType & (1 << i)) != 0)
 				{
 					OutCard.cbCardType = i;	//牌型
+					CLog::Log(log_debug, "牌型: %d", OutCard.cbCardType);
 					break;
 				}
 			}
@@ -3218,7 +3198,7 @@ void CTableFrameSink::SendOutCardResult(WORD wOutCardUser, BYTE *cbOutCard, BYTE
 	//AddRecordOutCardResult(OutCard);
 	//广播出牌结果
 	m_pITableFrame->SendTableData(INVALID_CHAIR, CMD_SC_USER_OUT_CARD_RESULT, &OutCard, sizeof(STR_CMD_SC_OUT_CARD_RESULT));
-	printf("\n【广播玩家 = %d的出牌结果】\n", OutCard.wOutCardUser);	
+	CLog::Log(log_debug, "【广播玩家 = %d的出牌结果】", OutCard.wOutCardUser);	
 
 }
 
@@ -3249,11 +3229,11 @@ void CTableFrameSink::HandleRoundEnd(const WORD &wWinner)
 		//通知赢家出牌
 		HandleOutCardStart(wWinner);
 
-		printf("\n【玩家还有牌，一轮结束，通知赢家 = %d出牌开始】\n", wWinner);
+		CLog::Log(log_debug, "【玩家还有牌，一轮结束，通知赢家 = %d出牌开始】", wWinner);
 	}
 	else	//玩家所有牌出完
 	{
-		printf("\n【游戏结束】\n");
+		CLog::Log(log_debug, "【游戏结束】");
 
 		//设置赢家
 		m_GameAccess->SetLastGameWinner(wWinner);
@@ -3362,12 +3342,12 @@ void CTableFrameSink::OnUserPublicBet(WORD wChairID)
 	WORD Rob_Num = 0;    //抢庄次数
 	WORD Rob_bet = 1;    //抢庄倍数
 	WORD public_Bet = 0;  //公共倍数
+	WORD cell_score = m_GameAccess->GetCellScore();
 	tagBoomInfo  boominfo;  //炸弹信息
 	WORD Rule = m_GameAccess->GetRobBankMode();  //获取游戏规则
-	cout << "规则：" << Rule << endl;
 
 	//赋值
-	public_bet.RoomBet = 5;	//底分
+	public_bet.RoomBet = 1;	//底分
 	public_bet.IUserAScore = m_GameAccess->GetAllBet(wChairID);   //总分
 	public_bet.Game_State = m_GameAccess->GetGameStatus();		//游戏状态
 
@@ -3395,7 +3375,6 @@ void CTableFrameSink::OnUserPublicBet(WORD wChairID)
 	//加倍
 	for (int i = 0; i < m_GameAccess->GetCurPlayerCount(); i++)
 	{
-		cout << "各玩家的加倍信息" << (int)m_GameAccess->GetPlayerAddScore(i) << endl;
 		public_bet.AddScore[i] = m_GameAccess->GetPlayerAddScore(i);    //各玩家的加倍信息
 		Boom_Num += m_GameAccess->GetUserBoomInfo(i, boominfo);			//获取炸弹总数
 		Rob_Num += m_GameAccess->GetUserRobNum(i);						//获取总共抢庄次数
@@ -3449,14 +3428,14 @@ void CTableFrameSink::OnUserPublicBet(WORD wChairID)
 	//公共倍数
 	if (Boom_Num == 0)
 		if (Mingpai_Bet == 0)
-			public_Bet = 15 * Rob_bet * LeaveCard_Bet* Spring_Bet;  //公共倍数 = 初始*明牌*抢地主*底牌*炸弹*春天
+			public_Bet = Rob_bet * LeaveCard_Bet* Spring_Bet;  //公共倍数 = 初始*明牌*抢地主*底牌*炸弹*春天
 		else
-			public_Bet = 15 * Rob_bet * Mingpai_Bet * LeaveCard_Bet * Spring_Bet;
+			public_Bet = Rob_bet * Mingpai_Bet * LeaveCard_Bet * Spring_Bet;
 	else
 		if (Mingpai_Bet == 0)
-			public_Bet = 15 * Rob_bet  * Boom_Bet * LeaveCard_Bet * Spring_Bet;  //公共倍数 = 初始*明牌*抢地主*底牌*炸弹8春天
+			public_Bet = Rob_bet  * Boom_Bet * LeaveCard_Bet * Spring_Bet;  //公共倍数 = 初始*明牌*抢地主*底牌*炸弹8春天
 		else
-			public_Bet = 15 * Rob_bet * Mingpai_Bet * Boom_Bet * LeaveCard_Bet * Spring_Bet;
+			public_Bet = Rob_bet * Mingpai_Bet * Boom_Bet * LeaveCard_Bet * Spring_Bet;
 
 	//判断是否封顶
 	if (m_GameAccess->GetRoomMaxBet() < public_Bet)
@@ -3470,7 +3449,7 @@ void CTableFrameSink::OnUserPublicBet(WORD wChairID)
 
 	printf("rob_bet: %d  Mingpai_Bet: %d  public_Bet:%d\n", Rob_bet, Mingpai_Bet, public_Bet);
 
-	m_pITableFrame->SendTableData(wChairID, CMD_SC_PUBLIC_BET, &public_bet, sizeof(STR_CMD_SC_PUBLIC_BET));
+	//m_pITableFrame->SendTableData(wChairID, CMD_SC_PUBLIC_BET, &public_bet, sizeof(STR_CMD_SC_PUBLIC_BET));
 }
 
 //处理客户端发来的记牌器消息

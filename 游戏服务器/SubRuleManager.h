@@ -11,7 +11,7 @@ struct MATCH_CONFIG
 	//阶段信息
 	struct STAGE_INFO
 	{
-		TCHAR	szName[128];	//初赛、半决赛、决赛..
+		TCHAR	szName[16];	//初赛、半决赛、决赛..
 		DWORD	wXJCount;					//小局数
 		DWORD	wPlayerCount;				//人数
 		DWORD	wJinJi_Rule;				//晋级规则   同桌比较/全桌比较 1,2
@@ -20,7 +20,7 @@ struct MATCH_CONFIG
 
 	//比赛场信息
 	DWORD		wMatchID;							//比赛场ID标识
-	TCHAR		szTitle[128];			//标题
+	TCHAR		szTitle[32];			//标题
 	TCHAR		szDescribe[128];		//比赛描述
 	STAGE_INFO	stage[5];				//阶段信息
 	DWORD		wStageSize;							//阶段个数

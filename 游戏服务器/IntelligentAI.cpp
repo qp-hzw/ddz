@@ -63,7 +63,7 @@ bool  HandCardData::PutOneCard(int value_nCard, int &color_nCard)
 
 
 	//value列表数组处理
-	for (vector<int>::iterator iter = value_nHandCardList.begin(); iter != value_nHandCardList.end(); iter++)
+	for (list<int>::iterator iter = value_nHandCardList.begin(); iter != value_nHandCardList.end(); iter++)
 	{
 		if (*iter == value_nCard)
 		{
@@ -78,7 +78,7 @@ bool  HandCardData::PutOneCard(int value_nCard, int &color_nCard)
 
 	int k = (value_nCard - 3) * 4;      //数值转换
 
-	for (vector<int>::iterator iter = color_nHandCardList.begin(); iter != color_nHandCardList.end(); iter++)
+	for (list<int>::iterator iter = color_nHandCardList.begin(); iter != color_nHandCardList.end(); iter++)
 	{
 
 		for (int i = k; i < k + 4; i++)
@@ -524,11 +524,11 @@ CardGroupData AILogic::ins_SurCardsType(int arr[])
 是：  返回手牌类型数据
 不是：返回错误类型（cgERROR）
 */
-CardGroupData AILogic::ins_SurCardsType(vector<int>list)
+CardGroupData AILogic::ins_SurCardsType(list<int>mlist)
 {
 	int arr[18];
 	memset(arr, 0, sizeof(arr));
-	for (vector<int>::iterator iter = list.begin(); iter != list.end(); iter++)
+	for (list<int>::iterator iter = mlist.begin(); iter != mlist.end(); iter++)
 	{
 		arr[*iter]++;
 	}
@@ -739,11 +739,9 @@ void AILogic::get_PutCardList_2_limit(GameSituation &clsGameSituation, HandCardD
 	//不出牌型，当队友出牌的价值 > 1时 选择不出牌
 	if (clsGameSituation.NowOutUser != clsGameSituation.nDiZhuID && clsGameSituation.nCardDroit != clsGameSituation.nDiZhuID)   //我不是地主，最后出牌玩家不是地主
 	{
-		cout << "clsGameSituation.uctNowCardGroup.nValue::" << clsGameSituation.uctNowCardGroup.nValue << endl;
 		//判断队友出的手牌的价值 > 1 选择不出牌
 		if (clsGameSituation.uctNowCardGroup.nValue > 0)
 		{
-			cout << "buchupai" << endl;
 			clsHandCardData.uctPutCardType = get_GroupData(cgZERO, 0, 0);
 			return;
 		}
@@ -3088,10 +3086,6 @@ int AILogic::LandScore(HandCardData &clsHandCardData)
 	clsHandCardData.uctHandCardValue = get_HandCardValue(clsHandCardData);
 
 	SumValue = clsHandCardData.uctHandCardValue.SumValue;
-
-	cout << "SumValue is :" << SumValue << ",";
-
-	cout << "NeedRound is :" << clsHandCardData.uctHandCardValue.NeedRound << endl;
 
 	if (SumValue < 10)
 	{

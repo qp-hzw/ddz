@@ -853,7 +853,6 @@ bool CGameData::JudgePlayerOutCard(WORD wCurOutCardUser)      //lih
 		//获取上家出牌数值
 		BYTE TurnLogicValue = GetCardLogicValue(TurnResult.cbSignedCardData[0]);
 
-		cout << "获取上家出牌数值:" << (int)TurnLogicValue << endl;
 
 		if (GetCardLogicValue(CurCardData[0]) > TurnLogicValue)
 			return true;
@@ -925,7 +924,6 @@ bool CGameData::JudgePlayerOutCard(WORD wCurOutCardUser)      //lih
 
 		//获取上家出牌数值  最大值
 		BYTE TurnLogicValue = GetCardLogicValue(TurnResult.cbSignedCardData[0]);
-		cout << "顺子:获取上家出牌数值:" << (int)TurnLogicValue << endl;
 
 		int flag = 0;
 
@@ -1316,9 +1314,6 @@ bool CGameData::AnalysePlayerOutCardFirst(WORD OutCardUsr, BYTE OutCardData[], B
 		cout << "1";
 
 		BYTE MinData = GetCardLogicValue(CurCardData[CurCardNum - 1]);		//获取最小牌
-		cout << "MinData:" << (int)MinData << endl;
-		cout << "cbDoubleCardData:" << (int)GetCardLogicValue(CurResult.cbDoubleCardData[CurResult.cbDoubleCount * 2 - 1]) << endl;
-		cout << "cbThreeCardData:" << (int)GetCardLogicValue(CurResult.cbThreeCardData[CurResult.cbThreeCount * 3 - 1]) << endl;
 		if (MinData == GetCardLogicValue(CurResult.cbSignedCardData[CurResult.cbSignedCount - 1]))		//单排
 		{
 			cout << "1.1";
@@ -1555,7 +1550,6 @@ bool CGameData::AnalysePlayerOutCard(WORD OutCardUsr, BYTE OutCardData[], BYTE *
 		//获取上家出牌数值
 		BYTE TurnLogicValue = GetCardLogicValue(TurnResult.cbSignedCardData[0]);
 
-		cout << "获取上家出牌数值:" << (int)TurnLogicValue << endl;
 
 		int index = (CurResult.cbSignedCount - 1);
 		for (int i = 0; i < CurResult.cbSignedCount; i++)
@@ -1754,7 +1748,6 @@ bool CGameData::AnalysePlayerOutCard(WORD OutCardUsr, BYTE OutCardData[], BYTE *
 
 		//获取上家出牌数值  最大值
 		BYTE TurnLogicValue = GetCardLogicValue(TurnResult.cbSignedCardData[0]);
-		cout << "顺子:获取上家出牌数值:" << (int)TurnLogicValue << endl;
 
 		int flag = 0;
 		int index = 0;
@@ -2890,7 +2883,6 @@ int CGameData::GetCardLogicType(const BYTE *cbCardData, BYTE cbCardCount)
 						if (GetCardLogicValueLaiZi(cbCardData[0]) == m_playing_para.magic_card)    LaiZiData[0] = GetCardLogicValue(cbCardData[1]);
 						if (GetCardLogicValueLaiZi(cbCardData[1]) == m_playing_para.magic_card)    LaiZiData[0] = GetCardLogicValue(cbCardData[0]);
 
-						cout << "对牌癞子：：：" << LaiZiData[0] << endl;
 						//设置癞子做普通牌
 						SetLaiZiToCommon(LaiZiData, LaiZiNum);
 						return TransListToInt(0, CT_DOUBLE);
@@ -3148,8 +3140,6 @@ int CGameData::GetCardLogicType(const BYTE *cbCardData, BYTE cbCardCount)
 
 	//设置癞子做普通牌
 	SetLaiZiToCommon(LaiZiData, LaiZiNum);
-
-	cout << "LaiZiNum::" << (int)LaiZiNum << endl;
 
 	//定时器出牌事件炸弹类型的判断
 	if (((dCardType)&(1 << CT_BOMB_CARD)) != 0)
@@ -3445,20 +3435,9 @@ bool CGameData::EfficacyOutCard(const WORD &wCheckUser, const BYTE *cbOutCardDat
 	ZeroMemory(&cbTurnCard, sizeof(cbTurnCard));
 	CopyMemory(cbTurnCard, m_playing_para.turn_max_cards, sizeof(cbTurnCard));
 
-	printf("获得该轮最大的出牌数据:");
-	for (int i = 0; i < cbTurnCardNum; i++)
-	{
-		printf("%d ", cbTurnCard[i]);
-	}
-	cout << endl;
-
 	//获取类型
 	int cbFirstType = GetCardLogicType(cbTurnCard, cbTurnCardNum);
 	int cbNextType = GetCardLogicType(cbOutCardData, cbOutCardCount);
-
-	cout << "cbFirstType:" << cbFirstType << endl;
-	cout << "cbNextType:" << cbNextType << endl;
-
 
 	//类型判断
 	if (cbNextType == CT_ERROR) return false;
@@ -5166,7 +5145,6 @@ BYTE __stdcall CGameData::GetMagicCard()
 //设置玩家炸弹信息
 int __stdcall CGameData::SetUserBoomInfo(const WORD &wChairID, const DWORD cbBoomType)
 {
-	cout << wChairID << ":炸弹类型:" << (int)cbBoomType << endl;
 	//校验
 	if (((1 << CT_RUAN_BOMB) > cbBoomType) || ((1 << CT_MISSILE_CARD) < cbBoomType))
 		cout << "Error!!!" << endl;
@@ -5411,6 +5389,7 @@ int CGameData::InitGameData()
 	for (unsigned i = 0; i < m_players_config.player_sum; ++i)
 	{
 		m_players_config.players[i].total_score = 0;
+		m_players_config.players[i].single_score = 0;
 		m_players_config.players[i].winsum = 0;
 		m_players_config.players[i].level = START_LEVEL_VALUE;
 		m_players_config.players[i].bet = 1;   //初始加倍明牌倍数为1
@@ -5998,8 +5977,6 @@ DWORD __stdcall CGameData::IsDoubleLeaveCard()
 	{
 		m_playing_para.leave_card_bet = 4;
 	}
-
-	cout << "leave_card_bet:" << m_playing_para.leave_card_bet << endl;
 
 	for (int i = 0; i < GetCurPlayerCount(); i++)
 	{
@@ -6808,8 +6785,6 @@ bool CGameData::LaiZiCompareCard(BYTE Card[], BYTE CardCount, BYTE OutCardData[]
 		//获取上家出牌数值
 		BYTE TurnLogicValue = GetCardLogicValue(TurnResult.cbSignedCardData[0]);
 
-		cout << "获取上家出牌数值:" << (int)TurnLogicValue << endl;
-
 		int index = (CurResult.cbSignedCount - 1);
 		for (int i = 0; i < CurResult.cbSignedCount; i++)
 		{
@@ -7007,7 +6982,6 @@ bool CGameData::LaiZiCompareCard(BYTE Card[], BYTE CardCount, BYTE OutCardData[]
 
 		//获取上家出牌数值  最大值
 		BYTE TurnLogicValue = GetCardLogicValue(TurnResult.cbSignedCardData[0]);
-		cout << "顺子:获取上家出牌数值:" << (int)TurnLogicValue << endl;
 
 		int flag = 0;
 		int index = 0;
