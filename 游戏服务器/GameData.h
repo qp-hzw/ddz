@@ -668,8 +668,6 @@ public:
 	CServerLog          *m_plog;			// 日志
 	wchar_t             m_cfgFile[128];		// 配置文件
 
-	DWORD				m_dPlayerState[MAX_CHAIR_COUNT];		//大局游戏玩家状态，在初始化游戏之前会用到
-
 public:
 	static const BYTE	m_cbCardData[FULL_COUNT];			//原始扑克数据
 	

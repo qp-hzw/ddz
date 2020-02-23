@@ -45,12 +45,10 @@ protected:
 
 	tagTableCfg						* m_pRoomRuleOption;					//房间规则
 
-	DWORD							m_dPlayerState[MAX_CHAIR_COUNT];		//框架传来的玩家游戏状态
-
 	GameRecord						m_GameRec;								//游戏录像数据结构体
 
 	AILogic							m_AILogic;							    //AI出牌逻辑类
-	HandCardData					m_HandCardData[3];						//AI手牌数据类
+	HandCardData					m_HandCardData[MAX_CHAIR_COUNT];						//AI手牌数据类
 
 	//函数定义
 public:
@@ -59,15 +57,10 @@ public:
 	//析构函数
 	virtual ~CTableFrameSink();
 
-
 	//管理接口
 public:
 	//初始化
 	virtual bool Initialization(ITableFrame *pTableFrame, tagTableRule *comRule);
-	//复位桌子
-	virtual VOID RepositionSink();
-	//获取KindID给框架
-	virtual DWORD GetKindIDToFrame();
 
 	//游戏事件
 public:
@@ -84,8 +77,6 @@ public:
 	virtual bool OnTimerMessage(DWORD wTimerID, WPARAM wBindParam);
 	//游戏消息处理
 	virtual bool OnGameMessage(WORD wSubCmdID, VOID * pData, WORD wDataSize, WORD wChairID);
-	//数据事件
-	virtual bool OnGameDataBase(WORD wRequestID, VOID * pData, WORD wDataSize) { return false; }
 
 	//响应client事件
 protected:

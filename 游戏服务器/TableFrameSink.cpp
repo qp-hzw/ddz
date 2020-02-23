@@ -14,7 +14,6 @@ CTableFrameSink::CTableFrameSink()
 
 	m_pRoomRuleOption = new tagTableCfg;
 
-	memset(m_dPlayerState, USER_NULL, sizeof(DWORD)*MAX_CHAIR_COUNT);
 }
 
 // 析构函数
@@ -32,13 +31,6 @@ CTableFrameSink::~CTableFrameSink()
 
 	delete m_pRoomRuleOption;
 	m_pRoomRuleOption = NULL;
-}
-
-
-//获取KindID给框架
-DWORD CTableFrameSink::GetKindIDToFrame()
-{
-	return KIND_ID;
 }
 
 // 初始化
@@ -88,15 +80,6 @@ bool CTableFrameSink::Initialization(ITableFrame *pTableFrame, tagTableRule *com
 	}
 	
 	return true;
-}
-
-// 复位桌子
-VOID  CTableFrameSink::RepositionSink()
-{
-	if ( NULL != m_GameAccess )
-	{
-		m_GameAccess->SetGameStatus( GAME_STATUS_FREE ); // 等待开始
-	}
 }
 
 // 小局游戏结束
@@ -1378,6 +1361,9 @@ bool CTableFrameSink::OnTimerMessage(DWORD wTimerID, WPARAM wBindParam)
 					//执行出牌消息
 					On_Sub_UserOutCard(OutCardUser, OutCardData, OutCardNum, 0);
 					break;
+
+					On_Sub_UserOutCard(OutCardUser, NULL, 0, 1);   //出牌过	
+							break;
 				}
 
 			}
@@ -1778,6 +1764,13 @@ void CTableFrameSink::HandleDeal()
 			//设置手牌数据  
 			int _cardsum = m_GameAccess->GetPlayerInitCardNum();
 			m_GameAccess->GetClientHandCards(i, SendCard.cbHandCardData, _cardsum);
+
+			printf("ChairID: %d Card:", i);
+			for (int j = 0; j < _cardsum; j++)
+			{
+				printf(" %d", SendCard.cbHandCardData[j]);
+			}
+			printf("\n");
 
 			//设置各卡牌的数量
 			for (int j = 0; j < cbMaxChairCount; j++)
@@ -2251,7 +2244,8 @@ void CTableFrameSink::OnUserCallBanker(WORD wChairID, BYTE cbResult)	//1-不叫  2
 		for (int i = 0; i < cbMaxChairCount; i++)
 		{
 			if ((USER_PLAYING == m_GameAccess->GetPlayerState(i)) &&
-				(ROB_STATE_BUJIAO == m_GameAccess->GetBankerState(i)))     //1-不叫  2-叫地主  3-不抢  4-抢地主
+				((ROB_STATE_BUJIAO == m_GameAccess->GetBankerState(i)) ||
+				(ROB_STATE_BUQIANG == m_GameAccess->GetBankerState(i))))     //1-不叫  2-叫地主  3-不抢  4-抢地主
 			{
 				cbPassNum++;
 			}
@@ -3539,6 +3533,16 @@ extern "C" __declspec(dllexport) VOID * CreateTableFrameSink()
 	//清理对象
 	SafeDelete(pTableFrameSink);
 	return NULL;
+}
+
+extern "C" __declspec(dllexport) VOID  FreeTableFrameSink(VOID *p)
+{
+	CTableFrameSink *pTableFrameSink = (CTableFrameSink *)p;
+	CLog::Log(log_debug, "pTableFrameSink: %d", pTableFrameSink);
+	if (pTableFrameSink != NULL)
+	{
+		SafeDelete(pTableFrameSink);
+	}
 }
 
 //读取配置文件
