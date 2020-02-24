@@ -1,0 +1,15 @@
+[ROOM_LEVEL_0]
+difen = 1
+enterGold = 100
+
+[ROOM_LEVEL_1]
+difen = 5
+enterGold = 500
+
+[ROOM_LEVEL_2]
+difen = 10
+enterGold = 1000
+
+[ROOM_LEVEL_3]
+difen = 20
+enterGold = 10000

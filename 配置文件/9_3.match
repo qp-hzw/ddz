@@ -1,0 +1,20 @@
+[MATCH]
+matchid = 3
+basescore = 1
+starttype = 0
+leastcount = 3
+feetype = 0
+fee = 1000
+reword = 5000
+timeperiod = 2
+robotcount = 0
+robotjoinmin = 2
+robotjoinmax = 5
+title = 5000金比赛
+describe = 测试
+
+[STAGE_0]
+name = 决赛
+xjcount = 2;
+jinji_rule = 2;
+jinji_count = 1;

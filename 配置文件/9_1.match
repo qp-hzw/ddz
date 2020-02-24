@@ -1,0 +1,31 @@
+[MATCH]
+matchid = 1
+basescore = 1
+starttype = 0
+leastcount = 9
+feetype = 0
+fee = 1000
+reword = 5000
+robotcount = 9
+robotjoinmin = 3
+robotjoinmax = 5
+title = 5000金比赛
+describe = 经典斗地主玩法，9人人满开赛，分初赛、半决赛和决赛
+
+[STAGE_0]
+name = 初赛
+xjcount = 1;
+jinji_rule = 1;
+jinji_count = 2;
+
+[STAGE_1]
+name = 半决赛
+xjcount = 2;
+jinji_rule = 2;
+jinji_count = 3;
+
+[STAGE_2]
+name = 决赛
+xjcount = 2;
+jinji_rule = 1;
+jinji_count = 1;
