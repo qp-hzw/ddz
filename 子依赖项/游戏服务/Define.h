@@ -3,6 +3,7 @@
 
 //////////////////////////////////////////////////////////////////////////////////
 //人数定义
+#define MAX_CHAIR					6									//最大椅子
 #define MAX_ANDROID					256									//最大机器
 
 //参数定义
@@ -39,6 +40,13 @@
 //列表数据
 #define LEN_KIND					32									//类型长度
 #define LEN_SERVER					32									//房间长度
+
+//比赛场
+#define MAX_MATCH					10									//最大比赛场数
+#define MAX_MATCH_TITLE				128									//比赛场标题最大长度
+#define MAX_MATCH_STAGE				5									//比赛最多阶段
+#define MATCH_START_TYPE_COUNT		0									//人满即开
+#define MATCH_START_TYPE_TIME		1									//定时开赛
 
 //////////////////////////////////////////////////////////////////////////////////
 //列表数据

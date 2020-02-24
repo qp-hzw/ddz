@@ -1,6 +1,7 @@
 #ifndef CMD_LONGON_HEAD_FILE
 #define CMD_LONGON_HEAD_FILE
 
+#include "CMD_Club.h"
 #include "STR_CMD_LogonServer.h"
 
 /*
@@ -117,10 +118,6 @@
 
 #define CMD_LC_SERVICE_MARQUEE					18							//跑马灯消息
 
-#define SUB_CL_SERVICE_MATCH_INFO				22							//请求比赛场信息
-#define CMD_LC_SERVICE_MATCH_INFO				122							//请求比赛场信息  返回
-#define CMD_LC_SERVICE_MATCH_INFO_FINISH		222							//请求比赛场信息  结束
-
 #define SUB_CL_SERVICE_XJ_RECORD_PLAYBACK		20							//小局录像回放
 #define CMD_LC_SERVICE_XJ_RECORD_PLAYBACK		120							//小局录像回放 返回
 
@@ -131,122 +128,6 @@
 #define CMD_LC_SERVICE_GET_RANK_REWARD			122							//领取排行榜奖励返回
 
 #pragma endregion
-
-#pragma region MDM_CLUB  牌友圈
-/* *******************************************************************************
-**          MAIN:6      MDM_CLUB  牌友圈(版本2)
-** ******************************************************************************/
-//【主消息号】
-#define MDM_CLUB								6							//牌友圈(版本2)
-
-//【子消息号】
-/*************** 牌友圈相关 ***********/
-#define SUB_CL_CLUB_CREATE_CLUB					1							//创建牌友圈
-#define CMD_LC_CLUB_CREATE_CLUB					101							//创建牌友圈返回
-
-#define SUB_CL_CLUB_JOIN_CLUB					2							//申请加入牌友圈
-#define CMD_LC_CLUB_JOIN_CLUB					102							//申请加入牌友圈返回
-#define CMD_LC_CLUB_JOIN_CLUB_BDCAST			202							//申请加入牌友圈广播
-
-#define SUB_CL_CLUB_DISS_CLUB					3							//解散牌友圈
-#define CMD_LC_CLUB_DISS_CLUB					103							//解散牌友圈返回
-
-#define SUB_CL_CLUB_ALL_CLUB_INFO_LIST			4							//查询自身牌友圈列表
-#define CMD_LC_CLUB_ALL_CLUB_INFO_LIST			104							//查询自身牌友圈列表结果
-#define CMD_LC_CLUB_ALL_INFO_FINISH				204							//查询自身牌友圈列表完成
-
-#define SUB_CL_CLUB_RANDOM_CLUB_LIST			5							//查询未满员, 非自身随机牌友圈(最大9个)
-#define CMD_LC_CLUB_RANDOM_CLUB_LIST			105							//查询未满员非自身随机牌友圈 返回
-#define CMD_LC_CLUB_RANDOM_CLUB_LIST_FINISH		205							//查询未满员非自身随机牌友圈 结束
-
-/*************** 牌友圈 房间相关 -- 除了查询, 其他都是游戏服处理 ***********/
-#define SUB_CL_CLUB_ROOM_LIST					11							//查询指定牌友圈房间列表
-#define CMD_LC_CLUB_ROOM_LIST					111							//查询指定牌友圈房间列表 返回
-#define CMD_LC_CLUB_ROOM_LIST_FINISH			211							//查询指定牌友圈房间列表 结束
-
-#define SUB_CL_CLUB_JOIN_ROOM					12							//申请加入房间
-#define CMD_LC_CLUB_JOIN_ROOM					112							//申请加入房间 返回
-#define CMD_LC_CLUB_TABLE_LIST_TABLE			212							//该房间的桌子信息
-#define CMD_LC_CLUB_TABLE_LIST_USER				312							//该房间的玩家信息
-
-#define SUB_CL_CLUB_ROOM_SETTING				13							//房间设置请求 
-#define CMD_LC_CLUB_ROOM_SETTING				113							//房间设置请求 返回
-
-#define SUB_CL_CLUB_ROOM_USER_LEAVE				14							//玩家离开房间 
-
-#define SUB_CL_CLUB_ROOM_DISSOLVE				15							//解散房间请求 
-#define CMD_LC_CLUB_ROOM_DISSOLVE				115							//解散房间请求 返回
-
-#define CMD_LC_CLUB_LIST_RE						116							//实时刷新工会列表
-
-//TODONOWW 删除房间的时候也需要 实时刷新房间列表
-#define CMD_LC_CLUB_ROOM_RE						117							//实时刷新工会房间列表
-
-#define SUB_CL_CLUB_TABLE_DISSOLVE				18							//解散桌子请求 
-#define CMD_LC_CLUB_TABLE_DISSOLVE				118							//解散桌子请求 返回
-
-#define SUB_CL_CLUB_ROOM_QUERY_SETTING			19							//请求房房间设置信息
-#define CMD_LC_CLUB_ROOM_QUERY_SETTING			119							//请求房房间设置信息 返回
-
-/*************** 牌友圈 工会操作 **********/
-#define SUB_CL_CLUB_NOTICE						21							//牌友圈公告 -- 内部成员可看
-#define CMD_LC_CLUB_NOTICE						121							//牌友圈公告 返回
-#define CMD_LC_CLUB_NOTICE_BDCAST				221							//牌友圈公告 广播
-
-#define SUB_CL_CLUB_MESSAGE						22							//牌友圈简介 -- 对外部展示的信息
-#define CMD_LC_CLUB_MESSAGE						122							//牌友圈简介 返回  注:牌友圈简介 无须广播
-
-#define SUB_CL_CLUB_CONTRIBUTE_FK				23							//贡献房卡 -- 对外部展示的信息
-#define CMD_LC_CLUB_CONTRIBUTE_FK				123							//贡献房卡 返回
-
-#define SUB_CL_CLUB_AUTO_AGREE					24							//牌友圈设置 -- 申请加入自动同意
-#define CMD_LC_CLUB_AUTO_AGREE					124							//牌友圈设置 返回
-
-#define SUB_CL_CLUB_CHAT						25							//聊天ALL 
-#define CMD_LC_CLUB_CHAT						125							//聊天ALL 返回
-#define CMD_LC_CLUB_CHAT_BDCAST					225							//聊天ALL 广播
-
-#define SUB_CL_CLUB_STICKY_POST					26							//牌友圈工会置顶
-#define CMD_LC_CLUB_STICKY_POST					126							//牌友圈工会置顶返回
-
-/*************** 牌友圈 成员操作 **********/
-#define SUB_CL_CLUB_MEMBER_MANAGER				31							//请求成员数据
-#define CMD_LC_CLUB_MEMBER_MANAGER				131							//请求成员数据 返回
-#define CMD_LC_CLUB_MEMBER_MANAGER_FINISH		231							//请求成员数据 结束
-#define CMD_LC_CLUB_DATA						331							//工会基本信息
-
-#define SUB_CL_CLUB_INVITE						32							//邀请他入加入牌友圈 
-#define CMD_LC_CLUB_INVITE						132							//邀请他人加入牌友圈 返回
-#define CMD_LC_CLUB_INVITE_REMIND				232							//被邀请人的提醒
-
-#define SUB_CL_CLUB_INVITE_RESULT				33							//被邀请人的回复
-#define CMD_LC_CLUB_INVITE_RESULT				133							//被邀请人的回复 返回
-
-#define SUB_CL_CLUB_APPLICANT_LIST				34							//牌友圈中申请人列表
-#define CMD_LC_CLUB_APPLICANT_LIST				134							//牌友圈中申请人列表 返回
-#define CMD_LC_CLUB_APPLICANT_LIST_FINISH		234							//牌友圈中申请人列表 结束
-
-#define SUB_CL_CLUB_APPLICANT_RESULT			35							//群主|管理对申请消息的答复(同意|拒绝)
-#define CMD_LC_CLUB_APPLICANT_RESULT			135							//群主|管理对申请消息的答复(同意|拒绝)
-
-#define SUB_CL_CLUB_QUIT						36							//用户退出牌友圈
-#define CMD_LC_CLUB_QUIT						136							//用户给退出牌友圈 返回
-
-#define SUB_CL_CLUB_APPOINTMENT					37							//职务任免 0提出 1将为一般成员 2设置为管理员 
-#define CMD_LC_CLUB_APPOINTMENT					137							//职务任免 返回
-#define CMD_LC_CLUB_APPOINTMENT_NOTE			237							//职务任免 提醒
-
-#define SUB_CL_CLUB_INQUERY_LIST				38							//被邀请人查看自己的邀请列表
-#define CMD_LC_CLUB_INQUERY_LIST				138							//被邀请人查看自己的邀请列表 返回
-#define CMD_LC_CLUB_INQUERY_LIST_FINISH			238							//被邀请人查看自己的邀请列表 结束
-
-
-/*************** 牌友圈 战绩查看 **********/
-#define SUB_CL_CLUB_RECORD_LIST					41							//工会战绩统计 查询
-#define CMD_LC_CLUB_RECORD_LIST					141							//工会战绩统计 返回
-#define CMD_LC_CLUB_RECORD_FINISH				241							//工会战绩统计 结束
-
-#pragma endregion 
 
 #pragma region MDM_SHOP 商城道具
 /* *******************************************************************************
@@ -315,7 +196,5 @@ struct STR_CMD_LC_OTHER_OPERATE_RESULT
 #define CMD_LC_GAME_QUERY_GAMEID				101							//创建房间之前, 先查询可用的GameID
 
 #pragma endregion
-
-#pragma pack()
 
 #endif

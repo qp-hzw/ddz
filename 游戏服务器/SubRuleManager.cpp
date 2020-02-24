@@ -20,77 +20,38 @@ void CSubRuleManager::Init()
 	memset(&(s_instance->m_SubRule), 0, sizeof(s_instance->m_SubRule));
 }
 
-//获取字段 对应的描述
-string CSubRuleManager::GetDescribe(string key_name)
-{
-	string describe;
-	if(key_name == "Cellscore")
-	{
-		describe = "底分";
-	}
-	else if(key_name == "GameWanFa")
-	{
-		describe = "玩法";
-	}
-	else if(key_name == "GameDiZhu")
-	{
-		describe = "叫地主模式";
-	}
-	else if(key_name == "GameFengDing")
-	{
-		describe = "封顶倍数";
-	}
-	else if(key_name == "DontCutCards")
-	{
-		describe = "不洗牌";
-	}
-	else if(key_name == "AddMultiple")
-	{
-		describe = "加倍";
-	}
-	else if(key_name == "ShowCards")
-	{
-		describe = "明牌";
-	}
-	else if(key_name == "BaseCardAddMultiple")
-	{
-		describe = "底牌加倍";
-	}
-
-	return describe;
-}
 //根据字段名字, 为结构体对应字段赋值
 void CSubRuleManager::SetRoomRule( string key_name, string value)
 {
-	if(key_name == "Cellscore")
+	if(key_name == "底分")
 	{
 		m_SubRule.Cellscore = atoi(value.c_str());
 	}
-	else if(key_name == "GameWanFa")
+	else if(key_name == "玩法")
 	{
 		m_SubRule.GameWanFa = atoi(value.c_str());
 	}
-	else if(key_name == "GameDiZhu")
+	else if(key_name == "叫地主模式")
 	{
 		m_SubRule.GameDiZhu = atoi(value.c_str());
 	}
-	else if(key_name == "GameFengDing")
+	else if(key_name == "封顶倍数")
 	{
 		m_SubRule.GameFengDing = atoi(value.c_str());
 	}
-	else if(key_name == "DontCutCards")
+	else if(key_name == "不洗牌")
 	{
 		m_SubRule.DontCutCards = atoi(value.c_str());
 	}
-	else if(key_name == "AddMultiple")
+	else if(key_name == "加倍")
 	{
 		m_SubRule.AddMultiple = atoi(value.c_str());
 	}
-	else if(key_name == "ShowCards")
+	else if(key_name == "明牌")
 	{
 		m_SubRule.ShowCards = atoi(value.c_str());
 	}
-	else if(key_name == "BaseCardAddMultiple")
+	else if(key_name == "底牌加倍")
 	{
 		m_SubRule.BaseCardAddMultiple = atoi(value.c_str());
 	}

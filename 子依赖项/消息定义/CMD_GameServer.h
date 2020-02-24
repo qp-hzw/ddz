@@ -2,6 +2,7 @@
 #define CMD_GAME_SERVER_HEAD_FILE
 
 #include "STR_CMD_GameServer.h"
+#include "CMD_Club.h"
 
 /*
 ** 简要描述:  游戏服 与 其他进程的 消息
@@ -69,11 +70,6 @@
 
 //金币场
 #define SUB_CG_USER_JOIN_GOLD_HALL_ROOM	20									//加入金币大厅 金币场桌子
-
-//牌友圈
-#define SUB_CG_USER_JOIN_TABLE_NO_PASS	19									//#加入桌子,不需要密码, 即快速开始 -- 仅牌友群使用
-#define SUB_CG_CLUB_CREATE_TABLE		21									//#创建桌子 牌友圈特有
-#define CMD_GC_CLUB_CREATE_TABKE		121									//#创建桌子 返回
 #pragma endregion
 
 #define SUB_GR_GET_TABLELIST			22									//获取房间列表		TODO 指的是竞技场的已开房间列表
@@ -98,15 +94,31 @@
 ** *********************************************************************************/
 #define MDM_GR_MATCH				7									//比赛命令
 
-#define SUB_GR_MATCH_FEE			400									//报名费用
-#define SUB_GR_MATCH_NUM			401									//等待人数
-#define SUB_GR_LEAVE_MATCH			402									//退出比赛
-#define SUB_GR_MATCH_INFO			403									//比赛信息
-#define SUB_GR_MATCH_WAIT_TIP		404									//等待提示
-#define SUB_GR_MATCH_RESULT			405									//比赛结果
-#define SUB_GR_MATCH_STATUS			406									//比赛状态
-#define SUB_GR_MATCH_USER_COUNT		407									//参赛人数
-#define SUB_GR_MATCH_DESC			408									//比赛描述
+#define SUB_CG_MATCH_INFO			1									//请求比赛场信息
+#define CMD_GC_MATCH_INFO			101									//请求比赛场信息  返回
+
+#define SUB_CG_MATCH_APPLY			2									//比赛场报名
+#define CMD_GC_MATCH_APPLY			102									//比赛场报名	返回
+#define SUB_CG_MATCH_UNAPPLY		3									//玩家取消报名
+#define CMD_GC_MATCH_UNAPPLY		103									//玩家取消报名  返回
+
+#define CMD_GC_MATCH_START			4									//比赛开始
+#define CMD_GC_MATCH_CANCEL			5									//比赛取消
+
+#define SUB_CG_MATCH_QUERY_PLAYER   6									//请求信息 人数时间
+#define CMD_GC_MATCH_QUERY_PLAYER   106									//请求信息 人数时间  返回
+
+#define SUB_CG_MATCH_RANKING		7									//更新排名  所有人
+#define CMD_GC_MATCH_RANKING		107									//更新排名  所有人  返回
+
+#define SUB_CG_MATCH_RANKING_MY		8									//更新排名  自己
+#define CMD_GC_MATCH_RANKING_MY		108									//更新排名  自己  返回
+
+#define CMD_GC_MATCH_RESULT_JINJI	9									//比赛阶段结果 玩家晋级
+#define CMD_GC_MATCH_RESULT_TAOTAI	10									//比赛阶段结果 玩家淘汰
+
+#define CMD_GC_MATCH_JUESAI_RECODE	11									//决赛
+#define CMD_GC_MATCH_WAIT_COUNT		12									//等待桌数消息
 
 #pragma endregion
 
@@ -172,7 +184,5 @@
 #define MDM_GF_GAME					200									//游戏命令
 
 #pragma endregion
-
-#pragma pack()
 
 #endif
