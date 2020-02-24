@@ -13,45 +13,45 @@ value_2 =4
 
 //SubRule
 [RULE_2]
-head = Cellscore
+head = µ×·Ö
 value_0 =1
 value_1 =2
 value_2 =5
 
 [RULE_3]
-head = GameWanFa
+head = Àµ×ÓÍæ·¨
 value_0 =0
 value_1 =1
 value_2 =2
 
 [RULE_4]
-head = GameDiZhu
+head = ½Ð×¯Ä£Ê½
 value_0 =0
 value_1 =1
 
 [RULE_5]
-head = GameFengDing
+head = ·â¶¥±¶Êý
 value_0 =32
 value_1 =64
 value_2 =128
 value_3 =0
 
 [RULE_6]
-head = DontCutCards
+head = ²»Ï´ÅÆ
 value_0 =0
 value_1 =1
 
 [RULE_7]
-head = AddMultiple
+head = ¼Ó±¶
 value_0 =0
 value_1 =1
 
 [RULE_8]
-head = ShowCards
+head = Ã÷ÅÆ
 value_0 =0
 value_1 =1
 
 [RULE_9]
-head = BaseCardAddMultiple
+head = µ×ÅÆ·­±¶
 value_0 =0
 value_1 =1

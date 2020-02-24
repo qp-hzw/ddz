@@ -27,11 +27,11 @@ void CSubRuleManager::SetRoomRule( string key_name, string value)
 	{
 		m_SubRule.Cellscore = atoi(value.c_str());
 	}
-	else if(key_name == "玩法")
+	else if(key_name == "赖子玩法")
 	{
 		m_SubRule.GameWanFa = atoi(value.c_str());
 	}
-	else if(key_name == "叫地主模式")
+	else if(key_name == "叫庄模式")
 	{
 		m_SubRule.GameDiZhu = atoi(value.c_str());
 	}
@@ -51,7 +51,7 @@ void CSubRuleManager::SetRoomRule( string key_name, string value)
 	{
 		m_SubRule.ShowCards = atoi(value.c_str());
 	}
-	else if(key_name == "底牌加倍")
+	else if(key_name == "底牌翻倍")
 	{
 		m_SubRule.BaseCardAddMultiple = atoi(value.c_str());
 	}

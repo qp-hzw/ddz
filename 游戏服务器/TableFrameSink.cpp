@@ -2899,7 +2899,7 @@ void CTableFrameSink::HandleOutCardStart(const WORD &wOutCardUser)
 	if (m_pITableFrame->IsRobot(wOutCardUser))
 	{
 		WORD index = (rand() % 4) + 1;
-		m_pITableFrame->SetGameTimer(IDI_OUT_CARD, IDI_TIME_OUT_CARD*0.05/**index*/, 1, 0);
+		m_pITableFrame->SetGameTimer(IDI_OUT_CARD, IDI_TIME_OUT_CARD*0.05*index, 1, 0);
 	}
 	else
 	{

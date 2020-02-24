@@ -1,31 +1,37 @@
 [MATCH]
 matchid = 2
-basescore = 1
+basescore = 10
 starttype = 1
-leastcount = 9
+leastcount = 30
 feetype = 0
 fee = 1000
 reword = 5000
-timeperiod = 4
+timeperiod = 1
 robotcount = 0
 robotjoinmin = 3
 robotjoinmax = 5
-title = 5000金比赛
-describe = 经典斗地主玩法，定时开赛，人数不限
+title = 5000定时金币赛
+describe = 经典斗地主玩法，定时开赛，人数不限，分淘汰赛，半决赛和决赛
 
 [STAGE_0]
-name = 初赛
+name = 淘汰赛
 xjcount = 1;
+jinji_rule = 3;
+jinji_count = 20;
+
+[STAGE_1]
+name = 初赛
+xjcount = 2;
 jinji_rule = 2;
 jinji_count = 9;
 
-[STAGE_1]
+[STAGE_2]
 name = 半决赛
 xjcount = 2;
 jinji_rule = 1;
 jinji_count = 1;
 
-[STAGE_2]
+[STAGE_3]
 name = 决赛
 xjcount = 3;
 jinji_rule = 1;
