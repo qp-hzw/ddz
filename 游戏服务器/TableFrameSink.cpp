@@ -113,6 +113,7 @@ bool CTableFrameSink::XjGameConclude(int nTotalGameCount, int nCurGameCount)
 	// 构建数据
 	SCORE msg_totalGameScore[MAX_CHAIR_COUNT] = {'\0'};
 	SCORE msg_singleGameScore[MAX_CHAIR_COUNT] = {'\0'};
+	WORD  msg_Identity[MAX_CHAIR_COUNT] = {'\0'};
 	WORD  Winner = m_GameAccess->GetLastGameWinner();   //获取赢家
 	WORD  BankID = m_GameLogic->GetAppointBanker();     //获取庄家 
 
@@ -141,6 +142,15 @@ bool CTableFrameSink::XjGameConclude(int nTotalGameCount, int nCurGameCount)
 		}
 	}
 
+	//获取玩家身份
+	for (int i = 0; i < _playersum; i++)
+	{
+		if (i == BankID)
+			msg_Identity[i] = 1;
+		else
+			msg_Identity[i] = 0;
+	}
+
 	//获取两个农民的加倍倍数和
 	DWORD Addbet = 0;
 	for (int i = 0; i < _playersum; i++)
@@ -151,104 +161,104 @@ bool CTableFrameSink::XjGameConclude(int nTotalGameCount, int nCurGameCount)
 		}
 	}
 
-	//判断地主或农民是否金币输干了
-	if (m_pITableFrame->GameType() == 6)
-	{
-		SCORE BankScore = 0;
-		if (Winner == BankID)		//庄赢了
-		{
-			for (int i = 0; i < _playersum; i++)
-			{
-				if (i != BankID)
-				{
-					BASE_PLAYERINFO info = m_pITableFrame->GetPlayerBaseInfo(i);
-					if ((int)info.m_goldCoin < (int)(-msg_singleGameScore[i]))
-					{
-						msg_singleGameScore[i] = (int)(-info.m_goldCoin);
-						BankScore += info.m_goldCoin;
-					}
-					else
-					{
-						BankScore -= msg_singleGameScore[i];
-					}
-				}
-			}
-			//如果赢得金币超过了地主本身金币
-			if (BankScore > m_pITableFrame->GetPlayerBaseInfo(BankID).m_goldCoin)
-			{
-				for (int i = 0; i < _playersum; i++)
-				{
-					if (i != BankID)
-					{
-						msg_singleGameScore[i] = (-1)*(int)m_pITableFrame->GetPlayerBaseInfo(BankID).m_goldCoin*
-							((float)m_GameAccess->GetPlayerAddScore(i) / (float)Addbet);
-					}
-				}
-				msg_singleGameScore[BankID] = m_pITableFrame->GetPlayerBaseInfo(BankID).m_goldCoin;
-			}
-			else
-			{
-				msg_singleGameScore[BankID] = BankScore;
-			}
-		}
-		else			//庄输了
-		{
-			BASE_PLAYERINFO info = m_pITableFrame->GetPlayerBaseInfo(BankID);
-			if ((int)info.m_goldCoin < (int)(-msg_singleGameScore[BankID]))
-			{
-				for (int i = 0; i < _playersum; i++)
-				{
-					if (i != BankID)
-					{
-						msg_singleGameScore[i] = (int)info.m_goldCoin * ((float)m_GameAccess->GetPlayerAddScore(i) / (float)Addbet);
+	////判断地主或农民是否金币输干了
+	//if (m_pITableFrame->GameType() == 6)
+	//{
+	//	SCORE BankScore = 0;
+	//	if (Winner == BankID)		//庄赢了
+	//	{
+	//		for (int i = 0; i < _playersum; i++)
+	//		{
+	//			if (i != BankID)
+	//			{
+	//				BASE_PLAYERINFO info = m_pITableFrame->GetPlayerBaseInfo(i);
+	//				if ((int)info.m_goldCoin < (int)(-msg_singleGameScore[i]))
+	//				{
+	//					msg_singleGameScore[i] = (int)(-info.m_goldCoin);
+	//					BankScore += info.m_goldCoin;
+	//				}
+	//				else
+	//				{
+	//					BankScore -= msg_singleGameScore[i];
+	//				}
+	//			}
+	//		}
+	//		//如果赢得金币超过了地主本身金币
+	//		if (BankScore > m_pITableFrame->GetPlayerBaseInfo(BankID).m_goldCoin)
+	//		{
+	//			for (int i = 0; i < _playersum; i++)
+	//			{
+	//				if (i != BankID)
+	//				{
+	//					msg_singleGameScore[i] = (-1)*(int)m_pITableFrame->GetPlayerBaseInfo(BankID).m_goldCoin*
+	//						((float)m_GameAccess->GetPlayerAddScore(i) / (float)Addbet);
+	//				}
+	//			}
+	//			msg_singleGameScore[BankID] = m_pITableFrame->GetPlayerBaseInfo(BankID).m_goldCoin;
+	//		}
+	//		else
+	//		{
+	//			msg_singleGameScore[BankID] = BankScore;
+	//		}
+	//	}
+	//	else			//庄输了
+	//	{
+	//		BASE_PLAYERINFO info = m_pITableFrame->GetPlayerBaseInfo(BankID);
+	//		if ((int)info.m_goldCoin < (int)(-msg_singleGameScore[BankID]))
+	//		{
+	//			for (int i = 0; i < _playersum; i++)
+	//			{
+	//				if (i != BankID)
+	//				{
+	//					msg_singleGameScore[i] = (int)info.m_goldCoin * ((float)m_GameAccess->GetPlayerAddScore(i) / (float)Addbet);
 
-						//农民最多只能赢他的金币那么多金币
-						if (msg_singleGameScore[i] > m_pITableFrame->GetPlayerBaseInfo(i).m_goldCoin)
-						{
-							msg_singleGameScore[i] = m_pITableFrame->GetPlayerBaseInfo(i).m_goldCoin;
-							BankScore -= msg_singleGameScore[i];
-						}
-						else
-						{
-							BankScore -= msg_singleGameScore[i];
-						}
-					}
-				}
-				msg_singleGameScore[BankID] = BankScore;
-			}
-			else
-			{
-				for (int i = 0; i < _playersum; i++)
-				{
-					if (i != BankID && msg_singleGameScore[i] > m_pITableFrame->GetPlayerBaseInfo(i).m_goldCoin)
-					{
-						msg_singleGameScore[i] = m_pITableFrame->GetPlayerBaseInfo(i).m_goldCoin;
-						BankScore -= msg_singleGameScore[i];
-					}
-				}
-				msg_singleGameScore[BankID] = BankScore;
-			}
-		}
-	}
+	//					//农民最多只能赢他的金币那么多金币
+	//					if (msg_singleGameScore[i] > m_pITableFrame->GetPlayerBaseInfo(i).m_goldCoin)
+	//					{
+	//						msg_singleGameScore[i] = m_pITableFrame->GetPlayerBaseInfo(i).m_goldCoin;
+	//						BankScore -= msg_singleGameScore[i];
+	//					}
+	//					else
+	//					{
+	//						BankScore -= msg_singleGameScore[i];
+	//					}
+	//				}
+	//			}
+	//			msg_singleGameScore[BankID] = BankScore;
+	//		}
+	//		else
+	//		{
+	//			for (int i = 0; i < _playersum; i++)
+	//			{
+	//				if (i != BankID && msg_singleGameScore[i] > m_pITableFrame->GetPlayerBaseInfo(i).m_goldCoin)
+	//				{
+	//					msg_singleGameScore[i] = m_pITableFrame->GetPlayerBaseInfo(i).m_goldCoin;
+	//					BankScore -= msg_singleGameScore[i];
+	//				}
+	//			}
+	//			msg_singleGameScore[BankID] = BankScore;
+	//		}
+	//	}
+	//}
 
-	//金币场 总分=单局分
-	if (m_pITableFrame->GameType() == 6)
-	{
-		for (BYTE i = 0; i < _playersum; ++i)
-		{
-			BASE_PLAYERINFO info = m_pITableFrame->GetPlayerBaseInfo(i);
-			if (USER_PLAYING == m_GameAccess->GetPlayerState(i))
-			{
-				msg_totalGameScore[i] = 0;
-				msg_totalGameScore[i] = info.m_goldCoin + msg_singleGameScore[i];
-			}
-			//不能为0
-			if (msg_totalGameScore[i] < 0)
-			{
-				msg_totalGameScore[i] = 0;
-			}
-		}
-	}
+	////金币场 总分=单局分
+	//if (m_pITableFrame->GameType() == 6)
+	//{
+	//	for (BYTE i = 0; i < _playersum; ++i)
+	//	{
+	//		BASE_PLAYERINFO info = m_pITableFrame->GetPlayerBaseInfo(i);
+	//		if (USER_PLAYING == m_GameAccess->GetPlayerState(i))
+	//		{
+	//			msg_totalGameScore[i] = 0;
+	//			msg_totalGameScore[i] = info.m_goldCoin + msg_singleGameScore[i];
+	//		}
+	//		//不能为0
+	//		if (msg_totalGameScore[i] < 0)
+	//		{
+	//			msg_totalGameScore[i] = 0;
+	//		}
+	//	}
+	//}
 
 	//通知frame处理
 	BYTE cbCurGameCount = m_GameAccess->GetCurGameCount();
@@ -334,7 +344,7 @@ bool CTableFrameSink::XjGameConclude(int nTotalGameCount, int nCurGameCount)
 	}
 
 	 //通知框架小局游戏结束
-	m_pITableFrame->HandleXJGameEnd(cbCurGameCount, msg_singleGameScore, NULL, 0);
+	m_pITableFrame->HandleXJGameEnd(cbCurGameCount, msg_Identity, msg_singleGameScore, NULL, 0);
 
 	//清空玩家是否是开始游戏明牌
 	for (int i = 0; i < _playersum; i++)
