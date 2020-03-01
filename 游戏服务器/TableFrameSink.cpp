@@ -344,7 +344,7 @@ bool CTableFrameSink::XjGameConclude(int nTotalGameCount, int nCurGameCount)
 	}
 
 	 //通知框架小局游戏结束
-	m_pITableFrame->HandleXJGameEnd(cbCurGameCount, msg_Identity, msg_singleGameScore, NULL, 0);
+	m_pITableFrame->HandleXJGameEnd(cbCurGameCount, msg_Identity, msg_singleGameScore);
 
 	//清空玩家是否是开始游戏明牌
 	for (int i = 0; i < _playersum; i++)

@@ -96,7 +96,7 @@ public:
 	//流程接口
 public:
 	//处理小局结束
-	virtual bool HandleXJGameEnd(BYTE cbCurGameCount,WORD *wIdentity, SCORE *lGameScore, VOID* pData, DWORD dwDataSize) = NULL;
+	virtual bool HandleXJGameEnd(BYTE cbCurGameCount,WORD *wIdentity, SCORE *lGameScore) = NULL;
 	//处理大局结束
 	virtual bool HandleDJGameEnd(BYTE cbGameStatus) = NULL;
 
