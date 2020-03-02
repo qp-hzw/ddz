@@ -1843,7 +1843,7 @@ void CTableFrameSink::HandleRobBanker()
 		fangjian_bet.room_bet[i] = m_GameAccess->GetAllBet(i);
 	}
 
-	m_pITableFrame->SendTableData(INVALID_CHAIR, CMD_SC_FANGJIAN_BET, &fangjian_bet, sizeof(STR_CMD_SC_FANGJIAN_BET));
+	//m_pITableFrame->SendTableData(INVALID_CHAIR, CMD_SC_FANGJIAN_BET, &fangjian_bet, sizeof(STR_CMD_SC_FANGJIAN_BET));
 
 	//1、叫三分	
 	if (ROOMRULE_OPTION_ROBTYPE_JIAOSANFEN == cbRobBankMode)
@@ -2101,10 +2101,6 @@ void CTableFrameSink::HandleFreeRobBanker()
 //发送抢庄开始消息
 void CTableFrameSink::SendRobStart(const WORD &wChairID, const BYTE &cbType)
 {
-	//通知第一个玩家抢庄开始
-	STR_CMD_SC_ROB_BANKER_START RobStart;
-	ZeroMemory(&RobStart, sizeof(STR_CMD_SC_ROB_BANKER_START));
-
 	//赋值
 	//RobStart.cbType = cbType;
 	//RobStart.wChairID = wChairID;
@@ -2114,7 +2110,7 @@ void CTableFrameSink::SendRobStart(const WORD &wChairID, const BYTE &cbType)
 
 	if (INVALID_CHAIR != wChairID)
 	{
-		m_pITableFrame->SendTableData(wChairID, CMD_SC_ROB_START, &RobStart, sizeof(STR_CMD_SC_ROB_BANKER_START));
+		m_pITableFrame->SendTableData(wChairID, CMD_SC_ROB_START, NULL, 0);
 
 		//设置游戏状态为【抢庄状态】
 		m_GameAccess->SetGameStatus(GS_WK_ROB);
@@ -2444,7 +2440,7 @@ void CTableFrameSink::AllRobBankerOver()
 		fangjian_bet.room_bet[i] = m_GameAccess->GetAllBet(i);
 	}
 
-	m_pITableFrame->SendTableData(INVALID_CHAIR, CMD_SC_FANGJIAN_BET, &fangjian_bet, sizeof(STR_CMD_SC_FANGJIAN_BET));
+	//m_pITableFrame->SendTableData(INVALID_CHAIR, CMD_SC_FANGJIAN_BET, &fangjian_bet, sizeof(STR_CMD_SC_FANGJIAN_BET));
 }
 
 //处理发送底牌
@@ -2482,7 +2478,7 @@ void CTableFrameSink::HandleSendLeaveCard(const WORD &wSendCardUser)
 		fangjian_bet.room_bet[i] = m_GameAccess->GetAllBet(i);
 	}
 
-	m_pITableFrame->SendTableData(INVALID_CHAIR, CMD_SC_FANGJIAN_BET, &fangjian_bet, sizeof(STR_CMD_SC_FANGJIAN_BET));
+	//m_pITableFrame->SendTableData(INVALID_CHAIR, CMD_SC_FANGJIAN_BET, &fangjian_bet, sizeof(STR_CMD_SC_FANGJIAN_BET));
 
 	//发送底牌
 	for (WORD i = 0; i < cbMaxChairCount; i++)
@@ -2677,7 +2673,7 @@ void CTableFrameSink::OnUserAddScore( WORD wChairID, SCORE lScore )
 		{
 			fangjian_bet.room_bet[i] = m_GameAccess->GetAllBet(i);
 		}
-		m_pITableFrame->SendTableData(INVALID_CHAIR, CMD_SC_FANGJIAN_BET, &fangjian_bet, sizeof(STR_CMD_SC_FANGJIAN_BET));
+		//m_pITableFrame->SendTableData(INVALID_CHAIR, CMD_SC_FANGJIAN_BET, &fangjian_bet, sizeof(STR_CMD_SC_FANGJIAN_BET));
 
 
 		//通知庄家出牌
