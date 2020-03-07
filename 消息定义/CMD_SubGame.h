@@ -39,7 +39,6 @@
 #define	CMD_SC_JIAOFEN_RESULT						16							// 叫三分结果
 #define	CMD_SC_JIPAIQI_START						17							// 记牌器
 #define	CMD_SC_FANGJIAN_BET							18							// 房间倍数
-#define	CMD_SC_TUO_GUAN								19							//托管
 #define	CMD_SC_RECODE								27							//录像
 
 //一下目前不需要
@@ -61,27 +60,20 @@ struct STR_CMD_SC_SEND_CARD
 	BYTE		cbHandCardNum[MAX_CHAIR_COUNT];						//手牌个数
 	DWORD		CurJuShu;						//当前局数
 	DWORD		ISMingPaiStart;					//是否明牌开始  1-是 0-不是
-	//repeated Card  	   HandCardData;  	        //辅助录像回放手牌数据
 	DWORD		GoldCoin[MAX_CHAIR_COUNT];				//金币
-	//DWORD		replay_code = 8;					//回放码
 };
-//struct Card				//录像回放是否还是用原来的
-//{
-//	repeated  CardData = 1;
-//			   wChairID = 2;
-//}
+
 
 //抢庄开始
 struct STR_CMD_SC_ROB_BANKER_START
 {
+	BYTE		cbType;			//0-叫 1-抢
 };
 
 //抢庄结果
 struct STR_CMD_SC_ROB_RESULT
 {
 	WORD		wChairID;					//椅子号
-	//BYTE		cbType;						//玩家抢庄类型	0-未开始	1-叫地主	2-抢地主
-	//BYTE		cbRobState;					//玩家抢庄标志	0-过	1-叫/抢
 	BYTE			cbResult;					//1-不叫  2-叫地主  3-不抢  4-抢地主
 	DWORD	room_bet[MAX_CHAIR_COUNT];					//房间倍数
 };
@@ -110,86 +102,39 @@ struct STR_CMD_SC_APPOINT_BANKER
 //给玩家发送底牌
 struct STR_CMD_SC_SEND_LEAVE_CARD
 {
-	WORD		wSendCardUser;						//发送剩余底牌的玩家
+	//WORD		wSendCardUser;						//发送剩余底牌的玩家
 	BYTE		cbSortedCard[MAX_CARD_COUNT];		//玩家排序后的手
-	BYTE		cbHandCardNum;						//手牌个数
-	BYTE		cbMagicCardNum;						//癞子个数（主牌从左向右排序，客户端从0-cbMagicCardNum为主花色）
+	BYTE		cbHandCardNum[MAX_CHAIR_COUNT];		//手牌个数
+	//BYTE		cbMagicCardNum;						//癞子个数（主牌从左向右排序，客户端从0-cbMagicCardNum为主花色）
 	BYTE		cbMagicCard;						//癞子
 	BYTE		cbLeaveCard[MAX_LEAVE_CARD_NUM];	//底牌数据
 	DWORD		LeaveCardBet;						//底牌倍数
-};
-
-//下注(加倍)开始
-struct STR_CMD_SC_ADD_SCORE_START
-{
-	BYTE		cbStart;					//下注开始标识	0-未开始	1-开始
 };
 
 //下注结果
 struct STR_CMD_SC_ADD_SCORE_RESULT
 {
 	WORD                                wChairID;						//下注玩家 
-	WORD                                wAddSocre;						//该次下注分值
+	BYTE                                byAction;						//0-代表不下注 1-加倍 2-超级加倍
 	DWORD								RoomBet[MAX_CHAIR_COUNT];       //房间倍数
 };
 
 //明牌开始
 struct STR_CMD_SC_MING_PAI_START
 {
-	WORD                                wChairID;						//明牌开始玩家 
-	BYTE                                cbType;							//明牌类型	3-发牌开始明牌	2-开始游戏明牌	1-出牌开始明牌
+	BYTE								cbType;							//明牌类型 1-出牌 2开始游戏 3-发牌
 };
 
 //明牌结果
 struct STR_CMD_SC_MING_PAI_RESULT
 {
 	WORD                                wChairID;						//明牌玩家 
-	BYTE                                cbIsMing;						//是否明牌	0-不明牌	1-明牌
 	BYTE								cbTimes;						//加倍后的倍数
 	BYTE								cbHandCard[MAX_CARD_COUNT];		//用户手牌
 	DWORD							    RoomBet[MAX_CHAIR_COUNT];		//房间倍数
 };
 
 
-
-
-////亮主结果
-//struct STR_CMD_SC_LIANGZHU_RESULT
-//{
-//	WORD		wLiangzhuUser;						//亮主玩家
-//	BYTE		cbLZCard;							//亮主卡牌
-//};	
-//
-////反主开始
-//struct STR_CMD_SC_FANZHU_NOTIFY
-//{
-//	WORD		wFanzhuUser;						//反主玩家
-//	BYTE		cbFanZhuCard[MAX_FANZHU_TYPE_NUM];	//反主卡牌
-//};	 
-//
-////反主结果
-//struct STR_CMD_SC_FANZHU_RESULT
-//{
-//	WORD		wFanzhuUser;						//反主玩家
-//	BYTE		cbFanZhuCard;						//反主卡牌
-//};	 	
-//
-////扣底开始
-//struct STR_CMD_SC_SEND_KOUDI_START
-//{
-//	WORD		wKouDiUser;						//扣底玩家		
-//	BYTE		cbKouDiNum;						//扣底卡牌数目;
-//};	
-//
-////扣底完成
-//struct STR_CMD_SC_SEND_KOUDI_FINISH
-//{
-//	WORD		wKouDiUser;						//扣底玩家
-//	BYTE		cbFinishMask;					//0-未完成	1-完成
-//	BYTE		cbUserHandCard[MAX_CARD_COUNT];	//扣底完成后的玩家排序手牌
-//	BYTE		cbMainColorNum;					//主牌个数（主牌从左向右排序，客户端从0-cbMainColorNum为主花色）
-//};	
-//
 ////出牌提示
 //struct STR_CMD_SC_OUT_CARD_NOTIFY
 //{
@@ -214,6 +159,7 @@ struct STR_CMD_SC_OUT_CARD_RESULT
 	WORD		wOutCardUser;						//出牌玩家
 	BYTE		cbOutCardNum;						//出牌数目	
 	BYTE		cbOutCard[MAX_CARD_COUNT];			//出牌数据
+	BYTE		cbIsmingpai;						//玩家是否明牌
 	BYTE		handcarddata[MAX_CARD_COUNT];       //出牌玩家手牌数据
 	BYTE		cbHandCardNum;						//手牌个数
 	BYTE		cbCardType;							//牌型，牌型大于7，则为奖，客户端显示奖得分
@@ -255,9 +201,9 @@ struct STR_CMD_SC_XJ_GAME_END
 
 	SCORE		nSingleGameScore[MAX_CHAIR_COUNT];				//玩家单局得分
 	DWORD		nUserBet[MAX_CHAIR_COUNT];								//玩家此局的倍数
-	BYTE			cbLeaveHandCard[MAX_CHAIR_COUNT][MAX_CARD_COUNT];			//玩家剩余手牌
-	BYTE			cbLeaveCardCount[MAX_CHAIR_COUNT];												//玩家剩余手牌数量
-	WORD		wWinChair;																//赢家
+	BYTE		cbLeaveHandCard[MAX_CHAIR_COUNT][MAX_CARD_COUNT];			//玩家剩余手牌
+	BYTE		cbLeaveCardCount[MAX_CHAIR_COUNT];												//玩家剩余手牌数量
+	BYTE		wIsWin;																//是否赢了 1赢 0输
 };
 
 //大局游戏结束
@@ -311,12 +257,6 @@ struct STR_CMD_SC_FANGJIAN_BET
 	SCORE	room_bet[MAX_CHAIR_COUNT];
 };
 
-//托管
-struct STR_CMD_SC_TUO_GUAN
-{
-	WORD	tuo_guan;	//传1表示已自动托管
-};
-
 //rule
 struct STR_CMD_SC_RULE
 {
@@ -343,7 +283,6 @@ struct STR_CMD_SC_RECODE
 #define	SUB_CS_PUBLIC_BET							106							//大局结束公共倍数
 #define	SUB_CS_JIAO_FEN								107							//叫分
 #define	SUB_CS_JIPAIQI								108							//记牌器
-#define	SUB_CS_TUO_GUAN								109							//托管
 
 //#define SUB_CS_LIANG_ZHU							1							//亮主
 //#define SUB_CS_FAN_ZHU								2							//反主
@@ -365,15 +304,14 @@ struct STR_SUB_CS_JIAO_FEN
 //玩家下注  
 struct STR_SUB_CS_ADD_SCORE
 {
-	DWORD		score;						//下注分值	0-代表不下注
+	BYTE		action;						//下注分值	0-代表不下注 1-加倍 2-超级加倍
 };
 
 //玩家明牌
 struct STR_SUB_CS_MING_PAI
 {
-	BYTE        cbType;						//明牌类型	2-发牌开始明牌	1-出牌开始明牌
-	BYTE		cbIsMing;					//是否明牌	0-不明牌	1-明牌
-	SCORE		OutCard_bet;				//发牌明牌的倍数
+	BYTE        cbType;						//明牌类型	2-发牌开始明牌	1-出牌开始明牌 0-开始游戏明牌
+	BYTE		OutCard_stage;				//发牌阶段
 };
 
 
@@ -426,12 +364,6 @@ struct STR_SUB_CS_PUBLIC_BET
 struct STR_SUB_CS_JIPAIQI
 {
 	WORD tmp;			//不要传0
-};
-
-//托管
-struct STR_SUB_CS_TUO_GUAN
-{
-	WORD	TuoGuan_state;		//1-设置托管   0-取消托管
 };
 
 #pragma endregion
@@ -516,11 +448,12 @@ struct STR_CMD_SC_STATUS_ADD_SCORE
 
 struct player_op_info
 {
-   DWORD					op_type;    //操作类型 0-过 1-出牌
+   DWORD				op_type;					//操作类型 0-过 1-出牌
    BYTE 				op_result[MAX_CARD_COUNT]; //出牌结果, 牌数据; 只在op_type=1时才有效
-   DWORD				op_cardscount;   //当前牌数量
-   //BYTE					MingPaiCardData[MAX_CARD_COUNT];   //明牌玩家的手牌
    BYTE					op_outCardCount;				//出牌数量
+   BYTE					op_isMingpai;					//是否明牌 0-no 1-yes
+   BYTE					op_HandCardData[MAX_CARD_COUNT];				//手牌数据
+   DWORD				op_cardscount;   //当前牌数量
 };
 
 //出牌状态
@@ -533,7 +466,6 @@ struct STR_CMD_SC_STATUS_OUTCARD
 	BYTE						CurJuShu;             //当前房间局数
 	SCORE 						room_bet;		//当前房间的倍数
 	WORD						bankID;		//庄家ID
-	//WORD 						MingPaiState[MAX_CHAIR_COUNT];		//各玩家的明牌状态
 	BYTE 						LeaveCard[MAX_LEAVE_CARD_NUM];		//底牌
 	SCORE						PlayerScore[MAX_CHAIR_COUNT];		//总积分
 	//BYTE						TurnCardData[MAX_CARD_COUNT];	//当前轮最大出牌
@@ -542,7 +474,7 @@ struct STR_CMD_SC_STATUS_OUTCARD
 	SCORE						Leave_bet;		//底牌倍数
 	BYTE						IsTurnEnd;			//是否是第一个出牌的玩家
 	BYTE						ActionType;			//出牌二进制动作行为
-	//DWORD					    replay_code;			//回放码
+	BYTE						cbMagicCard;		//赖子
 };
 
 

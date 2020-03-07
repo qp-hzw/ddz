@@ -62,12 +62,12 @@ void CSubRuleManager::SetGoldRule(BYTE byType)  //这里可以加特殊规则的字段
 {
 	m_SubRule.Cellscore = 1;
 	m_SubRule.BaseCardAddMultiple = 1;
-	m_SubRule.GameWanFa = 0;
+	m_SubRule.GameWanFa = 1;
 	m_SubRule.GameDiZhu = 0;
 	m_SubRule.GameFengDing = 64;
 	m_SubRule.DontCutCards = 1;
-	m_SubRule.AddMultiple = 0;
-	m_SubRule.ShowCards = 0;
+	m_SubRule.AddMultiple = 1;
+	m_SubRule.ShowCards = 1;
 }
 
 //设置match规则

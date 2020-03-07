@@ -78,6 +78,13 @@ public:
 	//游戏消息处理
 	virtual bool OnGameMessage(WORD wSubCmdID, VOID * pData, WORD wDataSize, WORD wChairID);
 
+	//托管接口
+public:
+	//托管
+	virtual bool PlayerTuoGuan(WORD wChairID);
+	//取消托管
+	virtual bool PlayerCancelTuoGuan(WORD wChairID);
+
 	//响应client事件
 protected:
 	//亮主事件
@@ -92,12 +99,9 @@ protected:
 	//抢庄事件
 	void OnUserCallBanker(WORD wChairID, BYTE cbResult);
 	//下注事件
-	void OnUserAddScore(WORD wChairID, SCORE lScore);
+	void OnUserAddScore(WORD wChairID, WORD wTYPE);
 	//明牌事件
 	void On_Sub_UserMingPai(WORD wChairID, const BYTE &cbMPType, BYTE cbFlag, BYTE FlushCardBet = 1);
-
-	//小局结算准备
-	void OnUserXjGameReady(WORD wChairID, BYTE ready);
 
 	//游戏结束的获取公共倍数信息
 	void OnUserPublicBet(WORD wChairID);
@@ -111,8 +115,6 @@ protected:
 	void AllRobBankerOver();
 	// 小局游戏结束
 	bool XjGameConclude(int nTotalGameCount, int nCurGameCount);
-	// 大局游戏结束
-	bool DjGameConclude(int nTotalGameCount, int nCurGameCount);
 
 	//辅助函数
 protected:

@@ -115,6 +115,11 @@ public:
 	virtual bool SendTableData(WORD wChairID, WORD wSubCmdID, void * pData, WORD wDataSize, WORD wMainCmd =200) = NULL;
 	//发送场景
 	virtual bool SendGameScene(WORD wChairID, VOID * pData, WORD wDataSize) = NULL;
+
+	//托管接口
+public:
+	//发送托管
+	virtual bool SendPlayerTuoGuan(WORD wChairID) = NULL;
 };
 
 //////////////////////////////////////////////////////////////////////////////////
@@ -148,6 +153,13 @@ public:
 	virtual bool OnTimerMessage(DWORD dwTimerID, WPARAM dwBindParameter) = NULL;
 	//游戏消息
 	virtual bool OnGameMessage(WORD wSubCmdID, void * pData, WORD wDataSize, WORD wChairID) = NULL;
+
+	//托管接口
+public:
+	//托管
+	virtual bool PlayerTuoGuan(WORD wChairID) = NULL;
+	//取消托管
+	virtual bool PlayerCancelTuoGuan(WORD wChairID) = NULL;
 };
 
 //子游戏规则读取

@@ -55,6 +55,7 @@
 #define IDI_FAN_ZHU_DELAY				7							//反主延迟定时器，客户端处理完发牌动画之后，再给第一个人发送反主提示
 #define IDI_ROUND_END_DELAY				8							//一轮结束延迟定时器，客户端处理积分结算动画
 #define IDI_ROB_JiaoFen					9							//叫分定时器
+#define IDI_ROB_START					10							//抢庄流程定时器
 
 //各个定时器持续时间
 #define IDI_TIME_ROB_BANKER				10000						//抢庄定时器持续时间
@@ -68,6 +69,7 @@
 #define IDI_TIME_FAN_ZHU_DELAY			6000						//反主延迟定时器持续时间
 #define IDI_TIME_ROUND_END_DELAY		2000						//一轮结束延迟定时器持续时间
 #define IDI_TIME_ROB_JiaoFen			10000						//叫分定时器
+#define IDI_TIME_ROB_START				3000						//抢庄流程定时器
 ///////////////////////////////
 
 ///////////////////////////////
@@ -99,8 +101,8 @@
 #define JIAOFEN_1				1<<1		//叫分一分
 
 #define	MING_PAI_TYPE_OUTCARD	1			//出牌明牌
-#define	MING_PAI_TYPE_GAMESTART	2			//游戏开始明牌
-#define	MING_PAI_TYPE_DEAL		3			//发牌明牌
+#define	MING_PAI_TYPE_GAMESTART	0			//游戏开始明牌
+#define	MING_PAI_TYPE_DEAL		2			//发牌明牌
 
 #define OUT_CARD_FAIL			0									//出牌失败
 #define OUT_CARD_SUCCESS		1									//出牌成功
@@ -165,6 +167,7 @@
 #define CT_BOMB_CARD				12									//炸弹类型
 #define CT_LAIZI_BOMB				13									//赖子炸弹
 #define CT_MISSILE_CARD				14									//火箭类型
+#define CT_FEIJI					15									//特殊牌型飞机
 
 //升级
 #define CT_SAME_2				2									//对牌类型

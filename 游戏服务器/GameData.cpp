@@ -2457,15 +2457,14 @@ int CGameData::ClearXjGame()
 		m_players_config.players[i].rob_num = 0;
 		m_players_config.players[i].rob_score = 0;
 		m_players_config.players[i].mingpai_state = 0;
-		m_players_config.players[i].bet_state = 0;
 		m_players_config.players[i].mingpai_bet = 1;
 		m_players_config.players[i].addscore_bet = 1;
 		m_players_config.players[i].boom_info.cbBoomNum = 0;
 		m_players_config.players[i].jiaofen_state = 10;
 		m_players_config.players[i].spring = 0;
 		m_players_config.players[i].spring_state = 0;
-		m_players_config.players[i].player_tuo_guan = 0;
 		m_players_config.players[i].out_time_num = 0;
+		m_players_config.players[i].start_mingpai = 1;
 	}
 
 	//清理游戏参数
@@ -2476,6 +2475,8 @@ int CGameData::ClearXjGame()
 	m_playing_para.turn_cards_num = 0;   //最大出牌数据初始化
 	m_playing_para.jiaofen_count = 0;	 //初始化叫分次数
 	m_playing_para.leave_card_bet = 1;
+
+	m_playing_para.magic_card = 0;
 
 	//排序权位清空
 	for (BYTE i = 0; i < LEN_SORT_RIGHT; i++)
@@ -5112,7 +5113,7 @@ BYTE __stdcall CGameData::GetMagicCardNum(const BYTE cbHandCardData[], BYTE cbHa
 		if (cbHandCardData[i] == INVALID_CARD)
 			continue;
 
-		if (GetCardLogicValue(cbHandCardData[i]) == m_playing_para.magic_card)
+		if (GetCardLogicValueLaiZi(cbHandCardData[i]) == m_playing_para.magic_card || cbHandCardData[i] > 0x50)
 			bLaiZiCount++;
 	}
 
@@ -5405,6 +5406,7 @@ int CGameData::InitGameData()
 		m_players_config.players[i].spring_state = 0;
 		m_players_config.players[i].player_tuo_guan = 0;
 		m_players_config.players[i].out_time_num = 0;
+		m_players_config.players[i].bank_state = 0;
 	}
 
 	//初始化房间倍数
@@ -5413,6 +5415,9 @@ int CGameData::InitGameData()
 	m_playing_para.jiaofen_count = 0;	 //初始化叫分次数
 	m_playing_para.leave_card_bet = 1;
 	m_playing_para.game_cur_count = 0;
+	m_playing_para.cur_outcard_user = INVALID_CHAIR;
+
+	m_playing_para.magic_card = 0;
 
 	//排序权位初始化
 	for (BYTE i = 0; i < LEN_SORT_RIGHT; i++)
@@ -5580,6 +5585,21 @@ bool __stdcall CGameData::RemoveCard(const BYTE *cbRemoveCard, BYTE cbRemoveCoun
 	//将需要删除的扑克置零
 	for (BYTE i = 0; i < cbRemoveCount; i++)
 	{
+		//判断是否有癞子 并删除癞子  add by lih
+		if (cbRemoveCard[i] > 0x50)
+		{
+			for (BYTE j = 0; j < cbCardCount; j++)
+			{
+				if (m_playing_para.magic_card == GetCardLogicValueLaiZi(cbTempCardData[j]))
+				{
+					cbDeleteCount++;
+					cbTempCardData[j] = 0;
+					break;
+				}
+			}
+			continue;
+		}
+
 		for (BYTE j = 0; j < cbCardCount; j++)
 		{
 			if (cbRemoveCard[i] == cbTempCardData[j])
@@ -5803,12 +5823,12 @@ int __stdcall CGameData::SetTurnPassCount(WORD count)
 //设置游戏癞子模式
 int __stdcall CGameData::SetLaiZiMode(WORD Mode)
 {
-	if (Mode > 2 || Mode < 0)
+	if (Mode > 1 || Mode < 0)
 	{
 		Mode = 0;
 	}
 
-	m_room_config.game_laizi_mode = 0;
+	m_room_config.game_laizi_mode = Mode;
 	return 0;
 }
 
@@ -6152,22 +6172,47 @@ int __stdcall CGameData::GetPlayerTimeOutNum(WORD wChairID)
 //获取出牌玩家动作行为
 BYTE __stdcall CGameData::GetOutCardActionType(WORD wChairID)
 {
-	if (0 == GetOneTurnEnd())
+	//赖子情况
+	if (0 < m_room_config.game_laizi_mode)
 	{
-		return 1;  //第一个出牌   显示出牌和提示按钮         0101  
-	}
-	else
-	{
-		//判断是不是要不起
-		if (JudgePlayerOutCard(wChairID))
+		if (0 == GetOneTurnEnd())
 		{
-			cout << "出牌" << endl;
-			return  (1 + (1 << 1) + (1 << 2));    //0111
+			return 1;  //第一个出牌   显示出牌和提示按钮         0101  
 		}
 		else
 		{
-			cout << "要不起" << endl;
-			return (1 << 3);    //1000
+			//判断是不是要不起
+			if (JudgeLaiZiPlayerOutCard(wChairID))
+			{
+				cout << "出牌" << endl;
+				return  (1 + (1 << 1) + (1 << 2));    //0111
+			}
+			else
+			{
+				cout << "要不起" << endl;
+				return (1 << 3);    //1000
+			}
+		}
+	}
+	else 
+	{
+		if (0 == GetOneTurnEnd())
+		{
+			return 1;  //第一个出牌   显示出牌和提示按钮         0101  
+		}
+		else
+		{
+			//判断是不是要不起
+			if (JudgePlayerOutCard(wChairID))
+			{
+				cout << "出牌" << endl;
+				return  (1 + (1 << 1) + (1 << 2));    //0111
+			}
+			else
+			{
+				cout << "要不起" << endl;
+				return (1 << 3);    //1000
+			}
 		}
 	}
 }
