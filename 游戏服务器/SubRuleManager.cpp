@@ -27,19 +27,19 @@ void CSubRuleManager::SetRoomRule( string key_name, string value)
 	{
 		m_SubRule.Cellscore = atoi(value.c_str());
 	}
-	else if(key_name == "Àµ×ÓÍæ·¨")
+	else if(key_name == "Ä£Ê½")
 	{
 		m_SubRule.GameWanFa = atoi(value.c_str());
 	}
-	else if(key_name == "½Ð×¯Ä£Ê½")
+	else if(key_name == "ÇÀ×¯")
 	{
 		m_SubRule.GameDiZhu = atoi(value.c_str());
 	}
-	else if(key_name == "·â¶¥±¶Êý")
+	else if(key_name == "·â¶¥")
 	{
 		m_SubRule.GameFengDing = atoi(value.c_str());
 	}
-	else if(key_name == "²»Ï´ÅÆ")
+	else if(key_name == "Ï´ÅÆ")
 	{
 		m_SubRule.DontCutCards = atoi(value.c_str());
 	}
@@ -51,7 +51,7 @@ void CSubRuleManager::SetRoomRule( string key_name, string value)
 	{
 		m_SubRule.ShowCards = atoi(value.c_str());
 	}
-	else if(key_name == "µ×ÅÆ·­±¶")
+	else if(key_name == "·­±¶")
 	{
 		m_SubRule.BaseCardAddMultiple = atoi(value.c_str());
 	}

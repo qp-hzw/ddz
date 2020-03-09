@@ -1050,6 +1050,15 @@ bool CTableFrameSink::OnTimerMessage(DWORD wTimerID, WPARAM wBindParam)
 
 				HandleRobBanker();
 			}
+		case IDI_OUTCARD_START:		//开始出牌定时器
+			{
+				m_pITableFrame->KillGameTimer(IDI_OUTCARD_START);
+
+				if (m_GameAccess->GetGameStatus() != GS_WK_ADDSCORE)
+					return false;
+
+				HandleOutCardStart(m_GameAccess->GetBankerID());
+			}
 		default:
 			return false;
 	}
@@ -1646,7 +1655,10 @@ void CTableFrameSink::SendRobStart(const WORD &wChairID, const BYTE &cbType)
 			{
 				m_pITableFrame->SetGameTimer(IDI_ROB_BANKER, IDI_TIME_ROB_BANKER*0.1, 1 , 0);
 			}
-			m_pITableFrame->SetGameTimer(IDI_ROB_BANKER, IDI_TIME_ROB_BANKER, 1, 0);
+			else
+			{
+				m_pITableFrame->SetGameTimer(IDI_ROB_BANKER, IDI_TIME_ROB_BANKER, 1, 0);
+			}
 		}
 	}
 }
@@ -1654,6 +1666,10 @@ void CTableFrameSink::SendRobStart(const WORD &wChairID, const BYTE &cbType)
 // 处理客户端发来的【抢庄】消息
 void CTableFrameSink::OnUserCallBanker(WORD wChairID, BYTE cbResult)	//1-不叫  2-叫地主  3-不抢  4-抢地主
 {
+	//校验
+	if (m_GameAccess->GetCurRobUser() != wChairID)
+		return;
+
 	CLog::Log(log_debug, "【服务器】：接收用户 = %d, 抢庄类型 = %d", wChairID, cbResult);
 
 	//判断玩家叫抢
@@ -2171,8 +2187,9 @@ void CTableFrameSink::OnUserAddScore( WORD wChairID, WORD wType )
 			SendMingPaiStart(wBanker, MING_PAI_TYPE_OUTCARD);
 		}
 
-		//给庄家发送出牌消息
-		HandleOutCardStart(wBanker);
+		// 下注定时器
+		m_pITableFrame->KillGameTimer(IDI_OUTCARD_START);
+		m_pITableFrame->SetGameTimer(IDI_OUTCARD_START, IDI_TIME_OUTCARD_START, 1, 0);
 	}
 
 	return;
@@ -2938,8 +2955,15 @@ bool CTableFrameSink::PlayerTuoGuan(WORD wChairID)
 	//设置托管
 	m_GameAccess->SetPlayerTuoGuan(wChairID, 1);
 
+	//设置抢庄定时器
+	if (m_GameAccess->GetCurRobUser() == wChairID && GS_WK_ROB == m_GameAccess->GetGameStatus())
+	{
+		m_pITableFrame->KillGameTimer(IDI_ROB_BANKER);
+		m_pITableFrame->SetGameTimer(IDI_ROB_BANKER, IDI_TIME_ROB_BANKER*0.1, 1 , 0);
+	}
+
 	//设置出牌定时器
-	if (m_GameAccess->GetCurOutCardUser() == wChairID)
+	if (m_GameAccess->GetCurOutCardUser() == wChairID && GS_WK_OUT_CARD == m_GameAccess->GetGameStatus())
 	{
 		m_pITableFrame->KillGameTimer(IDI_OUT_CARD);
 		m_pITableFrame->SetGameTimer(IDI_OUT_CARD, IDI_TIME_OUT_CARD*0.05, 1, 0);

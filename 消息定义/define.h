@@ -56,10 +56,11 @@
 #define IDI_ROUND_END_DELAY				8							//一轮结束延迟定时器，客户端处理积分结算动画
 #define IDI_ROB_JiaoFen					9							//叫分定时器
 #define IDI_ROB_START					10							//抢庄流程定时器
+#define IDI_OUTCARD_START				11							//出牌流程定时器
 
 //各个定时器持续时间
 #define IDI_TIME_ROB_BANKER				10000						//抢庄定时器持续时间
-#define IDI_TIME_ADD_SCORE				5000						//下注定时器持续时间
+#define IDI_TIME_ADD_SCORE				4000						//下注定时器持续时间
 #define IDI_TIME_MING_PAI				3000						//明牌定时器持续时间
 #define IDI_TIME_ADD_SCORE_ROBOT		1000						//机器人下注定时器持续时间
 
@@ -70,6 +71,7 @@
 #define IDI_TIME_ROUND_END_DELAY		2000						//一轮结束延迟定时器持续时间
 #define IDI_TIME_ROB_JiaoFen			10000						//叫分定时器
 #define IDI_TIME_ROB_START				3000						//抢庄流程定时器
+#define IDI_TIME_OUTCARD_START			1000						//出牌流程定时器
 ///////////////////////////////
 
 ///////////////////////////////
