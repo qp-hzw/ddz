@@ -2471,12 +2471,13 @@ int CGameData::ClearXjGame()
 	m_playing_para.appointbanker = INVALID_CHAIR;
 	m_playing_para.game_state = GS_WK_FREE;
 	m_playing_para.cur_total_bet = 0;
-	m_playing_para.room_bet = 1;
 	m_playing_para.turn_cards_num = 0;   //最大出牌数据初始化
 	m_playing_para.jiaofen_count = 0;	 //初始化叫分次数
 	m_playing_para.leave_card_bet = 1;
 
 	m_playing_para.magic_card = 0;
+	m_playing_para.rob_count = 0;
+	m_playing_para.turn_pass_count = 0;
 
 	//排序权位清空
 	for (BYTE i = 0; i < LEN_SORT_RIGHT; i++)
@@ -4392,20 +4393,6 @@ int __stdcall CGameData::SetAllCount(BYTE count)
 	return 0;
 }
 
-// 设置房间当前倍数
-int __stdcall CGameData::SetCurRoomBet(SCORE room_bet)
-{
-	m_playing_para.room_bet *= room_bet;
-
-	return 0;
-}
-
-// 查询房间当前倍数
-SCORE __stdcall CGameData::GetCurRoomBet()
-{
-	return m_playing_para.room_bet;
-}
-
 // 查询房间底分
 DWORD __stdcall CGameData::GetCellScore()
 {
@@ -5410,7 +5397,6 @@ int CGameData::InitGameData()
 	}
 
 	//初始化房间倍数
-	m_playing_para.room_bet = 1;
 	m_playing_para.turn_cards_num = 0;   //最大出牌数据初始化
 	m_playing_para.jiaofen_count = 0;	 //初始化叫分次数
 	m_playing_para.leave_card_bet = 1;
@@ -5418,6 +5404,8 @@ int CGameData::InitGameData()
 	m_playing_para.cur_outcard_user = INVALID_CHAIR;
 
 	m_playing_para.magic_card = 0;
+	m_playing_para.rob_count = 0;
+	m_playing_para.turn_pass_count = 0;
 
 	//排序权位初始化
 	for (BYTE i = 0; i < LEN_SORT_RIGHT; i++)

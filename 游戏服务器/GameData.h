@@ -348,12 +348,6 @@ public:
 	// 查询用户状态，用户坐下、准备、旁观、游戏中
 	virtual DWORD __stdcall GetPlayerState(WORD wChairID);
 
-	// 设置房间当前倍数
-	virtual int __stdcall SetCurRoomBet(SCORE room_bet);
-
-	// 查询房间当前倍数
-	virtual SCORE __stdcall GetCurRoomBet();
-
 	// 设置游戏房间状态
 	virtual int __stdcall SetGameStatus(DWORD state);
 

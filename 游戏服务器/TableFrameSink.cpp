@@ -128,17 +128,6 @@ bool CTableFrameSink::XjGameConclude(int nTotalGameCount, int nCurGameCount)
 			msg_singleGameScore[i] = m_GameAccess->GetPlayerSingleScore(i);
 
 			CLog::Log(log_debug, "chair: %d, singleGameScore: %d", i, msg_singleGameScore[i]);
-			////如果是金币场，总分设置成 金币 + 总分
-			//if (m_pITableFrame->GameType() == 1)
-			//{
-			//	BASE_PLAYERINFO info = m_pITableFrame->GetPlayerBaseInfo(i);
-			//	msg_totalGameScore[i] += info.m_goldCoin;
-			//	//不能为0
-			//	if (msg_totalGameScore[i] < 0)
-			//	{
-			//		msg_totalGameScore[i] = 0;
-			//	}
-			//}
 		}
 	}
 
@@ -797,8 +786,8 @@ bool CTableFrameSink::OnTimerMessage(DWORD wTimerID, WPARAM wBindParam)
 					//CLog::Log(log_error, "定时器到：默认不明牌 %d\n", i);
 
 					//处理不明牌消息
-					//On_Sub_UserMingPai(i, 0, 0);
-					On_Sub_UserMingPai(i, MING_PAI_TYPE_DEAL, 1);
+					On_Sub_UserMingPai(i, 0, 0);
+					//On_Sub_UserMingPai(i, MING_PAI_TYPE_DEAL, 1);
 				}
 			}
 
@@ -1055,7 +1044,8 @@ bool CTableFrameSink::OnTimerMessage(DWORD wTimerID, WPARAM wBindParam)
 			{
 				m_pITableFrame->KillGameTimer(IDI_ROB_START);
 
-				if (m_GameAccess->GetGameStatus() != GS_WK_FREE)
+				if (m_GameAccess->GetGameStatus() != GS_WK_FREE && m_GameAccess->GetGameStatus() != GS_WK_XJ_GAMEEND &&
+					m_GameAccess->GetGameStatus() != GS_WK_ROB)
 					return false;
 
 				HandleRobBanker();
@@ -1285,7 +1275,7 @@ void CTableFrameSink::HandleDeal()
 			CLog::Log(log_debug, "ChairID: %d, CardNum: %d", i, m_GameAccess->GetUserCurCardNum(i));
 
 			//设置是否明牌开始
-			if (5 == m_GameAccess->GetStartMingPai(i))
+			if (5 == m_GameAccess->GetPlayerMingPaiBet(i))
 			{
 				SendCard.ISMingPaiStart = 1;
 			}
@@ -1322,8 +1312,8 @@ void CTableFrameSink::HandleDeal()
 		for (int i = 0; i < cbMaxChairCount; i++)
 		{
 			//判断玩家是否开始游戏就明牌
-			printf("玩家：%d 是否开始游戏明牌:%d\n", i, m_GameAccess->GetStartMingPai(i));
-			if (5 == m_GameAccess->GetStartMingPai(i))
+			printf("玩家：%d 是否开始游戏明牌:%d\n", i, m_GameAccess->GetPlayerMingPaiBet(i));
+			if (5 == m_GameAccess->GetPlayerMingPaiBet(i))
 			{
 				On_Sub_UserMingPai(i, MING_PAI_TYPE_GAMESTART, 1);
 			}
@@ -1340,7 +1330,9 @@ void CTableFrameSink::HandleDeal()
 	//否则直接开始抢庄
 	else
 	{
-		HandleRobBanker();
+		//设置抢庄开始定时器
+		m_pITableFrame->KillGameTimer(IDI_ROB_START);
+		m_pITableFrame->SetGameTimer(IDI_ROB_START, IDI_TIME_ROB_START, 1, 0);
 	}
 }
 
@@ -1649,6 +1641,11 @@ void CTableFrameSink::SendRobStart(const WORD &wChairID, const BYTE &cbType)
 		}
 		else
 		{
+			//判断是否托管
+			if (1 == m_GameAccess->GetPlayerTuoGuan(wChairID))
+			{
+				m_pITableFrame->SetGameTimer(IDI_ROB_BANKER, IDI_TIME_ROB_BANKER*0.1, 1 , 0);
+			}
 			m_pITableFrame->SetGameTimer(IDI_ROB_BANKER, IDI_TIME_ROB_BANKER, 1, 0);
 		}
 	}
@@ -1684,10 +1681,9 @@ void CTableFrameSink::OnUserCallBanker(WORD wChairID, BYTE cbResult)	//1-不叫  2
 			cbResult = ROB_TYPE_CALL;
 	}
 
-	//如果抢设置房间倍数和抢庄倍数
+	//如果抢设置抢庄倍数
 	if (ROB_TYPE_ROB == cbResult)
 	{
-		m_GameAccess->SetCurRoomBet(2);
 		for (int i = 0; i < m_GameAccess->GetMaxChairCount(); i++)
 		{
 			if (USER_PLAYING == m_GameAccess->GetPlayerState(i))
@@ -1800,14 +1796,16 @@ void CTableFrameSink::OnUserCallBanker(WORD wChairID, BYTE cbResult)	//1-不叫  2
 				return;
 			}
 
-			//清空记录的抢庄次数
+			//清空记录的抢庄各状态
 			m_GameAccess->SetCurBankerCount(0);
 
-			//清空玩家的明牌状态 //清空玩家的明牌倍数
+			//清空玩家的明牌状态抢庄各状态
 			for (int i = 0; i < cbMaxChairCount; i++)
 			{
 				m_GameAccess->SetMingPaiState(i, 0);
 				m_GameAccess->SetPlayerMingPaiBet(i, 1);
+				m_GameAccess->SetBankerState(i, 0);
+				m_GameAccess->SetUserRobNum(i, 0);
 			}
 
 			//清空倍数
@@ -1816,8 +1814,9 @@ void CTableFrameSink::OnUserCallBanker(WORD wChairID, BYTE cbResult)	//1-不叫  2
 			//给玩家发牌
 			HandleDeal();
 
-			//处理抢庄（抢地主）
-			HandleRobBanker();
+			//设置抢庄开始定时器
+			m_pITableFrame->KillGameTimer(IDI_ROB_START);
+			m_pITableFrame->SetGameTimer(IDI_ROB_START, IDI_TIME_ROB_START, 1, 0);
 		}
 		else	//给下个玩家发送抢庄消息
 		{
@@ -1957,7 +1956,6 @@ void CTableFrameSink::AllRobBankerOver()
 	STR_CMD_SC_FANGJIAN_BET  fangjian_bet;
 	ZeroMemory(&fangjian_bet, sizeof(STR_CMD_SC_FANGJIAN_BET));
 
-	//给地主加上农民的倍数  并给农民加上地主的倍数
 	for (int i = 0; i < m_GameAccess->GetCurPlayerCount(); i++)
 	{
 		fangjian_bet.room_bet[i] = m_GameAccess->GetAllBet(i);
@@ -2118,9 +2116,6 @@ void CTableFrameSink::OnUserAddScore( WORD wChairID, WORD wType )
 	// 设置玩家下注状态
 	m_GameAccess->SetAddScoreState(wChairID, 1);
 
-	// 设置当前房间倍数
-	m_GameAccess->SetCurRoomBet(lScore);
-
 	//构造数据
 	STR_CMD_SC_ADD_SCORE_RESULT sAddScoreResult;
 	ZeroMemory(&sAddScoreResult, sizeof(STR_CMD_SC_ADD_SCORE_RESULT)); // Seeqings modify
@@ -2151,22 +2146,6 @@ void CTableFrameSink::OnUserAddScore( WORD wChairID, WORD wType )
 	printf("加注完成玩家数：%d\n", cbBetedNum);   //测试
 	if (cbBetedNum == m_GameAccess->GetCurPlayerCount())
 	{
-		//给地主加上农民的倍数
-		BYTE bet = 0;
-		for (BYTE i = 0; i < cbPlayerNum; ++i)
-		{
-			if (i != m_GameLogic->GetAppointBanker())
-				bet += m_GameAccess->GetPlayerAddScore(i);
-		}
-		if (bet == 2)
-		{
-			m_GameLogic->Wager(m_GameLogic->GetAppointBanker(), 2);
-		}
-		else if (bet == 3)
-		{
-			m_GameLogic->Wager(m_GameLogic->GetAppointBanker(), 1.5);
-		}
-
 		//发送倍数
 		STR_CMD_SC_FANGJIAN_BET  fangjian_bet;
 		ZeroMemory(&fangjian_bet, sizeof(STR_CMD_SC_FANGJIAN_BET));
@@ -2233,19 +2212,10 @@ void CTableFrameSink::On_Sub_UserMingPai(WORD wChairID, const BYTE &cbMPType, BY
 		{
 			//加倍
 			MPResult.cbTimes = 5;
-
-			// 设置当前房间倍数
-			m_GameAccess->SetCurRoomBet(5);
-
-			//记录玩家明牌倍数
-			m_GameAccess->SetPlayerMingPaiBet(wChairID, 5);
 		}
 		else if (MING_PAI_TYPE_OUTCARD == cbMPType)   //出牌名牌
 		{
 			MPResult.cbTimes = 2;	
-
-			// 设置当前房间倍数
-			m_GameAccess->SetCurRoomBet(2);
 
 			//记录玩家明牌倍数
 			m_GameAccess->SetPlayerMingPaiBet(wChairID, 2);
@@ -2254,14 +2224,8 @@ void CTableFrameSink::On_Sub_UserMingPai(WORD wChairID, const BYTE &cbMPType, BY
 		{
 			MPResult.cbTimes = (FlushCardBet == 1) ? 4 : (FlushCardBet == 2 ? 3 : 2);	
 
-			// 设置当前房间倍数
-			m_GameAccess->SetCurRoomBet(MPResult.cbTimes);
-
 			//记录玩家明牌倍数
 			m_GameAccess->SetPlayerMingPaiBet(wChairID, MPResult.cbTimes);
-
-			//记录玩家名牌模式
-			m_GameAccess->SetStartMingPai(wChairID, 4);
 		}
 
 		//赋值
@@ -2289,9 +2253,6 @@ void CTableFrameSink::On_Sub_UserMingPai(WORD wChairID, const BYTE &cbMPType, BY
 			MPResult.cbHandCard[i] = msg_cbHandCard[i];
 		}
 
-		//名牌结果录像			//待添加
-		//AddRecordMingPaiResult(MPResult);
-
 		//广播玩家明牌消息
 		m_pITableFrame->SendTableData(INVALID_CHAIR, CMD_SC_MING_PAI_RESULT, &MPResult, sizeof(STR_CMD_SC_MING_PAI_RESULT));
 	}
@@ -2305,8 +2266,6 @@ void CTableFrameSink::On_Sub_UserMingPai(WORD wChairID, const BYTE &cbMPType, BY
 			cbmingpaiNum++;
 	}
 	printf("明牌完成玩家数：%d\n", (int)cbmingpaiNum);
-
-	//如果全部明牌完成 发送出牌开始
 
 	if ((cbmingpaiNum == m_GameAccess->GetCurPlayerCount()))
 	{
@@ -2347,9 +2306,6 @@ void CTableFrameSink::On_Sub_UserMingPai(WORD wChairID, const BYTE &cbMPType, BY
 			{
 				m_GameLogic->Wager(i, mingbet);
 			}
-
-			//处理抢庄
-			//HandleRobBanker();
 		}
 	}
 }
@@ -2850,7 +2806,7 @@ void CTableFrameSink::OnUserPublicBet(WORD wChairID)
 	//由规则来判断抢庄部分的倍数
 	if (Rule == 0)
 	{
-		for (int i = 0; i < Rob_Num; i++)    //计算抢庄的倍数
+		for (int i = 0; i < Rob_Num - 1; i++)    //计算抢庄的倍数
 		{
 			Rob_bet *= 2;    // 2的4次方倍
 		}

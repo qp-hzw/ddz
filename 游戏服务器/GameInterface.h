@@ -80,7 +80,6 @@ typedef struct _tagPLAYING_PARAMETERS
 	WORD	currobuser;						//当前抢庄的玩家
 	BYTE	rob_count;						//当前抢庄次数
 	DWORD   out_card_type[MAX_CHAIR_COUNT];					//此轮是否出牌
-	SCORE	room_bet;						//当前房间的倍数
 	DWORD	max_room_bet;					//房间封顶倍数
 	WORD	jiaofen_count;					//当前叫分次数
 	WORD	cur_jiaofen_player;				//当前正在叫分的玩家
@@ -438,12 +437,6 @@ interface CGameAccess
 
 	// 查询用户状态，用户坐下、准备、旁观、游戏中
 	virtual DWORD __stdcall GetPlayerState(WORD wChairID) = NULL;
-
-	// 设置房间当前倍数
-	virtual int __stdcall SetCurRoomBet(SCORE room_bet) = NULL;
-
-	// 查询房间当前倍数
-	virtual SCORE __stdcall GetCurRoomBet() = NULL;
 
 	// 设置游戏房间状态
 	virtual int __stdcall SetGameStatus(DWORD state) = NULL;
