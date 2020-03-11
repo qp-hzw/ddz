@@ -28,7 +28,7 @@ public:
 	//初始化
 	virtual void Init();
 	//设置Gold场规则
-	virtual void SetGoldRule(BYTE byType);
+	virtual void SetGoldRule(VOID* roominfo);
 	//设置match规则
 	virtual void SetMatchRule(VOID *config);
 

@@ -1250,6 +1250,9 @@ void CTableFrameSink::StartGame()
 	for ( BYTE i = 0; i < cbPlayerNum; ++i)
 	{	
 		m_GameAccess->SetPlayerState( i, USER_PLAYING );
+
+		//设置底分
+		m_GameLogic->Wager(i, m_GameAccess->GetCellScore());
 	}
 
 	// 游戏局数加1
@@ -2868,14 +2871,14 @@ void CTableFrameSink::OnUserPublicBet(WORD wChairID)
 	//公共倍数
 	if (Boom_Num == 0)
 		if (Mingpai_Bet == 0)
-			public_Bet = Rob_bet * LeaveCard_Bet* Spring_Bet;  //公共倍数 = 初始*明牌*抢地主*底牌*炸弹*春天
+			public_Bet = cell_score *Rob_bet * LeaveCard_Bet* Spring_Bet;  //公共倍数 = 初始*明牌*抢地主*底牌*炸弹*春天
 		else
-			public_Bet = Rob_bet * Mingpai_Bet * LeaveCard_Bet * Spring_Bet;
+			public_Bet = cell_score *Rob_bet * Mingpai_Bet * LeaveCard_Bet * Spring_Bet;
 	else
 		if (Mingpai_Bet == 0)
-			public_Bet = Rob_bet  * Boom_Bet * LeaveCard_Bet * Spring_Bet;  //公共倍数 = 初始*明牌*抢地主*底牌*炸弹8春天
+			public_Bet = cell_score *Rob_bet  * Boom_Bet * LeaveCard_Bet * Spring_Bet;  //公共倍数 = 初始*明牌*抢地主*底牌*炸弹8春天
 		else
-			public_Bet = Rob_bet * Mingpai_Bet * Boom_Bet * LeaveCard_Bet * Spring_Bet;
+			public_Bet = cell_score *Rob_bet * Mingpai_Bet * Boom_Bet * LeaveCard_Bet * Spring_Bet;
 
 	//判断是否封顶
 	if (m_GameAccess->GetRoomMaxBet() < public_Bet)
@@ -2887,7 +2890,7 @@ void CTableFrameSink::OnUserPublicBet(WORD wChairID)
 		public_bet.public_bet = public_Bet;
 	}
 
-	printf("rob_bet: %d  Mingpai_Bet: %d  public_Bet:%d\n", Rob_bet, Mingpai_Bet, public_Bet);
+	CLog::Log(log_debug, "cell: %d rob: %d  Boom: %d  Mingpai: %d LeaveCard: %d public:%d\n",cell_score, Rob_bet, Boom_Bet, Mingpai_Bet, LeaveCard_Bet, public_Bet);
 
 	//m_pITableFrame->SendTableData(wChairID, CMD_SC_PUBLIC_BET, &public_bet, sizeof(STR_CMD_SC_PUBLIC_BET));
 }

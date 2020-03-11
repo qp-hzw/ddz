@@ -179,7 +179,7 @@ public:
 	//
 	virtual void Init() = NULL;
 	//设置Gold场规则
-	virtual void SetGoldRule(BYTE byType) = NULL;
+	virtual void SetGoldRule(VOID* roominfo) = NULL;
 	//设置match规则
 	virtual void SetMatchRule(VOID *config) = NULL;
 };
