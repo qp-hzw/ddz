@@ -2,186 +2,125 @@
 #define TABLE_FRAME_BASE_H
 
 #include <string>
-#define GAME_CONCLUDE_CONTINUE  0xFF //´ó¾Ö½áÊø²¢Ğø·Ñ
-#define GAME_CONCLUDE_NORMAL    0xFE //Õı³£½áÊø
+#include <google/protobuf/message.h>
+using namespace google::protobuf;
 
-//ÓÎÏ·×´Ì¬
-#define GAME_STATUS_FREE			0									//¿ÕÏĞ×´Ì¬
-#define GAME_STATUS_PLAY			100									//ÓÎÏ·×´Ì¬	TODO Ï¸¿´£¬¸Ä³É×À×Ó×´Ì¬
+#define GAME_CONCLUDE_CONTINUE  0xFF //å¤§å±€ç»“æŸå¹¶ç»­è´¹
+#define GAME_CONCLUDE_NORMAL    0xFE //æ­£å¸¸ç»“æŸ
 
-//½áÊøÔ­Òò
-#define GER_NORMAL					0x00								//³£¹æ½áÊø
-#define GER_DISMISS					0x01								//ÓÎÏ·½âÉ¢
-#define GER_USER_LEAVE				0x02								//ÓÃ»§Àë¿ª
-#define GER_NETWORK_ERROR			0x03								//ÍøÂç´íÎó
+//æ¸¸æˆçŠ¶æ€
+#define GAME_STATUS_FREE			0									//ç©ºé—²çŠ¶æ€
+#define GAME_STATUS_PLAY			100									//æ¸¸æˆçŠ¶æ€	TODO ç»†çœ‹ï¼Œæ”¹æˆæ¡Œå­çŠ¶æ€
+
+//ç»“æŸåŸå› 
+#define GER_NORMAL					0x00								//å¸¸è§„ç»“æŸ
+#define GER_DISMISS					0x01								//æ¸¸æˆè§£æ•£
+#define GER_USER_LEAVE				0x02								//ç”¨æˆ·ç¦»å¼€
+#define GER_NETWORK_ERROR			0x03								//ç½‘ç»œé”™è¯¯
 
 
-//Í¨ÓÃ·¿¼ä¹æÔò
-struct tagTableRule
-{
-	/********************************* ´óÌüÊ¹ÓÃ ************************************/
-	BYTE	GameMode;				//ÓÎÏ·Ä£Ê½ 0·¿¿¨Ô¼¾Ö; 1±ÈÈüÄ£Ê½; 2½ğ±ÒÄ£Ê½; 3½ğ±ÒÔ¼¾Ö; 4ÅÆÓÑÈ¦
-	BYTE    GameRoomLevel;          //·¿¼äµÈ¼¶ £¨½ğ±Ò³¡×¨ÓÃ£©
-
-	BYTE	GameCount;				//ÓÎÏ·¾ÖÊı 0-ÎŞÏŞ¾Ö
-	BYTE	PlayerCount;			//Íæ¼ÒÊıÁ¿ 0-ÈÎÒâÈËÊı¿É¿ª
-
-	BYTE	cbPayType;				//Ö§¸¶·½Ê½£¬0·¿Ö÷Ö§¸¶¡¢1AAÖÆ -- ·¿¿¨Ä£Ê½²ÅĞèÒª
-
-	BYTE	bRefuseSameIP;			//ÔÊĞíÍ¬IP    0-²»ÔÊĞí 1-ÔÊĞí
-	BYTE	bDistanceIn300;			//ÔÊĞí300Ã×	  0-²»ĞíÔÆ 1-ÔÊĞí
-	BYTE	bAllowStranger;			//ÔÊĞíÄ°ÉúÈË¼ÓÈë
-};
-
-//¹¤»á·¿¼ä¹æÔò
-struct tagClubRoomRule
-{
-    DWORD	dwClubID;				//¹¤»á
-	DWORD	dwRoomID;				//·¿¼ä
-	DWORD   dwPasswd;               //ÃÜÂë
-
-	BYTE	byGoldOrFK;				//(2.½ğ±Ò 1.·¿¿¨)
-
-	BYTE	bDissolve;				//ÊÇ·ñÔÊĞí½âÉ¢ 0ÔÊĞí 1²»ÔÊĞí
-
-	//½ğ±Ò·¿ÌØÓÃ
-	DWORD	dwAmount;				//×îµÍ¶î¶È
-	DWORD	dwOwnerPercentage;		//ÈºÖ÷Ìá³É
-    
-	BYTE	byMask;					//1 AAÖ§¸¶;  2´óÓ®¼ÒÖ§¸¶
-	DWORD	dwDizhu;				//µ××¢
-};
-
-//Íæ¼Ò»ù´¡ĞÅÏ¢ DB use player base info
-struct BASE_PLAYERINFO
-{
-	char					m_szAccID[54 + 1];
-	int				m_PlayerID;
-	char					m_szPlayerName[54 + 1];
-	unsigned int		m_LV;
-	unsigned int		m_dwExp;
-	//unsigned int		m_goldCoin;
-	int		m_goldCoin;
-	unsigned int		m_diamond;
-	unsigned int		m_vip;
-	time_t				m_registerDate;
-	char					m_szPassword[54 + 1];
-	unsigned int		m_sex;
-	char					m_szFaceUrl[54 + 1];
-	time_t				m_receiveTime;
-	unsigned int      m_RechTimes;
-	unsigned int      m_gameNumber;
-	unsigned int      m_winNumber;
-	unsigned int      m_invitecode;
-	char              m_szRegisterAddrip[54 + 1];
-	unsigned int      m_VoucherNum;								//´ø½ğ¾íÊıÁ¿
-	char              m_szLoginip[54 + 1];
-	char              m_szRealName[54 + 1];   //ÊµÃû
-	int					m_PlayerModelID;							//Íæ¼ÒÄ£ĞÍID
-	int					m_Permissions;								//È¨ÏŞ
-	int                 m_creditpoint;                              //±ÈÈüĞÅÓÃ·Ö
-	//int          m_match_score;                                 //±ÈÈü»ı·Ö
-};
 /////////////////////////////////////////////////////////////////////
 
-//×À×Ó½Ó¿Ú
+//æ¡Œå­æ¥å£
 class ITableFrame : public IUnknownEx
 {
 public:
-	//ÓÎÏ·Ä£Ê½ 0-·¿¿¨Ä£Ê½; 1-¾º¼¼Ä£Ê½;  2-½ğ±ÒÄ£Ê½;  3-·¿¿¨½ğ±Ò;
+	//æ¸¸æˆæ¨¡å¼ 0-æˆ¿å¡æ¨¡å¼; 1-ç«æŠ€æ¨¡å¼;  2-é‡‘å¸æ¨¡å¼;  3-æˆ¿å¡é‡‘å¸;
 	virtual int GameType() = 0;
 	//is roboot
 	virtual bool IsRobot(WORD wChairID) = 0;
 
-	//Á÷³Ì½Ó¿Ú
+	//æµç¨‹æ¥å£
 public:
-	//´¦ÀíĞ¡¾Ö½áÊø
-	virtual bool HandleXJGameEnd(BYTE cbCurGameCount,WORD *wIdentity, SCORE *lGameScore) = NULL;
-	//´¦Àí´ó¾Ö½áÊø
+	//å¤„ç†å°å±€ç»“æŸ
+	virtual bool HandleXJGameEnd(BYTE cbCurGameCount, WORD* wIdentity, SCORE* lGameScore) = NULL;
+	//å¤„ç†å¤§å±€ç»“æŸ
 	virtual bool HandleDJGameEnd(BYTE cbGameStatus) = NULL;
 
-	//Ê±¼ä½Ó¿Ú
+	//æ—¶é—´æ¥å£
 public:
-	//ÉèÖÃÊ±¼ä
+	//è®¾ç½®æ—¶é—´
 	virtual bool SetGameTimer(DWORD dwTimerID, DWORD dwElapse, DWORD dwRepeat, WPARAM dwBindParameter) = NULL;
-	//É¾³ıÊ±¼ä
+	//åˆ é™¤æ—¶é—´
 	virtual bool KillGameTimer(DWORD dwTimerID) = NULL;
-	//»ñÈ¡¶¨Ê±Æ÷Ê£ÓàºÁÃëÊı
+	//è·å–å®šæ—¶å™¨å‰©ä½™æ¯«ç§’æ•°
 	virtual DWORD GetTimerLeftTickCount(DWORD dwTimerID) = NULL;
 
-	//ÍøÂç½Ó¿Ú
+	//ç½‘ç»œæ¥å£
 public:
-	//·¢ËÍÊı¾İ
-	virtual bool SendTableData(WORD wChairID, WORD wSubCmdID, void * pData, WORD wDataSize, WORD wMainCmd =200) = NULL;
-	//·¢ËÍ³¡¾°
-	virtual bool SendGameScene(WORD wChairID, VOID * pData, WORD wDataSize) = NULL;
+	//å‘é€æ•°æ® --protobufåè®®
+	virtual bool SendTableData(WORD wChairID, WORD wSubCmdID, google::protobuf::Message* pData, WORD wMainCmdID = 200) = NULL;
+	//å‘é€åœºæ™¯
+	virtual bool SendGameScene(WORD wChairID, google::protobuf::Message* pData) = NULL;
 
-	//ÍĞ¹Ü½Ó¿Ú
+	//æ‰˜ç®¡æ¥å£
 public:
-	//·¢ËÍÍĞ¹Ü
+	//å‘é€æ‰˜ç®¡
 	virtual bool SendPlayerTuoGuan(WORD wChairID) = NULL;
+	//å–æ¶ˆæ‰˜ç®¡
+	virtual bool SendPlayerCancelTuoGaun(WORD wChairID) = NULL;
 };
 
 //////////////////////////////////////////////////////////////////////////////////
-//×ÓÓÎÏ·½Ó¿Ú
+//å­æ¸¸æˆæ¥å£
 class ITableFrameSink : public IUnknownEx
 {
-	//¹ÜÀí½Ó¿Ú
+	//ç®¡ç†æ¥å£
 public:
-	//Æô¶¯·şÎñ
-	virtual bool StartService(){return true;}
-	//Í£Ö¹·şÎñ
-	virtual bool ConcludeService(){return true;}
+	//å¯åŠ¨æœåŠ¡
+	virtual bool StartService() { return true; }
+	//åœæ­¢æœåŠ¡
+	virtual bool ConcludeService() { return true; }
 
-	//¹ÜÀí½Ó¿Ú
+	//ç®¡ç†æ¥å£
 public:
-	//ÅäÖÃ½Ó¿Ú
-	virtual bool Initialization(ITableFrame *pTableFrame, tagTableRule *comRule) = NULL;
+	//é…ç½®æ¥å£
+	virtual bool Initialization(ITableFrame* pTableFrame, tagTableRule* comRule) = NULL;
 
-	//ÓÎÏ·ÊÂ¼ş
+	//æ¸¸æˆäº‹ä»¶
 public:
-	//ÓÎÏ·¿ªÊ¼
+	//æ¸¸æˆå¼€å§‹
 	virtual bool OnEventGameStart() = NULL;
-	//ÓÎÏ·½áÊø
+	//æ¸¸æˆç»“æŸ
 	virtual bool OnEventGameConclude(BYTE cbReason) = NULL;
-	//·¢ËÍ³¡¾°
+	//å‘é€åœºæ™¯
 	virtual bool OnEventSendGameScene(WORD wChairID) = NULL;
 
-	//ÊÂ¼ş½Ó¿Ú
+	//äº‹ä»¶æ¥å£
 public:
-	//Ê±¼äÊÂ¼ş
+	//æ—¶é—´äº‹ä»¶
 	virtual bool OnTimerMessage(DWORD dwTimerID, WPARAM dwBindParameter) = NULL;
-	//ÓÎÏ·ÏûÏ¢
-	virtual bool OnGameMessage(WORD wSubCmdID, void * pData, WORD wDataSize, WORD wChairID) = NULL;
+	//æ¸¸æˆæ¶ˆæ¯
+	virtual bool OnGameMessage(WORD wSubCmdID, void* pData, WORD wDataSize, WORD wChairID) = NULL;
 
-	//ÍĞ¹Ü½Ó¿Ú
+	//æ‰˜ç®¡æ¥å£
 public:
-	//ÍĞ¹Ü
+	//æ‰˜ç®¡
 	virtual bool PlayerTuoGuan(WORD wChairID) = NULL;
-	//È¡ÏûÍĞ¹Ü
+	//å–æ¶ˆæ‰˜ç®¡
 	virtual bool PlayerCancelTuoGuan(WORD wChairID) = NULL;
 };
 
-//×ÓÓÎÏ·¹æÔò¶ÁÈ¡
+//å­æ¸¸æˆè§„åˆ™è¯»å–
 class ISubRoomRuleManager : public IUnknownEx
 {
-	//¹ÜÀí½Ó¿Ú
+	//ç®¡ç†æ¥å£
 public:
-	//Æô¶¯·şÎñ
-	virtual bool StartService(){return true;}
-	//Í£Ö¹·şÎñ
-	virtual bool ConcludeService(){return true;}
+	//å¯åŠ¨æœåŠ¡
+	virtual bool StartService() { return true; }
+	//åœæ­¢æœåŠ¡
+	virtual bool ConcludeService() { return true; }
 
 	//
 public:
-	//¸ù¾İ×Ö¶ÎÃû×Ö, Îª½á¹¹Ìå¶ÔÓ¦×Ö¶Î¸³Öµ
-	virtual void SetRoomRule(std::string key, std::string value)= NULL;
+	//æ ¹æ®å­—æ®µåå­—, ä¸ºç»“æ„ä½“å¯¹åº”å­—æ®µèµ‹å€¼
+	virtual void SetRoomRule(std::string key, std::string value) = NULL;
 	//
 	virtual void Init() = NULL;
-	//ÉèÖÃGold³¡¹æÔò
+	//è®¾ç½®Goldåœºè§„åˆ™
 	virtual void SetGoldRule(VOID* roominfo) = NULL;
-	//ÉèÖÃmatch¹æÔò
-	virtual void SetMatchRule(VOID *config) = NULL;
+	//è®¾ç½®matchè§„åˆ™
+	virtual void SetMatchRule(VOID* config) = NULL;
 };
 
 #endif

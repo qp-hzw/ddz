@@ -1,125 +1,124 @@
 #ifndef CMD_CLUB_HEAD_FILE
 #define CMD_CLUB_HEAD_FILE
 
-#include "STR_CMD_Club.h"
 
 /*
-** ¹¤»áÏµÍ³
-** 1. µÇÂ¼·þ, ÓÎÏ··þÏûÏ¢ºÅ¶¼ÔÚÕâÀï
+** å·¥ä¼šç³»ç»Ÿ
+** 1. ç™»å½•æœ, æ¸¸æˆæœæ¶ˆæ¯å·éƒ½åœ¨è¿™é‡Œ
 ** 2. L->logon;  G->Game
 */
 
 /* *******************************************************************************
-**          MAIN:6      MDM_CLUB  ¹¤»á
+**          MAIN:6      MDM_CLUB  å·¥ä¼š
 ** ******************************************************************************/
-//¡¾Ö÷ÏûÏ¢ºÅ¡¿
-#define MDM_CLUB								6							//¹¤»á
+//ã€ä¸»æ¶ˆæ¯å·ã€‘
+#define MDM_CLUB								6							//å·¥ä¼š
 
-//¡¾×ÓÏûÏ¢ºÅ¡¿
-#define CMD_LC_CLUB_LIST_RE						50							//ÊµÊ±Ë¢ÐÂ¹¤»áÁÐ±í
-#define CMD_LC_CLUB_ROOM_RE						51							//ÊµÊ±Ë¢ÐÂ¹¤»á·¿¼äÁÐ±í
+//ã€å­æ¶ˆæ¯å·ã€‘
+#define CMD_LC_CLUB_LIST_RE						50							//å®žæ—¶åˆ·æ–°å·¥ä¼šåˆ—è¡¨
+#define CMD_LC_CLUB_ROOM_RE						51							//å®žæ—¶åˆ·æ–°å·¥ä¼šæˆ¿é—´åˆ—è¡¨
 
-#pragma region ¹¤»á ´´½¨|¼ÓÈë|ÁÐ±í
-#define SUB_CL_CLUB_CREATE_CLUB					1							//´´½¨¹¤»áÇëÇó
-#define CMD_LC_CLUB_CREATE_CLUB					101							//´´½¨¹¤»áÇëÇó ·µ»Ø
+#pragma region å·¥ä¼š åˆ›å»º|åŠ å…¥|åˆ—è¡¨
+#define SUB_CL_CLUB_CREATE_CLUB					1							//åˆ›å»ºå·¥ä¼šè¯·æ±‚
+#define CMD_LC_CLUB_CREATE_CLUB					101							//åˆ›å»ºå·¥ä¼šè¯·æ±‚ è¿”å›ž
 
-#define SUB_CL_CLUB_JOIN_CLUB					2							//ÉêÇë¼ÓÈë¹¤»á
-#define CMD_LC_CLUB_JOIN_CLUB					102							//ÉêÇë¼ÓÈë¹¤»á·µ»Ø
-#define CMD_LC_CLUB_JOIN_CLUB_BDCAST			202							//ÉêÇë¼ÓÈë¹¤»á¹ã²¥
+#define SUB_CL_CLUB_JOIN_CLUB					2							//ç”³è¯·åŠ å…¥å·¥ä¼š
+#define CMD_LC_CLUB_JOIN_CLUB					102							//ç”³è¯·åŠ å…¥å·¥ä¼šè¿”å›ž
+#define CMD_LC_CLUB_JOIN_CLUB_BDCAST			202							//ç”³è¯·åŠ å…¥å·¥ä¼šå¹¿æ’­
 
-#define SUB_CL_CLUB_DISS_CLUB					3							//½âÉ¢¹¤»á
-#define CMD_LC_CLUB_DISS_CLUB					103							//½âÉ¢¹¤»á·µ»Ø
+#define SUB_CL_CLUB_DISS_CLUB					3							//è§£æ•£å·¥ä¼š
+#define CMD_LC_CLUB_DISS_CLUB					103							//è§£æ•£å·¥ä¼šè¿”å›ž
 
-#define SUB_CL_CLUB_ALL_CLUB_INFO_LIST			4							//ÇëÇó×ÔÉí¹¤»áÁÐ±í
-#define CMD_LC_CLUB_ALL_CLUB_INFO_LIST			104							//·µ»Ø×ÔÉí¹¤»áÁÐ±í
-#define CMD_LC_CLUB_ALL_INFO_FINISH				204							//·µ»Ø×ÔÉí¹¤»áÁÐ±í ½áÊø
+#define SUB_CL_CLUB_ALL_CLUB_INFO_LIST			4							//è¯·æ±‚è‡ªèº«å·¥ä¼šåˆ—è¡¨
+#define CMD_LC_CLUB_ALL_CLUB_INFO_LIST			104							//è¿”å›žè‡ªèº«å·¥ä¼šåˆ—è¡¨
+#define CMD_LC_CLUB_ALL_INFO_FINISH				204							//è¿”å›žè‡ªèº«å·¥ä¼šåˆ—è¡¨ ç»“æŸ
 
-#define SUB_CL_CLUB_RANDOM_CLUB_LIST			5							//²éÑ¯Î´ÂúÔ±, ·Ç×ÔÉíËæ»ú¹¤»á(×î´ó9¸ö)
-#define CMD_LC_CLUB_RANDOM_CLUB_LIST			105							//²éÑ¯Î´ÂúÔ±·Ç×ÔÉíËæ»ú¹¤»á ·µ»Ø
-#define CMD_LC_CLUB_RANDOM_CLUB_LIST_FINISH		205							//²éÑ¯Î´ÂúÔ±·Ç×ÔÉíËæ»ú¹¤»á ½áÊø
+#define SUB_CL_CLUB_RANDOM_CLUB_LIST			5							//æŸ¥è¯¢æœªæ»¡å‘˜, éžè‡ªèº«éšæœºå·¥ä¼š(æœ€å¤§9ä¸ª)
+#define CMD_LC_CLUB_RANDOM_CLUB_LIST			105							//æŸ¥è¯¢æœªæ»¡å‘˜éžè‡ªèº«éšæœºå·¥ä¼š è¿”å›ž
+#define CMD_LC_CLUB_RANDOM_CLUB_LIST_FINISH		205							//æŸ¥è¯¢æœªæ»¡å‘˜éžè‡ªèº«éšæœºå·¥ä¼š ç»“æŸ
 #pragma endregion
 
-#pragma region ¹¤»á·¿¼ä ´´½¨|¼ÓÈë|ÐÞ¸Ä|ÁÐ±í
-#define SUB_CL_CLUB_ROOM_LIST					11							//ÇëÇó¸Ã¹¤»á·¿¼äÁÐ±í
-#define CMD_LC_CLUB_ROOM_LIST					111							//ÇëÇó¸Ã¹¤»á·¿¼äÁÐ±í ·µ»Ø
-#define CMD_LC_CLUB_ROOM_LIST_FINISH			211							//ÇëÇó¸Ã¹¤»á·¿¼äÁÐ±í ½áÊø
+#pragma region å·¥ä¼šæˆ¿é—´ åˆ›å»º|åŠ å…¥|ä¿®æ”¹|åˆ—è¡¨
+#define SUB_CL_CLUB_ROOM_LIST					11							//è¯·æ±‚è¯¥å·¥ä¼šæˆ¿é—´åˆ—è¡¨
+#define CMD_LC_CLUB_ROOM_LIST					111							//è¯·æ±‚è¯¥å·¥ä¼šæˆ¿é—´åˆ—è¡¨ è¿”å›ž
+#define CMD_LC_CLUB_ROOM_LIST_FINISH			211							//è¯·æ±‚è¯¥å·¥ä¼šæˆ¿é—´åˆ—è¡¨ ç»“æŸ
 
-#define SUB_CL_CLUB_ROOM_SETTING				13							//·¿¼äÉèÖÃÇëÇó 
-#define CMD_LC_CLUB_ROOM_SETTING				113							//·¿¼äÉèÖÃÇëÇó ·µ»Ø
+#define SUB_CL_CLUB_ROOM_SETTING				13							//æˆ¿é—´è®¾ç½®è¯·æ±‚ 
+#define CMD_LC_CLUB_ROOM_SETTING				113							//æˆ¿é—´è®¾ç½®è¯·æ±‚ è¿”å›ž
 
-#define SUB_CG_CLUB_ROOM_CREATE					14							//´´½¨·¿¼ä
-#define CMD_LC_CLUB_ROOM_CREATE					114							//´´½¨·¿¼ä ·µ»Ø
+#define SUB_CG_CLUB_ROOM_CREATE					14							//åˆ›å»ºæˆ¿é—´
+#define CMD_LC_CLUB_ROOM_CREATE					114							//åˆ›å»ºæˆ¿é—´ è¿”å›ž
 
-#define SUB_CL_CLUB_ROOM_DISSOLVE				15							//½âÉ¢·¿¼äÇëÇó 
-#define CMD_LC_CLUB_ROOM_DISSOLVE				115							//½âÉ¢·¿¼äÇëÇó ·µ»Ø
+#define SUB_CL_CLUB_ROOM_DISSOLVE				15							//è§£æ•£æˆ¿é—´è¯·æ±‚ 
+#define CMD_LC_CLUB_ROOM_DISSOLVE				115							//è§£æ•£æˆ¿é—´è¯·æ±‚ è¿”å›ž
 #pragma endregion
 
-#pragma region  ¹¤»á×À×Ó ´´½¨|¼ÓÈë|ÁÐ±í
-#define SUB_CG_CLUB_TABLE_LIST_TABLE			16							//ÇëÇó¸Ã·¿¼äµÄ×À×ÓÐÅÏ¢
-#define CMD_GC_CLUB_TABLE_LIST_TABLE			116							//ÇëÇó¸Ã·¿¼äµÄ×À×ÓÐÅÏ¢ ·µ»Ø
+#pragma region  å·¥ä¼šæ¡Œå­ åˆ›å»º|åŠ å…¥|åˆ—è¡¨
+#define SUB_CG_CLUB_TABLE_LIST_TABLE			16							//è¯·æ±‚è¯¥æˆ¿é—´çš„æ¡Œå­ä¿¡æ¯
+#define CMD_GC_CLUB_TABLE_LIST_TABLE			116							//è¯·æ±‚è¯¥æˆ¿é—´çš„æ¡Œå­ä¿¡æ¯ è¿”å›ž
+#define CMD_GC_CLUB_TABLE_LIST_TABLE_FINISH		216							//è¯·æ±‚è¯¥æˆ¿é—´çš„æ¡Œå­ä¿¡æ¯ å®Œæˆ
 
-#define SUB_CG_CLUB_CREATE_TABLE				17							//´´½¨×À×Ó 
-#define CMD_GC_CLUB_CREATE_TABKE				117							//´´½¨×À×Ó ·µ»Ø
+#define SUB_CG_CLUB_CREATE_TABLE				17							//åˆ›å»ºæ¡Œå­ 
+#define CMD_GC_CLUB_CREATE_TABKE				117							//åˆ›å»ºæ¡Œå­ è¿”å›ž
 
-#define SUB_CG_USER_JOIN_TABLE_NO_PASS			19							//#¼ÓÈë×À×Ó,²»ÐèÒªÃÜÂë, ¼´¿ìËÙ¿ªÊ¼ -- ½öÅÆÓÑÈºÊ¹ÓÃ
+#define SUB_CG_CLUB_JOIN_TABLE_NO_PASS			19							//#åŠ å…¥æ¡Œå­,ä¸éœ€è¦å¯†ç , å³å¿«é€Ÿå¼€å§‹ -- ä»…ç‰Œå‹ç¾¤ä½¿ç”¨
 
-#define SUB_CL_CLUB_TABLE_DISSOLVE				18							//½âÉ¢×À×ÓÇëÇó 
-#define CMD_LC_CLUB_TABLE_DISSOLVE				118							//½âÉ¢×À×ÓÇëÇó ·µ»Ø
+#define SUB_CL_CLUB_TABLE_DISSOLVE				18							//è§£æ•£æ¡Œå­è¯·æ±‚ 
+#define CMD_LC_CLUB_TABLE_DISSOLVE				118							//è§£æ•£æ¡Œå­è¯·æ±‚ è¿”å›ž
 #pragma endregion
 
-#pragma region ¹¤»áÐÅÏ¢Ãæ°å
-#define SUB_CL_CLUB_NOTICE						21							//ÅÆÓÑÈ¦¹«¸æ -- ÄÚ²¿³ÉÔ±¿É¿´
-#define CMD_LC_CLUB_NOTICE						121							//ÅÆÓÑÈ¦¹«¸æ ·µ»Ø
-#define CMD_LC_CLUB_NOTICE_BDCAST				221							//ÅÆÓÑÈ¦¹«¸æ ¹ã²¥
+#pragma region å·¥ä¼šä¿¡æ¯é¢æ¿
+#define SUB_CL_CLUB_NOTICE						21							//ç‰Œå‹åœˆå…¬å‘Š -- å†…éƒ¨æˆå‘˜å¯çœ‹
+#define CMD_LC_CLUB_NOTICE						121							//ç‰Œå‹åœˆå…¬å‘Š è¿”å›ž
+#define CMD_LC_CLUB_NOTICE_BDCAST				221							//ç‰Œå‹åœˆå…¬å‘Š å¹¿æ’­
 
-#define SUB_CL_CLUB_MESSAGE						22							//ÅÆÓÑÈ¦¼ò½é -- ¶ÔÍâ²¿Õ¹Ê¾µÄÐÅÏ¢
-#define CMD_LC_CLUB_MESSAGE						122							//ÅÆÓÑÈ¦¼ò½é ·µ»Ø  ×¢:ÅÆÓÑÈ¦¼ò½é ÎÞÐë¹ã²¥
+#define SUB_CL_CLUB_MESSAGE						22							//ç‰Œå‹åœˆç®€ä»‹ -- å¯¹å¤–éƒ¨å±•ç¤ºçš„ä¿¡æ¯
+#define CMD_LC_CLUB_MESSAGE						122							//ç‰Œå‹åœˆç®€ä»‹ è¿”å›ž  æ³¨:ç‰Œå‹åœˆç®€ä»‹ æ— é¡»å¹¿æ’­
 
-#define SUB_CL_CLUB_CONTRIBUTE_FK				23							//¹±Ï×·¿¿¨ -- ¶ÔÍâ²¿Õ¹Ê¾µÄÐÅÏ¢
-#define CMD_LC_CLUB_CONTRIBUTE_FK				123							//¹±Ï×·¿¿¨ ·µ»Ø
+#define SUB_CL_CLUB_CONTRIBUTE_FK				23							//è´¡çŒ®æˆ¿å¡ -- å¯¹å¤–éƒ¨å±•ç¤ºçš„ä¿¡æ¯
+#define CMD_LC_CLUB_CONTRIBUTE_FK				123							//è´¡çŒ®æˆ¿å¡ è¿”å›ž
 
-#define SUB_CL_CLUB_AUTO_AGREE					24							//ÅÆÓÑÈ¦ÉèÖÃ -- ÉêÇë¼ÓÈë×Ô¶¯Í¬Òâ
-#define CMD_LC_CLUB_AUTO_AGREE					124							//ÅÆÓÑÈ¦ÉèÖÃ ·µ»Ø
+#define SUB_CL_CLUB_AUTO_AGREE					24							//ç‰Œå‹åœˆè®¾ç½® -- ç”³è¯·åŠ å…¥è‡ªåŠ¨åŒæ„
+#define CMD_LC_CLUB_AUTO_AGREE					124							//ç‰Œå‹åœˆè®¾ç½® è¿”å›ž
 
-#define SUB_CL_CLUB_CHAT						25							//ÁÄÌìALL 
-#define CMD_LC_CLUB_CHAT						125							//ÁÄÌìALL ·µ»Ø
-#define CMD_LC_CLUB_CHAT_BDCAST					225							//ÁÄÌìALL ¹ã²¥
+#define SUB_CL_CLUB_CHAT						25							//èŠå¤©ALL 
+#define CMD_LC_CLUB_CHAT						125							//èŠå¤©ALL è¿”å›ž
+#define CMD_LC_CLUB_CHAT_BDCAST					225							//èŠå¤©ALL å¹¿æ’­
 
-#define SUB_CL_CLUB_MEMBER_MANAGER				31							//½øÈë¹¤»áÖ÷Ãæ°å
-#define CMD_LC_CLUB_MEMBER_MANAGER				131							//½øÈë¹¤»áÖ÷Ãæ°å ·µ»Ø
-#define CMD_LC_CLUB_MEMBER_MANAGER_FINISH		231							//½øÈë¹¤»áÖ÷Ãæ°å ½áÊø
-#define CMD_LC_CLUB_DATA						331							//¹¤»á»ù±¾ÐÅÏ¢
+#define SUB_CL_CLUB_MEMBER_MANAGER				31							//è¿›å…¥å·¥ä¼šä¸»é¢æ¿
+#define CMD_LC_CLUB_MEMBER_MANAGER				131							//è¿›å…¥å·¥ä¼šä¸»é¢æ¿ è¿”å›ž
+#define CMD_LC_CLUB_DATA						231							//å·¥ä¼šåŸºæœ¬ä¿¡æ¯
 
-#define SUB_CL_CLUB_INVITE						32							//ÑûÇëËûÈë¼ÓÈëÅÆÓÑÈ¦ 
-#define CMD_LC_CLUB_INVITE						132							//ÑûÇëËûÈË¼ÓÈëÅÆÓÑÈ¦ ·µ»Ø
-#define CMD_LC_CLUB_INVITE_REMIND				232							//±»ÑûÇëÈËµÄÌáÐÑ
+#define SUB_CL_CLUB_INVITE						32							//é‚€è¯·ä»–å…¥åŠ å…¥ç‰Œå‹åœˆ 
+#define CMD_LC_CLUB_INVITE						132							//é‚€è¯·ä»–äººåŠ å…¥ç‰Œå‹åœˆ è¿”å›ž
+#define CMD_LC_CLUB_INVITE_REMIND				232							//è¢«é‚€è¯·äººçš„æé†’
 
-#define SUB_CL_CLUB_INVITE_RESULT				33							//±»ÑûÇëÈËµÄ»Ø¸´
-#define CMD_LC_CLUB_INVITE_RESULT				133							//±»ÑûÇëÈËµÄ»Ø¸´ ·µ»Ø
+#define SUB_CL_CLUB_INVITE_RESULT				33							//è¢«é‚€è¯·äººçš„å›žå¤
+#define CMD_LC_CLUB_INVITE_RESULT				133							//è¢«é‚€è¯·äººçš„å›žå¤ è¿”å›ž
 
-#define SUB_CL_CLUB_APPLICANT_LIST				34							//ÅÆÓÑÈ¦ÖÐÉêÇëÈËÁÐ±í
-#define CMD_LC_CLUB_APPLICANT_LIST				134							//ÅÆÓÑÈ¦ÖÐÉêÇëÈËÁÐ±í ·µ»Ø
-#define CMD_LC_CLUB_APPLICANT_LIST_FINISH		234							//ÅÆÓÑÈ¦ÖÐÉêÇëÈËÁÐ±í ½áÊø
+#define SUB_CL_CLUB_APPLICANT_LIST				34							//ç‰Œå‹åœˆä¸­ç”³è¯·äººåˆ—è¡¨
+#define CMD_LC_CLUB_APPLICANT_LIST				134							//ç‰Œå‹åœˆä¸­ç”³è¯·äººåˆ—è¡¨ è¿”å›ž
+#define CMD_LC_CLUB_APPLICANT_LIST_FINISH		234							//ç‰Œå‹åœˆä¸­ç”³è¯·äººåˆ—è¡¨ ç»“æŸ
 
-#define SUB_CL_CLUB_APPLICANT_RESULT			35							//ÈºÖ÷|¹ÜÀí¶ÔÉêÇëÏûÏ¢µÄ´ð¸´(Í¬Òâ|¾Ü¾ø)
-#define CMD_LC_CLUB_APPLICANT_RESULT			135							//ÈºÖ÷|¹ÜÀí¶ÔÉêÇëÏûÏ¢µÄ´ð¸´(Í¬Òâ|¾Ü¾ø)
+#define SUB_CL_CLUB_APPLICANT_RESULT			35							//ç¾¤ä¸»|ç®¡ç†å¯¹ç”³è¯·æ¶ˆæ¯çš„ç­”å¤(åŒæ„|æ‹’ç»)
+#define CMD_LC_CLUB_APPLICANT_RESULT			135							//ç¾¤ä¸»|ç®¡ç†å¯¹ç”³è¯·æ¶ˆæ¯çš„ç­”å¤(åŒæ„|æ‹’ç»)
 
-#define SUB_CL_CLUB_QUIT						36							//ÓÃ»§ÍË³öÅÆÓÑÈ¦
-#define CMD_LC_CLUB_QUIT						136							//ÓÃ»§¸øÍË³öÅÆÓÑÈ¦ ·µ»Ø
+#define SUB_CL_CLUB_QUIT						36							//ç”¨æˆ·é€€å‡ºç‰Œå‹åœˆ
+#define CMD_LC_CLUB_QUIT						136							//ç”¨æˆ·ç»™é€€å‡ºç‰Œå‹åœˆ è¿”å›ž
 
-#define SUB_CL_CLUB_APPOINTMENT					37							//Ö°ÎñÈÎÃâ 0Ìá³ö 1½«ÎªÒ»°ã³ÉÔ± 2ÉèÖÃÎª¹ÜÀíÔ± 
-#define CMD_LC_CLUB_APPOINTMENT					137							//Ö°ÎñÈÎÃâ ·µ»Ø
-#define CMD_LC_CLUB_APPOINTMENT_NOTE			237							//Ö°ÎñÈÎÃâ ÌáÐÑ
+#define SUB_CL_CLUB_APPOINTMENT					37							//èŒåŠ¡ä»»å… 0æå‡º 1å°†ä¸ºä¸€èˆ¬æˆå‘˜ 2è®¾ç½®ä¸ºç®¡ç†å‘˜ 
+#define CMD_LC_CLUB_APPOINTMENT					137							//èŒåŠ¡ä»»å… è¿”å›ž
+#define CMD_LC_CLUB_APPOINTMENT_NOTE			237							//èŒåŠ¡ä»»å… æé†’
 
-#define SUB_CL_CLUB_INQUERY_LIST				38							//±»ÑûÇëÈË²é¿´×Ô¼ºµÄÑûÇëÁÐ±í
-#define CMD_LC_CLUB_INQUERY_LIST				138							//±»ÑûÇëÈË²é¿´×Ô¼ºµÄÑûÇëÁÐ±í ·µ»Ø
-#define CMD_LC_CLUB_INQUERY_LIST_FINISH			238							//±»ÑûÇëÈË²é¿´×Ô¼ºµÄÑûÇëÁÐ±í ½áÊø
+#define SUB_CL_CLUB_INQUERY_LIST				38							//è¢«é‚€è¯·äººæŸ¥çœ‹è‡ªå·±çš„é‚€è¯·åˆ—è¡¨
+#define CMD_LC_CLUB_INQUERY_LIST				138							//è¢«é‚€è¯·äººæŸ¥çœ‹è‡ªå·±çš„é‚€è¯·åˆ—è¡¨ è¿”å›ž
+#define CMD_LC_CLUB_INQUERY_LIST_FINISH			238							//è¢«é‚€è¯·äººæŸ¥çœ‹è‡ªå·±çš„é‚€è¯·åˆ—è¡¨ ç»“æŸ
 #pragma endregion
 
-#pragma region ¹¤»áÕ½¼¨
-#define SUB_CL_CLUB_RECORD_LIST					41							//¹¤»áÕ½¼¨Í³¼Æ ²éÑ¯
-#define CMD_LC_CLUB_RECORD_LIST					141							//¹¤»áÕ½¼¨Í³¼Æ ·µ»Ø
-#define CMD_LC_CLUB_RECORD_FINISH				241							//¹¤»áÕ½¼¨Í³¼Æ ½áÊø
+#pragma region å·¥ä¼šæˆ˜ç»©
+#define SUB_CL_CLUB_RECORD_LIST					41							//å·¥ä¼šæˆ˜ç»©ç»Ÿè®¡ æŸ¥è¯¢
+#define CMD_LC_CLUB_RECORD_LIST					141							//å·¥ä¼šæˆ˜ç»©ç»Ÿè®¡ è¿”å›ž
+#define CMD_LC_CLUB_RECORD_LIST_FINISH			241							//å·¥ä¼šæˆ˜ç»©ç»Ÿè®¡ ç»“æŸ
 #pragma endregion
 
 #endif

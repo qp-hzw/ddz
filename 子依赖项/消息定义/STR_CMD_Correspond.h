@@ -3,8 +3,8 @@
 
 #pragma pack(1)
 
-#pragma region  MDM_REGISTER ×¢²áÄ£¿é
-//ÓÎÏ··¿¼ä
+#pragma region  MDM_REGISTER æ³¨å†Œæ¨¡å—
+//æ¸¸æˆæˆ¿é—´
 struct tagServerItem
 {
 	DWORD							dwServerID;							//server id
@@ -12,102 +12,102 @@ struct tagServerItem
 	BYTE                            byServerType;                       //1.lobbyServer;  2.GameServer
 	TCHAR							szServerName[LEN_SERVER];			//
 	
-	TCHAR							szServerAddr[LEN_IP_ADDR];		    //·þÎñÆ÷µØÖ·
-	WORD							wServerPort;					    //·þÎñÆ÷¶Ë¿Ú
+	TCHAR							szServerAddr[LEN_IP_ADDR];		    //æœåŠ¡å™¨åœ°å€
+	WORD							wServerPort;					    //æœåŠ¡å™¨ç«¯å£
 };
 
-//·þÎñÀàÐÍ
+//æœåŠ¡ç±»åž‹
 enum enServerType
 {
-	NULL_TYPE = 1,				//ÎÞÐ§·þÎñ
-	GAME_TYPE = 2,				//ÓÎÏ··þ
-	LOBBY_TYPE = 3,				//µÇÂ¼·þ
+	NULL_TYPE = 1,				//æ— æ•ˆæœåŠ¡
+	GAME_TYPE = 2,				//æ¸¸æˆæœ
+	LOBBY_TYPE = 3,				//ç™»å½•æœ
 };
 
-//×¢²áÊ§°Ü
+//æ³¨å†Œå¤±è´¥
 struct STR_CPO_PGPL_REGISTER_FAILURE
 {
-	LONG							lErrorCode;							//´íÎó´úÂë
-	TCHAR							szDescribeString[128];				//´íÎóÏûÏ¢
+	LONG							lErrorCode;							//é”™è¯¯ä»£ç 
+	TCHAR							szDescribeString[128];				//é”™è¯¯æ¶ˆæ¯
 };
 
 #pragma endregion
 
-#pragma region MDM_TRANSFER ÖÐ×ª·þÎñ
-//µÇÂ¼·þÍ¨ÖªÐ­µ÷·þ, Ð­µ÷·þÍ¨ÖªÓÎÏ··þ ½âÉ¢×À×Ó
+#pragma region MDM_TRANSFER ä¸­è½¬æœåŠ¡
+//ç™»å½•æœé€šçŸ¥åè°ƒæœ, åè°ƒæœé€šçŸ¥æ¸¸æˆæœ è§£æ•£æ¡Œå­
 struct STR_CPR_LP_CLUB_TABLE_DISSOLVE
 {
-	DWORD	dwTableID;									//×À×ÓID
-	DWORD	dwGameID;									//ÓÎÏ·ID
+	DWORD	dwTableID;									//æ¡Œå­ID
+	DWORD	dwGameID;									//æ¸¸æˆID
 };
 
-//µÇÂ¼·þÍ¨ÖªÐ­µ÷·þ, Ð­µ÷·þÍ¨ÖªÓÎÏ··þ ½âÉ¢×À×Ó
+//ç™»å½•æœé€šçŸ¥åè°ƒæœ, åè°ƒæœé€šçŸ¥æ¸¸æˆæœ è§£æ•£æ¡Œå­
 struct STR_CPO_PG_CLUB_TABLE_DISSOLVE
 {
-	DWORD	dwTableID;									//×À×ÓID
-	DWORD	dwGameID;									//ÓÎÏ·ID
+	DWORD	dwTableID;									//æ¡Œå­ID
+	DWORD	dwGameID;									//æ¸¸æˆID
 };
 
-//´´½¨×À×Ó ²éÑ¯¿ÉÓÃµÄGameID
+//åˆ›å»ºæ¡Œå­ æŸ¥è¯¢å¯ç”¨çš„GameID
 struct STR_CPR_LP_CREATE_TABLE
 {
-	DWORD	dwKindID;									//TODONOW È·ÈÏkindIDµÄÀàÐÍ
+	DWORD	dwKindID;									//TODONOW ç¡®è®¤kindIDçš„ç±»åž‹
 
-	DWORD	dwSocketID;									//¿Í»§¶ËSocketID
+	DWORD	dwSocketID;									//å®¢æˆ·ç«¯SocketID
 };
 
-//´´½¨×À×Ó ²éÑ¯¿ÉÓÃµÄGameID
+//åˆ›å»ºæ¡Œå­ æŸ¥è¯¢å¯ç”¨çš„GameID
 struct STR_CPO_PL_CREATE_TABLE
 {
-	//²Ù×÷½á¹û
-	DWORD                           dwResultCode;							//½á¹û±êÊ¶
-	TCHAR							szDescribeString[LEN_MESSAGE_DESCRIBE];	//ÃèÊöÏûÏ¢
+	//æ“ä½œç»“æžœ
+	DWORD                           dwResultCode;							//ç»“æžœæ ‡è¯†
+	TCHAR							szDescribeString[LEN_MESSAGE_DESCRIBE];	//æè¿°æ¶ˆæ¯
 
-	DWORD	dwGameID;				//¿ÉÓÃµÄGameID;
+	DWORD	dwGameID;				//å¯ç”¨çš„GameID;
 
-	DWORD	dwSocketID;									//¿Í»§¶ËSocketID
+	DWORD	dwSocketID;									//å®¢æˆ·ç«¯SocketID
 
-	TCHAR	szIPAddr[LEN_IP_ADDR];					//ipµØÖ·
-	DWORD	dwPort;									//ip¶Ë¿Ú
+	TCHAR	szIPAddr[LEN_IP_ADDR];					//ipåœ°å€
+	DWORD	dwPort;									//ipç«¯å£
 };
 
-//²éÑ¯¶ÏÏßÍæ¼Ò
+//æŸ¥è¯¢æ–­çº¿çŽ©å®¶
 struct STR_CPR_LP_OFFLINE_PLAYERQUERY
 {
-	DWORD  dwUserID;                               //¶ÏÏßÍæ¼Ò
+	DWORD  dwUserID;                               //æ–­çº¿çŽ©å®¶
 };
 
-//²éÑ¯¶ÏÏßÍæ¼Ò
+//æŸ¥è¯¢æ–­çº¿çŽ©å®¶
 struct STR_CPR_PG_OFFLINE_PLAYERQUERY
 {
-	DWORD  dwSocketID;                             //²éÑ¯µÄlogon socket
-	DWORD  dwUserID;                               //²éÑ¯¶ÏÏßÍæ¼Ò
+	DWORD  dwSocketID;                             //æŸ¥è¯¢çš„logon socket
+	DWORD  dwUserID;                               //æŸ¥è¯¢æ–­çº¿çŽ©å®¶
 };
 
-//²éÑ¯¶ÏÏßÍæ¼Ò ·µ»Ø
+//æŸ¥è¯¢æ–­çº¿çŽ©å®¶ è¿”å›ž
 struct STR_CPO_GP_OFFLINE_FINISH
 {
-	DWORD  dwSocketID;                             //²éÑ¯µÄlogon socket
-	DWORD  dwUserID;                               //²éÑ¯¶ÏÏßÍæ¼Ò
-	BYTE   bOffline;                               //0±¾·þÎñÆ÷Ã»ÓÐ¸ÃÍæ¼Ò; 1±¾·þÎñÆ÷ÓÐ¸ÃÍæ¼Ò
+	DWORD  dwSocketID;                             //æŸ¥è¯¢çš„logon socket
+	DWORD  dwUserID;                               //æŸ¥è¯¢æ–­çº¿çŽ©å®¶
+	BYTE   bOffline;                               //0æœ¬æœåŠ¡å™¨æ²¡æœ‰è¯¥çŽ©å®¶; 1æœ¬æœåŠ¡å™¨æœ‰è¯¥çŽ©å®¶
 };
 
-//²éÑ¯¶ÏÏßÍæ¼Ò·µ»Ø
+//æŸ¥è¯¢æ–­çº¿çŽ©å®¶è¿”å›ž
 struct STR_CPO_PL_OFFLINE_FiNISH
 {
-	DWORD  dwUserID;                               //²éÑ¯¶ÏÏßÍæ¼Ò
+	DWORD  dwUserID;                               //æŸ¥è¯¢æ–­çº¿çŽ©å®¶
 	DWORD  dwGameID;                               //GameID
 };
 
 #pragma endregion
 
-#pragma region MDM_TRANSFER ÓÃ»§
-//¶ÏÏßÖØÁ¬
+#pragma region MDM_TRANSFER ç”¨æˆ·
+//æ–­çº¿é‡è¿ž
 struct tagOfflineUser 
 {
 	DWORD dwUserID;
 	DWORD dwServerID;	
-	BYTE  byMask;		//1±íÊ¾ÔÚlistÖÐÔö¼ÓÓÃ»§£»  2±íÊ¾ÔÚlistÖÐÉ¾³ýÓÃ»§
+	BYTE  byMask;		//1è¡¨ç¤ºåœ¨listä¸­å¢žåŠ ç”¨æˆ·ï¼›  2è¡¨ç¤ºåœ¨listä¸­åˆ é™¤ç”¨æˆ·
 };
 
 #pragma endregion

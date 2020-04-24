@@ -3,53 +3,53 @@
 
 interface IUnknownEx
 {
-	//Æô¶¯·şÎñ
+	//å¯åŠ¨æœåŠ¡
 	virtual bool StartService()=NULL;
-	//Í£Ö¹·şÎñ
+	//åœæ­¢æœåŠ¡
 	virtual bool ConcludeService()=NULL;
 };
 
 //////////////////////////////////////////////////////////////////////////////////
-//³£ÓÃ³£Á¿
+//å¸¸ç”¨å¸¸é‡
 
-//ÎŞĞ§ÊıÖµ
-#define INVALID_BYTE				((BYTE)(0xFF))						//ÎŞĞ§ÊıÖµ
-#define INVALID_WORD				((WORD)(0xFFFF))					//ÎŞĞ§ÊıÖµ
-#define INVALID_DWORD				((DWORD)(0xFFFFFFFF))				//ÎŞĞ§ÊıÖµ
+//æ— æ•ˆæ•°å€¼
+#define INVALID_BYTE				((BYTE)(0xFF))						//æ— æ•ˆæ•°å€¼
+#define INVALID_WORD				((WORD)(0xFFFF))					//æ— æ•ˆæ•°å€¼
+#define INVALID_DWORD				((DWORD)(0xFFFFFFFF))				//æ— æ•ˆæ•°å€¼
 
 //////////////////////////////////////////////////////////////////////////////////
 
-//Êı×éÎ¬Êı
+//æ•°ç»„ç»´æ•°
 #define CountArray(Array) (sizeof(Array)/sizeof(Array[0]))
 
-//ÎŞĞ§µØÖ·
+//æ— æ•ˆåœ°å€
 #define INVALID_IP_ADDRESS(IPAddress) (((IPAddress==0L)||(IPAddress==INADDR_NONE)))
 
 //////////////////////////////////////////////////////////////////////////////////
 
-//´æ´¢³¤¶È
+//å­˜å‚¨é•¿åº¦
 #ifdef _UNICODE
 	#define CountStringBuffer CountStringBufferW
 #else
 	#define CountStringBuffer CountStringBufferA
 #endif
 
-//´æ´¢³¤¶È
+//å­˜å‚¨é•¿åº¦
 #define CountStringBufferA(String) ((UINT)((lstrlenA(String)+1)*sizeof(CHAR)))
 #define CountStringBufferW(String) ((UINT)((lstrlenW(String)+1)*sizeof(WCHAR)))
 
 //////////////////////////////////////////////////////////////////////////////////
 
-//½Ó¿ÚÊÍ·Å
+//æ¥å£é‡Šæ”¾
 //#define SafeRelease(pObject) { if (pObject!=NULL) { delete pObject; pObject=NULL; } }
 
-//É¾³ıÖ¸Õë
+//åˆ é™¤æŒ‡é’ˆ
 #define SafeDelete(pData) { try { delete pData; } catch (...) { ASSERT(FALSE); } pData=NULL; } 
 
-//¹Ø±Õ¾ä±ú
+//å…³é—­å¥æŸ„
 #define SafeCloseHandle(hHandle) { if (hHandle!=NULL) { CloseHandle(hHandle); hHandle=NULL; } }
 
-//É¾³ıÊı×é
+//åˆ é™¤æ•°ç»„
 #define SafeDeleteArray(pData) { try { delete [] pData; } catch (...) { ASSERT(FALSE); } pData=NULL; } 
 
 

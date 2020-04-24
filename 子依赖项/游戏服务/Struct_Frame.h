@@ -3,116 +3,88 @@
 #pragma pack(1)
 #include "Define.h"
 
-//µ¥¸ö±ÈÈü³¡ÅäÖÃ
-struct MATCH_CONFIG
+//é€šç”¨æˆ¿é—´è§„åˆ™
+struct tagTableRule
 {
-	//½×¶ÎÐÅÏ¢
-	struct STAGE_INFO
-	{
-		TCHAR	szName[16];	//³õÈü¡¢°ë¾öÈü¡¢¾öÈü..
-		DWORD	wXJCount;					//Ð¡¾ÖÊý
-		DWORD	wPlayerCount;				//ÈËÊý
-		DWORD	wJinJi_Rule;				//½ú¼¶¹æÔò   Í¬×À±È½Ï/È«×À±È½Ï 1,2,
-		DWORD	wJinJi_Count;				//½ú¼¶Ãû¶î
-	};
+	/********************************* å¤§åŽ…ä½¿ç”¨ ************************************/
+	BYTE	GameMode;				//æ¸¸æˆæ¨¡å¼ 0æˆ¿å¡çº¦å±€; 1æ¯”èµ›æ¨¡å¼; 2é‡‘å¸æ¨¡å¼; 3é‡‘å¸çº¦å±€; 4ç‰Œå‹åœˆ
+	BYTE    GameRoomLevel;          //æˆ¿é—´ç­‰çº§ ï¼ˆé‡‘å¸åœºä¸“ç”¨ï¼‰
 
-	//±ÈÈü³¡ÐÅÏ¢
-	DWORD		wMatchID;							//±ÈÈü³¡ID±êÊ¶
-	TCHAR		szTitle[32];			//±êÌâ
-	TCHAR		szDescribe[128];		//±ÈÈüÃèÊö
-	STAGE_INFO	stage[5];				//½×¶ÎÐÅÏ¢
-	DWORD		wStageSize;							//½×¶Î¸öÊý
-	DWORD		llBaseScore;						//µ×·Ö
+	BYTE	GameCount;				//æ¸¸æˆå±€æ•° 0-æ— é™å±€
+	BYTE	PlayerCount;			//çŽ©å®¶æ•°é‡ 0-ä»»æ„äººæ•°å¯å¼€
 
-	//±ÈÈü³¡ÊôÐÔ
-	DWORD		dwStartTime;						//¿ªÊ¼Ê±¼ä £¨-1±íÊ¾ÈËÂú¼´¿ª£©
-	DWORD		dwTimePeriod;						//´´½¨ÖÜÆÚ
-	DWORD		wStartType;							//¿ªÊ¼ÀàÐÍ  (0-ÈËÂú¿ªÊ¼  1-¶¨Ê±¿ªÊ¼)
-	DWORD		dwLowestPlayer;						//×îÉÙ²ÎÈüÈËÊý
-	DWORD		FeeType;							//±¨Ãû·ÑÀàÐÍ 0-½ð±Ò 1-×©Ê¯ 2-ÃÅÆ±
-	DWORD		llFee;								//±¨Ãû·Ñ
-	DWORD		llReword;							//½±Àø
+	BYTE	cbPayType;				//æ”¯ä»˜æ–¹å¼ï¼Œ0æˆ¿ä¸»æ”¯ä»˜ã€1AAåˆ¶ -- æˆ¿å¡æ¨¡å¼æ‰éœ€è¦
 
-	//»úÆ÷ÈËÐÅÏ¢
-	DWORD		dwRobotCount;						//»úÆ÷ÈËÊýÁ¿
+	BYTE	bRefuseSameIP;			//å…è®¸åŒIP    0-ä¸å…è®¸ 1-å…è®¸
+	BYTE	bDistanceIn300;			//å…è®¸300ç±³	  0-ä¸è®¸äº‘ 1-å…è®¸
+	BYTE	bAllowStranger;			//å…è®¸é™Œç”ŸäººåŠ å…¥
 };
 
-//ÓÃ»§µÀ¾ß -- Óëclient±£³ÖÒ»ÖÂ
+//å·¥ä¼šæˆ¿é—´è§„åˆ™
+struct tagClubRoomRule
+{
+	DWORD	dwClubID;				//å·¥ä¼š
+	DWORD	dwRoomID;				//æˆ¿é—´
+	DWORD   dwPasswd;               //å¯†ç 
+
+	BYTE	byGoldOrFK;				//(2.é‡‘å¸ 1.æˆ¿å¡)
+
+	BYTE	bDissolve;				//æ˜¯å¦å…è®¸è§£æ•£ 0å…è®¸ 1ä¸å…è®¸
+
+	//é‡‘å¸æˆ¿ç‰¹ç”¨
+	DWORD	dwAmount;				//æœ€ä½Žé¢åº¦
+	DWORD	dwOwnerPercentage;		//ç¾¤ä¸»ææˆ
+
+	BYTE	byMask;					//1 AAæ”¯ä»˜;  2å¤§èµ¢å®¶æ”¯ä»˜
+	DWORD	dwDizhu;				//åº•æ³¨
+};
+
+//å•ä¸ªæ¯”èµ›åœºé…ç½®
+struct MATCH_Rule
+{
+	//æ¯”èµ›åœºä¿¡æ¯
+	DWORD		llBaseScore;						//åº•åˆ†
+};
+
+//ç”¨æˆ·é“å…· -- ä¸Žclientä¿æŒä¸€è‡´
 struct tagUserProperty
 {
 	DWORD       dwPropID;		  //item id
 	DWORD       dwPropCount;      //item count;
 };
 
-//ÓÃ»§ÐÅÏ¢ -- Óëclient±£³ÖÒ»ÖÂ
-struct tagUserInfo
-{
-	//»ù±¾ÊôÐÔ
-	DWORD							dwUserID;							//ÓÃ»§ID
-	TCHAR							szNickName[LEN_NICKNAME];			//ÓÃ»§êÇ³Æ
-	BYTE							cbGender;							//ÓÃ»§ÐÔ±ð
-	TCHAR							szHeadUrl[LEN_HEAD_URL];			//Í·ÏñµØÖ·
-	TCHAR							szUnderWrite[LEN_MY_SIGNATURE];		//¸öÐÔÇ©Ãû
-
-	//ÉçÍÅÐÅÏ¢
-	DWORD							dwGroupID;							//ÉçÍÅ ID
-	TCHAR							szGroupName[LEN_GROUP_NAME];		//ÉçÍÅÃû×Ö
-
-	//ÓÃ»§µÈ¼¶
-	BYTE							cbMemberOrder;						//»áÔ±µÈ¼¶
-	BYTE							dwLevel;                            //¾­ÑéµÈ¼¶   
-	DWORD							dwExperience;						//¾­ÑéÊýÖµ
-
-	//ÓÃ»§²Æ¸»
-	SCORE							lOpenRoomCard;						//·¿¿¨ÊýÁ¿
-	SCORE							lGold;								//½ð±Ò
-	SCORE							lDiamond;							//×êÊ¯
-	
-	//ÓÎÏ·ÐÅÏ¢
-	DWORD							dwWinCount;							//Ê¤ÀûÅÌÊý
-	DWORD							dwLostCount;						//Ê§°ÜÅÌÊý
-	DWORD							dwDrawCount;						//ºÍ¾ÖÅÌÊý
-	DWORD							dwFleeCount;						//ÌÓÅÜÅÌÊý
-
-	/* ¸½¼ÓÊý¾Ý ÓÎÏ·¶¯Ì¬Êý¾Ý */
-	DWORD							wTableID;							//×À×ÓË÷Òý
-	WORD							wChairID;							//ÒÎ×ÓË÷Òý
-	BYTE							cbUserStatus;						//ÓÃ»§×´Ì¬
-	SCORE							lScore;								//»ý·Ö
-};
-
-//ÓÎÏ·¼ÇÂ¼
+//æ¸¸æˆè®°å½•
 struct tagGameScoreRecord
 {
-	//ÓÃ»§ÐÅÏ¢
-	DWORD							dwUserID;							//ÓÃ»§±êÊ¶
-	WORD							wChairID;							//ÒÎ×ÓºÅÂë
-	BYTE							cbAndroid;							//»úÆ÷±êÖ¾
+	//ç”¨æˆ·ä¿¡æ¯
+	DWORD							dwUserID;							//ç”¨æˆ·æ ‡è¯†
+	WORD							wChairID;							//æ¤…å­å·ç 
+	BYTE							cbAndroid;							//æœºå™¨æ ‡å¿—
 
-	//³É¼¨ÐÅÏ¢
-	SCORE							lScore;								//ÓÃ»§·ÖÊý
-	SCORE							lGrade;								//ÓÃ»§³É¼¨
-	SCORE							lRevenue;							//ÓÎÏ·Ë°ÊÕ
-	SCORE							lControlScore;						//ÓÃ»§¿ØÖÆÖµ
-	SCORE							lChoushui;							//³éË®
-	DWORD							dwChoushuiType;						//³éË®ÀàÐÍ
+	//æˆç»©ä¿¡æ¯
+	SCORE							lScore;								//ç”¨æˆ·åˆ†æ•°
+	SCORE							lGrade;								//ç”¨æˆ·æˆç»©
+	SCORE							lRevenue;							//æ¸¸æˆç¨Žæ”¶
+	SCORE							lControlScore;						//ç”¨æˆ·æŽ§åˆ¶å€¼
+	SCORE							lChoushui;							//æŠ½æ°´
+	DWORD							dwChoushuiType;						//æŠ½æ°´ç±»åž‹
 
-	//ÓÃ»§ÐÅÏ¢
-	DWORD							dwDBQuestID;						//ÇëÇó±êÊ¶
-	DWORD							dwInoutIndex;						//¼ÇÂ¼Ë÷Òý
+	//ç”¨æˆ·ä¿¡æ¯
+	DWORD							dwDBQuestID;						//è¯·æ±‚æ ‡è¯†
+	DWORD							dwInoutIndex;						//è®°å½•ç´¢å¼•
 
-	//¸½¼ÓÐÅÏ¢
-	DWORD							dwUserMemal;						//½±ÅÆÊýÄ¿
-	DWORD							dwPlayTimeCount;					//ÓÎÏ·Ê±³¤
+	//é™„åŠ ä¿¡æ¯
+	DWORD							dwUserMemal;						//å¥–ç‰Œæ•°ç›®
+	DWORD							dwPlayTimeCount;					//æ¸¸æˆæ—¶é•¿
 };
 
-//½ð±Ò³¡·¿¼äÐÅÏ¢ ·µ»Ø
-struct STR_CMD_GC_USER_GOLD_INFO
+//é‡‘å¸åœºæˆ¿é—´ä¿¡æ¯ è¿”å›ž
+struct GOLD_RULE
 {
-	BYTE bGoldMod;// ·¿¼äµÈ¼¶ 1.³õ¼¶ 2.ÖÐ¼¶ 3.¸ß¼¶ 4.¸»ºÀ
+	BYTE bGoldMod;// æˆ¿é—´ç­‰çº§ 1.åˆçº§ 2.ä¸­çº§ 3.é«˜çº§ 4.å¯Œè±ª
 
-	DWORD dwScore;  //µ×·Ö
-	DWORD dwGold;  //Èë³¡½ð±Ò
+	DWORD dwScore;  //åº•åˆ†
+	DWORD dwGold;  //å…¥åœºé‡‘å¸
 };
 
 #endif

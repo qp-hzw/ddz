@@ -2,310 +2,310 @@
 #define SUB_DEFINE
 
 
-//ÇÀ×¯Ä£Ê½
-#define ROOMRULE_OPTION_ROBTYPE_FREE		0								//×ÔÓÉÇÀ×¯
-#define ROOMRULE_OPTION_ROBTYPE_JIAOSANFEN	1								//½ÐÈý·Ö
+//æŠ¢åº„æ¨¡å¼
+#define ROOMRULE_OPTION_ROBTYPE_FREE		0								//è‡ªç”±æŠ¢åº„
+#define ROOMRULE_OPTION_ROBTYPE_JIAOSANFEN	1								//å«ä¸‰åˆ†
 
 
-//µÃ·ÖÄ£Ê½
-#define GAME_SCORE_NUM						2								//µÃ·ÖÄ£Ê½ÀàÐÍÊýÄ¿
-#define GAME_SCORE_MODE_CLASSIC				0								//¾­µäÄ£Ê½
-#define GAME_SCORE_MODE_BUXIPAI				1								//²»Ï´ÅÆÄ£Ê½
+//å¾—åˆ†æ¨¡å¼
+#define GAME_SCORE_NUM						2								//å¾—åˆ†æ¨¡å¼ç±»åž‹æ•°ç›®
+#define GAME_SCORE_MODE_CLASSIC				0								//ç»å…¸æ¨¡å¼
+#define GAME_SCORE_MODE_BUXIPAI				1								//ä¸æ´—ç‰Œæ¨¡å¼
 
-//×À×ÓÀàÐÍ
-#define TABLE_MODE_FANG_KA					0								//·¿¿¨Ä£Ê½
-#define TABLE_MODE_JJC						1								//¾º¼¼³¡Ä£Ê½
-#define TABLE_MODE_GOLD						2								//½ð±ÒÄ£Ê½
+//æ¡Œå­ç±»åž‹
+#define TABLE_MODE_FANG_KA					0								//æˆ¿å¡æ¨¡å¼
+#define TABLE_MODE_JJC						1								//ç«žæŠ€åœºæ¨¡å¼
+#define TABLE_MODE_GOLD						2								//é‡‘å¸æ¨¡å¼
 
-//·¿¼äµ×·Ö
-#define ROOMRULE_MIN_CELL_SCORE				1								//·¿¼ä×îÐ¡µ×·Ö
+//æˆ¿é—´åº•åˆ†
+#define ROOMRULE_MIN_CELL_SCORE				1								//æˆ¿é—´æœ€å°åº•åˆ†
 
 
-//ÓÃ»§Êý¾Ý
-#define MAX_CARD_COUNT						20							//×î´óÊÖÅÆÆË¿ËÊýÄ¿
-#define MAX_GAME_SCORE_TYPES				50								//×î´óÓÎÏ·ÊÖÅÆ±¶ÊýÖÖÀà£¬²»³¬¹ý50
+//ç”¨æˆ·æ•°æ®
+#define MAX_CARD_COUNT						20							//æœ€å¤§æ‰‹ç‰Œæ‰‘å…‹æ•°ç›®
+#define MAX_GAME_SCORE_TYPES				50								//æœ€å¤§æ¸¸æˆæ‰‹ç‰Œå€æ•°ç§ç±»ï¼Œä¸è¶…è¿‡50
 
-//ÎÞÐ§¿¨ÅÆ
-#define INVALID_CARD						0								//ÎÞÐ§¿¨ÅÆ
-
-//////////////////////////////////////////////////////////////////////////
-//ÓÎÏ·×´Ì¬£¨Óë¶ÏÏßÖØÁ¬Ïà¹Ø£©
-#define GS_WK_FREE				    GAME_STATUS_FREE					//ÓÎÏ·×´Ì¬-µÈ´ý¿ªÊ¼
-#define GS_WK_ROB					GAME_STATUS_PLAY+1					//ÓÎÏ·×´Ì¬-ÇÀ×¯
-//#define GS_WK_ADD_SCORE				GAME_STATUS_PLAY+2					//ÓÎÏ·×´Ì¬-¼Ó±¶
-#define GS_WK_ADDSCORE				GAME_STATUS_PLAY+2					//ÓÎÏ·×´Ì¬-¼Ó±¶
-#define GS_WK_JIAO_FEN				GAME_STATUS_PLAY+7					//½Ð·Ö×´Ì¬
-
-#define GS_WK_FANZHU				GAME_STATUS_PLAY+3					//ÓÎÏ·×´Ì¬-·´Ö÷
-#define GS_WK_KOUDI					GAME_STATUS_PLAY+4					//ÓÎÏ·×´Ì¬-¿Ûµ×£¨¸Çµ×ÅÆ£©
-#define GS_WK_OUT_CARD				GAME_STATUS_PLAY+3					//ÓÎÏ·×´Ì¬-³öÅÆ
-#define GS_WK_XJ_GAMEEND			GAME_STATUS_PLAY+4					//ÓÎÏ·×´Ì¬-Ð¡¾Ö½áÊø
-//////////////////////////////////////////////////////////////////////////
+//æ— æ•ˆå¡ç‰Œ
+#define INVALID_CARD						0								//æ— æ•ˆå¡ç‰Œ
 
 //////////////////////////////////////////////////////////////////////////
-//¶¨Ê±Æ÷   --  1.ÓÎÏ·×´Ì¬ 2.ÏûÏ¢ºÅ 3.¶¨Ê±Æ÷  Ó¦¸ÃÔÚº¯ÊýÖÐ±£³ÖÍ³Ò»
-#define	IDI_ROB_BANKER					1							//ÇÀ×¯¶¨Ê±Æ÷
-#define IDI_ADD_SCORE					2							//ÏÂ×¢¶¨Ê±Æ÷
-#define IDI_MING_PAI					3							//Ã÷ÅÆ¶¨Ê±Æ÷
-#define IDI_ADD_SCORE_ROBOT				4							//»úÆ÷ÈËÏÂ×¢¶¨Ê±Æ÷³ÖÐøÊ±¼ä
+//æ¸¸æˆçŠ¶æ€ï¼ˆä¸Žæ–­çº¿é‡è¿žç›¸å…³ï¼‰
+#define GS_WK_FREE				    GAME_STATUS_FREE					//æ¸¸æˆçŠ¶æ€-ç­‰å¾…å¼€å§‹
+#define GS_WK_ROB					GAME_STATUS_PLAY+1					//æ¸¸æˆçŠ¶æ€-æŠ¢åº„
+//#define GS_WK_ADD_SCORE				GAME_STATUS_PLAY+2					//æ¸¸æˆçŠ¶æ€-åŠ å€
+#define GS_WK_ADDSCORE				GAME_STATUS_PLAY+2					//æ¸¸æˆçŠ¶æ€-åŠ å€
+#define GS_WK_JIAO_FEN				GAME_STATUS_PLAY+7					//å«åˆ†çŠ¶æ€
 
-#define IDI_KOU_DI						4							//¿Ûµ×¶¨Ê±Æ÷
-#define IDI_OUT_CARD					5							//³öÅÆ¶¨Ê±Æ÷
-#define IDI_XJGAME_USER_READY			6							//Ð¡¾ÖÓÎÏ·½áÊøÓÃ»§×¼±¸¿ªÊ¼¶¨Ê±Æ÷
-#define IDI_FAN_ZHU_DELAY				7							//·´Ö÷ÑÓ³Ù¶¨Ê±Æ÷£¬¿Í»§¶Ë´¦ÀíÍê·¢ÅÆ¶¯»­Ö®ºó£¬ÔÙ¸øµÚÒ»¸öÈË·¢ËÍ·´Ö÷ÌáÊ¾
-#define IDI_ROUND_END_DELAY				8							//Ò»ÂÖ½áÊøÑÓ³Ù¶¨Ê±Æ÷£¬¿Í»§¶Ë´¦Àí»ý·Ö½áËã¶¯»­
-#define IDI_ROB_JiaoFen					9							//½Ð·Ö¶¨Ê±Æ÷
-#define IDI_ROB_START					10							//ÇÀ×¯Á÷³Ì¶¨Ê±Æ÷
-#define IDI_OUTCARD_START				11							//³öÅÆÁ÷³Ì¶¨Ê±Æ÷
+#define GS_WK_FANZHU				GAME_STATUS_PLAY+3					//æ¸¸æˆçŠ¶æ€-åä¸»
+#define GS_WK_KOUDI					GAME_STATUS_PLAY+4					//æ¸¸æˆçŠ¶æ€-æ‰£åº•ï¼ˆç›–åº•ç‰Œï¼‰
+#define GS_WK_OUT_CARD				GAME_STATUS_PLAY+3					//æ¸¸æˆçŠ¶æ€-å‡ºç‰Œ
+#define GS_WK_XJ_GAMEEND			GAME_STATUS_PLAY+4					//æ¸¸æˆçŠ¶æ€-å°å±€ç»“æŸ
+//////////////////////////////////////////////////////////////////////////
 
-//¸÷¸ö¶¨Ê±Æ÷³ÖÐøÊ±¼ä
-#define IDI_TIME_ROB_BANKER				10000						//ÇÀ×¯¶¨Ê±Æ÷³ÖÐøÊ±¼ä
-#define IDI_TIME_ADD_SCORE				4000						//ÏÂ×¢¶¨Ê±Æ÷³ÖÐøÊ±¼ä
-#define IDI_TIME_MING_PAI				3000						//Ã÷ÅÆ¶¨Ê±Æ÷³ÖÐøÊ±¼ä
-#define IDI_TIME_ADD_SCORE_ROBOT		1000						//»úÆ÷ÈËÏÂ×¢¶¨Ê±Æ÷³ÖÐøÊ±¼ä
+//////////////////////////////////////////////////////////////////////////
+//å®šæ—¶å™¨   --  1.æ¸¸æˆçŠ¶æ€ 2.æ¶ˆæ¯å· 3.å®šæ—¶å™¨  åº”è¯¥åœ¨å‡½æ•°ä¸­ä¿æŒç»Ÿä¸€
+#define	IDI_ROB_BANKER					1							//æŠ¢åº„å®šæ—¶å™¨
+#define IDI_ADD_SCORE					2							//ä¸‹æ³¨å®šæ—¶å™¨
+#define IDI_MING_PAI					3							//æ˜Žç‰Œå®šæ—¶å™¨
+#define IDI_ADD_SCORE_ROBOT				4							//æœºå™¨äººä¸‹æ³¨å®šæ—¶å™¨æŒç»­æ—¶é—´
 
-#define IDI_TIME_KOU_DI					20000						//¿Ûµ×¶¨Ê±Æ÷³ÖÐøÊ±¼ä
-#define IDI_TIME_OUT_CARD				20000						//³öÅÆ¶¨Ê±Æ÷³ÖÐøÊ±¼ä
-#define IDI_TIME_XJGAME_USER_READY		8000						//Ð¡¾Ö½áÊøÓÃ»§×¼±¸¶¨Ê±Æ÷³ÖÐøÊ±¼ä
-#define IDI_TIME_FAN_ZHU_DELAY			6000						//·´Ö÷ÑÓ³Ù¶¨Ê±Æ÷³ÖÐøÊ±¼ä
-#define IDI_TIME_ROUND_END_DELAY		2000						//Ò»ÂÖ½áÊøÑÓ³Ù¶¨Ê±Æ÷³ÖÐøÊ±¼ä
-#define IDI_TIME_ROB_JiaoFen			10000						//½Ð·Ö¶¨Ê±Æ÷
-#define IDI_TIME_ROB_START				3000						//ÇÀ×¯Á÷³Ì¶¨Ê±Æ÷
-#define IDI_TIME_OUTCARD_START			1000						//³öÅÆÁ÷³Ì¶¨Ê±Æ÷
+#define IDI_KOU_DI						4							//æ‰£åº•å®šæ—¶å™¨
+#define IDI_OUT_CARD					5							//å‡ºç‰Œå®šæ—¶å™¨
+#define IDI_XJGAME_USER_READY			6							//å°å±€æ¸¸æˆç»“æŸç”¨æˆ·å‡†å¤‡å¼€å§‹å®šæ—¶å™¨
+#define IDI_FAN_ZHU_DELAY				7							//åä¸»å»¶è¿Ÿå®šæ—¶å™¨ï¼Œå®¢æˆ·ç«¯å¤„ç†å®Œå‘ç‰ŒåŠ¨ç”»ä¹‹åŽï¼Œå†ç»™ç¬¬ä¸€ä¸ªäººå‘é€åä¸»æç¤º
+#define IDI_ROUND_END_DELAY				8							//ä¸€è½®ç»“æŸå»¶è¿Ÿå®šæ—¶å™¨ï¼Œå®¢æˆ·ç«¯å¤„ç†ç§¯åˆ†ç»“ç®—åŠ¨ç”»
+#define IDI_ROB_JiaoFen					9							//å«åˆ†å®šæ—¶å™¨
+#define IDI_ROB_START					10							//æŠ¢åº„æµç¨‹å®šæ—¶å™¨
+#define IDI_OUTCARD_START				11							//å‡ºç‰Œæµç¨‹å®šæ—¶å™¨
+
+//å„ä¸ªå®šæ—¶å™¨æŒç»­æ—¶é—´
+#define IDI_TIME_ROB_BANKER				10000						//æŠ¢åº„å®šæ—¶å™¨æŒç»­æ—¶é—´
+#define IDI_TIME_ADD_SCORE				4000						//ä¸‹æ³¨å®šæ—¶å™¨æŒç»­æ—¶é—´
+#define IDI_TIME_MING_PAI				3000						//æ˜Žç‰Œå®šæ—¶å™¨æŒç»­æ—¶é—´
+#define IDI_TIME_ADD_SCORE_ROBOT		1000						//æœºå™¨äººä¸‹æ³¨å®šæ—¶å™¨æŒç»­æ—¶é—´
+
+#define IDI_TIME_KOU_DI					20000						//æ‰£åº•å®šæ—¶å™¨æŒç»­æ—¶é—´
+#define IDI_TIME_OUT_CARD				20000						//å‡ºç‰Œå®šæ—¶å™¨æŒç»­æ—¶é—´
+#define IDI_TIME_XJGAME_USER_READY		8000						//å°å±€ç»“æŸç”¨æˆ·å‡†å¤‡å®šæ—¶å™¨æŒç»­æ—¶é—´
+#define IDI_TIME_FAN_ZHU_DELAY			6000						//åä¸»å»¶è¿Ÿå®šæ—¶å™¨æŒç»­æ—¶é—´
+#define IDI_TIME_ROUND_END_DELAY		2000						//ä¸€è½®ç»“æŸå»¶è¿Ÿå®šæ—¶å™¨æŒç»­æ—¶é—´
+#define IDI_TIME_ROB_JiaoFen			10000						//å«åˆ†å®šæ—¶å™¨
+#define IDI_TIME_ROB_START				3000						//æŠ¢åº„æµç¨‹å®šæ—¶å™¨
+#define IDI_TIME_OUTCARD_START			1000						//å‡ºç‰Œæµç¨‹å®šæ—¶å™¨
 ///////////////////////////////
 
 ///////////////////////////////
-//´ó¾ÖÓÎÏ·½áÊø
-#define GAME_CONCLUDE_CONTINUE			0xFF						//´ó¾Ö½áÊø²¢Ðø·Ñ
-#define GAME_CONCLUDE_NORMAL			0xFE						//´ó¾ÖÖ±½Ó½áÊø
+//å¤§å±€æ¸¸æˆç»“æŸ
+#define GAME_CONCLUDE_CONTINUE			0xFF						//å¤§å±€ç»“æŸå¹¶ç»­è´¹
+#define GAME_CONCLUDE_NORMAL			0xFE						//å¤§å±€ç›´æŽ¥ç»“æŸ
 ///////////////////////////////
 
 //////////////////////////////////////////////////////////////////////////
-//ÒÎ×ÓÉÏµÄÓÃ»§×´Ì¬
-#define USER_NULL                0         //ÓÃ»§×´Ì¬-ÒÎ×Ó¿Õ--Ã»ÓÐÈË
-#define USER_STANDUP             1         //ÓÃ»§×´Ì¬-Õ¾Á¢  --ÅÔ¹ÛÕß   --½øÈë·¿¼äºóÄ¬ÈÏÊôÐÔ
-#define USER_SITDOWN             2         //ÓÃ»§×´Ì¬-×øÏÂ  --ÓÎÏ·Íæ¼Ò --¿ÉÒÔÍæÓÎÏ·µÄÓÃ»§
-#define USER_ONREADY             3         //ÓÃ»§×´Ì¬-×¼±¸             --¶¼×¼±¸ºó, ·¿Ö÷¿ÉÒÔ¿ªÊ¼ÓÎÏ·  //TODONOW ÊÇ·ñÐèÒªÔö¼Ó¶¨Ê±Æ÷»òÕßÔö¼Ó·¿Ö÷ÌßÈË¹¦ÄÜ???
-#define USER_PLAYING             4         //ÓÃ»§×´Ì¬-ÓÎÏ·ÖÐ           --·¿Ö÷µã¿ªÊ¼ºó,ËùÓÐ×¼±¸¹ýµÄÍæ¼Ò½øÈë¿ªÊ¼×´Ì¬    
+//æ¤…å­ä¸Šçš„ç”¨æˆ·çŠ¶æ€
+#define USER_NULL                0         //ç”¨æˆ·çŠ¶æ€-æ¤…å­ç©º--æ²¡æœ‰äºº
+#define USER_STANDUP             1         //ç”¨æˆ·çŠ¶æ€-ç«™ç«‹  --æ—è§‚è€…   --è¿›å…¥æˆ¿é—´åŽé»˜è®¤å±žæ€§
+#define USER_SITDOWN             2         //ç”¨æˆ·çŠ¶æ€-åä¸‹  --æ¸¸æˆçŽ©å®¶ --å¯ä»¥çŽ©æ¸¸æˆçš„ç”¨æˆ·
+#define USER_ONREADY             3         //ç”¨æˆ·çŠ¶æ€-å‡†å¤‡             --éƒ½å‡†å¤‡åŽ, æˆ¿ä¸»å¯ä»¥å¼€å§‹æ¸¸æˆ  //TODONOW æ˜¯å¦éœ€è¦å¢žåŠ å®šæ—¶å™¨æˆ–è€…å¢žåŠ æˆ¿ä¸»è¸¢äººåŠŸèƒ½???
+#define USER_PLAYING             4         //ç”¨æˆ·çŠ¶æ€-æ¸¸æˆä¸­           --æˆ¿ä¸»ç‚¹å¼€å§‹åŽ,æ‰€æœ‰å‡†å¤‡è¿‡çš„çŽ©å®¶è¿›å…¥å¼€å§‹çŠ¶æ€    
 //////////////////////////////////////////////////////////////////////////
-//¶·µØÖ÷¶¨Òå
-#define	ROB_STATE_BUJIAO		1			//²»½Ð
-#define	ROB_TYPE_CALL			2			//½ÐµØÖ÷
-#define	ROB_STATE_BUQIANG		3			//²»ÇÀ
-#define	ROB_TYPE_ROB			4			//ÇÀµØÖ÷
+//æ–—åœ°ä¸»å®šä¹‰
+#define	ROB_STATE_BUJIAO		1			//ä¸å«
+#define	ROB_TYPE_CALL			2			//å«åœ°ä¸»
+#define	ROB_STATE_BUQIANG		3			//ä¸æŠ¢
+#define	ROB_TYPE_ROB			4			//æŠ¢åœ°ä¸»
 
-#define	ROB_STATE_NON_RESPONE	0			//»¹Î´¿ªÊ¼ÇÀ×¯
-#define	ROB_STATE_AGREE			2			//½Ð/ÇÀ
+#define	ROB_STATE_NON_RESPONE	0			//è¿˜æœªå¼€å§‹æŠ¢åº„
+#define	ROB_STATE_AGREE			2			//å«/æŠ¢
 
-#define JIAOFEN_START			15			//µÚÒ»¸öÍæ¼Ò½Ð·Ö  1111
-#define JIAOFEN_3				1<<3		//½Ð·ÖÈý·Ö
-#define JIAOFEN_2				1<<2		//½Ð·Ö¶þ·Ö
-#define JIAOFEN_1				1<<1		//½Ð·ÖÒ»·Ö
+#define JIAOFEN_START			15			//ç¬¬ä¸€ä¸ªçŽ©å®¶å«åˆ†  1111
+#define JIAOFEN_3				1<<3		//å«åˆ†ä¸‰åˆ†
+#define JIAOFEN_2				1<<2		//å«åˆ†äºŒåˆ†
+#define JIAOFEN_1				1<<1		//å«åˆ†ä¸€åˆ†
 
-#define	MING_PAI_TYPE_OUTCARD	1			//³öÅÆÃ÷ÅÆ
-#define	MING_PAI_TYPE_GAMESTART	0			//ÓÎÏ·¿ªÊ¼Ã÷ÅÆ
-#define	MING_PAI_TYPE_DEAL		2			//·¢ÅÆÃ÷ÅÆ
+#define	MING_PAI_TYPE_OUTCARD	1			//å‡ºç‰Œæ˜Žç‰Œ
+#define	MING_PAI_TYPE_GAMESTART	0			//æ¸¸æˆå¼€å§‹æ˜Žç‰Œ
+#define	MING_PAI_TYPE_DEAL		2			//å‘ç‰Œæ˜Žç‰Œ
 
-#define OUT_CARD_FAIL			0									//³öÅÆÊ§°Ü
-#define OUT_CARD_SUCCESS		1									//³öÅÆ³É¹¦
+#define OUT_CARD_FAIL			0									//å‡ºç‰Œå¤±è´¥
+#define OUT_CARD_SUCCESS		1									//å‡ºç‰ŒæˆåŠŸ
 
-#define OUT_CARD_PASS			0									//³öÅÆ¹ý£¨Òª²»Æð£©
-#define OUT_CARD_NORMAL			1									//Õý³£³öÅÆ
+#define OUT_CARD_PASS			0									//å‡ºç‰Œè¿‡ï¼ˆè¦ä¸èµ·ï¼‰
+#define OUT_CARD_NORMAL			1									//æ­£å¸¸å‡ºç‰Œ
 
-#define TURN_END				0									//Ò»ÂÖ½áÊø
-#define TURN_NOT_END			1									//Ò»ÂÖÎ´½áÊø
+#define TURN_END				0									//ä¸€è½®ç»“æŸ
+#define TURN_NOT_END			1									//ä¸€è½®æœªç»“æŸ
 
-#define FULL_COUNT				54									//Ò»¸±È«ÅÆÊýÄ¿
+#define FULL_COUNT				54									//ä¸€å‰¯å…¨ç‰Œæ•°ç›®
 
-#define MAX_WEAVE_NUM			21									//×î¶à×éºÏÊý£¨È«²¿Îªµ¥ÕÅ£©
-#define MAX_BOOM_NUM			5									//×î¶àÕ¨µ¯Êý£¨È«²¿ÎªÕ¨µ¯£©
+#define MAX_WEAVE_NUM			21									//æœ€å¤šç»„åˆæ•°ï¼ˆå…¨éƒ¨ä¸ºå•å¼ ï¼‰
+#define MAX_BOOM_NUM			5									//æœ€å¤šç‚¸å¼¹æ•°ï¼ˆå…¨éƒ¨ä¸ºç‚¸å¼¹ï¼‰
 
-#define HARD_BOOM_TIMES			4									//×î¶àÕ¨µ¯Êý£¨È«²¿ÎªÕ¨µ¯£©
-#define RUAN_BOOM_TIMES			2									//×î¶àÕ¨µ¯Êý£¨È«²¿ÎªÕ¨µ¯£©
+#define HARD_BOOM_TIMES			4									//æœ€å¤šç‚¸å¼¹æ•°ï¼ˆå…¨éƒ¨ä¸ºç‚¸å¼¹ï¼‰
+#define RUAN_BOOM_TIMES			2									//æœ€å¤šç‚¸å¼¹æ•°ï¼ˆå…¨éƒ¨ä¸ºç‚¸å¼¹ï¼‰
 
-//ÅÅÐòÀàÐÍ
-#define ST_ORDER				0									//´óÐ¡ÅÅÐò
-#define ST_COUNT				1									//ÊýÄ¿ÅÅÐò
+//æŽ’åºç±»åž‹
+#define ST_ORDER				0									//å¤§å°æŽ’åº
+#define ST_COUNT				1									//æ•°ç›®æŽ’åº
 
-//Éý¼¶¶¨Òå
-#define	DEFALUT_UPGRADE_SCORE	80									//Ä¬ÈÏ¶àÉÙ·ÖÉý¼¶
-#define	COLOR_RIGHT				40									//»¨É«È¨Î»
-#define LEN_SORT_RIGHT			5									//È¨Î»Êý×é´óÐ¡
-#define VALUE_ERROR				0x00								//ÎÞÐ§¿¨ÅÆÊýÖµ¶¨Òå
-#define COLOR_ERROR				0xFF								//ÎÞÐ§»¨É«¶¨Òå
-#define BIG_JOKER				0x4F								//´óÍõ
-#define SMALL_JOKER				0x4E								//Ð¡Íõ
-#define NORMAL_LEAVE_CARD_NUM	3									//Õý³£¿Ûµ×¿¨ÅÆÊý
-#define NORMAL_HAND_CARD_NUM	17									//Õý³£ÊÖÅÆÊý
-#define	MAX_LEAVE_CARD_NUM		3									//×î´ó¿Ûµ×¿¨ÅÆÊý
-#define MAX_COLOR_TYPE_NUM		4									//»¨É«ÖÖÀàÊý£¬³öÈ¥´óÐ¡Íõ
-#define MAX_FANZHU_TYPE_NUM		6									//×î´óµÄ·´Ö÷ÖÖÀàÊý£¨4¶Ô¼¶ÅÆ + ´óÐ¡Íõ£©
-#define LEN_MAX_INDEX			67									//×î´óË÷Òý£¨0-12·½ 13-25Ã·»¨ 26-38ºìÌÒ 39-51ºÚÌÒ 52-53Ð¡Íõ´óÍõ£©
-#define SMALL_JOKER_INDEX		65									//Ð¡ÍõË÷Òý
-#define BIG_JOKER_INDEX			66									//´óÍõË÷Òý
-#define MAX_SCORE_CARD_NUM		24									//×î´óµÃ·Ö¿¨ÅÆÊý£¨·ÖÅÆ 5 10 K£©
-#define START_LEVEL_VALUE		2									//³õÊ¼¼¶ÅÆ´óÐ¡
-#define MAX_LAIZI_COUNT			4									//Ä¿Ç°×î¶àËÄ¸öñ®×Ó
+//å‡çº§å®šä¹‰
+#define	DEFALUT_UPGRADE_SCORE	80									//é»˜è®¤å¤šå°‘åˆ†å‡çº§
+#define	COLOR_RIGHT				40									//èŠ±è‰²æƒä½
+#define LEN_SORT_RIGHT			5									//æƒä½æ•°ç»„å¤§å°
+#define VALUE_ERROR				0x00								//æ— æ•ˆå¡ç‰Œæ•°å€¼å®šä¹‰
+#define COLOR_ERROR				0xFF								//æ— æ•ˆèŠ±è‰²å®šä¹‰
+#define BIG_JOKER				0x4F								//å¤§çŽ‹
+#define SMALL_JOKER				0x4E								//å°çŽ‹
+#define NORMAL_LEAVE_CARD_NUM	3									//æ­£å¸¸æ‰£åº•å¡ç‰Œæ•°
+#define NORMAL_HAND_CARD_NUM	17									//æ­£å¸¸æ‰‹ç‰Œæ•°
+#define	MAX_LEAVE_CARD_NUM		3									//æœ€å¤§æ‰£åº•å¡ç‰Œæ•°
+#define MAX_COLOR_TYPE_NUM		4									//èŠ±è‰²ç§ç±»æ•°ï¼Œå‡ºåŽ»å¤§å°çŽ‹
+#define MAX_FANZHU_TYPE_NUM		6									//æœ€å¤§çš„åä¸»ç§ç±»æ•°ï¼ˆ4å¯¹çº§ç‰Œ + å¤§å°çŽ‹ï¼‰
+#define LEN_MAX_INDEX			67									//æœ€å¤§ç´¢å¼•ï¼ˆ0-12æ–¹ 13-25æ¢…èŠ± 26-38çº¢æ¡ƒ 39-51é»‘æ¡ƒ 52-53å°çŽ‹å¤§çŽ‹ï¼‰
+#define SMALL_JOKER_INDEX		65									//å°çŽ‹ç´¢å¼•
+#define BIG_JOKER_INDEX			66									//å¤§çŽ‹ç´¢å¼•
+#define MAX_SCORE_CARD_NUM		24									//æœ€å¤§å¾—åˆ†å¡ç‰Œæ•°ï¼ˆåˆ†ç‰Œ 5 10 Kï¼‰
+#define START_LEVEL_VALUE		2									//åˆå§‹çº§ç‰Œå¤§å°
+#define MAX_LAIZI_COUNT			4									//ç›®å‰æœ€å¤šå››ä¸ªç™žå­
 
-#define COLOR_MAIN_CARD			0x04								//Ö÷ÅÆ±êÖ¾£¨°üÀ¨´óÐ¡ÍõºÍ¼¶ÅÆ£©
-#define COLOR_HEI_TAO			0x03								//ºÚÌÒ
-#define COLOR_HONG_TAO			0x02								//ºìÌÒ
-#define COLOR_MEI_HUA			0x01								//Ã·»¨
-#define COLOR_FANG_KUAI			0x00								//·½¿é
+#define COLOR_MAIN_CARD			0x04								//ä¸»ç‰Œæ ‡å¿—ï¼ˆåŒ…æ‹¬å¤§å°çŽ‹å’Œçº§ç‰Œï¼‰
+#define COLOR_HEI_TAO			0x03								//é»‘æ¡ƒ
+#define COLOR_HONG_TAO			0x02								//çº¢æ¡ƒ
+#define COLOR_MEI_HUA			0x01								//æ¢…èŠ±
+#define COLOR_FANG_KUAI			0x00								//æ–¹å—
 
-//¶·µØÖ÷
-#define CT_ERROR					0									//´íÎóÀàÐÍ
-#define CT_SINGLE					1									//µ¥ÅÆÀàÐÍ
-#define CT_DOUBLE					2									//¶ÔÅÆÀàÐÍ
-#define CT_THREE					3									//ÈýÌõÀàÐÍ
-#define CT_SINGLE_LINE				4									//µ¥Á¬ÀàÐÍ
-#define CT_DOUBLE_LINE				5									//¶ÔÁ¬ÀàÐÍ
-#define CT_THREE_LINE				6									//ÈýÁ¬ÀàÐÍ
-#define CT_THREE_LINE_TAKE_ONE		7									//Èý´øÒ»µ¥
-#define CT_THREE_LINE_TAKE_TWO		8									//Èý´øÒ»¶Ô
-#define CT_FOUR_LINE_TAKE_ONE		9									//ËÄ´øÁ½µ¥
-#define CT_FOUR_LINE_TAKE_TWO		10									//ËÄ´øÁ½¶Ô
-#define CT_RUAN_BOMB				11									//ÈíÕ¨µ¯
-#define CT_BOMB_CARD				12									//Õ¨µ¯ÀàÐÍ
-#define CT_LAIZI_BOMB				13									//Àµ×ÓÕ¨µ¯
-#define CT_MISSILE_CARD				14									//»ð¼ýÀàÐÍ
-#define CT_FEIJI					15									//ÌØÊâÅÆÐÍ·É»ú
+//æ–—åœ°ä¸»
+#define CT_ERROR					0									//é”™è¯¯ç±»åž‹
+#define CT_SINGLE					1									//å•ç‰Œç±»åž‹
+#define CT_DOUBLE					2									//å¯¹ç‰Œç±»åž‹
+#define CT_THREE					3									//ä¸‰æ¡ç±»åž‹
+#define CT_SINGLE_LINE				4									//å•è¿žç±»åž‹
+#define CT_DOUBLE_LINE				5									//å¯¹è¿žç±»åž‹
+#define CT_THREE_LINE				6									//ä¸‰è¿žç±»åž‹
+#define CT_THREE_LINE_TAKE_ONE		7									//ä¸‰å¸¦ä¸€å•
+#define CT_THREE_LINE_TAKE_TWO		8									//ä¸‰å¸¦ä¸€å¯¹
+#define CT_FOUR_LINE_TAKE_ONE		9									//å››å¸¦ä¸¤å•
+#define CT_FOUR_LINE_TAKE_TWO		10									//å››å¸¦ä¸¤å¯¹
+#define CT_RUAN_BOMB				11									//è½¯ç‚¸å¼¹
+#define CT_BOMB_CARD				12									//ç‚¸å¼¹ç±»åž‹
+#define CT_LAIZI_BOMB				13									//èµ–å­ç‚¸å¼¹
+#define CT_MISSILE_CARD				14									//ç«ç®­ç±»åž‹
+#define CT_FEIJI					15									//ç‰¹æ®Šç‰Œåž‹é£žæœº
 
-//Éý¼¶
-#define CT_SAME_2				2									//¶ÔÅÆÀàÐÍ
-#define CT_TRACKOR_2			4									//2ÍÏÀ­»úÐÍ
-#define CT_TRACKOR_3			6									//3ÍÏÀ­»úÐÍ
-#define CT_TRACKOR_4			8									//4ÍÏÀ­»úÐÍ
-#define CT_TRACKOR_5			10									//5ÍÏÀ­»úÐÍ
-#define CT_TRACKOR_6			12									//6ÍÏÀ­»úÐÍ
-#define CT_TRACKOR_7			14									//7ÍÏÀ­»úÐÍ
-#define CT_TRACKOR_8			16									//8ÍÏÀ­»úÐÍ
-#define CT_TRACKOR_9			18									//9ÍÏÀ­»úÐÍ
-#define CT_TRACKOR_10			20									//10ÍÏÀ­»úÐÍ
-#define CT_TRACKOR_11			22									//11ÍÏÀ­»úÐÍ
-#define CT_TRACKOR_12			24									//12ÍÏÀ­»úÐÍ
-#define CT_TRACKOR_13			26									//13ÍÏÀ­»úÐÍ
+//å‡çº§
+#define CT_SAME_2				2									//å¯¹ç‰Œç±»åž‹
+#define CT_TRACKOR_2			4									//2æ‹–æ‹‰æœºåž‹
+#define CT_TRACKOR_3			6									//3æ‹–æ‹‰æœºåž‹
+#define CT_TRACKOR_4			8									//4æ‹–æ‹‰æœºåž‹
+#define CT_TRACKOR_5			10									//5æ‹–æ‹‰æœºåž‹
+#define CT_TRACKOR_6			12									//6æ‹–æ‹‰æœºåž‹
+#define CT_TRACKOR_7			14									//7æ‹–æ‹‰æœºåž‹
+#define CT_TRACKOR_8			16									//8æ‹–æ‹‰æœºåž‹
+#define CT_TRACKOR_9			18									//9æ‹–æ‹‰æœºåž‹
+#define CT_TRACKOR_10			20									//10æ‹–æ‹‰æœºåž‹
+#define CT_TRACKOR_11			22									//11æ‹–æ‹‰æœºåž‹
+#define CT_TRACKOR_12			24									//12æ‹–æ‹‰æœºåž‹
+#define CT_TRACKOR_13			26									//13æ‹–æ‹‰æœºåž‹
 
 
-#define CT_THROW_CARD			15									//Ë¦ÅÆÀàÐÍ
+#define CT_THROW_CARD			15									//ç”©ç‰Œç±»åž‹
 
-#define MAX_PACK				4									//×î´ó¸±Êý		TODO ²»ÖªµÀ¾ßÌå¸ÉÉ¶ÁË£¿£¿£¿
-#define MAX_TRACKOR				18									//×î´óÍÏÀ­»úÊý
-#define INDEX_OUT				0									//³öÅÆË÷Òý
-#define INDEX_HAND				1									//ÊÖÅÆË÷Òý
-#define INDEX_FIRST				2									//Ê×³öË÷Òý
+#define MAX_PACK				4									//æœ€å¤§å‰¯æ•°		TODO ä¸çŸ¥é“å…·ä½“å¹²å•¥äº†ï¼Ÿï¼Ÿï¼Ÿ
+#define MAX_TRACKOR				18									//æœ€å¤§æ‹–æ‹‰æœºæ•°
+#define INDEX_OUT				0									//å‡ºç‰Œç´¢å¼•
+#define INDEX_HAND				1									//æ‰‹ç‰Œç´¢å¼•
+#define INDEX_FIRST				2									//é¦–å‡ºç´¢å¼•
 
-//·ÖÊý¶¨Òå
-#define	SCORE_DA_GUANG			0									//´ó¹â·ÖÊý
-#define	SCORE_XIAO_GUANG		40									//Ð¡¹â·ÖÊý
-#define	SCORE_CHANGE_BANKER		80									//»»×¯·ÖÊý
-#define	SCORE_UPGRADE			120									//Éý¼¶·ÖÊý
-#define	SCORE_UPGRADE_ONE		40									//ÉýÒ»¼¶ÐèÒªµÃ·ÖÊý
+//åˆ†æ•°å®šä¹‰
+#define	SCORE_DA_GUANG			0									//å¤§å…‰åˆ†æ•°
+#define	SCORE_XIAO_GUANG		40									//å°å…‰åˆ†æ•°
+#define	SCORE_CHANGE_BANKER		80									//æ¢åº„åˆ†æ•°
+#define	SCORE_UPGRADE			120									//å‡çº§åˆ†æ•°
+#define	SCORE_UPGRADE_ONE		40									//å‡ä¸€çº§éœ€è¦å¾—åˆ†æ•°
 
-//Éý¼¶¶¨Òå
-#define	LEVEL_DA_GUANG			3									//´ó¹â·ÖÊý
-#define	LEVEL_XIAO_GUANG		2									//Ð¡¹â·ÖÊý
-#define	LEVEL_CHANGE_BANKER		1									//»»×¯·ÖÊý
-#define	LEVEL_UPGRADE_ONE		40									//ÉýÒ»¼¶ÐèÒªµÃ·ÖÊý
-
-//////////////////////////////////////////////////////////////////////////
+//å‡çº§å®šä¹‰
+#define	LEVEL_DA_GUANG			3									//å¤§å…‰åˆ†æ•°
+#define	LEVEL_XIAO_GUANG		2									//å°å…‰åˆ†æ•°
+#define	LEVEL_CHANGE_BANKER		1									//æ¢åº„åˆ†æ•°
+#define	LEVEL_UPGRADE_ONE		40									//å‡ä¸€çº§éœ€è¦å¾—åˆ†æ•°
 
 //////////////////////////////////////////////////////////////////////////
-//Á¬ÅÆÐÅÏ¢
+
+//////////////////////////////////////////////////////////////////////////
+//è¿žç‰Œä¿¡æ¯
 struct tagSameDataInfo
 {
-	BYTE							cbCardCount;						//ÆË¿ËÊýÄ¿
-	BYTE							cbBlockCount;						//ÅÆ¶ÎÊýÄ¿
-	BYTE							cbSameData[MAX_CARD_COUNT];			//ÍÏÀ­»úÅÆ
+	BYTE							cbCardCount;						//æ‰‘å…‹æ•°ç›®
+	BYTE							cbBlockCount;						//ç‰Œæ®µæ•°ç›®
+	BYTE							cbSameData[MAX_CARD_COUNT];			//æ‹–æ‹‰æœºç‰Œ
 };
 
-//ÍÏÀ­»úÐÅÏ¢
+//æ‹–æ‹‰æœºä¿¡æ¯
 struct tagTractorDataInfo
 {
-	BYTE							cbCardCount;						//ÆË¿ËÊýÄ¿
-	BYTE							cbTractorCount;						//ÍÏÅÆ¸öÊý
-	BYTE							cbTractorMaxIndex;					//Ë÷ÒýÎ»ÖÃ
-	BYTE							cbTractorMaxLength;					//×î´ó³¤¶È
-	BYTE							cbTractorData[MAX_CARD_COUNT*3/2];	//ÍÏÀ­»úÅÆ
+	BYTE							cbCardCount;						//æ‰‘å…‹æ•°ç›®
+	BYTE							cbTractorCount;						//æ‹–ç‰Œä¸ªæ•°
+	BYTE							cbTractorMaxIndex;					//ç´¢å¼•ä½ç½®
+	BYTE							cbTractorMaxLength;					//æœ€å¤§é•¿åº¦
+	BYTE							cbTractorData[MAX_CARD_COUNT*3/2];	//æ‹–æ‹‰æœºç‰Œ
 };
 
-//Õ¨µ¯ÐÅÏ¢
+//ç‚¸å¼¹ä¿¡æ¯
 struct tagBoomInfo
 {
-	BYTE		cbBoomType[MAX_BOOM_NUM];	//Õ¨µ¯ÀàÐÍ
-	BYTE		cbBoomNum;					//Õ¨µ¯¸öÊý
+	BYTE		cbBoomType[MAX_BOOM_NUM];	//ç‚¸å¼¹ç±»åž‹
+	BYTE		cbBoomNum;					//ç‚¸å¼¹ä¸ªæ•°
 };
 
-//Íæ¼Ò¿ÉÒÔ³öµÄ¿¨ÅÆÐÅÏ¢
+//çŽ©å®¶å¯ä»¥å‡ºçš„å¡ç‰Œä¿¡æ¯
 struct tagOutCardNotify
 {
-	BYTE		cbOutCardNum;						//Íæ¼Ò±ØÐë³öÅÆµÄÊýÄ¿
-	BYTE		cbMustOutCard[MAX_CARD_COUNT];		//Íæ¼Ò±ØÐë³öµÄ¿¨ÅÆ
-	BYTE		cbOptionalCard[MAX_CARD_COUNT];		//Íæ¼Ò¿ÉÑ¡³öµÄ¿¨ÅÆ
+	BYTE		cbOutCardNum;						//çŽ©å®¶å¿…é¡»å‡ºç‰Œçš„æ•°ç›®
+	BYTE		cbMustOutCard[MAX_CARD_COUNT];		//çŽ©å®¶å¿…é¡»å‡ºçš„å¡ç‰Œ
+	BYTE		cbOptionalCard[MAX_CARD_COUNT];		//çŽ©å®¶å¯é€‰å‡ºçš„å¡ç‰Œ
 };
 
-//·ÖÎö½á¹¹
+//åˆ†æžç»“æž„
 struct tagAnalyseResult
 {
-	BYTE 							cbFourCount;						//ËÄÕÅÊýÄ¿
-	BYTE 							cbThreeCount;						//ÈýÕÅÊýÄ¿
-	BYTE 							cbDoubleCount;						//Á½ÕÅÊýÄ¿
-	BYTE							cbSignedCount;						//µ¥ÕÅÊýÄ¿
-	BYTE							cbFourCardData[60];					//ËÄÕÅÆË¿Ë
-	BYTE							cbThreeCardData[200];				//ÈýÕÅÆË¿Ë
-	BYTE							cbDoubleCardData[200];				//Á½ÕÅÆË¿Ë
-	BYTE							cbSignedCardData[200];				//µ¥ÕÅÆË¿Ë
-	bool							cbLaiZi;							//Àµ×ÓÀàÐÍ
+	BYTE 							cbFourCount;						//å››å¼ æ•°ç›®
+	BYTE 							cbThreeCount;						//ä¸‰å¼ æ•°ç›®
+	BYTE 							cbDoubleCount;						//ä¸¤å¼ æ•°ç›®
+	BYTE							cbSignedCount;						//å•å¼ æ•°ç›®
+	BYTE							cbFourCardData[60];					//å››å¼ æ‰‘å…‹
+	BYTE							cbThreeCardData[200];				//ä¸‰å¼ æ‰‘å…‹
+	BYTE							cbDoubleCardData[200];				//ä¸¤å¼ æ‰‘å…‹
+	BYTE							cbSignedCardData[200];				//å•å¼ æ‰‘å…‹
+	bool							cbLaiZi;							//èµ–å­ç±»åž‹
 };
 
-//¼ÇÅÆÆ÷½á¹¹
+//è®°ç‰Œå™¨ç»“æž„
 struct tagCardRecorder
 {
-	BYTE							TwoCount;					//ÅÆ2µÄÕÅÊý
-	BYTE							ThreeCount;					//ÅÆ3µÄÕÅÊý
-	BYTE							FourCount;					//ÅÆ4µÄÕÅÊý
-	BYTE							FiveCount;					//ÅÆ5µÄÕÅÊý
-	BYTE							SixCount;					//ÅÆ6µÄÕÅÊý
-	BYTE							SevenCount;					//ÅÆ7µÄÕÅÊý
-	BYTE							EightCount;					//ÅÆ8µÄÕÅÊý
-	BYTE							NineCount;					//ÅÆ9µÄÕÅÊý
-	BYTE							TenCount;					//ÅÆ10µÄÕÅÊý
-	BYTE							JCount;						//ÅÆJµÄÕÅÊý
-	BYTE							QCount;						//ÅÆQµÄÕÅÊý
-	BYTE							KCount;						//ÅÆKµÄÕÅÊý
-	BYTE							ACount;						//ÅÆAµÄÕÅÊý
-	BYTE							SmallJokerCount;			//ÅÆÐ¡ÍõµÄÕÅÊý
-	BYTE							BigJokerCount;				//ÅÆ´óÍõµÄÕÅÊý
+	BYTE							TwoCount;					//ç‰Œ2çš„å¼ æ•°
+	BYTE							ThreeCount;					//ç‰Œ3çš„å¼ æ•°
+	BYTE							FourCount;					//ç‰Œ4çš„å¼ æ•°
+	BYTE							FiveCount;					//ç‰Œ5çš„å¼ æ•°
+	BYTE							SixCount;					//ç‰Œ6çš„å¼ æ•°
+	BYTE							SevenCount;					//ç‰Œ7çš„å¼ æ•°
+	BYTE							EightCount;					//ç‰Œ8çš„å¼ æ•°
+	BYTE							NineCount;					//ç‰Œ9çš„å¼ æ•°
+	BYTE							TenCount;					//ç‰Œ10çš„å¼ æ•°
+	BYTE							JCount;						//ç‰ŒJçš„å¼ æ•°
+	BYTE							QCount;						//ç‰ŒQçš„å¼ æ•°
+	BYTE							KCount;						//ç‰ŒKçš„å¼ æ•°
+	BYTE							ACount;						//ç‰ŒAçš„å¼ æ•°
+	BYTE							SmallJokerCount;			//ç‰Œå°çŽ‹çš„å¼ æ•°
+	BYTE							BigJokerCount;				//ç‰Œå¤§çŽ‹çš„å¼ æ•°
 };
 
-//==============================»úÆ÷ÈËÏà¹Ø==================================================
+//==============================æœºå™¨äººç›¸å…³==================================================
 
-//ÊÖÅÆ×éºÏÃ¶¾Ù
+//æ‰‹ç‰Œç»„åˆæžšä¸¾
 enum CardGroupType
 {
-	cgERROR = -1,						            //´íÎóÀàÐÍ
-	cgZERO = 0,						                //²»³öÀàÐÍ
-	cgSINGLE = 1,									//µ¥ÅÆÀàÐÍ
-	cgDOUBLE = 2,									//¶ÔÅÆÀàÐÍ
-	cgTHREE = 3,									//ÈýÌõÀàÐÍ
-	cgSINGLE_LINE = 4,								//µ¥Á¬ÀàÐÍ
-	cgDOUBLE_LINE = 5,								//¶ÔÁ¬ÀàÐÍ
-	cgTHREE_LINE = 6,								//ÈýÁ¬ÀàÐÍ
-	cgTHREE_TAKE_ONE = 7,							//Èý´øÒ»µ¥
-	cgTHREE_TAKE_TWO = 8,							//Èý´øÒ»¶Ô
-	cgTHREE_TAKE_ONE_LINE = 9,						//Èý´øÒ»µ¥Á¬
-	cgTHREE_TAKE_TWO_LINE = 10,						//Èý´øÒ»¶ÔÁ¬
-	cgFOUR_TAKE_ONE = 11,							//ËÄ´øÁ½µ¥
-	cgFOUR_TAKE_TWO = 12,							//ËÄ´øÁ½¶Ô
-	cgBOMB_CARD = 13,							    //Õ¨µ¯ÀàÐÍ
-	cgKING_CARD = 14								//ÍõÕ¨ÀàÐÍ
+	cgERROR = -1,						            //é”™è¯¯ç±»åž‹
+	cgZERO = 0,						                //ä¸å‡ºç±»åž‹
+	cgSINGLE = 1,									//å•ç‰Œç±»åž‹
+	cgDOUBLE = 2,									//å¯¹ç‰Œç±»åž‹
+	cgTHREE = 3,									//ä¸‰æ¡ç±»åž‹
+	cgSINGLE_LINE = 4,								//å•è¿žç±»åž‹
+	cgDOUBLE_LINE = 5,								//å¯¹è¿žç±»åž‹
+	cgTHREE_LINE = 6,								//ä¸‰è¿žç±»åž‹
+	cgTHREE_TAKE_ONE = 7,							//ä¸‰å¸¦ä¸€å•
+	cgTHREE_TAKE_TWO = 8,							//ä¸‰å¸¦ä¸€å¯¹
+	cgTHREE_TAKE_ONE_LINE = 9,						//ä¸‰å¸¦ä¸€å•è¿ž
+	cgTHREE_TAKE_TWO_LINE = 10,						//ä¸‰å¸¦ä¸€å¯¹è¿ž
+	cgFOUR_TAKE_ONE = 11,							//å››å¸¦ä¸¤å•
+	cgFOUR_TAKE_TWO = 12,							//å››å¸¦ä¸¤å¯¹
+	cgBOMB_CARD = 13,							    //ç‚¸å¼¹ç±»åž‹
+	cgKING_CARD = 14								//çŽ‹ç‚¸ç±»åž‹
 };
 
-//×î¶àÊÖÅÆ
+//æœ€å¤šæ‰‹ç‰Œ
 #define HandCardMaxLen 20
-//¼ÛÖµ×îÐ¡Öµ
+//ä»·å€¼æœ€å°å€¼
 #define MinCardsValue -25
-//¼ÛÖµ×î´óÖµ
+//ä»·å€¼æœ€å¤§å€¼
 #define MaxCardsValue 106
 
 #endif

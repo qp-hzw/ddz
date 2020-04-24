@@ -1,14 +1,14 @@
 #ifndef SERVICE_CORE_HEAD_FILE
 #define SERVICE_CORE_HEAD_FILE
 
-//MFC 文件
+//MFC 鏂囦欢
 #include <Afxmt.h>
 #include <AtlBase.h>
 
 //////////////////////////////////////////////////////////////////////////////////
-//公共定义
+//鍏叡瀹氫箟
 
-//导出定义
+//瀵煎嚭瀹氫箟
 #ifndef SERVICE_CORE_CLASS
 	#ifdef  SERVICE_CORE_DLL
 		#define SERVICE_CORE_CLASS _declspec(dllexport)

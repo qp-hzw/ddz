@@ -6,22 +6,23 @@
 #include <Process.h>
 #include <Wininet.h>
 #include <WinSock2.h>
-#include "..\·şÎñºËĞÄ\ServiceCoreHead.h"
+#include <string>
+#include "..\æœåŠ¡æ ¸å¿ƒ\ServiceCoreHead.h"
 
 
 //////////////////////////////////////////////////////////////////////////////////
-//ADO ¶¨Òå
+//ADO å®šä¹‰
 
 #import "MSADO15.DLL" rename_namespace("ADOCG") rename("EOF","EndOfFile")
 using namespace ADOCG;
 
-typedef _com_error						CComError;						//COM ´íÎó
-typedef _variant_t						CDBVarValue;					//Êı¾İ¿âÊıÖµ
+typedef _com_error						CComError;						//COM é”™è¯¯
+typedef _variant_t						CDBVarValue;					//æ•°æ®åº“æ•°å€¼
 
 //////////////////////////////////////////////////////////////////////////////////
-//µ¼³ö¶¨Òå
+//å¯¼å‡ºå®šä¹‰
 
-//µ¼³ö¶¨Òå
+//å¯¼å‡ºå®šä¹‰
 #ifndef KERNEL_ENGINE_CLASS
 	#ifdef  KERNEL_ENGINE_DLL
 		#define KERNEL_ENGINE_CLASS _declspec(dllexport)
@@ -32,338 +33,346 @@ typedef _variant_t						CDBVarValue;					//Êı¾İ¿âÊıÖµ
 
 
 //////////////////////////////////////////////////////////////////////////////////
-//ÏµÍ³³£Á¿
-#define TIMES_INFINITY				            DWORD(-1)			        //ÎŞÏŞ´ÎÊı -- ¶¨Ê±Æ÷ÖĞÊ¹ÓÃ
+//ç³»ç»Ÿå¸¸é‡
+#define TIMES_INFINITY				            DWORD(-1)			        //æ— é™æ¬¡æ•° -- å®šæ—¶å™¨ä¸­ä½¿ç”¨
 
-//³£Á¿¶¨Òå
-#define TIME_CELL					200									//Ê±¼äµ¥Ôª
-#define MAX_ASYNCHRONISM_DATA		16384								//Òì²½Êı¾İ
+//å¸¸é‡å®šä¹‰
+#define TIME_CELL					200									//æ—¶é—´å•å…ƒ
+#define MAX_ASYNCHRONISM_DATA		16384								//å¼‚æ­¥æ•°æ®
 
-
-//////////////////////////////////////////////////////////////////////////////////
-//ÊÂ¼ş¶¨Òå
-
-//ÊÂ¼ş±êÊ¶
-#define EVENT_TIMER					0x0001								//Ê±¼äÊÂ¼ş
-#define EVENT_DATABASE				0x0003								//Êı¾İ¿âÊÂ¼ş
-
-//ÍøÂçÊÂ¼ş
-#define EVENT_TCP_SOCKET_READ		0x0004								//¶ÁÈ¡ÊÂ¼ş
-#define EVENT_TCP_SOCKET_SHUT		0x0005								//¹Ø±ÕÊÂ¼ş
-#define EVENT_TCP_SOCKET_LINK		0x0006								//Á¬½ÓÊÂ¼ş
-
-//ÍøÂçÊÂ¼ş
-#define EVENT_TCP_NETWORK_ACCEPT	0x0007								//Ó¦´ğÊÂ¼ş
-#define EVENT_TCP_NETWORK_READ		0x0008								//¶ÁÈ¡ÊÂ¼ş
-#define EVENT_TCP_NETWORK_SHUT		0x0009								//¹Ø±ÕÊÂ¼ş
-
-//ÊÂ¼şÑÚÂë
-#define EVENT_MASK_KERNEL			0x00FF								//ÄÚºËÊÂ¼ş
 
 //////////////////////////////////////////////////////////////////////////////////
+//äº‹ä»¶å®šä¹‰
 
-//¿ØÖÆÊÂ¼ş
+//äº‹ä»¶æ ‡è¯†
+#define EVENT_TIMER					0x0001								//æ—¶é—´äº‹ä»¶
+#define EVENT_DATABASE				0x0003								//æ•°æ®åº“äº‹ä»¶
+
+//ç½‘ç»œäº‹ä»¶
+#define EVENT_TCP_SOCKET_READ		0x0004								//è¯»å–äº‹ä»¶
+#define EVENT_TCP_SOCKET_SHUT		0x0005								//å…³é—­äº‹ä»¶
+#define EVENT_TCP_SOCKET_LINK		0x0006								//è¿æ¥äº‹ä»¶
+
+//ç½‘ç»œäº‹ä»¶
+#define EVENT_TCP_NETWORK_ACCEPT	0x0007								//åº”ç­”äº‹ä»¶
+#define EVENT_TCP_NETWORK_READ		0x0008								//è¯»å–äº‹ä»¶
+#define EVENT_TCP_NETWORK_SHUT		0x0009								//å…³é—­äº‹ä»¶
+
+//äº‹ä»¶æ©ç 
+#define EVENT_MASK_KERNEL			0x00FF								//å†…æ ¸äº‹ä»¶
+
+//////////////////////////////////////////////////////////////////////////////////
+
+//æ§åˆ¶äº‹ä»¶
 struct NTY_ControlEvent
 {
-	WORD							wControlID;							//¿ØÖÆ±êÊ¶
+	WORD							wControlID;							//æ§åˆ¶æ ‡è¯†
 };
 
-//¶¨Ê±Æ÷ÊÂ¼ş
+//å®šæ—¶å™¨äº‹ä»¶
 struct NTY_TimerEvent
 {
-	DWORD							dwTimerID;							//Ê±¼ä±êÊ¶
-	WPARAM							dwBindParameter;					//°ó¶¨²ÎÊı
+	DWORD							dwTimerID;							//æ—¶é—´æ ‡è¯†
+	WPARAM							dwBindParameter;					//ç»‘å®šå‚æ•°
 };
 
-//Êı¾İ¿âÊÂ¼ş
+//æ•°æ®åº“äº‹ä»¶
 struct NTY_DataBaseEvent
 {
-	WORD							wRequestID;							//ÇëÇó±êÊ¶
-	DWORD							dwContextID;						//¶ÔÏó±êÊ¶
+	WORD							wRequestID;							//è¯·æ±‚æ ‡è¯†
+	DWORD							dwContextID;						//å¯¹è±¡æ ‡è¯†
 };
 
-//¶ÁÈ¡ÊÂ¼ş
+//è¯»å–äº‹ä»¶
 struct NTY_TCPSocketReadEvent
 {
-	WORD							wDataSize;							//Êı¾İ´óĞ¡
-	WORD							wServiceID;							//·şÎñ±êÊ¶
-	TCP_Command						Command;							//ÃüÁîĞÅÏ¢
+	WORD							wDataSize;							//æ•°æ®å¤§å°
+	WORD							wServiceID;							//æœåŠ¡æ ‡è¯†
+	TCP_Command						Command;							//å‘½ä»¤ä¿¡æ¯
 };
 
-//¹Ø±ÕÊÂ¼ş
+//å…³é—­äº‹ä»¶
 struct NTY_TCPSocketShutEvent
 {
-	WORD							wServiceID;							//·şÎñ±êÊ¶
-	BYTE							cbShutReason;						//¹Ø±ÕÔ­Òò
+	WORD							wServiceID;							//æœåŠ¡æ ‡è¯†
+	BYTE							cbShutReason;						//å…³é—­åŸå› 
 };
 
-//Á¬½ÓÊÂ¼ş
+//è¿æ¥äº‹ä»¶
 struct NTY_TCPSocketLinkEvent
 {
-	INT								nErrorCode;							//´íÎó´úÂë
-	WORD							wServiceID;							//·şÎñ±êÊ¶
+	INT								nErrorCode;							//é”™è¯¯ä»£ç 
+	WORD							wServiceID;							//æœåŠ¡æ ‡è¯†
 };
 
-//Ó¦´ğÊÂ¼ş
+//åº”ç­”äº‹ä»¶
 struct NTY_TCPNetworkAcceptEvent
 {
-	DWORD							dwSocketID;							//ÍøÂç±êÊ¶
-	DWORD							dwClientAddr;						//Á¬½ÓµØÖ·
+	DWORD							dwSocketID;							//ç½‘ç»œæ ‡è¯†
+	DWORD							dwClientAddr;						//è¿æ¥åœ°å€
 };
 
-//¶ÁÈ¡ÊÂ¼ş
+//è¯»å–äº‹ä»¶
 struct NTY_TCPNetworkReadEvent
 {
-	WORD							wDataSize;							//Êı¾İ´óĞ¡
-	DWORD							dwSocketID;							//ÍøÂç±êÊ¶
-	TCP_Command						Command;							//ÃüÁîĞÅÏ¢
+	WORD							wDataSize;							//æ•°æ®å¤§å°
+	DWORD							dwSocketID;							//ç½‘ç»œæ ‡è¯†
+	TCP_Command						Command;							//å‘½ä»¤ä¿¡æ¯
 };
 
-//¹Ø±ÕÊÂ¼ş
+//å…³é—­äº‹ä»¶
 struct NTY_TCPNetworkShutEvent
 {
-	DWORD							dwSocketID;							//ÍøÂç±êÊ¶
-	DWORD							dwClientAddr;						//Á¬½ÓµØÖ·
-	DWORD							dwActiveTime;						//Á¬½ÓÊ±¼ä
+	DWORD							dwSocketID;							//ç½‘ç»œæ ‡è¯†
+	DWORD							dwClientAddr;						//è¿æ¥åœ°å€
+	DWORD							dwActiveTime;						//è¿æ¥æ—¶é—´
 };
 
 //////////////////////////////////////////////////////////////////////////////////
-//Êı¾İ¿â½Ó¿Ú
+//æ•°æ®åº“æ¥å£
 interface IDataBase : public IUnknownEx
 {
-	//Á¬½Ó½Ó¿Ú
+	//è¿æ¥æ¥å£
 public:
-	//Á¬½ÓÊı¾İ¿â
+	//è¿æ¥æ•°æ®åº“
 	virtual bool Connect(BYTE byMask)=NULL;
 	 
-	//²ÎÊıº¯Êı -- ¶ÔÍâ½Ó¿Ú
+	//å‚æ•°å‡½æ•° -- å¯¹å¤–æ¥å£
 public:
-	//ÖØÖÃ²ÎÊı
+	//é‡ç½®å‚æ•°
 	virtual VOID ResetParameter()=NULL;
-	//»ñÈ¡²ÎÊı
+	//è·å–å‚æ•°
 	virtual VOID GetParameter(LPCTSTR pszItem, CDBVarValue & DBVarValue)= NULL;
-	//»ñÈ¡²ÎÊı
+	//è·å–å‚æ•°
 	virtual VOID GetParameter(LPCTSTR pszItem, LPSTR pszString, UINT uSize)= NULL;
-	//»ñÈ¡²ÎÊı
+	//è·å–å‚æ•°
 	virtual VOID GetParameter(LPCTSTR pszItem, LPWSTR pszString, UINT uSize)= NULL;
 
-	//²åÈë²ÎÊı
+	//æ’å…¥å‚æ•°
 public:
-	//²åÈë²ÎÊı
+	//æ’å…¥å‚æ•°
 	virtual VOID AddParameter(LPCTSTR pszItem, INT nValue, ParameterDirectionEnum ParameterDirection=adParamInput)= NULL;
-	//²åÈë²ÎÊı
+	//æ’å…¥å‚æ•°
 	virtual VOID AddParameter(LPCTSTR pszItem, UINT uValue, ParameterDirectionEnum ParameterDirection=adParamInput)= NULL;
-	//²åÈë²ÎÊı
+	//æ’å…¥å‚æ•°
 	virtual VOID AddParameter(LPCTSTR pszItem, LONG lValue, ParameterDirectionEnum ParameterDirection=adParamInput)= NULL;
-	//²åÈë²ÎÊı
+	//æ’å…¥å‚æ•°
 	virtual VOID AddParameter(LPCTSTR pszItem, LONGLONG lValue, ParameterDirectionEnum ParameterDirection=adParamInput)= NULL;
-	//²åÈë²ÎÊı
+	//æ’å…¥å‚æ•°
 	virtual VOID AddParameter(LPCTSTR pszItem, BYTE cbValue, ParameterDirectionEnum ParameterDirection=adParamInput)= NULL;
-	//²åÈë²ÎÊı
+	//æ’å…¥å‚æ•°
 	virtual VOID AddParameter(LPCTSTR pszItem, WORD wValue, ParameterDirectionEnum ParameterDirection=adParamInput)= NULL;
-	//²åÈë²ÎÊı
+	//æ’å…¥å‚æ•°
 	virtual VOID AddParameter(LPCTSTR pszItem, DWORD dwValue, ParameterDirectionEnum ParameterDirection=adParamInput)= NULL;
-	//²åÈë²ÎÊı
+	//æ’å…¥å‚æ•°
 	virtual VOID AddParameter(LPCTSTR pszItem, FLOAT fValue, ParameterDirectionEnum ParameterDirection=adParamInput)= NULL;
-	//²åÈë²ÎÊı
+	//æ’å…¥å‚æ•°
 	virtual VOID AddParameter(LPCTSTR pszItem, DOUBLE dValue, ParameterDirectionEnum ParameterDirection=adParamInput)= NULL;
-	//²åÈë²ÎÊı
+	//æ’å…¥å‚æ•°
 	virtual VOID AddParameter(LPCTSTR pszItem, LPCSTR pszString, ParameterDirectionEnum ParameterDirection=adParamInput)= NULL;
-	//²åÈë²ÎÊı
+	//æ’å…¥å‚æ•°
 	virtual VOID AddParameter(LPCTSTR pszItem, LPCWSTR pszString, ParameterDirectionEnum ParameterDirection=adParamInput)= NULL;
-	//²åÈë²ÎÊı
+	//æ’å…¥å‚æ•°
 	virtual VOID AddParameter(LPCTSTR pszItem, SYSTEMTIME & SystemTime, ParameterDirectionEnum ParameterDirection=adParamInput)= NULL;
-	//²åÈë²ÎÊı
+	//æ’å…¥å‚æ•° string
+	virtual VOID AddParameter(LPCTSTR pszItem, const std::string pszString, ParameterDirectionEnum ParameterDirection = adParamInput) = NULL;
+	//æ’å…¥å‚æ•°
 	virtual VOID AddParameterOutput(LPCTSTR pszItem, LPSTR pszString, UINT uSize, ParameterDirectionEnum ParameterDirection=adParamInputOutput)= NULL;
-	//²åÈë²ÎÊı
+	//æ’å…¥å‚æ•°
 	virtual VOID AddParameterOutput(LPCTSTR pszItem, LPWSTR pszString, UINT uSize, ParameterDirectionEnum ParameterDirection=adParamInputOutput)= NULL;
   
-	//Ö´ĞĞ½Ó¿Ú -- ¶ÔÍâ½Ó¿Ú
+	//æ‰§è¡Œæ¥å£ -- å¯¹å¤–æ¥å£
 public:
-	//´æ´¢¹ı³Ì
+	//å­˜å‚¨è¿‡ç¨‹
 	virtual LONG ExecuteProcess(LPCTSTR pszSPName, bool bRecordset)= NULL;
 
-	//¼ÇÂ¼½Ó¿Ú
+	//è®°å½•æ¥å£
 public:
-	//ÇĞ»»¼ÇÂ¼
+	//åˆ‡æ¢è®°å½•
 	virtual VOID NextRecordset()=NULL;
-	//¹Ø±Õ¼ÇÂ¼
+	//å…³é—­è®°å½•
 	virtual VOID CloseRecordset()=NULL;
-	//°ó¶¨¶ÔÏó
+	//ç»‘å®šå¯¹è±¡
 	virtual VOID BindToRecordset(CADORecordBinding * pBind)=NULL;
 
-	//ÍùÏÂÒÆ¶¯
+	//å¾€ä¸‹ç§»åŠ¨
 	virtual VOID MoveToNext()=NULL;
-	//ÒÆµ½¿ªÍ·
+	//ç§»åˆ°å¼€å¤´
 	virtual VOID MoveToFirst()=NULL;
-	//ÊÇ·ñ½áÊø
+	//æ˜¯å¦ç»“æŸ
 	virtual bool IsRecordsetEnd()=NULL;
-	//»ñÈ¡ÊıÄ¿
+	//è·å–æ•°ç›®
 	virtual LONG GetRecordCount()=NULL;
-	//·µ»ØÊıÖµ
+	//è¿”å›æ•°å€¼
 	virtual LONG GetReturnValue()=NULL;
-	//»ñÈ¡Êı¾İ
+	//è·å–æ•°æ®
 	virtual VOID GetRecordsetValue(LPCTSTR pszItem, CDBVarValue & DBVarValue)=NULL;
 
 
-	 //»ñÈ¡DB¼ÇÂ¼ÖĞµÄvalue -- ¶ÔÍâ½Ó¿Ú
+	 //è·å–DBè®°å½•ä¸­çš„value -- å¯¹å¤–æ¥å£
 public:
-	//»ñÈ¡Êı¾İ
+	//è·å–æ•°æ®
 	virtual INT GetValue_INT(LPCTSTR pszItem)= NULL;
-	//»ñÈ¡Êı¾İ
+	//è·å–æ•°æ®
 	virtual UINT GetValue_UINT(LPCTSTR pszItem)= NULL;
-	//»ñÈ¡Êı¾İ
+	//è·å–æ•°æ®
 	virtual LONG GetValue_LONG(LPCTSTR pszItem)= NULL;
-	//»ñÈ¡Êı¾İ
+	//è·å–æ•°æ®
 	virtual BYTE GetValue_BYTE(LPCTSTR pszItem)= NULL;
-	//»ñÈ¡Êı¾İ
+	//è·å–æ•°æ®
 	virtual WORD GetValue_WORD(LPCTSTR pszItem)= NULL;
-	//»ñÈ¡Êı¾İ
+	//è·å–æ•°æ®
 	virtual DWORD GetValue_DWORD(LPCTSTR pszItem)= NULL;
-	//»ñÈ¡Êı¾İ
+	//è·å–æ•°æ®
 	virtual FLOAT GetValue_FLOAT(LPCTSTR pszItem)= NULL;
-	//»ñÈ¡Êı¾İ
+	//è·å–æ•°æ®
 	virtual DOUBLE GetValue_DOUBLE(LPCTSTR pszItem)= NULL;
-	//»ñÈ¡Êı¾İ
+	//è·å–æ•°æ®
 	virtual LONGLONG GetValue_LONGLONG(LPCTSTR pszItem)= NULL;
-	//»ñÈ¡Êı¾İ
+	//è·å–æ•°æ®
 	virtual VOID GetValue_SystemTime(LPCTSTR pszItem, SYSTEMTIME & SystemTime)= NULL;
-	//»ñÈ¡×Ö·û
+	//è·å–å­—ç¬¦
+	virtual std::string GetValue_String(LPCTSTR pszItem) = NULL;
+
+	//TODONOW å¾…åˆ é™¤
+	//è·å–å­—ç¬¦
 	virtual VOID GetValue_String(LPCTSTR pszItem, LPSTR pszString, UINT uMaxCount)= NULL;
-	//»ñÈ¡×Ö·û
+	//è·å–å­—ç¬¦
 	virtual VOID GetValue_String(LPCTSTR pszItem, LPWSTR pszString, UINT uMaxCount) = NULL;
+	//è·å–å­—ç¬¦
+	virtual VOID GetValue_String(LPCTSTR pszItem, std::string* str, UINT uMaxCount) = NULL;
 };
 
 //////////////////////////////////////////////////////////////////////////////////
-//Êı¾İ¿â¹³×Ó
+//æ•°æ®åº“é’©å­
 interface IDataBaseEngineSink : public IUnknownEx
 {
-	//ÏµÍ³ÊÂ¼ş
+	//ç³»ç»Ÿäº‹ä»¶
 public:
-	//Æô¶¯ÊÂ¼ş
+	//å¯åŠ¨äº‹ä»¶
 	virtual bool OnDataBaseEngineStart(IUnknownEx * pIUnknownEx)=NULL;
-	//Í£Ö¹ÊÂ¼ş
+	//åœæ­¢äº‹ä»¶
 	virtual bool OnDataBaseEngineConclude(IUnknownEx * pIUnknownEx)=NULL;
 
-	//ÄÚºËÊÂ¼ş
+	//å†…æ ¸äº‹ä»¶
 public:
-	//ÇëÇóÊÂ¼ş
+	//è¯·æ±‚äº‹ä»¶
 	virtual bool OnDataBaseEngineRequest(WORD wRequestID, DWORD dwContextID, VOID * pData, WORD wDataSize)=NULL;
 };
 
 //////////////////////////////////////////////////////////////////////////////////
-//ÍøÂçÒıÇæ
+//ç½‘ç»œå¼•æ“
 interface ITCPNetworkEngine : public IUnknownEx
 {
-	//ÅäÖÃ½Ó¿Ú
+	//é…ç½®æ¥å£
 public:
-	//ÉèÖÃ²ÎÊı
+	//è®¾ç½®å‚æ•°
 	virtual bool SetServiceParameter(WORD wServicePort)=NULL;
 	
-	//·¢ËÍ½Ó¿Ú
+	//å‘é€æ¥å£
 public:
-	//·¢ËÍº¯Êı
+	//å‘é€å‡½æ•°
 	virtual bool SendData(DWORD dwSocketID, WORD wMainCmdID, WORD wSubCmdID)=NULL;
-	//·¢ËÍº¯Êı
+	//å‘é€å‡½æ•°
 	virtual bool SendData(DWORD dwSocketID, WORD wMainCmdID, WORD wSubCmdID, VOID * pData, WORD wDataSize)=NULL;
-	//ÅúÁ¿·¢ËÍ
+	//æ‰¹é‡å‘é€
 	virtual bool SendDataBatch(WORD wMainCmdID, WORD wSubCmdID, VOID * pData, WORD wDataSize)=NULL;
 
-	//¿ØÖÆ½Ó¿Ú
+	//æ§åˆ¶æ¥å£
 public:
-	//¹Ø±ÕÁ¬½Ó
+	//å…³é—­è¿æ¥
 	virtual bool CloseSocket(DWORD dwSocketID)=NULL;
 };
 
 //////////////////////////////////////////////////////////////////////////////////
-//ÍøÂç½Ó¿Ú
+//ç½‘ç»œæ¥å£
 interface ITCPSocketEngine : public IUnknownEx
 {
-	//ÅäÖÃ½Ó¿Ú
+	//é…ç½®æ¥å£
 public:
-	//ÅäÖÃº¯Êı
+	//é…ç½®å‡½æ•°
 	virtual bool SetServiceID(WORD wServiceID)=NULL;
 
-	//¹¦ÄÜ½Ó¿Ú
+	//åŠŸèƒ½æ¥å£
 public:
-	//´ò¿ªÁ¬½Ó
+	//æ‰“å¼€è¿æ¥
 	virtual bool Connect(DWORD dwServerIP, WORD wPort)=NULL;
-	//´ò¿ªÁ¬½Ó
+	//æ‰“å¼€è¿æ¥
 	virtual bool Connect(LPCTSTR szServerIP, WORD wPort)=NULL;
-	//·¢ËÍº¯Êı
+	//å‘é€å‡½æ•°
 	virtual bool SendData(WORD wMainCmdID, WORD wSubCmdID)=NULL;
-	//·¢ËÍº¯Êı
+	//å‘é€å‡½æ•°
 	virtual bool SendData(WORD wMainCmdID, WORD wSubCmdID, VOID * pData, WORD wDataSize)=NULL;
 };
 
 
 //////////////////////////////////////////////////////////////////////////////////
-//¶¨Ê±Æ÷ÒıÇæ
+//å®šæ—¶å™¨å¼•æ“
 interface ITimerEngine : public IUnknownEx
 {
-	//¹¦ÄÜ½Ó¿Ú
+	//åŠŸèƒ½æ¥å£
 public:
-	//ÉèÖÃ¶¨Ê±Æ÷
+	//è®¾ç½®å®šæ—¶å™¨
 	virtual bool SetTimer(DWORD dwTimerID, DWORD dwElapse, DWORD dwRepeat, WPARAM dwBindParameter)=NULL; 
-	//É¾³ı¶¨Ê±Æ÷
+	//åˆ é™¤å®šæ—¶å™¨
 	virtual bool KillTimer(DWORD dwTimerID)=NULL;
-	//É¾³ı¶¨Ê±Æ÷
+	//åˆ é™¤å®šæ—¶å™¨
 	virtual bool KillAllTimer()=NULL;
-	//»ñÈ¡¶¨Ê±Æ÷Ê£ÓàÊ±¼ä£¨ºÁÃë£©
+	//è·å–å®šæ—¶å™¨å‰©ä½™æ—¶é—´ï¼ˆæ¯«ç§’ï¼‰
 	virtual DWORD GetTimerLeftTickCount(DWORD dwTimerID) = NULL;
 };
 
 //////////////////////////////////////////////////////////////////////////////////
-//µ÷¶ÈÒıÇæ
+//è°ƒåº¦å¼•æ“
 interface IAttemperEngine : public IUnknownEx
 {
-	//×¢²á»Øµ÷
+	//æ³¨å†Œå›è°ƒ
 public:
-	//×¢²áAttemper»Øµ÷
+	//æ³¨å†ŒAttemperå›è°ƒ
 	virtual bool SetAttemperEngineSink(IUnknownEx * pIUnknownEx)=NULL;
-	//×¢²áDB»Øµ÷
+	//æ³¨å†ŒDBå›è°ƒ
 	virtual bool SetDataBaseEngineSink(IUnknownEx * pIUnknownEx)=NULL;
 
-	//DB½Ó¿Ú
+	//DBæ¥å£
 public:
 	virtual bool PostDataBaseRequest(WORD wRequestID, DWORD dwScoketID, VOID * pData, WORD wDataSize)=NULL;
 
 };
 
 //////////////////////////////////////////////////////////////////////////////////
-//µ÷¶È¹³×Ó
+//è°ƒåº¦é’©å­
 interface IAttemperEngineSink : public IUnknownEx
 {
-	//Òì²½½Ó¿Ú
+	//å¼‚æ­¥æ¥å£
 public:
-	//Æô¶¯ÊÂ¼ş
+	//å¯åŠ¨äº‹ä»¶
 	virtual bool OnAttemperEngineStart(IUnknownEx * pIUnknownEx)=NULL;
-	//Í£Ö¹ÊÂ¼ş
+	//åœæ­¢äº‹ä»¶
 	virtual bool OnAttemperEngineConclude(IUnknownEx * pIUnknownEx)=NULL;
 
-	//¶¨Ê±Æ÷ÊÂ¼ş
+	//å®šæ—¶å™¨äº‹ä»¶
 public:
 	virtual bool OnEventTimer(DWORD dwTimerID, WPARAM wBindParam)=NULL;
 
-	//DBÊÂ¼ş
+	//DBäº‹ä»¶
 public:
 	virtual bool OnEventDataBaseResult(WORD wRequestID, DWORD dwScoketID, VOID * pData, WORD wDataSize) = NULL;
 
 	//socket::client
 public:
-	//Á¬½ÓÊÂ¼ş
+	//è¿æ¥äº‹ä»¶
 	virtual bool OnEventTCPSocketLink(WORD wServiceID, INT nErrorCode)=NULL;
-	//¹Ø±ÕÊÂ¼ş
+	//å…³é—­äº‹ä»¶
 	virtual bool OnEventTCPSocketShut(WORD wServiceID, BYTE cbShutReason)=NULL;
-	//¶ÁÈ¡ÊÂ¼ş
+	//è¯»å–äº‹ä»¶
 	virtual bool OnEventTCPSocketRead(WORD wServiceID, TCP_Command Command, VOID * pData, WORD wDataSize)=NULL;
 
 	//socket::server
 public:
-	//Ó¦´ğÊÂ¼ş
+	//åº”ç­”äº‹ä»¶
 	virtual bool OnEventTCPNetworkBind(DWORD dwClientAddr, DWORD dwSocketID)=NULL;
-	//¹Ø±ÕÊÂ¼ş
+	//å…³é—­äº‹ä»¶
 	virtual bool OnEventTCPNetworkShut(DWORD dwClientAddr, DWORD dwActiveTime, DWORD dwSocketID)=NULL;
-	//¶ÁÈ¡ÊÂ¼ş
+	//è¯»å–äº‹ä»¶
 	virtual bool OnEventTCPNetworkRead(TCP_Command Command, VOID * pData, WORD wDataSize, DWORD dwSocketID)=NULL;
 };

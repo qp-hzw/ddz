@@ -33,7 +33,8 @@
 #define TREASURE_GOLD				2									//金币
 #define TREASURE_DIAMOND			3									//钻石
 #define TREASURE_JF					4									//积分
-
+#define TREASURE_MONEY				5
+	
 
 //请求错误
 #define REQUEST_FAILURE_NORMAL		0									//常规原因
@@ -72,6 +73,7 @@ struct STR_CMD_GC_LOGON_USERID
 	LONG							lResultCode;								//错误代码
 	TCHAR							szDescribeString[LEN_MESSAGE_DESCRIBE];		//消息描述
 	DWORD							dwKindID;									//游戏KindID
+	BYTE							cbIsInRoom;									//玩家是否在房间里 0-不再 1-在
 };
 #pragma endregion
 
@@ -117,10 +119,8 @@ struct STR_SUB_CG_USER_JOIN_FK_ROOM
 //加入桌子 -- 不需要密码
 struct STR_SUB_CG_USER_JOIN_TABLE_NO_PASS
 {
-	DWORD							dwUserID;		//玩家ID
-	DWORD							dwClubRoomID;	//俱乐部房间
-	double							dLongitude;		//经度
-	double							dLatitude;		//纬度
+	DWORD							dwClubID;
+	DWORD							dwRoomID;
 };
 
 //加入桌子 -- 加入大厅金币场桌子
@@ -356,21 +356,21 @@ struct CMD_GF_OnlinePlayers
 //用户准备
 struct STR_SUB_CG_USER_READY
 {
+	BYTE byType;					//0-Ready  1-cancel
+};
+
+//准备返回
+struct STR_CMD_GC_USER_READY
+{
+	BYTE cbRet;						//0-成功 1-失败
+	BYTE cbType;					//0-准备返回 1-取消准备返回
 };
 
 struct STR_CMD_ROOM_RULE
 {
 	tagTableRule common;			 //创建房间 frame通用房间规则
 	DWORD TableID;                   //房间号
-};
-
-//金币场房间信息 返回
-struct STR_CMD_GC_USER_GOLD_INFO
-{
-	BYTE bGoldMod;// 房间等级 1.初级 2.中级 3.高级 4.富豪
-
-	DWORD dwScore;  //底分
-	DWORD dwGold;  //入场金币
+	BYTE bStart;                     //游戏是否已开始 0未开始, 1开始
 };
 
 //////////////////////////////////////////////////////////////////////////////////
@@ -424,6 +424,7 @@ struct STR_SUB_CG_MATCH_APPLY
 struct STR_CMD_GC_MATCH_APPLY
 {
 	BYTE			byResult;			//0-成功  1-失败
+	WORD			wMatchID;
 };
 
 //比赛取消
@@ -432,16 +433,11 @@ struct STR_CMD_GC_MATCH_CANCEL
 	TCHAR			szDescribe[128];	//为啥取消
 };
 
-//取消报名
-struct STR_SUB_CG_MATCH_UNAPPLY
-{
-	WORD			wMatchID;		//比赛ID
-};
-
 //取消报名返回
 struct STR_CMD_GC_MATCH_UNAPPLY
 {
 	BYTE			byResult;			//0-成功  1-失败
+	WORD			wMatchID;
 };
 
 //比赛场请求返回
@@ -464,6 +460,11 @@ struct STR_CMD_GC_MATCH_RESULT_TAOTAI
 {
 	WORD			wRanking;			//排名
 	TCHAR			szStageName[16];		//阶段名
+
+	//奖励
+	WORD			wType;		//1-房卡 2-金币 3-钻石 4 5 6....
+	DWORD			dwCount;	//奖励数量
+	TCHAR			szDes[64];
 };
 
 //更新自己排名
@@ -497,6 +498,15 @@ struct STR_CMD_GC_MATCH_JUESAI_RECODE
 struct STR_CMD_GC_MATCH_WAIT_COUNT
 {
 	WORD			wait_count;
+};
+
+//报名断线重连
+struct STR_CMD_GC_MATCH_APPLY_OFFLINE
+{
+	DWORD			dwStartType;
+	DWORD			dwApplyCount;
+	DWORD			dwLowPlayer;
+	DWORD			dwLeaveTime;
 };
 
 #pragma endregion
@@ -640,6 +650,32 @@ struct STR_CMD_GR_FRAME_GAME_DISSMISS
 	BYTE					cbAgree[MAX_CHAIR];						    //是否同意解散		0-不同意	1-同意   2-未表决
 };
 
+//大局结束
+struct STR_CMD_GR_TABLE_DJ_END
+{
+	TCHAR					szName[LEN_NICKNAME];
+	TCHAR					szHeadUrl[LEN_HEAD_URL];
+	SCORE					llScore;
+	BYTE					wBigWinner;					//大赢家 0-否 1-是
+};
+
+//游戏开始, 小局结束, 大局结束
+struct STR_CMD_GR_TABLE_GAME_ACT
+{
+	BYTE					act;					//0游戏开始, 1小局结束, 2大局结束
+};
+
+//托管返回
+struct STR_CMD_GR_TUOGUAN
+{
+	DWORD					dwUserID;
+};
+
+//取消托管返回
+struct STR_CMD_GR_CANCEL_TUOGUAN
+{
+	DWORD					dwUserID;
+};
 
 //消耗道具
 struct STR_SUB_CG_EFFECT

@@ -4,29 +4,29 @@
 #include "ServiceCoreHead.h"
 #include "Stdafx.h"
 
-//logÊä³öµÈ¼¶
+//logè¾“å‡ºç­‰çº§
 enum enTraceLevel
 {
-	log_debug				=0,									//µ÷ÊÔÏûÏ¢
-	log_warn				=1,									//¾¯¸æÏûÏ¢
-	log_error			    =2,									//´íÎóÏûÏ¢
+	log_debug				=0,									//è°ƒè¯•æ¶ˆæ¯
+	log_warn				=1,									//è­¦å‘Šæ¶ˆæ¯
+	log_error			    =2,									//é”™è¯¯æ¶ˆæ¯
 };
 
-//×·×Ù·şÎñ
+//è¿½è¸ªæœåŠ¡
 class SERVICE_CORE_CLASS CLog //: public ILog
 {
-	//º¯Êı¶¨Òå
+	//å‡½æ•°å®šä¹‰
 protected:
-	//¹¹Ôìº¯Êı
+	//æ„é€ å‡½æ•°
 	CLog();
 	~CLog();
 
 public:
-	//ÉèÖÃÈÕÖ¾ÎÄ¼ş
+	//è®¾ç½®æ—¥å¿—æ–‡ä»¶
 	static bool Init(const char* szFileName);
 
 public:
-	//logÈÕÖ¾
+	//logæ—¥å¿—
 	static void Log(enTraceLevel TraceLevel, const char* pszFormat, ...);
 };
 

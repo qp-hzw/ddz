@@ -4,59 +4,59 @@
 #include "STR_CMD_Correspond.h"
 
 /*
-** ¼òÒªÃèÊö:  Ð­µ÷·þ Óë ÆäËû½ø³Ì(µÇÂ¼·þ, ÓÎÏ··þ, webºóÌ¨) ÏûÏ¢
-** ÏêÏ¸ÃèÊö:  1. ÏûÏ¢ºÅ(Ö÷ + ×Ó)     2. ½á¹¹Ìå
-** ±¸×¢ËµÃ÷:  ×ÓÏûÏ¢ºÅµÄº¬Òå: 
-**            1. µÚÒ»¸ö×Ö¶Î: ¹éÊô±êÖ¾,
-**				 CPR(ÆäËû½ø³Ì->Ð­µ÷·þµÄÏûÏ¢)£¬ CPO(Ð­µ÷·þ->ÆäËû½ø³ÌµÄÏûÏ¢), 
-**            2. µÚ¶þ¸ö×Ö¶Î: ÏûÏ¢Á÷Ïò         
-**				 L: logon;  G:gameserver; W:web;  P:Ð­µ÷·þ
-**            3. µÚÈý¸ö×Ö¶Î: Ö÷ÏûÏ¢ºÅµÄ±êÖ¾   ±ÈÈçREGISTER¼´Îª×¢²áÄ£¿éµÄÏûÏ¢
-**            4. Ö®ºóµÄ×Ö¶Î: ×ÓÏûÏ¢ºÅµÄº¬Òå   ±ÈÈçGameServer±íÊ¾ÓÎÏ··þ×¢²á
+** ç®€è¦æè¿°:  åè°ƒæœ ä¸Ž å…¶ä»–è¿›ç¨‹(ç™»å½•æœ, æ¸¸æˆæœ, webåŽå°) æ¶ˆæ¯
+** è¯¦ç»†æè¿°:  1. æ¶ˆæ¯å·(ä¸» + å­)     2. ç»“æž„ä½“
+** å¤‡æ³¨è¯´æ˜Ž:  å­æ¶ˆæ¯å·çš„å«ä¹‰: 
+**            1. ç¬¬ä¸€ä¸ªå­—æ®µ: å½’å±žæ ‡å¿—,
+**				 CPR(å…¶ä»–è¿›ç¨‹->åè°ƒæœçš„æ¶ˆæ¯)ï¼Œ CPO(åè°ƒæœ->å…¶ä»–è¿›ç¨‹çš„æ¶ˆæ¯), 
+**            2. ç¬¬äºŒä¸ªå­—æ®µ: æ¶ˆæ¯æµå‘         
+**				 L: logon;  G:gameserver; W:web;  P:åè°ƒæœ
+**            3. ç¬¬ä¸‰ä¸ªå­—æ®µ: ä¸»æ¶ˆæ¯å·çš„æ ‡å¿—   æ¯”å¦‚REGISTERå³ä¸ºæ³¨å†Œæ¨¡å—çš„æ¶ˆæ¯
+**            4. ä¹‹åŽçš„å­—æ®µ: å­æ¶ˆæ¯å·çš„å«ä¹‰   æ¯”å¦‚GameServerè¡¨ç¤ºæ¸¸æˆæœæ³¨å†Œ
 **           
-**            ÃüÃû¹æ·¶
-**            1. ½á¹¹ÌåµÄÃüÃû:  ÔÚÏûÏ¢ºÅµÄÇ°Ãæ¼ÓSTR, ±ÈÈçSUB_CL_LOGON_ACCOUNTS µÄÎª STR_SUB_CL_LOGON_ACCOUNTS
+**            å‘½åè§„èŒƒ
+**            1. ç»“æž„ä½“çš„å‘½å:  åœ¨æ¶ˆæ¯å·çš„å‰é¢åŠ STR, æ¯”å¦‚SUB_CL_LOGON_ACCOUNTS çš„ä¸º STR_SUB_CL_LOGON_ACCOUNTS
 **
-**            2. ±äÁ¿µÄÃüÃû¹æ·¶: 1) Ö¸Õë¼Óp  2)¹éÊô±êÖ¾CPR  3)Ö÷ÏûÏ¢ºÅ±êÖ¾  4)×ÓÏûÏ¢ºÅ±êÖ¾
+**            2. å˜é‡çš„å‘½åè§„èŒƒ: 1) æŒ‡é’ˆåŠ p  2)å½’å±žæ ‡å¿—CPR  3)ä¸»æ¶ˆæ¯å·æ ‡å¿—  4)å­æ¶ˆæ¯å·æ ‡å¿—
 **
-**            3. º¯ÊýµÄÃüÃû:  On_¹éÊô±êÖ¾_Ö÷ÏûÏ¢ºÅ×ÓÏûÏ¢ºÅ
+**            3. å‡½æ•°çš„å‘½å:  On_å½’å±žæ ‡å¿—_ä¸»æ¶ˆæ¯å·å­æ¶ˆæ¯å·
 **
 **
 */
 
-#pragma region MDM_REGISTER ×¢²áÄ£¿é
-//×¢²áÃüÁî
-#define MDM_REGISTER_CPD			1									//×¢²áÄ£¿é
+#pragma region MDM_REGISTER æ³¨å†Œæ¨¡å—
+//æ³¨å†Œå‘½ä»¤
+#define MDM_REGISTER_CPD			1									//æ³¨å†Œæ¨¡å—
 
-//·þÎñ×¢²á
-#define CPR_REGISTER_SERVER  	    1									//·þÎñ×¢²á
+//æœåŠ¡æ³¨å†Œ
+#define CPR_REGISTER_SERVER  	    1									//æœåŠ¡æ³¨å†Œ
 
-//×¢²á½á¹û
-#define CPO_REGISTER_SUCESS	        101									//×¢²áÍê³É
-#define CPO_REGISTER_FAILURE	    102									//×¢²áÊ§°Ü
+//æ³¨å†Œç»“æžœ
+#define CPO_REGISTER_SUCESS	        101									//æ³¨å†Œå®Œæˆ
+#define CPO_REGISTER_FAILURE	    102									//æ³¨å†Œå¤±è´¥
 
 #pragma endregion
 
 
-#pragma region MDM_TRANSFER ÖÐ×ª·þÎñ
-#define CPD_MDM_TRANSFER			2									//ÖÐ×ª·þÎñ
+#pragma region MDM_TRANSFER ä¸­è½¬æœåŠ¡
+#define CPD_MDM_TRANSFER			2									//ä¸­è½¬æœåŠ¡
 
-#define CPR_GP_CLUB_TABLE_INFO		1									//¹ã²¥×À×ÓÐÅÏ¢
-#define CPO_PL_CLUB_TABLE_INFO		101									//¹ã²¥×À×ÓÐÅÏ¢
+#define CPR_GP_CLUB_TABLE_INFO		1									//å¹¿æ’­æ¡Œå­ä¿¡æ¯
+#define CPO_PL_CLUB_TABLE_INFO		101									//å¹¿æ’­æ¡Œå­ä¿¡æ¯
 
-#define CPR_GP_CLUB_PLAYER_INFO		2									//¹ã²¥ÓÃ»§ÐÅÏ¢
-#define CPO_PL_CLUB_PLAYER_INFO		102									//¹ã²¥ÓÃ»§ÐÅÏ¢
+#define CPR_GP_CLUB_PLAYER_INFO		2									//å¹¿æ’­ç”¨æˆ·ä¿¡æ¯
+#define CPO_PL_CLUB_PLAYER_INFO		102									//å¹¿æ’­ç”¨æˆ·ä¿¡æ¯
 
-#define CPR_LP_CLUB_TABLE_DISSOLVE	3									//½âÉ¢×À×Ó
-#define CPO_PG_CLUB_TABLE_DISSOLVE	103									//½âÉ¢×À×Ó
+#define CPR_LP_CLUB_TABLE_DISSOLVE	3									//è§£æ•£æ¡Œå­
+#define CPO_PG_CLUB_TABLE_DISSOLVE	103									//è§£æ•£æ¡Œå­
 
-#define CPR_LP_CREATE_TABLE			4									//´´½¨×À×Ó ²éÑ¯¿ÉÓÃµÄGameID
-#define CPO_PL_CREATE_TABLE			104									//´´½¨×À×Ó ²éÑ¯¿ÉÓÃµÄGameID
+#define CPR_LP_CREATE_TABLE			4									//åˆ›å»ºæ¡Œå­ æŸ¥è¯¢å¯ç”¨çš„GameID
+#define CPO_PL_CREATE_TABLE			104									//åˆ›å»ºæ¡Œå­ æŸ¥è¯¢å¯ç”¨çš„GameID
 
-#define CPR_LP_OFFLINE_PLAYERQUERY	5									//²éÑ¯¶ÏÏßÍæ¼Ò logon->correspond
-#define CPR_PG_OFFLINE_PLAYERQUERY	105									//²éÑ¯¶ÏÏßÍæ¼Ò correspond ->game
-#define CPO_GP_OFFLINE_FINISH		205									//²éÑ¯¶ÏÏßÍæ¼Ò·µ»Ø  game->correspond
-#define CPO_PL_OFFLINE_FiNISH		305									//²éÑ¯¶ÏÏßÍæ¼Ò·µ»Ø  correspond->logon
+#define CPR_LP_OFFLINE_PLAYERQUERY	5									//æŸ¥è¯¢æ–­çº¿çŽ©å®¶ logon->correspond
+#define CPR_PG_OFFLINE_PLAYERQUERY	105									//æŸ¥è¯¢æ–­çº¿çŽ©å®¶ correspond ->game
+#define CPO_GP_OFFLINE_FINISH		205									//æŸ¥è¯¢æ–­çº¿çŽ©å®¶è¿”å›ž  game->correspond
+#define CPO_PL_OFFLINE_FiNISH		305									//æŸ¥è¯¢æ–­çº¿çŽ©å®¶è¿”å›ž  correspond->logon
 #pragma endregion 
 
 #endif

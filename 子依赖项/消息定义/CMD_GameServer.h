@@ -1,187 +1,200 @@
 #ifndef CMD_GAME_SERVER_HEAD_FILE
 #define CMD_GAME_SERVER_HEAD_FILE
 
-#include "STR_CMD_GameServer.h"
 #include "CMD_Club.h"
 
 /*
-** ¼òÒªÃèÊö:  ÓÎÏ··þ Óë ÆäËû½ø³ÌµÄ ÏûÏ¢
-** ÏêÏ¸ÃèÊö:  1. ÏûÏ¢ºÅ(Ö÷ + ×Ó)     2. ½á¹¹Ìå
-** ±¸×¢ËµÃ÷:  ×ÓÏûÏ¢ºÅµÄº¬Òå: 
-**            1. µÚÒ»¸ö×Ö¶Î: ¹éÊô±êÖ¾,        SUB(½ÓÊÜµ½µÄÏûÏ¢)£¬ CMD(·¢ËÍ³öÈ¥µÄÏûÏ¢), DBR(ÏòÊý¾Ý¿âRequest)£¬DBO(Êý¾Ý¿â·µ»ØµÄÏûÏ¢)
-**            2. µÚ¶þ¸ö×Ö¶Î: ÏûÏ¢Á÷Ïò         L: logon;  G:gameserver;  C:client; CP:correspond;  W:web  S:·þÎñ¶Ë×ÓÓÎÏ· R:¿Í»§¶Ë×ÓÓÎÏ·
-**            3. µÚÈý¸ö×Ö¶Î: Ö÷ÏûÏ¢ºÅµÄ±êÖ¾   ±ÈÈçLOGON¼´ÎªµÇÂ¼Ä£¿éµÄÏûÏ¢
-**            4. Ö®ºóµÄ×Ö¶Î: ×ÓÏûÏ¢ºÅµÄº¬Òå   ±ÈÈçAccounts±íÊ¾ÕËºÅµÇÂ¼
+** ç®€è¦æè¿°:  æ¸¸æˆæœ ä¸Ž å…¶ä»–è¿›ç¨‹çš„ æ¶ˆæ¯
+** è¯¦ç»†æè¿°:  1. æ¶ˆæ¯å·(ä¸» + å­)     2. ç»“æž„ä½“
+** å¤‡æ³¨è¯´æ˜Ž:  å­æ¶ˆæ¯å·çš„å«ä¹‰: 
+**            1. ç¬¬ä¸€ä¸ªå­—æ®µ: å½’å±žæ ‡å¿—,        SUB(æŽ¥å—åˆ°çš„æ¶ˆæ¯)ï¼Œ CMD(å‘é€å‡ºåŽ»çš„æ¶ˆæ¯), DBR(å‘æ•°æ®åº“Request)ï¼ŒDBO(æ•°æ®åº“è¿”å›žçš„æ¶ˆæ¯)
+**            2. ç¬¬äºŒä¸ªå­—æ®µ: æ¶ˆæ¯æµå‘         L: logon;  G:gameserver;  C:client; CP:correspond;  W:web  S:æœåŠ¡ç«¯å­æ¸¸æˆ R:å®¢æˆ·ç«¯å­æ¸¸æˆ
+**            3. ç¬¬ä¸‰ä¸ªå­—æ®µ: ä¸»æ¶ˆæ¯å·çš„æ ‡å¿—   æ¯”å¦‚LOGONå³ä¸ºç™»å½•æ¨¡å—çš„æ¶ˆæ¯
+**            4. ä¹‹åŽçš„å­—æ®µ: å­æ¶ˆæ¯å·çš„å«ä¹‰   æ¯”å¦‚Accountsè¡¨ç¤ºè´¦å·ç™»å½•
 **           
-**            ÃüÃû¹æ·¶
-**            1. ½á¹¹ÌåµÄÃüÃû:  ÔÚÏûÏ¢ºÅµÄÇ°Ãæ¼ÓSTR, ±ÈÈçSUB_CG_LOGON_ACCOUNTS µÄÎª STR_SUB_CG_LOGON_ACCOUNTS
+**            å‘½åè§„èŒƒ
+**            1. ç»“æž„ä½“çš„å‘½å:  åœ¨æ¶ˆæ¯å·çš„å‰é¢åŠ STR, æ¯”å¦‚SUB_CG_LOGON_ACCOUNTS çš„ä¸º STR_SUB_CG_LOGON_ACCOUNTS
 **
-**            2. DBO, DBRÏûÏ¢ºÅµÄÃüÃûÎª:  ½«SUBÌæ»»ÎªDBR»òDBO¼´¿É
+**            2. DBO, DBRæ¶ˆæ¯å·çš„å‘½åä¸º:  å°†SUBæ›¿æ¢ä¸ºDBRæˆ–DBOå³å¯
 **
-**            3. ±äÁ¿µÄÃüÃû¹æ·¶: 1) Ö¸Õë¼Óp  2)¹éÊô±êÖ¾SUB  3)Ö÷ÏûÏ¢ºÅ±êÖ¾  4)×ÓÏûÏ¢ºÅ±êÖ¾
+**            3. å˜é‡çš„å‘½åè§„èŒƒ: 1) æŒ‡é’ˆåŠ p  2)å½’å±žæ ‡å¿—SUB  3)ä¸»æ¶ˆæ¯å·æ ‡å¿—  4)å­æ¶ˆæ¯å·æ ‡å¿—
 **
-**            4. º¯ÊýµÄÃüÃû:  On_¹éÊô±êÖ¾_Ö÷ÏûÏ¢ºÅ×ÓÏûÏ¢ºÅ
+**            4. å‡½æ•°çš„å‘½å:  On_å½’å±žæ ‡å¿—_ä¸»æ¶ˆæ¯å·å­æ¶ˆæ¯å·
 **
 **
 */
 
-#pragma region MDM_LOGON µÇÂ¼Ä£¿é
+#pragma region MDM_LOGON ç™»å½•æ¨¡å—
 /* *********************************************************************************
-**						MAIN:1   MDM_LOGON    µÇÂ¼Ä£¿é
+**						MAIN:1   MDM_LOGON    ç™»å½•æ¨¡å—
 ** *********************************************************************************/
-#define MDM_GR_LOGON				1										//µÇÂ¼ÐÅÏ¢
+#define MDM_GR_LOGON				1										//ç™»å½•ä¿¡æ¯
 
-#define CMD_GC_COMMON_ERROR		    0									    //Í¨ÓÃ´íÎó 
-//µÇÂ¼
-#define SUB_CG_LOGON_USERID			1										//ID µÇÂ¼
-#define CMD_GC_LOGON_USERID			101										//ID µÇÂ¼·µ»Ø
+#define CMD_GC_COMMON_ERROR		    0									    //é€šç”¨é”™è¯¯ 
+//ç™»å½•
+#define SUB_CG_LOGON_USERID			1										//ID ç™»å½•
+#define CMD_GC_LOGON_USERID			101										//ID ç™»å½•è¿”å›ž
 
 #pragma endregion
 
-#pragma region MDM_USER ÓÃ»§ÃüÁî
+#pragma region MDM_USER ç”¨æˆ·å‘½ä»¤
 /* *********************************************************************************
-**							MAIN:2   MDM_USER    ÓÃ»§ÃüÁî
+**							MAIN:2   MDM_USER    ç”¨æˆ·å‘½ä»¤
 ** *********************************************************************************/
-#define MDM_USER						2									//ÓÃ»§ÐÅÏ¢
+#define MDM_USER						2									//ç”¨æˆ·ä¿¡æ¯
 
 //
-#define CMD_GC_USER_MODIFY_TREASURE		1									//ÐÞ¸ÄÓÃ»§²Æ¸»ÐÅÏ¢·µ»Ø
-#define SUB_GR_REQUEST_FAILURE			4									//ÇëÇóÊ§°Ü		´ó²¿·ÖÊ§°ÜÏûÏ¢¶¼·µ»ØÕâ¸öÏûÏ¢
+#define CMD_GC_USER_MODIFY_TREASURE		1									//ä¿®æ”¹ç”¨æˆ·è´¢å¯Œä¿¡æ¯è¿”å›ž
+#define SUB_GR_REQUEST_FAILURE			4									//è¯·æ±‚å¤±è´¥		å¤§éƒ¨åˆ†å¤±è´¥æ¶ˆæ¯éƒ½è¿”å›žè¿™ä¸ªæ¶ˆæ¯
 
 
-//Íæ¼Ò¶¯×÷	
-#define SUB_CG_USER_SITDOWN				10									//*×øÏÂÇëÇó£¨ÓÃ»§¼ÓÈë/´´½¨·¿¼ä³É¹¦ºó£¬·þÎñÆ÷Ö÷¶¯ÈÃÍæ¼Ò×øÏÂ£¬²»ÐèÒªÇëÇó£©
-#define SUB_CG_USER_READY				11									//ÓÃ»§×¼±¸
-#define SUB_CG_USER_STANDUP				12									//#ÆðÁ¢ÇëÇó		TODO ·Ç·¿Ö÷½âÉ¢·¿¼ä£¬·¢ËÍµÄÊÇ¸ÃÏûÏ¢£¬·ÅÔÚ15µÄ´¦ÀíÁ÷³ÌÖÐ
-#define SUB_GR_USER_CHAIR_REQ			13                                  //*ÇëÇó¸ü»»Î»ÖÃ
+//çŽ©å®¶åŠ¨ä½œ	
+#define SUB_CG_USER_SITDOWN				10									//*åä¸‹è¯·æ±‚ï¼ˆç”¨æˆ·åŠ å…¥/åˆ›å»ºæˆ¿é—´æˆåŠŸåŽï¼ŒæœåŠ¡å™¨ä¸»åŠ¨è®©çŽ©å®¶åä¸‹ï¼Œä¸éœ€è¦è¯·æ±‚ï¼‰
+#define SUB_CG_USER_READY				11									//ç”¨æˆ·å‡†å¤‡
+#define CMD_GC_USER_READY				111									//å‡†å¤‡è¿”å›ž
 
-#define SUB_CG_USER_INVITE_USER			14									//*ÑûÇëÓÃ»§½øÈë×À×Ó
-#define CMD_GC_USER_INVITE_USER			15									//*ÑûÇëÓÃ»§½øÈë×À×Ó·µ»Ø
-#define SUB_CG_USER_KICK_USER			16                                   //*Ìß³öÓÃ»§		TODO ÈÃÍæ¼ÒÆðÁ¢£¬·µ»ØÏµÍ³ÏûÏ¢£¬Ìß³öÓÃ»§
+#define SUB_CG_USER_STANDUP				12									//#èµ·ç«‹è¯·æ±‚		TODO éžæˆ¿ä¸»è§£æ•£æˆ¿é—´ï¼Œå‘é€çš„æ˜¯è¯¥æ¶ˆæ¯ï¼Œæ”¾åœ¨15çš„å¤„ç†æµç¨‹ä¸­
+#define SUB_GR_USER_CHAIR_REQ			13                                  //*è¯·æ±‚æ›´æ¢ä½ç½®
 
-#pragma region ´´½¨| ¼ÓÈë ·¿¼ä
-//·¿¿¨³¡, ·¿¿¨½ð±Ò³¡
-#define SUB_CG_USER_CREATE_ROOM			17									//ÉêÇë´´½¨·¿¼ä
-#define CMD_GC_USER_GET_ROOM_RULE		117									//·¿¼ä¹æÔòÑ¡Ôñ, ÉêÇë´´½¨·¿¼ä³É¹¦ºó·¢ËÍ
-#define SUB_CG_USER_SET_ROOM_RULE		217									//·¿¼ä¹æÔòÉèÖÃ ·µ»Ø
-#define CMD_GC_USER_ENTER_SUBGAME_ROOM	317									//½øÈë×ÓÓÎÏ·
+#pragma region åˆ›å»º| åŠ å…¥ æˆ¿é—´
+//æˆ¿å¡åœº, æˆ¿å¡é‡‘å¸åœº
+#define SUB_CG_USER_CREATE_ROOM			17									//ç”³è¯·åˆ›å»ºæˆ¿é—´
+#define CMD_GC_USER_GET_ROOM_RULE		117									//æˆ¿é—´è§„åˆ™é€‰æ‹©, ç”³è¯·åˆ›å»ºæˆ¿é—´æˆåŠŸåŽå‘é€
+#define SUB_CG_USER_SET_ROOM_RULE		217									//æˆ¿é—´è§„åˆ™è®¾ç½® è¿”å›ž
+#define CMD_GC_USER_ENTER_SUBGAME_ROOM	317									//è¿›å…¥å­æ¸¸æˆ
 
-#define SUB_CG_USER_JOIN_FK_ROOM		18									//¼ÓÈë×À×Ó ÐèÒªÃÜÂë
+#define SUB_CG_USER_JOIN_FK_ROOM		18									//åŠ å…¥æ¡Œå­ éœ€è¦å¯†ç 
 
-//½ð±Ò³¡
-#define SUB_CG_USER_JOIN_GOLD_HALL_ROOM	20									//¼ÓÈë½ð±Ò´óÌü ½ð±Ò³¡×À×Ó
+//é‡‘å¸åœº
+#define SUB_CG_USER_JOIN_GOLD_HALL_ROOM	20									//åŠ å…¥é‡‘å¸å¤§åŽ… é‡‘å¸åœºæ¡Œå­
+#define SUB_CG_USER_CHANGE_GOLD_TABLE	21									//é‡‘å¸åœºæ¢æ¡Œ
 #pragma endregion
 
-#define SUB_GR_GET_TABLELIST			22									//»ñÈ¡·¿¼äÁÐ±í		TODO Ö¸µÄÊÇ¾º¼¼³¡µÄÒÑ¿ª·¿¼äÁÐ±í
-#define SUB_GR_GET_TABLELIST_RESULT		122									//·¿¼äÁÐ±í·µ»Ø		
+#define SUB_GR_GET_TABLELIST			22									//èŽ·å–æˆ¿é—´åˆ—è¡¨		TODO æŒ‡çš„æ˜¯ç«žæŠ€åœºçš„å·²å¼€æˆ¿é—´åˆ—è¡¨
+#define SUB_GR_GET_TABLELIST_RESULT		122									//æˆ¿é—´åˆ—è¡¨è¿”å›ž		
 
-//½âÉ¢·¿¼ä
-#define SUB_RG_USER_ASK_DISMISS			24									//·¢ÆðÉêÇë½âÉ¢·¿¼ä
-#define CMD_GR_USER_ASK_DISMISS_RESULT	124									//·¢ÆðÉêÇë½âÉ¢·¿¼ä ½á¹û
-#define	SUB_RG_USER_VOTE_DISMISS		224									//±í¾ö½âÉ¢·¿¼ä
-#define CMD_GR_USER_VOTE_DISMISS		324									//¹ã²¥·¿¼äÉêÇë½âÉ¢
-#define	CMD_GR_USER_DISMISS_RESULT		424									//¹ã²¥±í¾ö½âÉ¢·¿¼ä½á¹û
+//è§£æ•£æˆ¿é—´
+#define SUB_RG_USER_ASK_DISMISS			24									//å‘èµ·ç”³è¯·è§£æ•£æˆ¿é—´
+#define CMD_GR_USER_ASK_DISMISS_RESULT	124									//å‘èµ·ç”³è¯·è§£æ•£æˆ¿é—´ ç»“æžœ
+#define	SUB_RG_USER_VOTE_DISMISS		224									//è¡¨å†³è§£æ•£æˆ¿é—´
+#define CMD_GR_USER_VOTE_DISMISS		324									//å¹¿æ’­æˆ¿é—´ç”³è¯·è§£æ•£
+#define	CMD_GR_USER_DISMISS_RESULT		424									//å¹¿æ’­è¡¨å†³è§£æ•£æˆ¿é—´ç»“æžœ
 
-#define SUB_CG_USER_GOLD_INFO		    25									//ÇëÇó½ð±Ò´óÌüÐÅÏ¢
-#define CMD_GC_USER_GOLD_INFO		    125									//ÇëÇó½ð±Ò´óÌüÐÅÏ¢ ·µ»Ø
-#define CMD_GC_USER_GOLD_INFO_FINISH	225									//ÇëÇó½ð±Ò´óÌüÐÅÏ¢ ½áÊø
+#define SUB_CG_USER_GOLD_INFO		    25									//è¯·æ±‚é‡‘å¸å¤§åŽ…ä¿¡æ¯
+#define CMD_GC_USER_GOLD_INFO		    125									//è¯·æ±‚é‡‘å¸å¤§åŽ…ä¿¡æ¯ è¿”å›ž
+#define CMD_GC_USER_GOLD_INFO_FINISH	225									//è¯·æ±‚é‡‘å¸å¤§åŽ…ä¿¡æ¯ ç»“æŸ
+
+#define SUB_CG_USER_CLOSE_SOCKET		26									//å®¢æˆ·ç«¯è·³è½¬åˆ°å¤§åŽ…åœºæ™¯ æœåŠ¡å™¨ä¸»åŠ¨å…³é—­socket
 
 #pragma endregion
 
-#pragma region  MDM_GR_MATCH ±ÈÈüÃüÁî
+#pragma region  MDM_GR_MATCH æ¯”èµ›å‘½ä»¤
 /* *********************************************************************************
-**						MAIN:7   MDM_GR_MATCH    ±ÈÈüÃüÁî
+**						MAIN:7   MDM_GR_MATCH    æ¯”èµ›å‘½ä»¤
 ** *********************************************************************************/
-#define MDM_GR_MATCH				7									//±ÈÈüÃüÁî
+#define MDM_GR_MATCH				7									//æ¯”èµ›å‘½ä»¤
 
-#define SUB_CG_MATCH_INFO			1									//ÇëÇó±ÈÈü³¡ÐÅÏ¢
-#define CMD_GC_MATCH_INFO			101									//ÇëÇó±ÈÈü³¡ÐÅÏ¢  ·µ»Ø
+#define SUB_CG_MATCH_INFO			1									//è¯·æ±‚æ¯”èµ›åœºä¿¡æ¯
+#define CMD_GC_MATCH_INFO			101									//è¯·æ±‚æ¯”èµ›åœºä¿¡æ¯  è¿”å›ž
 
-#define SUB_CG_MATCH_APPLY			2									//±ÈÈü³¡±¨Ãû
-#define CMD_GC_MATCH_APPLY			102									//±ÈÈü³¡±¨Ãû	·µ»Ø
-#define SUB_CG_MATCH_UNAPPLY		3									//Íæ¼ÒÈ¡Ïû±¨Ãû
-#define CMD_GC_MATCH_UNAPPLY		103									//Íæ¼ÒÈ¡Ïû±¨Ãû  ·µ»Ø
+#define SUB_CG_MATCH_APPLY			2									//æ¯”èµ›åœºæŠ¥å
+#define CMD_GC_MATCH_APPLY			102									//æ¯”èµ›åœºæŠ¥å	è¿”å›ž
+#define SUB_CG_MATCH_UNAPPLY		3									//çŽ©å®¶å–æ¶ˆæŠ¥å
+#define CMD_GC_MATCH_UNAPPLY		103									//çŽ©å®¶å–æ¶ˆæŠ¥å  è¿”å›ž
 
-#define CMD_GC_MATCH_START			4									//±ÈÈü¿ªÊ¼
-#define CMD_GC_MATCH_CANCEL			5									//±ÈÈüÈ¡Ïû
+#define CMD_GC_MATCH_START			4									//æ¯”èµ›å¼€å§‹
+#define CMD_GC_MATCH_CANCEL			5									//æ¯”èµ›å–æ¶ˆ
 
-#define SUB_CG_MATCH_QUERY_PLAYER   6									//ÇëÇóÐÅÏ¢ ÈËÊýÊ±¼ä
-#define CMD_GC_MATCH_QUERY_PLAYER   106									//ÇëÇóÐÅÏ¢ ÈËÊýÊ±¼ä  ·µ»Ø
+#define SUB_CG_MATCH_QUERY_PLAYER   6									//è¯·æ±‚ä¿¡æ¯ äººæ•°æ—¶é—´
+#define CMD_GC_MATCH_QUERY_PLAYER   106									//è¯·æ±‚ä¿¡æ¯ äººæ•°æ—¶é—´  è¿”å›ž
 
-#define SUB_CG_MATCH_RANKING		7									//¸üÐÂÅÅÃû  ËùÓÐÈË
-#define CMD_GC_MATCH_RANKING		107									//¸üÐÂÅÅÃû  ËùÓÐÈË  ·µ»Ø
+#define SUB_CG_MATCH_RANKING		7									//æ›´æ–°æŽ’å  æ‰€æœ‰äºº
+#define CMD_GC_MATCH_RANKING		107									//æ›´æ–°æŽ’å  æ‰€æœ‰äºº  è¿”å›ž
 
-#define SUB_CG_MATCH_RANKING_MY		8									//¸üÐÂÅÅÃû  ×Ô¼º
-#define CMD_GC_MATCH_RANKING_MY		108									//¸üÐÂÅÅÃû  ×Ô¼º  ·µ»Ø
+#define SUB_CG_MATCH_RANKING_MY		8									//æ›´æ–°æŽ’å  è‡ªå·±
+#define CMD_GC_MATCH_RANKING_MY		108									//æ›´æ–°æŽ’å  è‡ªå·±  è¿”å›ž
 
-#define CMD_GC_MATCH_RESULT_JINJI	9									//±ÈÈü½×¶Î½á¹û Íæ¼Ò½ú¼¶
-#define CMD_GC_MATCH_RESULT_TAOTAI	10									//±ÈÈü½×¶Î½á¹û Íæ¼ÒÌÔÌ­
+#define CMD_GC_MATCH_RESULT_JINJI	9									//æ¯”èµ›é˜¶æ®µç»“æžœ çŽ©å®¶æ™‹çº§
+#define CMD_GC_MATCH_RESULT_TAOTAI	10									//æ¯”èµ›é˜¶æ®µç»“æžœ çŽ©å®¶æ·˜æ±°
 
-#define CMD_GC_MATCH_JUESAI_RECODE	11									//¾öÈü
-#define CMD_GC_MATCH_WAIT_COUNT		12									//µÈ´ý×ÀÊýÏûÏ¢
+#define CMD_GC_MATCH_JUESAI_RECODE	11									//å†³èµ›
+#define CMD_GC_MATCH_WAIT_COUNT		12									//ç­‰å¾…æ¡Œæ•°æ¶ˆæ¯
+
+#define CMD_GC_MATCH_APPLY_OFFLINE	13									//æŠ¥åé˜¶æ®µæ–­çº¿é‡è¿ž
 
 #pragma endregion
 
-#pragma region MDM_G_FRAME ¿ò¼ÜÃüÁî
+#pragma region MDM_G_FRAME æ¡†æž¶å‘½ä»¤
 /* *********************************************************************************
-**							MAIN:100   MDM_G_FRAME    ¿ò¼ÜÃüÁî
+**							MAIN:100   MDM_G_FRAME    æ¡†æž¶å‘½ä»¤
 ** *********************************************************************************/
-#define MDM_G_FRAME					100									//¿ò¼ÜÃüÁî
+#define MDM_G_FRAME					100									//æ¡†æž¶å‘½ä»¤
 
-//·¿¼äÐÅÏ¢
-#define SUB_RG_ROOM_RULE					1								//ÇëÇó·¿¼ä¹æÔò
-#define CMD_GR_ROOM_RULE					101								//·¿¼ä¹æÔò
-#define SUB_RG_PLAYER_INFO					201								//ÇëÇóÓÃ»§ÐÅÏ¢
-#define CMD_GR_USER_STATUS					301								//ÓÃ»§¶¯×÷½á¹û
-#define CMD_GR_USER_STATUS_FINISH			401								//ÇëÇóÓÃ»§ÐÅÏ¢Íê±Ï
-#define SUB_RG_FRAME_GAME_OPTION			501								//ÇëÇóÓÎÏ·³¡¾°
-#define CMD_GR_FRAME_GAME_OPTION			601								//ÇëÇóÓÃ»§³¡¾°·µ»Ø
+//æˆ¿é—´ä¿¡æ¯
+#define SUB_RG_ROOM_RULE					1								//è¯·æ±‚æˆ¿é—´è§„åˆ™
+#define CMD_GR_ROOM_RULE					101								//æˆ¿é—´è§„åˆ™
+#define SUB_RG_PLAYER_INFO					201								//è¯·æ±‚ç”¨æˆ·ä¿¡æ¯
+#define CMD_GR_USER_STATUS					301								//ç”¨æˆ·åŠ¨ä½œç»“æžœ
+#define CMD_GR_USER_STATUS_FINISH			401								//è¯·æ±‚ç”¨æˆ·ä¿¡æ¯å®Œæ¯•
+#define SUB_RG_FRAME_GAME_OPTION			501								//è¯·æ±‚æ¸¸æˆåœºæ™¯
+#define CMD_GR_FRAME_GAME_OPTION			601								//è¯·æ±‚ç”¨æˆ·åœºæ™¯è¿”å›ž
 
-#define CMD_GR_FRAME_GAME_STATUS			102								//ÓÎÏ·×´Ì¬
-#define CMD_GR_FRAME_GAME_DISSMISS			701							    //½âÉ¢Ãæ°å×´Ì¬
+#define CMD_GR_FRAME_GAME_STATUS			102								//æ¸¸æˆçŠ¶æ€
+#define CMD_GR_FRAME_GAME_DISSMISS			701							    //è§£æ•£é¢æ¿çŠ¶æ€
 
-//GPS²â¾à
-#define SUB_CG_COM_CHECK_USER_GPS			5								//ÇëÇóÐ£ÑéÓÃ»§GPSÎ»ÖÃÐÅÏ¢
-#define CMD_GC_COM_CHECK_USER_GPS			105								//Ð£ÑéÓÃ»§GPSÎ»ÖÃÐÅÏ¢·µ»Ø
+//å¤§å±€ç»“æŸ
+#define CMD_GR_TABLE_DJ_END					2								//å¤§å±€ç»“æŸ
 
-//IPÐ£Ñé
-#define SUB_CG_COM_CHECK_USER_IP			8								//ÇëÇóÐ£ÑéÓÃ»§IPÐÅÏ¢
-#define CMD_GC_COM_CHECK_USER_IP			108								//Ð£ÑéÓÃ»§IPÐÅÏ¢·µ»Ø
+//æ‰˜ç®¡
+#define SUB_RG_TUOGUAN						3								//çŽ©å®¶æ‰˜ç®¡
+#define CMD_GR_TUOGUAN						103								//æ‰˜ç®¡	   è¿”å›ž
+#define SUB_RG_CANCEL_TUOGUAN				203								//å–æ¶ˆæ‰˜ç®¡
+#define CMD_GR_CANCEL_TUOGUAN				303								//å–æ¶ˆæ‰˜ç®¡ è¿”å›ž
 
-//ÓÃ»§ÁÄÌì
-#define SUB_RG_FRAME_CHAT					7								//ÓÃ»§ÁÄÌì
-#define CMD_GR_FRAME_CHAT					107								//ÓÃ»§ÁÄÌì
+#define CMD_GR_TABLE_GAME_ACT				4								//æ¸¸æˆå¼€å§‹,å°å±€ç»“æŸ,å¤§å±€ç»“æŸ é¢å¤–é€šçŸ¥frame
 
+//GPSæµ‹è·
+#define SUB_CG_COM_CHECK_USER_GPS			5								//è¯·æ±‚æ ¡éªŒç”¨æˆ·GPSä½ç½®ä¿¡æ¯
+#define CMD_GC_COM_CHECK_USER_GPS			105								//æ ¡éªŒç”¨æˆ·GPSä½ç½®ä¿¡æ¯è¿”å›ž
 
-//µÀ¾ßÏûºÄ
-#define SUB_CG_EFFECT						9								//µÀ¾ßÏûºÄ -- ×ÓÓÎÏ·ÖÐÈÓ¼¦µ°, ÏÊ»¨, Õ¨µ¯
-#define CMD_GC_EFFECT_RESULT				109								//²Ù×÷Ê§°Ü
-#define CMD_GC_EFFECT_BRODCAST				209								//²Ù×÷¹ã²¥
+//IPæ ¡éªŒ
+#define SUB_CG_COM_CHECK_USER_IP			8								//è¯·æ±‚æ ¡éªŒç”¨æˆ·IPä¿¡æ¯
+#define CMD_GC_COM_CHECK_USER_IP			108								//æ ¡éªŒç”¨æˆ·IPä¿¡æ¯è¿”å›ž
 
-//ÏÂÃæclientÃ»ÓÐ
-#define SUB_GF_LOOKON_CONFIG			803									//ÅÔ¹ÛÅäÖÃ
-
-#define SUB_GF_XUFEI					805									//*Ðø·ÑÏûÏ¢
-
-#define SUB_GF_USER_EXPRESSION			811									//*ÓÃ»§±íÇé
-#define SUB_GF_SOUND					812									//*·¢ËÍÓïÒô
-
-#define CMD_GR_FRAME_TREASURE_NO		105									//*ÓÃ»§²Æ¸»²»×ãÒÔ¼ÌÐøÏÂ¾ÖÓÎÏ·Ê±,·¢ËÍ¸øclient 
+//ç”¨æˆ·èŠå¤©
+#define SUB_RG_FRAME_CHAT					7								//ç”¨æˆ·èŠå¤©
+#define CMD_GR_FRAME_CHAT					107								//ç”¨æˆ·èŠå¤©
 
 
-//ÓÎÏ·ÐÅÏ¢
-#define CMD_GF_LOOKON_STATUS			803									//*ÅÔ¹Û×´Ì¬
+//é“å…·æ¶ˆè€—
+#define SUB_CG_EFFECT						9								//é“å…·æ¶ˆè€— -- å­æ¸¸æˆä¸­æ‰”é¸¡è›‹, é²œèŠ±, ç‚¸å¼¹
+#define CMD_GC_EFFECT_RESULT				109								//æ“ä½œå¤±è´¥
+#define CMD_GC_EFFECT_BRODCAST				209								//æ“ä½œå¹¿æ’­
 
-//ÏµÍ³ÏûÏ¢
-#define CMD_GF_SYSTEM_MESSAGE			806									//ÏµÍ³ÏûÏ¢
+//ä¸‹é¢clientæ²¡æœ‰
+#define SUB_GF_LOOKON_CONFIG			803									//æ—è§‚é…ç½®
+
+#define SUB_GF_XUFEI					805									//*ç»­è´¹æ¶ˆæ¯
+
+#define SUB_GF_USER_EXPRESSION			811									//*ç”¨æˆ·è¡¨æƒ…
+#define SUB_GF_SOUND					812									//*å‘é€è¯­éŸ³
+
+#define CMD_GR_FRAME_TREASURE_NO		105									//*ç”¨æˆ·è´¢å¯Œä¸è¶³ä»¥ç»§ç»­ä¸‹å±€æ¸¸æˆæ—¶,å‘é€ç»™client 
+
+
+//æ¸¸æˆä¿¡æ¯
+#define CMD_GF_LOOKON_STATUS			803									//*æ—è§‚çŠ¶æ€
+
+//ç³»ç»Ÿæ¶ˆæ¯
+#define CMD_GF_SYSTEM_MESSAGE			806									//ç³»ç»Ÿæ¶ˆæ¯
 
 #pragma endregion
 
-#pragma region MDM_GF_GAME ×ÓÓÎÏ·ÃüÁî
+#pragma region MDM_GF_GAME å­æ¸¸æˆå‘½ä»¤
 /* *********************************************************************************
-**							MAIN:200   MDM_GF_GAME    ×ÓÓÎÏ·ÃüÁî
+**							MAIN:200   MDM_GF_GAME    å­æ¸¸æˆå‘½ä»¤
 ** *********************************************************************************/
-#define MDM_GF_GAME					200									//ÓÎÏ·ÃüÁî
+#define MDM_GF_GAME					200									//æ¸¸æˆå‘½ä»¤
 
 #pragma endregion
 

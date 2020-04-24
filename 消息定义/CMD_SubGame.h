@@ -1,4 +1,4 @@
-﻿#ifndef CMD_OX_HEAD_FILE
+#ifndef CMD_OX_HEAD_FILE
 #define CMD_OX_HEAD_FILE
 #pragma pack(1)		//1字节对齐
 #include <windows.h>

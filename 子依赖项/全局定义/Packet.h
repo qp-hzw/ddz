@@ -1,4 +1,4 @@
-﻿#ifndef PACKET_HEAD_FILE
+#ifndef PACKET_HEAD_FILE
 #define PACKET_HEAD_FILE
 
 //内核命令

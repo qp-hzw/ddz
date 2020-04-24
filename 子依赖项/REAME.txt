@@ -4,23 +4,23 @@
 Platform依赖项 created by 自动化脚本
 
 
-commit 87de082ecd929f39b51eb74be8b1db9acc6f514b Author: wcq <377133665@qq.com> Date: Mon Feb 24 19:57:30 2020 +0800 工程配置修改
+commit b23d6672068bd453c6a98d2a5e126267a9f51d99 Author: wcq <377133665@qq.com> Date: Thu Apr 23 17:21:14 2020 +0800 读取配置文件的时候 修改为utf-8 编码格式
 
 author:  
 WangChengQing    
 
 date:  
-Mon Feb 24 20:06:15 CST 2020
+Thu Apr 23 17:38:48 CST 2020
 
 
 --------------------------------------
 SubGame依赖项 自动化脚本
 
 
-commit 695c71b199f30d8ad2e7ca50c7ffb74c67d37c21 Author: wcq <377133665@qq.com> Date: Mon Feb 24 20:07:52 2020 +0800 配置文件修改
+commit f89f6b60df19de7cfe3c7dad727672b8fecbeed4 Author: wcq <377133665@qq.com> Date: Fri Apr 24 21:38:06 2020 +0800 删除接口中 无用代码
 
 author:  
 WangChengQing    
 
 date:  
-Mon Feb 24 20:18:31 CST 2020
+Fri Apr 24 21:50:23 CST 2020

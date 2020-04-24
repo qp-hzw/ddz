@@ -1,11 +1,11 @@
 #ifndef CARD_TYPE
 #define CARD_TYPE
 
-#define CARD_TYPE_NOTHING					0		//Í¨ÓÃ -- ÎŞÌØÊâÅÆ
+#define CARD_TYPE_NOTHING					0		//é€šç”¨ -- æ— ç‰¹æ®Šç‰Œ
 
 /////////////////////////////////////////////////////////////////////////////////////////////
-//Å£Å£ÀàĞÍ
-//ÆÕÍ¨Å£			Å£1-Å£Å£
+//ç‰›ç‰›ç±»å‹
+//æ™®é€šç‰›			ç‰›1-ç‰›ç‰›
 #define	CARD_TYPE_OX1						1
 #define	CARD_TYPE_OX2						2
 #define	CARD_TYPE_OX3						3
@@ -17,19 +17,19 @@
 #define	CARD_TYPE_OX9						9
 #define	CARD_TYPE_OX10						10
 
-//ÌØÊâÅ£
-#define	CARD_TYPE_SHUNZI_OX					11			//Ë³×ÓÅ£
-#define	CARD_TYPE_TONGHUA_OX				12			//Í¬»¨Å£
-#define	CARD_TYPE_HULU_OX					13			//ºùÂ«Å£
-#define	CARD_TYPE_WUXIAO_OX					14			//ÎåĞ¡Å£
-#define	CARD_TYPE_WUHUA_OX					15			//Îå»¨Å£
-#define	CARD_TYPE_ZHADAN_OX					16			//Õ¨µ¯Å£
-#define	CARD_TYPE_TONGHUASHUN_OX			17			//Í¬»¨Ë³Å£
+//ç‰¹æ®Šç‰›
+#define	CARD_TYPE_SHUNZI_OX					11			//é¡ºå­ç‰›
+#define	CARD_TYPE_TONGHUA_OX				12			//åŒèŠ±ç‰›
+#define	CARD_TYPE_HULU_OX					13			//è‘«èŠ¦ç‰›
+#define	CARD_TYPE_WUXIAO_OX					14			//äº”å°ç‰›
+#define	CARD_TYPE_WUHUA_OX					15			//äº”èŠ±ç‰›
+#define	CARD_TYPE_ZHADAN_OX					16			//ç‚¸å¼¹ç‰›
+#define	CARD_TYPE_TONGHUASHUN_OX			17			//åŒèŠ±é¡ºç‰›
 
 
 /////////////////////////////////////////////////////////////////////////////////////////////
-//¶şÕÅÅÆ
-//ÆÕÍ¨ÅÆĞÍ
+//äºŒå¼ ç‰Œ
+//æ™®é€šç‰Œå‹
 #define	CARD_TYPE_TC1						1
 #define	CARD_TYPE_TC2						2
 #define	CARD_TYPE_TC3						3
@@ -40,7 +40,7 @@
 #define	CARD_TYPE_TC8						8
 #define	CARD_TYPE_TC9						9
 #define	CARD_TYPE_TC10						10
-//±ª×Ó
+//è±¹å­
 #define	CARD_TYPE_TC11						11
 #define	CARD_TYPE_TC22						12
 #define	CARD_TYPE_TC33						13
@@ -50,15 +50,15 @@
 #define	CARD_TYPE_TC77						17
 #define	CARD_TYPE_TC88						18
 #define	CARD_TYPE_TC99						19
-#define	CARD_TYPE_TCQQ						22 //·½±ã¼ÆËã Q=12
+#define	CARD_TYPE_TCQQ						22 //æ–¹ä¾¿è®¡ç®— Q=12
 
 /////////////////////////////////////////////////////////////////////////////////////////////
-//µöĞ·
-//ÆÕÍ¨ÅÆĞÍ
-#define	CARD_TYPE_3_0						0	//0µã
-#define	CARD_TYPE_3_1						1	//1µã
-#define	CARD_TYPE_3_2						2	//2µã
-#define	CARD_TYPE_3_3						3	//3µã
+//é’“èŸ¹
+//æ™®é€šç‰Œå‹
+#define	CARD_TYPE_3_0						0	//0ç‚¹
+#define	CARD_TYPE_3_1						1	//1ç‚¹
+#define	CARD_TYPE_3_2						2	//2ç‚¹
+#define	CARD_TYPE_3_3						3	//3ç‚¹
 #define	CARD_TYPE_3_4						4	//4
 #define	CARD_TYPE_3_5						5	//5
 #define	CARD_TYPE_3_6						6	//6
@@ -67,19 +67,19 @@
 #define	CARD_TYPE_3_9						9	//9
 
 
-//ÌØÊâÅÆĞÍ
-#define	CARD_TYPE_3_10						10	//µØ¾Å
-#define	CARD_TYPE_3_11						11	//Ìì¾Å
-#define	CARD_TYPE_3_12						12	//µØ¸É
-#define	CARD_TYPE_3_13						13	//Ìì¸É
-#define	CARD_TYPE_3_14						14	//Ìì¾ÅÍõ
-#define	CARD_TYPE_3_15						15	//±ª×Ó Ğ¡
-#define	CARD_TYPE_3_16						16	//±ª×Ó ´ó
-#define	CARD_TYPE_3_17						17	//³¤Èı±ª
-#define	CARD_TYPE_3_18						18	//ºÍÅÆ±ª
-#define	CARD_TYPE_3_19						19	//ÒøÅÆ±ª
-#define	CARD_TYPE_3_20						20	//µØµØ±ª
-#define	CARD_TYPE_3_21						21	//ÌìÌì±ª
-#define	CARD_TYPE_3_22						22	//ÖÁ×ğ
+//ç‰¹æ®Šç‰Œå‹
+#define	CARD_TYPE_3_10						10	//åœ°ä¹
+#define	CARD_TYPE_3_11						11	//å¤©ä¹
+#define	CARD_TYPE_3_12						12	//åœ°å¹²
+#define	CARD_TYPE_3_13						13	//å¤©å¹²
+#define	CARD_TYPE_3_14						14	//å¤©ä¹ç‹
+#define	CARD_TYPE_3_15						15	//è±¹å­ å°
+#define	CARD_TYPE_3_16						16	//è±¹å­ å¤§
+#define	CARD_TYPE_3_17						17	//é•¿ä¸‰è±¹
+#define	CARD_TYPE_3_18						18	//å’Œç‰Œè±¹
+#define	CARD_TYPE_3_19						19	//é“¶ç‰Œè±¹
+#define	CARD_TYPE_3_20						20	//åœ°åœ°è±¹
+#define	CARD_TYPE_3_21						21	//å¤©å¤©è±¹
+#define	CARD_TYPE_3_22						22	//è‡³å°Š
 
 #endif
