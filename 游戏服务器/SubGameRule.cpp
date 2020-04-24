@@ -3,7 +3,7 @@
 #include "GameConfig.h"
 #include <time.h>
 
-//·ÖÎö¿¨ÅÆÀàĞÍ
+//åˆ†æå¡ç‰Œç±»å‹
 int __stdcall CSubGameRule::AnsysCardsType( )
 {
 	int result = 0;
@@ -11,54 +11,54 @@ int __stdcall CSubGameRule::AnsysCardsType( )
 	return result;
 }
 
-//½áËãµÃ·ÖºÍÊäÓ®¾ÖÊı
+//ç»“ç®—å¾—åˆ†å’Œè¾“èµ¢å±€æ•°
 int __stdcall CSubGameRule::Settle()
 {
 	int result = 0;
 
 	switch (m_room_config.kind_id)
 	{
-		case KIND_ID:	//Éı¼¶
+		case KIND_ID:	//å‡çº§
 		{
 			SettleFightLandLord();
 			break;
 		}
 		default:
 		{
-			//CLog::Log(log_error, "½áËãµÃ·ÖÓÎÏ·ÀàĞÍ²»Ö§³Ö");
+			//CLog::Log(log_error, "ç»“ç®—å¾—åˆ†æ¸¸æˆç±»å‹ä¸æ”¯æŒ");
 			break;
 		}
 	}
 
-	// Êä³öÅÆ¾ÖĞÅÏ¢
+	// è¾“å‡ºç‰Œå±€ä¿¡æ¯
 	OutGameInfor();
 
 	return result;
 }
 
-//¼ÆËãÉı¼¶µÃ·Ö
+//è®¡ç®—å‡çº§å¾—åˆ†
 int CSubGameRule::SettleUpGrade()
 {
-	//»ñµÃµÃ·Ö·½¸Ã¾ÖµÄ×ÜµÃ·Ö(×¯¼ÒµÄÏÂ¼ÒºÍ¸ÃÍæ¼ÒµÄ¶Ô¼Ò)
+	//è·å¾—å¾—åˆ†æ–¹è¯¥å±€çš„æ€»å¾—åˆ†(åº„å®¶çš„ä¸‹å®¶å’Œè¯¥ç©å®¶çš„å¯¹å®¶)
 	WORD wScorerOne = GetNextUser(m_playing_para.banker_id);
 	WORD wScorerTwo = GetLastUser(m_playing_para.banker_id);
 
-	//»ñµÃµÃ·Ö·½µÄ×Ü·Ö
+	//è·å¾—å¾—åˆ†æ–¹çš„æ€»åˆ†
 	SCORE SingleScore = m_players_config.players[wScorerOne].single_score;
 
-	//¼ÆËãµÃ·Ö·½µÄµÃ·Ö
+	//è®¡ç®—å¾—åˆ†æ–¹çš„å¾—åˆ†
 	m_players_config.players[wScorerOne].total_score += SingleScore;
 	
-	//¼ÆËãÉı¼¶µÃ¼¶Êı
+	//è®¡ç®—å‡çº§å¾—çº§æ•°
 	BYTE cbLevel = AnalyseUpGrade(SingleScore);	
 
-	//TODO ÊäÓ®´ÎÊı£¬¿´Çå¿ÕĞè²»ĞèÒª¼ÇÂ¼£¬Éı¼¶Ã²ËÆÃ»±ØÒª
+	//TODO è¾“èµ¢æ¬¡æ•°ï¼Œçœ‹æ¸…ç©ºéœ€ä¸éœ€è¦è®°å½•ï¼Œå‡çº§è²Œä¼¼æ²¡å¿…è¦
 	if (0 <= cbLevel)
 	{
-		//Ê¤³¡Êı¼Ó1
+		//èƒœåœºæ•°åŠ 1
 		m_players_config.players[wScorerOne].winsum += 1;
 
-		//Íæ¼ÒÉı¼¶
+		//ç©å®¶å‡çº§
 		m_players_config.players[wScorerOne].level += cbLevel;
 	}
 
@@ -73,16 +73,16 @@ int CSubGameRule::SettleUpGrade()
 	return 0;
 }
 
-//¶·µØÖ÷Ëã·Ö
+//æ–—åœ°ä¸»ç®—åˆ†
 int CSubGameRule::SettleFightLandLord()
 {
-	//»ñµÃÓ®¼Ò
+	//è·å¾—èµ¢å®¶
 	WORD wWinner = m_playing_para.last_winner_id;
 
-	//»ñµÃÓÎÏ·ËùÓĞµÃ·Ö
+	//è·å¾—æ¸¸æˆæ‰€æœ‰å¾—åˆ†
 	SCORE lGameScore = m_room_config.room_cell;
 
-	//×¯¼ÒÓ®ÁË
+	//åº„å®¶èµ¢äº†
 	if ( wWinner == m_playing_para.appointbanker )
 	{
 
@@ -90,9 +90,9 @@ int CSubGameRule::SettleFightLandLord()
 		{
 			if ( (USER_PLAYING == m_players_config.players[i].play_state) && (i != m_playing_para.appointbanker) )
 			{
-				SCORE PlayerGameScore = m_players_config.players[i].bet * lGameScore;				//¼ÆËãÁ½¸öÊä¼ÒµÄ·ÖÊı  µØÖ÷·Ö
+				SCORE PlayerGameScore = m_players_config.players[i].bet * lGameScore;				//è®¡ç®—ä¸¤ä¸ªè¾“å®¶çš„åˆ†æ•°  åœ°ä¸»åˆ†
 
-				//ÅĞ¶Ï·â¶¥
+				//åˆ¤æ–­å°é¡¶
 				if (PlayerGameScore > m_playing_para.max_room_bet)
 					PlayerGameScore = m_playing_para.max_room_bet;
 
@@ -101,15 +101,15 @@ int CSubGameRule::SettleFightLandLord()
 			}
 		}		
 	}
-	else	//×¯¼ÒÊäÁË
+	else	//åº„å®¶è¾“äº†
 	{
 		for (int i = 0; i < m_room_config.max_chair_sum; i++)
 		{
 			if ( (USER_PLAYING == m_players_config.players[i].play_state) && (i != m_playing_para.appointbanker) )
 			{
-				SCORE PlayerGameScore = m_players_config.players[i].bet * lGameScore;				//¼ÆËãÁ½¸öÓ®¼ÒµÄ·ÖÊı
+				SCORE PlayerGameScore = m_players_config.players[i].bet * lGameScore;				//è®¡ç®—ä¸¤ä¸ªèµ¢å®¶çš„åˆ†æ•°
 
-				//ÅĞ¶Ï·â¶¥
+				//åˆ¤æ–­å°é¡¶
 				if (PlayerGameScore > m_playing_para.max_room_bet)
 					PlayerGameScore = m_playing_para.max_room_bet;
 

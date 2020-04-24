@@ -1,20 +1,20 @@
 
-ÐÞ¸ÄÁ÷³Ì:
+ä¿®æ”¹æµç¨‹:
 
-1. ÐÞ¸ÄAttributeÊôÐÔ
-	1) ÐÞ¸ÄCMD_SubGame.h ÖÐµÄKindID          -- ÏòÏîÄ¿¾­ÀíË÷Òª
-	2£©ÐÞ¸ÄCMD_SubGame.h ÖÐµÄNodeID          -- ÏòÏîÄ¿¾­ÀíË÷Òª
-	3) ÐÞ¸ÄCMD_SubGame.h ÖÐµÄGAME_GENRE		TODO ×ÓÓÎÏ·É¾³ý£¬·ÅÔÚÊý¾Ý¿âKindItem±íÖÐ
+1. ä¿®æ”¹Attributeå±žæ€§
+	1) ä¿®æ”¹CMD_SubGame.h ä¸­çš„KindID          -- å‘é¡¹ç›®ç»ç†ç´¢è¦
+	2ï¼‰ä¿®æ”¹CMD_SubGame.h ä¸­çš„NodeID          -- å‘é¡¹ç›®ç»ç†ç´¢è¦
+	3) ä¿®æ”¹CMD_SubGame.h ä¸­çš„GAME_GENRE		TODO å­æ¸¸æˆåˆ é™¤ï¼Œæ”¾åœ¨æ•°æ®åº“KindItemè¡¨ä¸­
 
-1. ÌØÊâÅÆÐÍ 
-	ÔÚ ÏûÏ¢¶¨Òå/cardType.hÖÐÉèÖÃÌØÊâÅÆÐÍ¶ÔÓ¦µÄvalue -- ÕâÓëxmlÖÐµÄCAME_SCORE_MODE_CLASSIC ºÍ  CAME_SCORE_MODE_CRAZYÖÐµÄÓ¦¸ÃÒ»ÖÂ
+1. ç‰¹æ®Šç‰Œåž‹ 
+	åœ¨ æ¶ˆæ¯å®šä¹‰/cardType.hä¸­è®¾ç½®ç‰¹æ®Šç‰Œåž‹å¯¹åº”çš„value -- è¿™ä¸Žxmlä¸­çš„CAME_SCORE_MODE_CLASSIC å’Œ  CAME_SCORE_MODE_CRAZYä¸­çš„åº”è¯¥ä¸€è‡´
 
-4.ÉèÖÃ×ÓÓÎÏ·ÌØÊâº¯Êý
-	1)ÔÚSubGameRule.h ÖÐÔö¼Ó AppointBanker()
-	2)ÔÚSubGameRule.h ÖÐÔö¼Ó AnsysCardsType()
-	3)ÔÚSubGameRule.h ÖÐÔö¼Ó Settle()
-	4)ÔÚGameData.cpp  ÖÐ´¦Àí Operate()
+4.è®¾ç½®å­æ¸¸æˆç‰¹æ®Šå‡½æ•°
+	1)åœ¨SubGameRule.h ä¸­å¢žåŠ  AppointBanker()
+	2)åœ¨SubGameRule.h ä¸­å¢žåŠ  AnsysCardsType()
+	3)åœ¨SubGameRule.h ä¸­å¢žåŠ  Settle()
+	4)åœ¨GameData.cpp  ä¸­å¤„ç† Operate()
 
-5. ÐÞ¸ÄxmlÅäÖÃÎÄ¼þ
-	1) °´ÅÆÐÍÊý¾ÝÉèÖÃxml
-	2) xmlÃû×Ö Ó¦¸ÃÎª "KindID_NODEID.xml"
+5. ä¿®æ”¹xmlé…ç½®æ–‡ä»¶
+	1) æŒ‰ç‰Œåž‹æ•°æ®è®¾ç½®xml
+	2) xmlåå­— åº”è¯¥ä¸º "KindID_NODEID.xml"

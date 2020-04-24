@@ -14,51 +14,51 @@ CSubRuleManager * CSubRuleManager::instance()
 	return s_instance;
 }
 
-//³õÊ¼»¯
+//åˆå§‹åŒ–
 void CSubRuleManager::Init()
 {
 	memset(&(s_instance->m_SubRule), 0, sizeof(s_instance->m_SubRule));
 }
 
-//¸ù¾İ×Ö¶ÎÃû×Ö, Îª½á¹¹Ìå¶ÔÓ¦×Ö¶Î¸³Öµ
+//æ ¹æ®å­—æ®µåå­—, ä¸ºç»“æ„ä½“å¯¹åº”å­—æ®µèµ‹å€¼
 void CSubRuleManager::SetRoomRule( string key_name, string value)
 {
-	if(key_name == "µ×·Ö")
+	if(key_name == "åº•åˆ†")
 	{
 		m_SubRule.Cellscore = atoi(value.c_str());
 	}
-	else if(key_name == "Ä£Ê½")
+	else if(key_name == "æ¨¡å¼")
 	{
 		m_SubRule.GameWanFa = atoi(value.c_str());
 	}
-	else if(key_name == "ÇÀ×¯")
+	else if(key_name == "æŠ¢åº„")
 	{
 		m_SubRule.GameDiZhu = atoi(value.c_str());
 	}
-	else if(key_name == "·â¶¥")
+	else if(key_name == "å°é¡¶")
 	{
 		m_SubRule.GameFengDing = atoi(value.c_str());
 	}
-	else if(key_name == "Ï´ÅÆ")
+	else if(key_name == "æ´—ç‰Œ")
 	{
 		m_SubRule.DontCutCards = atoi(value.c_str());
 	}
-	else if(key_name == "¼Ó±¶")
+	else if(key_name == "åŠ å€")
 	{
 		m_SubRule.AddMultiple = atoi(value.c_str());
 	}
-	else if(key_name == "Ã÷ÅÆ")
+	else if(key_name == "æ˜ç‰Œ")
 	{
 		m_SubRule.ShowCards = atoi(value.c_str());
 	}
-	else if(key_name == "·­±¶")
+	else if(key_name == "ç¿»å€")
 	{
 		m_SubRule.BaseCardAddMultiple = atoi(value.c_str());
 	}
 }
 
-//ÉèÖÃGold³¡¹æÔò
-void CSubRuleManager::SetGoldRule(VOID* roominfo)  //ÕâÀï¿ÉÒÔ¼ÓÌØÊâ¹æÔòµÄ×Ö¶Î
+//è®¾ç½®Goldåœºè§„åˆ™
+void CSubRuleManager::SetGoldRule(VOID* roominfo)  //è¿™é‡Œå¯ä»¥åŠ ç‰¹æ®Šè§„åˆ™çš„å­—æ®µ
 {
 	STR_CMD_GC_USER_GOLD_INFO *info = (STR_CMD_GC_USER_GOLD_INFO *)roominfo;
 	m_SubRule.Cellscore = info->dwScore;
@@ -71,7 +71,7 @@ void CSubRuleManager::SetGoldRule(VOID* roominfo)  //ÕâÀï¿ÉÒÔ¼ÓÌØÊâ¹æÔòµÄ×Ö¶Î
 	m_SubRule.ShowCards = 1;
 }
 
-//ÉèÖÃmatch¹æÔò
+//è®¾ç½®matchè§„åˆ™
 void CSubRuleManager::SetMatchRule(VOID *config)
 {
 	MATCH_CONFIG *cfg = (MATCH_CONFIG *)config;
@@ -85,7 +85,7 @@ void CSubRuleManager::SetMatchRule(VOID *config)
 	m_SubRule.ShowCards = 0;
 }
 
-//sub»ñÈ¡×ÓÓÎÏ·¹æÔò
+//subè·å–å­æ¸¸æˆè§„åˆ™
 tagSubGameRule CSubRuleManager::GetSubGameRule()
 {
 	return m_SubRule;
@@ -93,19 +93,19 @@ tagSubGameRule CSubRuleManager::GetSubGameRule()
 
 extern "C" __declspec(dllexport) VOID * GetSubRuleManager()
 {
-	//½¨Á¢¶ÔÏó
+	//å»ºç«‹å¯¹è±¡
 	CSubRuleManager * pSubRoleManger = NULL;
 	try
 	{
 		pSubRoleManger = CSubRuleManager::instance();
 		if (pSubRoleManger == NULL)
-			throw TEXT("´´½¨Ê§°Ü");
+			throw TEXT("åˆ›å»ºå¤±è´¥");
 
 		return pSubRoleManger;
 	}
 	catch (...) {}
 
-	//ÇåÀí¶ÔÏó
+	//æ¸…ç†å¯¹è±¡
 	SafeDelete(pSubRoleManger);
 	return NULL;
 }

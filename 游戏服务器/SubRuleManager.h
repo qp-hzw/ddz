@@ -9,37 +9,37 @@ class CSubRuleManager : ISubRoomRuleManager
 {
 private:
 	static CSubRuleManager			* s_instance;
-	tagSubGameRule			m_SubRule;				//×ÓÓÎÏ·¹æÔò
+	tagSubGameRule			m_SubRule;				//å­æ¸¸æˆè§„åˆ™
 
-	//¹ÜÀí½Ó¿Ú
+	//ç®¡ç†æ¥å£
 public:
-	//Æô¶¯·şÎñ
+	//å¯åŠ¨æœåŠ¡
 	virtual bool StartService(){return true;}
-	//Í£Ö¹·şÎñ
+	//åœæ­¢æœåŠ¡
 	virtual bool ConcludeService(){return true;}
 
 public:
 	static CSubRuleManager * instance();
 
-	//frame½Ó¿Ú
+	//frameæ¥å£
 public:
-	//¸ù¾İ×Ö¶ÎÃû×Ö, Îª½á¹¹Ìå¶ÔÓ¦×Ö¶Î¸³Öµ
+	//æ ¹æ®å­—æ®µåå­—, ä¸ºç»“æ„ä½“å¯¹åº”å­—æ®µèµ‹å€¼
 	virtual void SetRoomRule(string key, string value);
-	//³õÊ¼»¯
+	//åˆå§‹åŒ–
 	virtual void Init();
-	//ÉèÖÃGold³¡¹æÔò
+	//è®¾ç½®Goldåœºè§„åˆ™
 	virtual void SetGoldRule(VOID* roominfo);
-	//ÉèÖÃmatch¹æÔò
+	//è®¾ç½®matchè§„åˆ™
 	virtual void SetMatchRule(VOID *config);
 
-	//sub½Ó¿Ú
+	//subæ¥å£
 public:
-	//sub»ñÈ¡×ÓÓÎÏ·¹æÔò
+	//subè·å–å­æ¸¸æˆè§„åˆ™
 	tagSubGameRule GetSubGameRule();
 
-	//¸¨Öúº¯Êı
+	//è¾…åŠ©å‡½æ•°
 public:
-	//¸ù¾İ×Ö¶ÎÃû×Ö, Îª½á¹¹Ìå¶ÔÓ¦×Ö¶Î¸³Öµ
+	//æ ¹æ®å­—æ®µåå­—, ä¸ºç»“æ„ä½“å¯¹åº”å­—æ®µèµ‹å€¼
 	void SetRoomRule(tagSubGameRule &subrule, string key_name, string value);
 };
 

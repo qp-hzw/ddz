@@ -6,13 +6,13 @@
 #include "SubGameRule.h"
 #include "GameConfig.h"
 
-//ÆË¿ËÊı¾İ
+//æ‰‘å…‹æ•°æ®
 const BYTE	CGameData::m_cbCardData[FULL_COUNT]=
 {
-	0x01,0x02,0x03,0x04,0x05,0x06,0x07,0x08,0x09,0x0A,0x0B,0x0C,0x0D,	//·½¿é A - K
-	0x11,0x12,0x13,0x14,0x15,0x16,0x17,0x18,0x19,0x1A,0x1B,0x1C,0x1D,	//Ã·»¨ A - K
-	0x21,0x22,0x23,0x24,0x25,0x26,0x27,0x28,0x29,0x2A,0x2B,0x2C,0x2D,	//ºìÌÒ A - K
-	0x31,0x32,0x33,0x34,0x35,0x36,0x37,0x38,0x39,0x3A,0x3B,0x3C,0x3D,	//ºÚÌÒ A - K
+	0x01,0x02,0x03,0x04,0x05,0x06,0x07,0x08,0x09,0x0A,0x0B,0x0C,0x0D,	//æ–¹å— A - K
+	0x11,0x12,0x13,0x14,0x15,0x16,0x17,0x18,0x19,0x1A,0x1B,0x1C,0x1D,	//æ¢…èŠ± A - K
+	0x21,0x22,0x23,0x24,0x25,0x26,0x27,0x28,0x29,0x2A,0x2B,0x2C,0x2D,	//çº¢æ¡ƒ A - K
+	0x31,0x32,0x33,0x34,0x35,0x36,0x37,0x38,0x39,0x3A,0x3B,0x3C,0x3D,	//é»‘æ¡ƒ A - K
 	0x4E,0x4F,
 };
 
@@ -27,14 +27,14 @@ CGameData::CGameData()
 
 
 /******************************************************************************/
-/*******************************  ÓÎÏ·¹æÔò½Ó¿ÚÊµÏÖ  *****************************/
+/*******************************  æ¸¸æˆè§„åˆ™æ¥å£å®ç°  *****************************/
 /******************************************************************************/
-// ´´½¨ÓÎÏ·
+// åˆ›å»ºæ¸¸æˆ
 int __stdcall CGameData::CreateGame(CGameLogic **pGameRule, CGameAccess **pGameAccess)
 {
 
-	//1. ´Ë´¦´´½¨µÄÊÇGameRule¶ÔÏó -- ÖØÔØÁËGameDataµÄº¯Êı
-	//2. GameLogicºÍGameAccess,CSubGameRule Ö¸Ïò¸ÃGameRule¶ÔÏó
+	//1. æ­¤å¤„åˆ›å»ºçš„æ˜¯GameRuleå¯¹è±¡ -- é‡è½½äº†GameDataçš„å‡½æ•°
+	//2. GameLogicå’ŒGameAccess,CSubGameRule æŒ‡å‘è¯¥GameRuleå¯¹è±¡
 	CSubGameRule *_game = new CSubGameRule();
 
 	*pGameRule = _game;
@@ -43,55 +43,55 @@ int __stdcall CGameData::CreateGame(CGameLogic **pGameRule, CGameAccess **pGameA
 	return 0;
 }
 
-//¼ÓÔØ¶ÁÈ¡µÄÅäÖÃÎÄ¼ş²ÎÊı
+//åŠ è½½è¯»å–çš„é…ç½®æ–‡ä»¶å‚æ•°
 int __stdcall CGameData::LoadConfigParameter(const wchar_t *_logFile, const BYTE cbGameScoreMode)
 {
 	int result = -1;
 
-	// ´´½¨ÓÎÏ·¿¨ÅÆ¡¢Íæ¼Ò¡¢¹æÔò
-	result = LoadGameCards();		// ´´½¨¿¨ÅÆ£¬¸øm_card_config¸³Öµ
+	// åˆ›å»ºæ¸¸æˆå¡ç‰Œã€ç©å®¶ã€è§„åˆ™
+	result = LoadGameCards();		// åˆ›å»ºå¡ç‰Œï¼Œç»™m_card_configèµ‹å€¼
 	if (0 == result)
 	{
-		result = LoadPlayers();	// ´´½¨Íæ¼Ò£¬¸øm_players_config¸³Öµ
+		result = LoadPlayers();	// åˆ›å»ºç©å®¶ï¼Œç»™m_players_configèµ‹å€¼
 		if (0 == result)
 		{
-			//¶ÁÈ¡×À×Ó¹æÔò
-			result = LoadGameRule(cbGameScoreMode);	//´´½¨×À×Ó¹æÔò£¬¸øm_room_config¸³Öµ
+			//è¯»å–æ¡Œå­è§„åˆ™
+			result = LoadGameRule(cbGameScoreMode);	//åˆ›å»ºæ¡Œå­è§„åˆ™ï¼Œç»™m_room_configèµ‹å€¼
 
-			// ³õÊ¼»¯È«¾ÖÊı¾İ
+			// åˆå§‹åŒ–å…¨å±€æ•°æ®
 			InitGameData();
 		}
 		else
 		{
-			//CLog::Log(log_error, "ÅäÖÃÍæ¼ÒÒì³£\n");
+			//CLog::Log(log_error, "é…ç½®ç©å®¶å¼‚å¸¸\n");
 		}
 	}
 	else
 	{
-		//CLog::Log(log_error, "ÅäÖÃ¿¨ÅÆÒì³£\n");
+		//CLog::Log(log_error, "é…ç½®å¡ç‰Œå¼‚å¸¸\n");
 	}
 
 	return result;
 }
 
-// ´´½¨ÓÎÏ·
+// åˆ›å»ºæ¸¸æˆ
 int __stdcall CGameData::Init()
 {
-	//¼ÓÔØÅäÖÃÎÄ¼ş
+	//åŠ è½½é…ç½®æ–‡ä»¶
 
 
-	//³õÊ¼»¯ÓÎÏ·Êı¾İ -- ±ØĞë·ÅÔÚ¶ÁÈ¡ÅäÖÃÎÄ¼şÖ®ºó
+	//åˆå§‹åŒ–æ¸¸æˆæ•°æ® -- å¿…é¡»æ”¾åœ¨è¯»å–é…ç½®æ–‡ä»¶ä¹‹å
 	InitGameData();
 
 	return 0;
 }
 
-// Íæ¼Ò×Ü±¶Êı
+// ç©å®¶æ€»å€æ•°
 int __stdcall CGameData::Wager(WORD wChairID, float bet)
 {
-	//TODO ¼Ó±¶±¶ÊıÍ¨¹ıÅäÖÃÎÄ¼şÅäÖÃ
+	//TODO åŠ å€å€æ•°é€šè¿‡é…ç½®æ–‡ä»¶é…ç½®
 
-	//·â¶¥
+	//å°é¡¶
 
 	m_players_config.players[wChairID].bet *= bet;
 
@@ -105,40 +105,40 @@ int __stdcall CGameData::Wager(WORD wChairID, float bet)
 }
 
 
-// ÉèÖÃÍæ¼Ò²Ù×÷
+// è®¾ç½®ç©å®¶æ“ä½œ
 int __stdcall CGameData::SetUserOperate(WORD wChairID, BYTE byAction, DWORD dwActionScore)
 {
-	//ÉèÖÃÍæ¼Ò¶¯×÷
+	//è®¾ç½®ç©å®¶åŠ¨ä½œ
 	m_players_config.players[wChairID].action = byAction;
 
 	switch (byAction)
 	{
-	case 1:		//¹ı£º·ÅÆúÑº×¢£¬²»²ÎÓë±ÈÅÆ£¬Ö±½ÓÊäµ×·Ö
+	case 1:		//è¿‡ï¼šæ”¾å¼ƒæŠ¼æ³¨ï¼Œä¸å‚ä¸æ¯”ç‰Œï¼Œç›´æ¥è¾“åº•åˆ†
 	{
 		m_players_config.players[wChairID].bet = 0;
 		m_playing_para.cur_total_bet += m_players_config.players[wChairID].bet;
-		printf("¡¾Íæ¼Ò = %d£¬¶¯×÷ = %d£¬ÏÂ×¢ = %d¡¿", wChairID, byAction, m_players_config.players[wChairID].bet);
+		printf("ã€ç©å®¶ = %dï¼ŒåŠ¨ä½œ = %dï¼Œä¸‹æ³¨ = %dã€‘", wChairID, byAction, m_players_config.players[wChairID].bet);
 		break;
 	}
-	case 2:		//Åö£ºÑº 1ÖÁ¿ªÊ¼ÏÂ×¢µ×·Ö
+	case 2:		//ç¢°ï¼šæŠ¼ 1è‡³å¼€å§‹ä¸‹æ³¨åº•åˆ†
 	{
 		m_players_config.players[wChairID].bet = dwActionScore;
 		m_playing_para.cur_total_bet += m_players_config.players[wChairID].bet;
-		printf("¡¾Íæ¼Ò = %d£¬¶¯×÷ = %d£¬ÏÂ×¢ = %d¡¿", wChairID, byAction, m_players_config.players[wChairID].bet);
+		printf("ã€ç©å®¶ = %dï¼ŒåŠ¨ä½œ = %dï¼Œä¸‹æ³¨ = %dã€‘", wChairID, byAction, m_players_config.players[wChairID].bet);
 		break;
 	}
-	case 3:		//³Ô£ºÑº¿ªÊ¼ÏÂ×¢µ×·Ö
+	case 3:		//åƒï¼šæŠ¼å¼€å§‹ä¸‹æ³¨åº•åˆ†
 	{
 		m_players_config.players[wChairID].bet = m_playing_para.start_bet;
 		m_playing_para.cur_total_bet += m_players_config.players[wChairID].bet;
-		printf("¡¾Íæ¼Ò = %d£¬¶¯×÷ = %d£¬ÏÂ×¢ = %d¡¿", wChairID, byAction, m_players_config.players[wChairID].bet);
+		printf("ã€ç©å®¶ = %dï¼ŒåŠ¨ä½œ = %dï¼Œä¸‹æ³¨ = %dã€‘", wChairID, byAction, m_players_config.players[wChairID].bet);
 		break;
 	}
-	case 4:		//´ø£ºµ×·Ö + ËùÓĞÍæ¼ÒÑº×¢×ÛºÏ
+	case 4:		//å¸¦ï¼šåº•åˆ† + æ‰€æœ‰ç©å®¶æŠ¼æ³¨ç»¼åˆ
 	{
 		m_players_config.players[wChairID].bet = m_playing_para.cur_total_bet;
 		m_playing_para.cur_total_bet += m_players_config.players[wChairID].bet;
-		printf("¡¾Íæ¼Ò = %d£¬¶¯×÷ = %d£¬ÏÂ×¢ = %d¡¿", wChairID, byAction, m_players_config.players[wChairID].bet);
+		printf("ã€ç©å®¶ = %dï¼ŒåŠ¨ä½œ = %dï¼Œä¸‹æ³¨ = %dã€‘", wChairID, byAction, m_players_config.players[wChairID].bet);
 		break;
 	}
 	}
@@ -147,68 +147,68 @@ int __stdcall CGameData::SetUserOperate(WORD wChairID, BYTE byAction, DWORD dwAc
 }
 
 
-// Ö¸¶¨×¯¼Ò
+// æŒ‡å®šåº„å®¶
 bool __stdcall CGameData::AppointBanker(WORD wChairID)
 {
 	m_playing_para.appointbanker = wChairID;
 	return true;
 }
 
-//»ñµÃµ±Ç°Ö¸¶¨µÄ×¯¼Ò
+//è·å¾—å½“å‰æŒ‡å®šçš„åº„å®¶
 WORD __stdcall CGameData::GetAppointBanker()
 {
 	return m_playing_para.appointbanker;
 }
 
 /**
-* ¿Í»§¶Ë·µ»ØÊÇ·ñ×ö×¯
-* @param		wChairID		[in-out]		ÒÎ×Ó±àºÅ
-* @param		type			[in]		ÇÀ×¯ÀàĞÍ		//	0-ÇÀµØÖ÷	1-½ĞµØÖ÷
-* @param		state			[in]		ÇÀ×¯×´Ì¬		//  0-¹ı		1-½Ğ/ÇÀµØÖ÷
+* å®¢æˆ·ç«¯è¿”å›æ˜¯å¦åšåº„
+* @param		wChairID		[in-out]		æ¤…å­ç¼–å·
+* @param		type			[in]		æŠ¢åº„ç±»å‹		//	0-æŠ¢åœ°ä¸»	1-å«åœ°ä¸»
+* @param		state			[in]		æŠ¢åº„çŠ¶æ€		//  0-è¿‡		1-å«/æŠ¢åœ°ä¸»
 */
 int __stdcall CGameData::SetBankerState(WORD wChairID, BYTE cbResult)
 {
-	m_players_config.players[wChairID].bank_state = cbResult;   // //1-²»½Ğ  2-½ĞµØÖ÷  3-²»ÇÀ  4-ÇÀµØÖ÷
+	m_players_config.players[wChairID].bank_state = cbResult;   // //1-ä¸å«  2-å«åœ°ä¸»  3-ä¸æŠ¢  4-æŠ¢åœ°ä¸»
 
 	return 0;
 }
 
-// »ñÈ¡ÓÃ»§½Ğ×¯×´Ì¬
+// è·å–ç”¨æˆ·å«åº„çŠ¶æ€
 BYTE __stdcall CGameData::GetBankerState(WORD wChairID)
 {
 	return m_players_config.players[wChairID].bank_state;
 }
 
-// ·ÖÎöÓÃ»§ÅÆĞÍ
+// åˆ†æç”¨æˆ·ç‰Œå‹
 int __stdcall CGameData::AnsysCardsType()
 {
 	return 0;
 }
 
 /*************************************************
-@Description:	Ï´ÅÆ²¢·¢ÅÆ£¬ÂÒĞòÅÆ×é²¢¸øÍæ¼ÒÅÆ×é¸³Öµ
-@Input:			wChairID			[in-out]		ÒÎ×Ó±àºÅ
-				force			[in-out]		ÊÇ·ñÖ¸¶¨³É¹¦
+@Description:	æ´—ç‰Œå¹¶å‘ç‰Œï¼Œä¹±åºç‰Œç»„å¹¶ç»™ç©å®¶ç‰Œç»„èµ‹å€¼
+@Input:			wChairID			[in-out]		æ¤…å­ç¼–å·
+				force			[in-out]		æ˜¯å¦æŒ‡å®šæˆåŠŸ
 @Output:
 @Return:		0
 @author & data:	lizhihu 2017.11.2
 *************************************************/
 int __stdcall CGameData::Deal()
 {
-	// ÓÃÓÚÏ´ÅÆ·¢ÅÆµÄÁãÊ±´æ´¢Çø
+	// ç”¨äºæ´—ç‰Œå‘ç‰Œçš„é›¶æ—¶å­˜å‚¨åŒº
 	CARD_DESC *cards = new CARD_DESC[m_card_config.game_cards_sum]();
 
 	CARD_DESC *boomCards = new CARD_DESC[m_card_config.game_cards_sum]();
 	BYTE	 boomSum = 0;
 
-	//»ñµÃµÄÅÆÊı×éÊÇÒ»¸±ÅÆµÄÂÒĞòÊı×é
+	//è·å¾—çš„ç‰Œæ•°ç»„æ˜¯ä¸€å‰¯ç‰Œçš„ä¹±åºæ•°ç»„
 	CGameCardConfig::OutOrder(cards, m_card_config.game_cards_sum,
 		m_card_config.game_cards, m_card_config.game_cards_sum,
-		m_room_config.game_score_mode, boomCards, boomSum); // Ï´ÅÆ
+		m_room_config.game_score_mode, boomCards, boomSum); // æ´—ç‰Œ
 
 	/*
 	BYTE cardssum = m_card_config.game_cards_sum;
-	//²âÊÔ¹Ì¶¨ÅÆ
+	//æµ‹è¯•å›ºå®šç‰Œ
 	BYTE tmpcards[54] = {
 		0x4E, 0x4F, 0x01, 0x11, 0x21, 0x31, 0x02, 0x12, 0x22, 0x32, 0x03, 0x13, 0x23, 0x33, 0x04, 0x14, 0x24, 0x34, 0x05, 0x15, 0x25, 0x35,
 		0x06, 0x16, 0x26, 0x36, 0x07, 0x17, 0x27, 0x37, 0x08, 0x18, 0x28, 0x38, 0x09, 0x19, 0x29, 0x39, 0x0A, 0x1A, 0x2A, 0x3A, 0x0B, 0x1B, 0x2B, 0x3B,
@@ -217,37 +217,37 @@ int __stdcall CGameData::Deal()
 	memcpy(cards, tmpcards, cardssum * sizeof(BYTE));
 	*/
 
-	//»ñµÃ¿Ûµ×¿¨ÅÆ
+	//è·å¾—æ‰£åº•å¡ç‰Œ
 	m_playing_para.leave_card[MAX_LEAVE_CARD_NUM];
 
-	//¾­µä³¡·Ö·¢ÊÖÅÆ
+	//ç»å…¸åœºåˆ†å‘æ‰‹ç‰Œ
 	if (0 == m_room_config.game_score_mode)
 	{
-		//TODONOW ¿´ÏÂÊÇ·ñÓĞÎÊÌâ
+		//TODONOW çœ‹ä¸‹æ˜¯å¦æœ‰é—®é¢˜
 		ZeroMemory(m_playing_para.leave_card, sizeof(m_playing_para.leave_card));
 		CopyMemory(m_playing_para.leave_card, &cards[m_card_config.game_cards_sum - m_card_config.leave_card_num],
 			m_card_config.leave_card_num * sizeof(BYTE));
 
 		SortCardList(m_playing_para.leave_card, m_card_config.leave_card_num, ST_ORDER);
 
-		//½«Ò»¸±ÅÆ·Ö·¢¸øËùÓĞÍæ¼Ò
+		//å°†ä¸€å‰¯ç‰Œåˆ†å‘ç»™æ‰€æœ‰ç©å®¶
 		const CARD_DESC *card_index = cards;
 
-		//·Ö·¢ÅÆ
+		//åˆ†å‘ç‰Œ
 		for (int i = 0; i < m_room_config.max_chair_sum; ++i)
 		{
 			int nCardNum = m_card_config.init_card_num;
-			//ÅĞ¶ÏÊÇ·ñÔÚÓÎÏ·ÖĞ
+			//åˆ¤æ–­æ˜¯å¦åœ¨æ¸¸æˆä¸­
 			if (USER_PLAYING == m_players_config.players[i].play_state)
 			{
-				//Íæ¼Òµ±Ç°ÊÖÅÆÊı
+				//ç©å®¶å½“å‰æ‰‹ç‰Œæ•°
 				m_players_config.players[i].hand_card_num = nCardNum;
-				cout << "ÓÎÏ·ÊÖÅÆÒÑ³õÊ¼»¯" << endl;
-				//»ñµÃÂÒĞòÊÖÅÆ
+				cout << "æ¸¸æˆæ‰‹ç‰Œå·²åˆå§‹åŒ–" << endl;
+				//è·å¾—ä¹±åºæ‰‹ç‰Œ
 				memcpy(m_players_config.hand_cards[i], card_index, sizeof(CARD_DESC)*nCardNum);
 				cout << "1" << endl;
 
-				//ÊÖÅÆÅÅĞò
+				//æ‰‹ç‰Œæ’åº
 				SortCardList(m_players_config.hand_cards[i], nCardNum, ST_ORDER);
 				cout << "2" << endl;
 
@@ -261,7 +261,7 @@ int __stdcall CGameData::Deal()
 			}
 		}
 	}
-	else	//²»Ï´ÅÆÄ£Ê½
+	else	//ä¸æ´—ç‰Œæ¨¡å¼
 	{
 		srand((unsigned)time(NULL));
 
@@ -283,7 +283,7 @@ int __stdcall CGameData::Deal()
 		if (index[1] > 3) index[1] = 3;
 		index[2] = boomSum - index[1] - index[0];
 
-		//»úÆ÷ÈËÕ¨µ¯ÓÅ»¯
+		//æœºå™¨äººç‚¸å¼¹ä¼˜åŒ–
 		/*for (int i = 0; i < 3; i++)
 		{
 			if (m_pGameRoomFrame->IsRobot(i))
@@ -299,10 +299,10 @@ int __stdcall CGameData::Deal()
 		for (int i = 0; i < m_room_config.max_chair_sum; ++i)
 		{
 			int nCardNum = m_card_config.init_card_num;
-			//ÅĞ¶ÏÊÇ·ñÔÚÓÎÏ·ÖĞ
+			//åˆ¤æ–­æ˜¯å¦åœ¨æ¸¸æˆä¸­
 			if (USER_PLAYING == m_players_config.players[i].play_state)
 			{
-				//Íæ¼Òµ±Ç°ÊÖÅÆÊı
+				//ç©å®¶å½“å‰æ‰‹ç‰Œæ•°
 				m_players_config.players[i].hand_card_num = nCardNum;
 
 				int flag = 0;
@@ -316,14 +316,14 @@ int __stdcall CGameData::Deal()
 					m_players_config.hand_cards[i][flag++] = boomCards[boomflag++];
 				}
 
-				//ÊÖÅÆÅÅĞò
+				//æ‰‹ç‰Œæ’åº
 				SortCardList(m_players_config.hand_cards[i], nCardNum, ST_ORDER);
 
 			}
 		}
 	}
 
-	//ÊÍ·Å
+	//é‡Šæ”¾
 	delete[] cards;
 	delete[] boomCards;
 	cards = NULL;
@@ -331,53 +331,53 @@ int __stdcall CGameData::Deal()
 	return 0;
 }
 
-//¼ÆËã³­µ×µÃ·Ö
+//è®¡ç®—æŠ„åº•å¾—åˆ†
 SCORE __stdcall CGameData::CalculateChaodiScore(const BYTE &cbCDcardNum)
 {
-	//»ñµÃµ×ÅÆµÄËùÓĞ·ÖÊı
+	//è·å¾—åº•ç‰Œçš„æ‰€æœ‰åˆ†æ•°
 	WORD wLeaveCardScore = GetAllCardScore(m_playing_para.leave_card, MAX_LEAVE_CARD_NUM);
 
-	//³­µ×·ÖÊıºÍ¿¨ÅÆÊıÓĞ¹Ø
+	//æŠ„åº•åˆ†æ•°å’Œå¡ç‰Œæ•°æœ‰å…³
 	SCORE TotalScore = ((cbCDcardNum + 1) / 2)*wLeaveCardScore;
 
-	//»ñµÃµÃ·Ö·½
+	//è·å¾—å¾—åˆ†æ–¹
 	WORD wScorer = GetNextUser(m_playing_para.appointbanker);
 
-	//Ğ¡¾ÖµÃ·ÖÔö¼Ó
+	//å°å±€å¾—åˆ†å¢åŠ 
 	m_players_config.players[wScorer].single_score += TotalScore;
 
 	return TotalScore;
 }
 
-//¸ù¾İµÃ·Ö¼ÆËãÍæ¼ÒÉı¼¶¼¶Êı
+//æ ¹æ®å¾—åˆ†è®¡ç®—ç©å®¶å‡çº§çº§æ•°
 BYTE __stdcall CGameData::AnalyseUpGrade(const SCORE &score)
 {
 	BYTE cbLevel = 0;
-	//´ó¹â
+	//å¤§å…‰
 	if (SCORE_DA_GUANG == score)
 	{
 		cbLevel = LEVEL_DA_GUANG;
-		//×¯¼ÒµÄ¶Ô¼Ò×ø×¯
+		//åº„å®¶çš„å¯¹å®¶ååº„
 		m_playing_para.appointbanker = GetOppositeUser(m_playing_para.appointbanker);
 	}
-	//Ğ¡¹â
+	//å°å…‰
 	if (SCORE_XIAO_GUANG > score)
 	{
 		cbLevel = LEVEL_XIAO_GUANG;
-		//×¯¼ÒµÄ¶Ô¼Ò×ø×¯
+		//åº„å®¶çš„å¯¹å®¶ååº„
 		m_playing_para.appointbanker = GetOppositeUser(m_playing_para.appointbanker);
 	}
 	//40-80
 	if ((SCORE_XIAO_GUANG <= score) && (SCORE_CHANGE_BANKER > score))
 	{
 		cbLevel = LEVEL_CHANGE_BANKER;
-		//×¯¼ÒµÄ¶Ô¼Ò×ø×¯
+		//åº„å®¶çš„å¯¹å®¶ååº„
 		m_playing_para.appointbanker = GetOppositeUser(m_playing_para.appointbanker);
 	}
 	//80-120
 	if ((SCORE_CHANGE_BANKER <= score) && (SCORE_UPGRADE > score))
 	{
-		//»»×¯,×¯¼ÒµÄÏÂÒ»¼Ò×ø×¯
+		//æ¢åº„,åº„å®¶çš„ä¸‹ä¸€å®¶ååº„
 		m_playing_para.appointbanker = GetNextUser(m_playing_para.appointbanker);
 	}
 	//>=120
@@ -385,22 +385,22 @@ BYTE __stdcall CGameData::AnalyseUpGrade(const SCORE &score)
 	{
 		cbLevel = (score - SCORE_UPGRADE) / SCORE_UPGRADE_ONE;
 
-		//»»×¯,×¯¼ÒµÄÏÂÒ»¼Ò×ø×¯
+		//æ¢åº„,åº„å®¶çš„ä¸‹ä¸€å®¶ååº„
 		m_playing_para.appointbanker = GetNextUser(m_playing_para.appointbanker);
 	}
 
-	//Éı¶àÉÙ¼¶
+	//å‡å¤šå°‘çº§
 	m_playing_para.level_value += cbLevel;
 
-	printf("\n¡¾ÏÂ¾ÖÓÎÏ· £ºµÈ¼¶ = %d£¬×¯¼Ò = %d¡¿\n", m_playing_para.level_value, m_playing_para.appointbanker);
+	printf("\nã€ä¸‹å±€æ¸¸æˆ ï¼šç­‰çº§ = %dï¼Œåº„å®¶ = %dã€‘\n", m_playing_para.level_value, m_playing_para.appointbanker);
 
 	return cbLevel;
 }
 
-//·ÖÎö±È½Ï     
+//åˆ†ææ¯”è¾ƒ     
 bool CGameData::AnalysebCompare(const BYTE cbCardData[], BYTE cbCardCount, tagAnalyseResult & AnalyseResult, int dCardType)
 {
-	//·ÖÎöÆË¿Ë
+	//åˆ†ææ‰‘å…‹
 	BYTE bLaiZiCount = GetMagicCardNum(cbCardData, cbCardCount);
 	BYTE bCardDataTemp[MAX_CARD_COUNT];
 	int dCardTypeTemp = CT_ERROR;
@@ -414,7 +414,7 @@ bool CGameData::AnalysebCompare(const BYTE cbCardData[], BYTE cbCardCount, tagAn
 
 	bool SameCard = false;
 
-	//¶¼ÊÇÀµ×Ó×öÆÕÍ¨ÅÆ				//ÆÕÍ¨³¡²»¿¼ÂÇñ®×Ó
+	//éƒ½æ˜¯èµ–å­åšæ™®é€šç‰Œ				//æ™®é€šåœºä¸è€ƒè™‘ç™å­
 	if (m_room_config.game_laizi_mode > 0)
 	{
 
@@ -430,19 +430,19 @@ bool CGameData::AnalysebCompare(const BYTE cbCardData[], BYTE cbCardCount, tagAn
 		}
 	}
 
-	//Àµ×ÓÅĞ¶Ï
+	//èµ–å­åˆ¤æ–­
 	if (bLaiZiCount != 0 && !SameCard && m_room_config.game_laizi_mode > 0)
 	{
 		for (BYTE i = 0;i<cbCardCount;i++)
 		{
 			if (GetCardLogicValueLaiZi(cbCardData[i]) == m_playing_para.magic_card)
 			{
-				//Ò»ÕÅÀµ×Ó
+				//ä¸€å¼ èµ–å­
 				for (BYTE j = 0;j<13;j++)
 				{
 					bCardDataTemp[i] = m_cbCardData[j];
 
-					//Á½ÕÅÀµ×Ó
+					//ä¸¤å¼ èµ–å­
 					if (bLaiZiCount >= 2)
 					{
 						for (BYTE k = i + 1;k<cbCardCount;k++)
@@ -453,7 +453,7 @@ bool CGameData::AnalysebCompare(const BYTE cbCardData[], BYTE cbCardCount, tagAn
 								{
 									bCardDataTemp[k] = m_cbCardData[z];
 
-									//ÈıÕÅÀµ×Ó
+									//ä¸‰å¼ èµ–å­
 									if (bLaiZiCount >= 3)
 									{
 										for (BYTE g = k + 1;g<cbCardCount;g++)
@@ -464,7 +464,7 @@ bool CGameData::AnalysebCompare(const BYTE cbCardData[], BYTE cbCardCount, tagAn
 												{
 													bCardDataTemp[g] = m_cbCardData[f];
 
-													//ËÄÕÅÀµ×Ó
+													//å››å¼ èµ–å­
 													if (bLaiZiCount == 4)
 													{
 														for (BYTE h = g + 1;h<cbCardCount;h++)
@@ -579,10 +579,10 @@ bool CGameData::AnalysebCompare(const BYTE cbCardData[], BYTE cbCardCount, tagAn
 	return true;
 }
 
-//·ÖÎöÆË¿Ë
+//åˆ†ææ‰‘å…‹
 void CGameData::AnalysebCardData(const BYTE cbCardData[], BYTE cbCardCount, tagAnalyseResult & AnalyseResult)
 {
-	//ÉèÖÃ±äÁ¿
+	//è®¾ç½®å˜é‡
 	BYTE bCardData[MAX_CARD_COUNT];
 
 	memset(bCardData, 0, sizeof(bCardData));
@@ -590,40 +590,40 @@ void CGameData::AnalysebCardData(const BYTE cbCardData[], BYTE cbCardCount, tagA
 
 	SortCardListNoLaiZi(bCardData, cbCardCount, ST_ORDER);
 
-	//ÆË¿Ë·ÖÎö
+	//æ‰‘å…‹åˆ†æ
 	for (BYTE i = 0; i < cbCardCount; i++)
 	{
-		//±äÁ¿¶¨Òå
+		//å˜é‡å®šä¹‰
 		BYTE cbSameCount = 1, cbCardValueTemp = 0;
 		BYTE cbLogicValue = GetCardLogicValue(bCardData[i]);
 
-		//ËÑË÷Í¬ÅÆ
+		//æœç´¢åŒç‰Œ
 		for (BYTE j = i + 1; j < cbCardCount; j++)
 		{
-			//»ñÈ¡ÆË¿Ë
+			//è·å–æ‰‘å…‹
 			if (GetCardLogicValue(bCardData[j]) != cbLogicValue) break;
 
-			//ÉèÖÃ±äÁ¿
+			//è®¾ç½®å˜é‡
 			cbSameCount++;
 		}
 
-		//ÉèÖÃ½á¹û
+		//è®¾ç½®ç»“æœ
 		switch (cbSameCount)
 		{
-		case 1:		//µ¥ÕÅ
+		case 1:		//å•å¼ 
 		{
 			BYTE cbIndex = AnalyseResult.cbSignedCount++;
 			AnalyseResult.cbSignedCardData[cbIndex*cbSameCount] = bCardData[i];
 			break;
 		}
-		case 2:		//Á½ÕÅ
+		case 2:		//ä¸¤å¼ 
 		{
 			BYTE cbIndex = AnalyseResult.cbDoubleCount++;
 			AnalyseResult.cbDoubleCardData[cbIndex*cbSameCount] = bCardData[i];
 			AnalyseResult.cbDoubleCardData[cbIndex*cbSameCount + 1] = bCardData[i + 1];
 			break;
 		}
-		case 3:		//ÈıÕÅ
+		case 3:		//ä¸‰å¼ 
 		{
 			BYTE cbIndex = AnalyseResult.cbThreeCount++;
 			AnalyseResult.cbThreeCardData[cbIndex*cbSameCount] = bCardData[i];
@@ -631,7 +631,7 @@ void CGameData::AnalysebCardData(const BYTE cbCardData[], BYTE cbCardCount, tagA
 			AnalyseResult.cbThreeCardData[cbIndex*cbSameCount + 2] = bCardData[i + 2];
 			break;
 		}
-		case 4:		//ËÄÕÅ
+		case 4:		//å››å¼ 
 		{
 			BYTE cbIndex = AnalyseResult.cbFourCount++;
 			AnalyseResult.cbFourCardData[cbIndex*cbSameCount] = bCardData[i];
@@ -642,7 +642,7 @@ void CGameData::AnalysebCardData(const BYTE cbCardData[], BYTE cbCardCount, tagA
 		}
 		}
 
-		//ÉèÖÃË÷Òı
+		//è®¾ç½®ç´¢å¼•
 		i += cbSameCount - 1;
 	}
 
@@ -650,7 +650,7 @@ void CGameData::AnalysebCardData(const BYTE cbCardData[], BYTE cbCardCount, tagA
 	return;
 }
 
-//»ñÈ¡ÀàĞÍ½á¹û
+//è·å–ç±»å‹ç»“æœ
 int CGameData::GetType(tagAnalyseResult AnalyseResult, const BYTE cbCardData[], BYTE cbCardCount, const BYTE NoChangeCard[])
 {
 	BYTE bLaiZiCount = GetMagicCardNum(NoChangeCard, cbCardCount);
@@ -659,23 +659,23 @@ int CGameData::GetType(tagAnalyseResult AnalyseResult, const BYTE cbCardData[], 
 	ZeroMemory(&bCardData, sizeof(bCardData));
 	CopyMemory(bCardData, cbCardData, sizeof(BYTE)*cbCardCount);
 
-	//ÅÅĞò
+	//æ’åº
 	SortCardListNoLaiZi(bCardData, cbCardCount, ST_ORDER);
 
-	//¼òµ¥ÅÆĞÍ
+	//ç®€å•ç‰Œå‹
 	switch (cbCardCount)
 	{
-	case 0:	//¿ÕÅÆ
+	case 0:	//ç©ºç‰Œ
 	{
 		return CT_ERROR;
 	}
-	case 1: //µ¥ÅÆ
+	case 1: //å•ç‰Œ
 	{
 		return CT_SINGLE;
 	}
-	case 2:	//¶ÔÅÆ»ğ¼ı
+	case 2:	//å¯¹ç‰Œç«ç®­
 	{
-		//ÅÆĞÍÅĞ¶Ï
+		//ç‰Œå‹åˆ¤æ–­
 		if ((bCardData[0] == 0x4F) && (bCardData[1] == 0x4E)) return CT_MISSILE_CARD;
 		if (GetCardLogicValue(bCardData[0]) == GetCardLogicValue(bCardData[1])) return CT_DOUBLE;
 
@@ -683,10 +683,10 @@ int CGameData::GetType(tagAnalyseResult AnalyseResult, const BYTE cbCardData[], 
 	}
 	}
 
-	//ËÄÅÆÅĞ¶Ï
+	//å››ç‰Œåˆ¤æ–­
 	if (AnalyseResult.cbFourCount > 0)
 	{
-		//ÅÆĞÍÅĞ¶Ï
+		//ç‰Œå‹åˆ¤æ–­
 		if ((AnalyseResult.cbFourCount == 1) && (cbCardCount == 4) && (bLaiZiCount == 0)) return CT_BOMB_CARD;
 		if ((AnalyseResult.cbFourCount == 1) && (bLaiZiCount == 4)) return CT_LAIZI_BOMB;
 		if ((AnalyseResult.cbFourCount == 1) && (cbCardCount == 4) && (bLaiZiCount != 0)) return CT_RUAN_BOMB;
@@ -697,24 +697,24 @@ int CGameData::GetType(tagAnalyseResult AnalyseResult, const BYTE cbCardData[], 
 		return CT_ERROR;
 	}
 
-	//ÈıÅÆÅĞ¶Ï
+	//ä¸‰ç‰Œåˆ¤æ–­
 	if (AnalyseResult.cbThreeCount > 0)
 	{
-		//ÈıÌõÀàĞÍ
+		//ä¸‰æ¡ç±»å‹
 		if (AnalyseResult.cbThreeCount == 1 && cbCardCount == 3)
 			return CT_THREE;
 
-		//Á¬ÅÆÅĞ¶Ï
+		//è¿ç‰Œåˆ¤æ–­
 		if (AnalyseResult.cbThreeCount > 1)
 		{
-			//±äÁ¿¶¨Òå
+			//å˜é‡å®šä¹‰
 			BYTE bCardData = AnalyseResult.cbThreeCardData[0];
 			BYTE cbFirstLogicValue = GetCardLogicValue(bCardData);
 
-			//´íÎó¹ıÂÇ
+			//é”™è¯¯è¿‡è™‘
 			if (cbFirstLogicValue >= 15) return CT_ERROR;
 
-			//Á¬ÅÆÅĞ¶Ï
+			//è¿ç‰Œåˆ¤æ–­
 			for (BYTE i = 1; i < AnalyseResult.cbThreeCount; i++)
 			{
 				BYTE bCardData = AnalyseResult.cbThreeCardData[i * 3];
@@ -723,7 +723,7 @@ int CGameData::GetType(tagAnalyseResult AnalyseResult, const BYTE cbCardData[], 
 			}
 		}
 
-		//ÅÆĞÎÅĞ¶Ï
+		//ç‰Œå½¢åˆ¤æ–­
 		if (AnalyseResult.cbThreeCount * 3 == cbCardCount) return CT_THREE_LINE;
 		if (AnalyseResult.cbThreeCount * 4 == cbCardCount && (AnalyseResult.cbSignedCount == cbCardCount % 3 || AnalyseResult.cbDoubleCount == cbCardCount % 3 / 2)) return CT_THREE_LINE_TAKE_ONE;
 		if ((AnalyseResult.cbThreeCount * 5 == cbCardCount) && (AnalyseResult.cbDoubleCount == AnalyseResult.cbThreeCount)) return CT_THREE_LINE_TAKE_TWO;
@@ -731,20 +731,20 @@ int CGameData::GetType(tagAnalyseResult AnalyseResult, const BYTE cbCardData[], 
 		return CT_ERROR;
 	}
 
-	//Á½ÕÅÀàĞÍ
+	//ä¸¤å¼ ç±»å‹
 	if (AnalyseResult.cbDoubleCount >= 3)
 	{
-		//±äÁ¿¶¨Òå
+		//å˜é‡å®šä¹‰
 		BYTE bCardData = AnalyseResult.cbDoubleCardData[0];
 		BYTE cbFirstLogicValue = GetCardLogicValue(bCardData);
 
-		/*cout << "Á¬¶ÔµÚÒ»ÕÅÅÆÂß¼­Öµ£º" << (int)cbFirstLogicValue << endl;
-		cout << "×îºóÒ»ÕÅÅÄÂß¼­Öµ: " << (int)GetCardLogicValue(AnalyseResult.cbDoubleCardData[AnalyseResult.cbDoubleCount*2 - 1]) << endl;*/
+		/*cout << "è¿å¯¹ç¬¬ä¸€å¼ ç‰Œé€»è¾‘å€¼ï¼š" << (int)cbFirstLogicValue << endl;
+		cout << "æœ€åä¸€å¼ æ‹é€»è¾‘å€¼: " << (int)GetCardLogicValue(AnalyseResult.cbDoubleCardData[AnalyseResult.cbDoubleCount*2 - 1]) << endl;*/
 
-		//´íÎó¹ıÂÇ
+		//é”™è¯¯è¿‡è™‘
 		if (cbFirstLogicValue >= 15) return CT_ERROR;
 
-		//Á¬ÅÆÅĞ¶Ï
+		//è¿ç‰Œåˆ¤æ–­
 		for (BYTE i = 1; i < AnalyseResult.cbDoubleCount; i++)
 		{
 			BYTE bCardData = AnalyseResult.cbDoubleCardData[i * 2];
@@ -752,24 +752,24 @@ int CGameData::GetType(tagAnalyseResult AnalyseResult, const BYTE cbCardData[], 
 				return CT_ERROR;
 		}
 
-		//¶şÁ¬ÅĞ¶Ï
+		//äºŒè¿åˆ¤æ–­
 		if ((AnalyseResult.cbDoubleCount * 2) == cbCardCount)
 			return CT_DOUBLE_LINE;
 
 		return CT_ERROR;
 	}
 
-	//µ¥ÕÅÅĞ¶Ï
+	//å•å¼ åˆ¤æ–­
 	if ((AnalyseResult.cbSignedCount >= 5) && (AnalyseResult.cbSignedCount == cbCardCount))
 	{
-		//±äÁ¿¶¨Òå
+		//å˜é‡å®šä¹‰
 		BYTE bCardData = AnalyseResult.cbSignedCardData[0];
 		BYTE cbFirstLogicValue = GetCardLogicValue(bCardData);
 
-		//´íÎó¹ıÂÇ
+		//é”™è¯¯è¿‡è™‘
 		if (cbFirstLogicValue >= 15) return CT_ERROR;
 
-		//Á¬ÅÆÅĞ¶Ï
+		//è¿ç‰Œåˆ¤æ–­
 		for (BYTE i = 1; i < AnalyseResult.cbSignedCount; i++)
 		{
 			BYTE bCardData = AnalyseResult.cbSignedCardData[i];
@@ -783,16 +783,16 @@ int CGameData::GetType(tagAnalyseResult AnalyseResult, const BYTE cbCardData[], 
 	return CT_ERROR;
 }
 
-//ÅĞ¶Ïµ±Ç°Íæ¼ÒÊÇ·ñÄÜ³öÅÆ 
+//åˆ¤æ–­å½“å‰ç©å®¶æ˜¯å¦èƒ½å‡ºç‰Œ 
 bool CGameData::JudgePlayerOutCard(WORD wCurOutCardUser)      //lih
 {
-	//»ñµÃ¸ÃÂÖ×î´ó³öÅÆÊı¾İ
+	//è·å¾—è¯¥è½®æœ€å¤§å‡ºç‰Œæ•°æ®
 	BYTE TurnCardNum = m_playing_para.turn_cards_num;
 	BYTE TurnCardData[MAX_CARD_COUNT];
 	ZeroMemory(&TurnCardData, sizeof(TurnCardData));
 	CopyMemory(TurnCardData, m_playing_para.turn_max_cards, sizeof(TurnCardData));
 
-	//»ñÈ¡µ±Ç°Íæ¼ÒµÄÊÖÅÆÊı¾İ
+	//è·å–å½“å‰ç©å®¶çš„æ‰‹ç‰Œæ•°æ®
 	BYTE CurCardNum = m_players_config.players[wCurOutCardUser].hand_card_num;
 	BYTE CurCardData[MAX_CARD_COUNT];
 	ZeroMemory(&CurCardData, sizeof(CurCardData));
@@ -802,7 +802,7 @@ bool CGameData::JudgePlayerOutCard(WORD wCurOutCardUser)      //lih
 		CurCardData[i] = m_players_config.hand_cards[wCurOutCardUser][i];
 	}
 
-	//·ÖÎöÁ½¸öÆË¿ËÅÆĞÍ
+	//åˆ†æä¸¤ä¸ªæ‰‘å…‹ç‰Œå‹
 	tagAnalyseResult TurnResult;
 	tagAnalyseResult CurResult;
 
@@ -812,25 +812,25 @@ bool CGameData::JudgePlayerOutCard(WORD wCurOutCardUser)      //lih
 	AnalysebCardData(CurCardData, CurCardNum, CurResult);
 	AnalysebCardData(TurnCardData, TurnCardNum, TurnResult);
 
-	//»ñÈ¡³öÅÆÍæ¼ÒµÄÅÆĞÍ
+	//è·å–å‡ºç‰Œç©å®¶çš„ç‰Œå‹
 	int TurnCardType = GetType(TurnResult, TurnCardData, TurnCardNum, TurnCardData);
 	TurnCardType = TransListToInt(0, TurnCardType);
 
-	//¶Ô±ÈÅĞ¶ÏÅÆĞÍ
+	//å¯¹æ¯”åˆ¤æ–­ç‰Œå‹
 	if (TurnCardType == CT_ERROR)	return true;
-	if ((TurnCardType & (1 << CT_MISSILE_CARD)) != 0)    return false;    //ÍõÕ¨ÅĞ¶Ï
+	if ((TurnCardType & (1 << CT_MISSILE_CARD)) != 0)    return false;    //ç‹ç‚¸åˆ¤æ–­
 
-																		  //Õ¨µ¯ÅĞ¶Ï
-	if ((TurnCardType & (1 << CT_BOMB_CARD)) != 0)   //ÉÏ¼Ò³öÕ¨µ¯
+																		  //ç‚¸å¼¹åˆ¤æ–­
+	if ((TurnCardType & (1 << CT_BOMB_CARD)) != 0)   //ä¸Šå®¶å‡ºç‚¸å¼¹
 	{
-		cout << "Õ¨µ¯" << endl;
+		cout << "ç‚¸å¼¹" << endl;
 
-		//ÍõÕ¨ÅĞ¶Ï
+		//ç‹ç‚¸åˆ¤æ–­
 		if ((GetCardLogicValue(CurCardData[0]) == 17) && (GetCardLogicValue(CurCardData[1]) == 16))		return true;
 
-		//»ñÈ¡ÉÏ¼Ò³öÅÆÊıÖµ
+		//è·å–ä¸Šå®¶å‡ºç‰Œæ•°å€¼
 		BYTE TurnLogicValue = GetCardLogicValue(TurnResult.cbFourCardData[0]);
-		int index = 0;   //¸¨Öú±êÊ¶
+		int index = 0;   //è¾…åŠ©æ ‡è¯†
 
 		if (CurResult.cbFourCount == 0)    return false;
 
@@ -840,34 +840,34 @@ bool CGameData::JudgePlayerOutCard(WORD wCurOutCardUser)      //lih
 			index += 4;
 		}
 	}
-	else if ((TurnCardType & (1 << CT_SINGLE)) != 0)   //µ¥ÕÅ
+	else if ((TurnCardType & (1 << CT_SINGLE)) != 0)   //å•å¼ 
 	{
-		cout << "µ¥ÕÅ" << endl;
+		cout << "å•å¼ " << endl;
 
-		//ÍõÕ¨ÅĞ¶Ï
+		//ç‹ç‚¸åˆ¤æ–­
 		if ((GetCardLogicValue(CurCardData[0]) == 17) && (GetCardLogicValue(CurCardData[1]) == 16))		return true;
 
-		//Õ¨µ¯ÅĞ¶Ï
+		//ç‚¸å¼¹åˆ¤æ–­
 		if (CurResult.cbFourCount != 0)		return true;
 
-		//»ñÈ¡ÉÏ¼Ò³öÅÆÊıÖµ
+		//è·å–ä¸Šå®¶å‡ºç‰Œæ•°å€¼
 		BYTE TurnLogicValue = GetCardLogicValue(TurnResult.cbSignedCardData[0]);
 
 
 		if (GetCardLogicValue(CurCardData[0]) > TurnLogicValue)
 			return true;
 	}
-	else if ((TurnCardType & (1 << CT_DOUBLE)) != 0)   //¶Ô×Ó
+	else if ((TurnCardType & (1 << CT_DOUBLE)) != 0)   //å¯¹å­
 	{
-		cout << "¶Ô×Ó" << endl;
+		cout << "å¯¹å­" << endl;
 
-		//ÍõÕ¨ÅĞ¶Ï
+		//ç‹ç‚¸åˆ¤æ–­
 		if ((GetCardLogicValue(CurCardData[0]) == 17) && (GetCardLogicValue(CurCardData[1]) == 16))		return true;
 
-		//Õ¨µ¯ÅĞ¶Ï
+		//ç‚¸å¼¹åˆ¤æ–­
 		if (CurResult.cbFourCount != 0)		return true;
 
-		//»ñÈ¡ÉÏ¼Ò³öÅÆÊıÖµ
+		//è·å–ä¸Šå®¶å‡ºç‰Œæ•°å€¼
 		BYTE TurnLogicValue = GetCardLogicValue(TurnResult.cbDoubleCardData[0]);
 
 		for (int i = 0; i < CurResult.cbDoubleCount; i++)
@@ -887,17 +887,17 @@ bool CGameData::JudgePlayerOutCard(WORD wCurOutCardUser)      //lih
 			index += 3;
 		}
 	}
-	else if ((TurnCardType & (1 << CT_THREE)) != 0)   //ÈıÕÅ
+	else if ((TurnCardType & (1 << CT_THREE)) != 0)   //ä¸‰å¼ 
 	{
-		cout << "ÈıÕÅ" << endl;
+		cout << "ä¸‰å¼ " << endl;
 
-		//ÍõÕ¨ÅĞ¶Ï
+		//ç‹ç‚¸åˆ¤æ–­
 		if ((GetCardLogicValue(CurCardData[0]) == 17) && (GetCardLogicValue(CurCardData[1]) == 16))		return true;
 
-		//Õ¨µ¯ÅĞ¶Ï
+		//ç‚¸å¼¹åˆ¤æ–­
 		if (CurResult.cbFourCount != 0)		return true;
 
-		//»ñÈ¡ÉÏ¼Ò³öÅÆÊıÖµ
+		//è·å–ä¸Šå®¶å‡ºç‰Œæ•°å€¼
 		BYTE TurnLogicValue = GetCardLogicValue(TurnResult.cbThreeCardData[0]);
 
 		for (int i = 0; i < CurResult.cbThreeCount; i++)
@@ -909,38 +909,38 @@ bool CGameData::JudgePlayerOutCard(WORD wCurOutCardUser)      //lih
 			index += 3;
 		}
 	}
-	else if ((TurnCardType & (1 << CT_SINGLE_LINE)) != 0)   //Ë³×Ó
+	else if ((TurnCardType & (1 << CT_SINGLE_LINE)) != 0)   //é¡ºå­
 	{
-		cout << "Ë³×Ó" << endl;
+		cout << "é¡ºå­" << endl;
 
-		//ÍõÕ¨ÅĞ¶Ï
+		//ç‹ç‚¸åˆ¤æ–­
 		if ((GetCardLogicValue(CurCardData[0]) == 17) && (GetCardLogicValue(CurCardData[1]) == 16))		return true;
 
-		//Õ¨µ¯ÅĞ¶Ï
+		//ç‚¸å¼¹åˆ¤æ–­
 		if (CurResult.cbFourCount != 0)		return true;
 
-		//ÅÆ²»×ãÎåÕÅ
+		//ç‰Œä¸è¶³äº”å¼ 
 		if (CurCardNum < 5)		return false;
 
-		//»ñÈ¡ÉÏ¼Ò³öÅÆÊıÖµ  ×î´óÖµ
+		//è·å–ä¸Šå®¶å‡ºç‰Œæ•°å€¼  æœ€å¤§å€¼
 		BYTE TurnLogicValue = GetCardLogicValue(TurnResult.cbSignedCardData[0]);
 
 		int flag = 0;
 
-		for (int i = 0; i < CurCardNum; i++)     //¼ÆËãË³×ÓÕÅÊı
+		for (int i = 0; i < CurCardNum; i++)     //è®¡ç®—é¡ºå­å¼ æ•°
 		{
-			//printf("µÚ%dÕÅÅÆµÄÁ¬Ğø±êÖ¾£º%d\n", i, flag);
-			if (flag != 0)    //Á¬Ğø²»ÓÃ±ÈÅÆ´óĞ¡
+			//printf("ç¬¬%då¼ ç‰Œçš„è¿ç»­æ ‡å¿—ï¼š%d\n", i, flag);
+			if (flag != 0)    //è¿ç»­ä¸ç”¨æ¯”ç‰Œå¤§å°
 			{
 				if (GetCardLogicValue(CurCardData[i + 1]) == GetCardLogicValue(CurCardData[i]))
 				{
 					continue;
 				}
-				if (GetCardLogicValue(CurCardData[i + 1]) == (GetCardLogicValue(CurCardData[i]) - 1) && (GetCardLogicValue(CurCardData[i]) < 15))   //ÅĞ¶ÏÊÇ·ñÁ¬Ğø
+				if (GetCardLogicValue(CurCardData[i + 1]) == (GetCardLogicValue(CurCardData[i]) - 1) && (GetCardLogicValue(CurCardData[i]) < 15))   //åˆ¤æ–­æ˜¯å¦è¿ç»­
 				{
 					flag++;
 
-					//Ìø³öÌõ¼ş
+					//è·³å‡ºæ¡ä»¶
 					if (flag == TurnResult.cbSignedCount - 1)
 						break;
 				}
@@ -955,11 +955,11 @@ bool CGameData::JudgePlayerOutCard(WORD wCurOutCardUser)      //lih
 					{
 						continue;
 					}
-					if (GetCardLogicValue(CurCardData[i + 1]) == (GetCardLogicValue(CurCardData[i]) - 1) && (GetCardLogicValue(CurCardData[i]) < 15))   //ÅĞ¶ÏÊÇ·ñÁ¬Ğø
+					if (GetCardLogicValue(CurCardData[i + 1]) == (GetCardLogicValue(CurCardData[i]) - 1) && (GetCardLogicValue(CurCardData[i]) < 15))   //åˆ¤æ–­æ˜¯å¦è¿ç»­
 					{
 						flag++;
 
-						//Ìø³öÌõ¼ş
+						//è·³å‡ºæ¡ä»¶
 						if (flag == TurnResult.cbSignedCount - 1)
 							break;
 					}
@@ -972,27 +972,27 @@ bool CGameData::JudgePlayerOutCard(WORD wCurOutCardUser)      //lih
 		if (flag >= TurnResult.cbSignedCount - 1)
 			return true;
 	}
-	else if ((TurnCardType & (1 << CT_DOUBLE_LINE)) != 0)   //Á¬¶Ô
+	else if ((TurnCardType & (1 << CT_DOUBLE_LINE)) != 0)   //è¿å¯¹
 	{
-		cout << "Á¬¶Ô" << endl;
+		cout << "è¿å¯¹" << endl;
 
-		//ÍõÕ¨ÅĞ¶Ï
+		//ç‹ç‚¸åˆ¤æ–­
 		if ((GetCardLogicValue(CurCardData[0]) == 17) && (GetCardLogicValue(CurCardData[1]) == 16))		return true;
 
-		//Õ¨µ¯ÅĞ¶Ï
+		//ç‚¸å¼¹åˆ¤æ–­
 		if (CurResult.cbFourCount != 0)		return true;
 
-		//ÅÆ²»×ãÁùÕÅ
+		//ç‰Œä¸è¶³å…­å¼ 
 		if (CurCardNum < 6)		return false;
 
-		//»ñÈ¡ÉÏ¼Ò³öÅÆÊıÖµ  ×î´óÖµ
+		//è·å–ä¸Šå®¶å‡ºç‰Œæ•°å€¼  æœ€å¤§å€¼
 		BYTE TurnLogicValue = GetCardLogicValue(TurnResult.cbDoubleCardData[0]);
-		int flag = 0;   //ÅĞ¶ÏÊÇ·ñÁ¬Ğø±êÖ¾
-		int Numflag = 0;   //ÅĞ¶ÏÅÆÊıÊÇ·ñ´ï±êµÄ±êÖ¾
+		int flag = 0;   //åˆ¤æ–­æ˜¯å¦è¿ç»­æ ‡å¿—
+		int Numflag = 0;   //åˆ¤æ–­ç‰Œæ•°æ˜¯å¦è¾¾æ ‡çš„æ ‡å¿—
 
-		for (int i = 0; i < CurCardNum; i++)     //¼ÆËãÁ¬¶ÔÕÅÊı
+		for (int i = 0; i < CurCardNum; i++)     //è®¡ç®—è¿å¯¹å¼ æ•°
 		{
-			if (flag != 0)    //Á¬Ğø²»ÓÃ±ÈÅÆ´óĞ¡
+			if (flag != 0)    //è¿ç»­ä¸ç”¨æ¯”ç‰Œå¤§å°
 			{
 				if (GetCardLogicValue(CurCardData[i + 1]) == GetCardLogicValue(CurCardData[i]))
 				{
@@ -1000,11 +1000,11 @@ bool CGameData::JudgePlayerOutCard(WORD wCurOutCardUser)      //lih
 					continue;
 				}
 				if ((GetCardLogicValue(CurCardData[i + 1]) == (GetCardLogicValue(CurCardData[i]) - 1))
-					&& (Numflag > 0) && (GetCardLogicValue(CurCardData[i]) < 15))   //ÅĞ¶ÏÊÇ·ñÁ¬Ğø
+					&& (Numflag > 0) && (GetCardLogicValue(CurCardData[i]) < 15))   //åˆ¤æ–­æ˜¯å¦è¿ç»­
 				{
 					flag++;
 
-					//Ìø³öÌõ¼ş
+					//è·³å‡ºæ¡ä»¶
 					if (flag == TurnResult.cbDoubleCount)
 						break;
 				}
@@ -1026,11 +1026,11 @@ bool CGameData::JudgePlayerOutCard(WORD wCurOutCardUser)      //lih
 						continue;
 					}
 					if (GetCardLogicValue(CurCardData[i + 1]) == (GetCardLogicValue(CurCardData[i]) - 1)
-						&& (Numflag > 0) && (GetCardLogicValue(CurCardData[i]) < 15))   //ÅĞ¶ÏÊÇ·ñÁ¬Ğø
+						&& (Numflag > 0) && (GetCardLogicValue(CurCardData[i]) < 15))   //åˆ¤æ–­æ˜¯å¦è¿ç»­
 					{
 						flag++;
 
-						//Ìø³öÌõ¼ş
+						//è·³å‡ºæ¡ä»¶
 						if (flag == TurnResult.cbDoubleCount)
 							break;
 					}
@@ -1048,27 +1048,27 @@ bool CGameData::JudgePlayerOutCard(WORD wCurOutCardUser)      //lih
 		if (flag >= TurnResult.cbDoubleCount)
 			return true;
 	}
-	else if ((TurnCardType & (1 << CT_THREE_LINE)) != 0)   //ÈıÁ¬
+	else if ((TurnCardType & (1 << CT_THREE_LINE)) != 0)   //ä¸‰è¿
 	{
-		cout << "ÈıÁ¬" << endl;
+		cout << "ä¸‰è¿" << endl;
 
-		//ÍõÕ¨ÅĞ¶Ï
+		//ç‹ç‚¸åˆ¤æ–­
 		if ((GetCardLogicValue(CurCardData[0]) == 17) && (GetCardLogicValue(CurCardData[1]) == 16))		return true;
 
-		//Õ¨µ¯ÅĞ¶Ï
+		//ç‚¸å¼¹åˆ¤æ–­
 		if (CurResult.cbFourCount != 0)		return true;
 
-		//ÅÆ²»×ãÁùÕÅ
+		//ç‰Œä¸è¶³å…­å¼ 
 		if (CurCardNum < 6)		return false;
 
-		//»ñÈ¡ÉÏ¼Ò³öÅÆÊıÖµ  ×î´óÖµ
+		//è·å–ä¸Šå®¶å‡ºç‰Œæ•°å€¼  æœ€å¤§å€¼
 		BYTE TurnLogicValue = GetCardLogicValue(TurnResult.cbThreeCardData[0]);
-		int flag = 0;   //ÅĞ¶ÏÊÇ·ñÁ¬Ğø±êÖ¾
-		int Numflag = 0;   //ÅĞ¶ÏÅÆÊıÊÇ·ñ´ï±êµÄ±êÖ¾
+		int flag = 0;   //åˆ¤æ–­æ˜¯å¦è¿ç»­æ ‡å¿—
+		int Numflag = 0;   //åˆ¤æ–­ç‰Œæ•°æ˜¯å¦è¾¾æ ‡çš„æ ‡å¿—
 
-		for (int i = 0; i < CurCardNum; i++)     //¼ÆËãÁ¬¶ÔÕÅÊı
+		for (int i = 0; i < CurCardNum; i++)     //è®¡ç®—è¿å¯¹å¼ æ•°
 		{
-			if (flag != 0)    //Á¬Ğø²»ÓÃ±ÈÅÆ´óĞ¡
+			if (flag != 0)    //è¿ç»­ä¸ç”¨æ¯”ç‰Œå¤§å°
 			{
 				if (GetCardLogicValue(CurCardData[i + 1]) == GetCardLogicValue(CurCardData[i]))
 				{
@@ -1076,11 +1076,11 @@ bool CGameData::JudgePlayerOutCard(WORD wCurOutCardUser)      //lih
 					continue;
 				}
 				if ((GetCardLogicValue(CurCardData[i + 1]) == (GetCardLogicValue(CurCardData[i]) - 1))
-					&& (Numflag > 1) && (GetCardLogicValue(CurCardData[i]) < 15))   //ÅĞ¶ÏÊÇ·ñÁ¬Ğø
+					&& (Numflag > 1) && (GetCardLogicValue(CurCardData[i]) < 15))   //åˆ¤æ–­æ˜¯å¦è¿ç»­
 				{
 					flag++;
 
-					//Ìø³öÌõ¼ş
+					//è·³å‡ºæ¡ä»¶
 					if (flag == TurnResult.cbThreeCount)
 						break;
 				}
@@ -1102,11 +1102,11 @@ bool CGameData::JudgePlayerOutCard(WORD wCurOutCardUser)      //lih
 						continue;
 					}
 					if (GetCardLogicValue(CurCardData[i + 1]) == (GetCardLogicValue(CurCardData[i]) - 1)
-						&& (Numflag > 1) && (GetCardLogicValue(CurCardData[i]) < 15))   //ÅĞ¶ÏÊÇ·ñÁ¬Ğø
+						&& (Numflag > 1) && (GetCardLogicValue(CurCardData[i]) < 15))   //åˆ¤æ–­æ˜¯å¦è¿ç»­
 					{
 						flag++;
 
-						//Ìø³öÌõ¼ş
+						//è·³å‡ºæ¡ä»¶
 						if (flag == TurnResult.cbThreeCount)
 							break;
 					}
@@ -1124,23 +1124,23 @@ bool CGameData::JudgePlayerOutCard(WORD wCurOutCardUser)      //lih
 		if (flag >= TurnResult.cbThreeCount)
 			return true;
 	}
-	else if ((TurnCardType & (1 << CT_THREE_LINE_TAKE_ONE)) != 0)   //Èı´úÒ»
+	else if ((TurnCardType & (1 << CT_THREE_LINE_TAKE_ONE)) != 0)   //ä¸‰ä»£ä¸€
 	{
 
-		cout << "Èı´úÒ»" << endl;
-		//ÍõÕ¨ÅĞ¶Ï
+		cout << "ä¸‰ä»£ä¸€" << endl;
+		//ç‹ç‚¸åˆ¤æ–­
 		if ((GetCardLogicValue(CurCardData[0]) == 17) && (GetCardLogicValue(CurCardData[1]) == 16))		return true;
 
-		//Õ¨µ¯ÅĞ¶Ï
+		//ç‚¸å¼¹åˆ¤æ–­
 		if (CurResult.cbFourCount != 0)		return true;
 
-		//ÅÆ²»¹»ËÄÕÅ
+		//ç‰Œä¸å¤Ÿå››å¼ 
 		if (CurCardNum < 4 * TurnResult.cbThreeCount)		return false;
 
-		//»ñÈ¡ÉÏ¼Ò³öÅÆÊıÖµ
+		//è·å–ä¸Šå®¶å‡ºç‰Œæ•°å€¼
 		BYTE TurnLogicValue = GetCardLogicValue(TurnResult.cbThreeCardData[0]);
 
-		if (TurnResult.cbThreeCount == 1)    //Èı´úÒ»
+		if (TurnResult.cbThreeCount == 1)    //ä¸‰ä»£ä¸€
 		{
 			int index = 0;
 			for (int i = 0; i < CurResult.cbThreeCount; i++)
@@ -1151,46 +1151,46 @@ bool CGameData::JudgePlayerOutCard(WORD wCurOutCardUser)      //lih
 				index += 3;
 			}
 		}
-		else		//·É»ú
+		else		//é£æœº
 		{
 			int index = 0;
-			int flag = 1;   //ÅĞ¶Ï·É»ú¼¸¸öÈıÕÅµÄ±êÖ¾
-							//ÅĞ¶ÏÈı¸öÊÇ·ñÁ¬Ğø
+			int flag = 1;   //åˆ¤æ–­é£æœºå‡ ä¸ªä¸‰å¼ çš„æ ‡å¿—
+							//åˆ¤æ–­ä¸‰ä¸ªæ˜¯å¦è¿ç»­
 			for (int i = 0; i < CurResult.cbThreeCount; i++)
 			{
-				if ((GetCardLogicValue(CurResult.cbThreeCardData[index]) - 1) == (GetCardLogicValue(CurResult.cbThreeCardData[index + 3])))  //Á¬Ğø
+				if ((GetCardLogicValue(CurResult.cbThreeCardData[index]) - 1) == (GetCardLogicValue(CurResult.cbThreeCardData[index + 3])))  //è¿ç»­
 				{
 					flag++;
 				}
 
 				if ((GetCardLogicValue(CurResult.cbThreeCardData[index]) >(TurnLogicValue - TurnResult.cbThreeCount + 2))
-					&& (flag == TurnResult.cbThreeCount))   //´óĞ¡±È½Ï
+					&& (flag == TurnResult.cbThreeCount))   //å¤§å°æ¯”è¾ƒ
 					return true;
 
 				index += 3;
 			}
 		}
 	}
-	else if ((TurnCardType & (1 << CT_THREE_LINE_TAKE_TWO)) != 0)   //Èı´ú¶ş
+	else if ((TurnCardType & (1 << CT_THREE_LINE_TAKE_TWO)) != 0)   //ä¸‰ä»£äºŒ
 	{
-		cout << "Èı´ú¶ş" << endl;
+		cout << "ä¸‰ä»£äºŒ" << endl;
 
-		//ÍõÕ¨ÅĞ¶Ï
+		//ç‹ç‚¸åˆ¤æ–­
 		if ((GetCardLogicValue(CurCardData[0]) == 17) && (GetCardLogicValue(CurCardData[1]) == 16))		return true;
 
-		//Õ¨µ¯ÅĞ¶Ï
+		//ç‚¸å¼¹åˆ¤æ–­
 		if (CurResult.cbFourCount != 0)		return true;
 
-		//ÅÆ²»¹»ÎåÕÅ
+		//ç‰Œä¸å¤Ÿäº”å¼ 
 		if (CurCardNum < 5 * TurnResult.cbThreeCount)		return false;
 
-		//Ã»ÓĞ¶Ô×Ó
+		//æ²¡æœ‰å¯¹å­
 		if (TurnResult.cbThreeCount < 2 && TurnResult.cbDoubleCount == 0)	return false;
 
-		//»ñÈ¡ÉÏ¼Ò³öÅÆÊıÖµ
+		//è·å–ä¸Šå®¶å‡ºç‰Œæ•°å€¼
 		BYTE TurnLogicValue = GetCardLogicValue(TurnResult.cbThreeCardData[0]);
 
-		if (TurnResult.cbThreeCount == 1)    //Èı´ú¶ş
+		if (TurnResult.cbThreeCount == 1)    //ä¸‰ä»£äºŒ
 		{
 			int index = 0;
 			for (int i = 0; i < CurResult.cbThreeCount; i++)
@@ -1201,45 +1201,45 @@ bool CGameData::JudgePlayerOutCard(WORD wCurOutCardUser)      //lih
 				index += 3;
 			}
 		}
-		else		//·É»ú
+		else		//é£æœº
 		{
 			int index = 0;
-			int flag = 1;   //ÅĞ¶Ï·É»ú¼¸¸öÈıÕÅµÄ±êÖ¾
-							//ÅĞ¶ÏÈı¸öÊÇ·ñÁ¬Ğø
+			int flag = 1;   //åˆ¤æ–­é£æœºå‡ ä¸ªä¸‰å¼ çš„æ ‡å¿—
+							//åˆ¤æ–­ä¸‰ä¸ªæ˜¯å¦è¿ç»­
 			for (int i = 0; i < CurResult.cbThreeCount; i++)
 			{
-				if ((GetCardLogicValue(CurResult.cbThreeCardData[index]) - 1) == (GetCardLogicValue(CurResult.cbThreeCardData[index + 3])))  //Á¬Ğø
+				if ((GetCardLogicValue(CurResult.cbThreeCardData[index]) - 1) == (GetCardLogicValue(CurResult.cbThreeCardData[index + 3])))  //è¿ç»­
 				{
 					flag++;
 				}
 
 				if ((GetCardLogicValue(CurResult.cbThreeCardData[index]) >(TurnLogicValue - TurnResult.cbThreeCount + 2))
-					&& (flag == TurnResult.cbThreeCount))   //´óĞ¡±È½Ï
+					&& (flag == TurnResult.cbThreeCount))   //å¤§å°æ¯”è¾ƒ
 					return true;
 
 				index += 3;
 			}
 		}
 	}
-	else if ((TurnCardType & (1 << CT_FOUR_LINE_TAKE_ONE)) != 0)   //ËÄ´ú¶ş
+	else if ((TurnCardType & (1 << CT_FOUR_LINE_TAKE_ONE)) != 0)   //å››ä»£äºŒ
 	{
-		cout << "ËÄ´ú¶ş" << endl;
+		cout << "å››ä»£äºŒ" << endl;
 
-		//ÍõÕ¨ÅĞ¶Ï
+		//ç‹ç‚¸åˆ¤æ–­
 		if ((GetCardLogicValue(CurCardData[0]) == 17) && (GetCardLogicValue(CurCardData[1]) == 16))		return true;
 
-		//Õ¨µ¯ÅĞ¶Ï
+		//ç‚¸å¼¹åˆ¤æ–­
 		if (CurResult.cbFourCount != 0)		return true;
 
 	}
-	else if ((TurnCardType & (1 << CT_FOUR_LINE_TAKE_TWO)) != 0)   //ËÄ´ú¶ş¶Ô
+	else if ((TurnCardType & (1 << CT_FOUR_LINE_TAKE_TWO)) != 0)   //å››ä»£äºŒå¯¹
 	{
-		cout << "ËÄ´ú¶ş¶Ô" << endl;
+		cout << "å››ä»£äºŒå¯¹" << endl;
 
-		//ÍõÕ¨ÅĞ¶Ï
+		//ç‹ç‚¸åˆ¤æ–­
 		if ((GetCardLogicValue(CurCardData[0]) == 17) && (GetCardLogicValue(CurCardData[1]) == 16))		return true;
 
-		//Õ¨µ¯ÅĞ¶Ï
+		//ç‚¸å¼¹åˆ¤æ–­
 		if (CurResult.cbFourCount != 0)		return true;
 
 	}
@@ -1247,23 +1247,23 @@ bool CGameData::JudgePlayerOutCard(WORD wCurOutCardUser)      //lih
 	return false;
 }
 
-//Íæ¼ÒµÚÒ»¸ö³öÅÆ  ÅĞ¶ÏËû¿ÉÒÔ³öµÄºÏÊÊµÄÅÆ
+//ç©å®¶ç¬¬ä¸€ä¸ªå‡ºç‰Œ  åˆ¤æ–­ä»–å¯ä»¥å‡ºçš„åˆé€‚çš„ç‰Œ
 bool CGameData::AnalysePlayerOutCardFirst(WORD OutCardUsr, BYTE OutCardData[], BYTE *OutCardNum)
 {
 	cout << "func AnalysePlayerOutCardFirst() Begin::::" << endl;
 
-	//Ğ£Ñé
+	//æ ¡éªŒ
 	if (OutCardData == NULL || OutCardUsr == INVALID_CHAIR)
 	{
 		return false;
 	}
 
-	//¹¹½¨Öµ
+	//æ„å»ºå€¼
 	BYTE tmpOutCardData[MAX_CARD_COUNT];
 	BYTE tmpOutCardNum = 0;
 	ZeroMemory(&tmpOutCardData, sizeof(tmpOutCardData));
 
-	//»ñÈ¡µ±Ç°Íæ¼ÒµÄÊÖÅÆÊı¾İ
+	//è·å–å½“å‰ç©å®¶çš„æ‰‹ç‰Œæ•°æ®
 	BYTE CurCardNum = m_players_config.players[OutCardUsr].hand_card_num;
 	BYTE CurCardData[MAX_CARD_COUNT];
 	ZeroMemory(&CurCardData, sizeof(CurCardData));
@@ -1278,23 +1278,23 @@ bool CGameData::AnalysePlayerOutCardFirst(WORD OutCardUsr, BYTE OutCardData[], B
 		CurCardData[i] = m_players_config.hand_cards[OutCardUsr][i];
 	}
 
-	//NoLaiZiµÄÅÅĞò
+	//NoLaiZiçš„æ’åº
 	SortCardListNoLaiZi(CurCardData, CurCardNum, ST_ORDER);
 
-	//·ÖÎöÁ½¸öÆË¿ËÅÆĞÍ
+	//åˆ†æä¸¤ä¸ªæ‰‘å…‹ç‰Œå‹
 	tagAnalyseResult CurResult;
 	ZeroMemory(&CurResult, sizeof(CurResult));
 
 	AnalysebCardData(CurCardData, CurCardNum, CurResult);
 
-	//ÅĞ¶ÏÄÜ³öµÄÅÆ  ÓÅÏÈ³ö×îĞ¡µÄÅÆÖµ  Õ¨µ¯×îºó³ö
+	//åˆ¤æ–­èƒ½å‡ºçš„ç‰Œ  ä¼˜å…ˆå‡ºæœ€å°çš„ç‰Œå€¼  ç‚¸å¼¹æœ€åå‡º
 
-	cout << "¿ªÊ¼½øĞĞ±È½Ï" << endl;
+	cout << "å¼€å§‹è¿›è¡Œæ¯”è¾ƒ" << endl;
 
-	//Èç¹û×îĞ¡µÄÅÆÎªÕ¨µ¯
+	//å¦‚æœæœ€å°çš„ç‰Œä¸ºç‚¸å¼¹
 	if (CurResult.cbFourCount != 0)
 	{
-		BYTE MinData = GetCardLogicValue(CurCardData[CurCardNum - 1]);		//»ñÈ¡×îĞ¡ÅÆ
+		BYTE MinData = GetCardLogicValue(CurCardData[CurCardNum - 1]);		//è·å–æœ€å°ç‰Œ
 		WORD Fourcount = CurResult.cbFourCount;
 
 		while (MinData == CurResult.cbFourCardData[Fourcount * 4 - 1])
@@ -1308,19 +1308,19 @@ bool CGameData::AnalysePlayerOutCardFirst(WORD OutCardUsr, BYTE OutCardData[], B
 			MinData = GetCardLogicValue(CurCardData[CurCardNum - 1]);
 		}
 	}
-	//±È½Ï×îĞ¡ÅÆĞÍ
+	//æ¯”è¾ƒæœ€å°ç‰Œå‹
 	if (CurResult.cbSignedCount != 0 && CurResult.cbDoubleCount != 0 && CurResult.cbThreeCount != 0)
 	{
 		cout << "1";
 
-		BYTE MinData = GetCardLogicValue(CurCardData[CurCardNum - 1]);		//»ñÈ¡×îĞ¡ÅÆ
-		if (MinData == GetCardLogicValue(CurResult.cbSignedCardData[CurResult.cbSignedCount - 1]))		//µ¥ÅÅ
+		BYTE MinData = GetCardLogicValue(CurCardData[CurCardNum - 1]);		//è·å–æœ€å°ç‰Œ
+		if (MinData == GetCardLogicValue(CurResult.cbSignedCardData[CurResult.cbSignedCount - 1]))		//å•æ’
 		{
 			cout << "1.1";
 			tmpOutCardData[0] = CurResult.cbSignedCardData[CurResult.cbSignedCount - 1];
 			tmpOutCardNum = 1;
 		}
-		else if (MinData == GetCardLogicValue(CurResult.cbDoubleCardData[CurResult.cbDoubleCount * 2 - 1]))   //¶Ô×Ó
+		else if (MinData == GetCardLogicValue(CurResult.cbDoubleCardData[CurResult.cbDoubleCount * 2 - 1]))   //å¯¹å­
 		{
 			cout << "1.2";
 			for (int i = 0; i < 2; i++)
@@ -1328,7 +1328,7 @@ bool CGameData::AnalysePlayerOutCardFirst(WORD OutCardUsr, BYTE OutCardData[], B
 
 			tmpOutCardNum = 2;
 		}
-		else if (MinData == GetCardLogicValue(CurResult.cbThreeCardData[CurResult.cbThreeCount * 3 - 1]))		//Èı´úÒ»
+		else if (MinData == GetCardLogicValue(CurResult.cbThreeCardData[CurResult.cbThreeCount * 3 - 1]))		//ä¸‰ä»£ä¸€
 		{
 			cout << "1.3";
 			for (int i = 0; i < 3; i++)
@@ -1344,16 +1344,16 @@ bool CGameData::AnalysePlayerOutCardFirst(WORD OutCardUsr, BYTE OutCardData[], B
 	else if (CurResult.cbDoubleCount != 0 && CurResult.cbThreeCount != 0)
 	{
 		cout << "2";
-		BYTE MinData = GetCardLogicValue(CurCardData[CurCardNum - 1]);		//»ñÈ¡×îĞ¡ÅÆ
+		BYTE MinData = GetCardLogicValue(CurCardData[CurCardNum - 1]);		//è·å–æœ€å°ç‰Œ
 
-		if (MinData == GetCardLogicValue(CurResult.cbDoubleCardData[CurResult.cbDoubleCount * 2 - 1]))   //¶Ô×Ó
+		if (MinData == GetCardLogicValue(CurResult.cbDoubleCardData[CurResult.cbDoubleCount * 2 - 1]))   //å¯¹å­
 		{
 			for (int i = 0; i < 2; i++)
 				tmpOutCardData[i] = CurResult.cbDoubleCardData[CurResult.cbDoubleCount * 2 - 1 - i];
 
 			tmpOutCardNum = 2;
 		}
-		else if (MinData == GetCardLogicValue(CurResult.cbThreeCardData[CurResult.cbThreeCount * 3 - 1]))		//Èı´ú¶ş
+		else if (MinData == GetCardLogicValue(CurResult.cbThreeCardData[CurResult.cbThreeCount * 3 - 1]))		//ä¸‰ä»£äºŒ
 		{
 			for (int i = 0; i < 3; i++)
 				tmpOutCardData[i] = CurResult.cbThreeCardData[CurResult.cbThreeCount * 3 - 1 - i];
@@ -1369,14 +1369,14 @@ bool CGameData::AnalysePlayerOutCardFirst(WORD OutCardUsr, BYTE OutCardData[], B
 	else if (CurResult.cbSignedCount != 0 && CurResult.cbDoubleCount != 0)
 	{
 		cout << "3";
-		BYTE MinData = GetCardLogicValue(CurCardData[CurCardNum - 1]);		//»ñÈ¡×îĞ¡ÅÆ
+		BYTE MinData = GetCardLogicValue(CurCardData[CurCardNum - 1]);		//è·å–æœ€å°ç‰Œ
 
-		if (MinData == GetCardLogicValue(CurResult.cbSignedCardData[CurResult.cbSignedCount - 1]))		//µ¥ÅÅ
+		if (MinData == GetCardLogicValue(CurResult.cbSignedCardData[CurResult.cbSignedCount - 1]))		//å•æ’
 		{
 			tmpOutCardData[0] = CurResult.cbSignedCardData[CurResult.cbSignedCount - 1];
 			tmpOutCardNum = 1;
 		}
-		else if (MinData == GetCardLogicValue(CurResult.cbDoubleCardData[CurResult.cbDoubleCount * 2 - 1]))   //¶Ô×Ó
+		else if (MinData == GetCardLogicValue(CurResult.cbDoubleCardData[CurResult.cbDoubleCount * 2 - 1]))   //å¯¹å­
 		{
 			for (int i = 0; i < 2; i++)
 				tmpOutCardData[i] = CurResult.cbDoubleCardData[CurResult.cbDoubleCount * 2 - 1 - i];
@@ -1390,14 +1390,14 @@ bool CGameData::AnalysePlayerOutCardFirst(WORD OutCardUsr, BYTE OutCardData[], B
 	else if (CurResult.cbSignedCount != 0 && CurResult.cbThreeCount != 0)
 	{
 		cout << "4";
-		BYTE MinData = GetCardLogicValue(CurCardData[CurCardNum - 1]);		//»ñÈ¡×îĞ¡ÅÆ
-		if (MinData == GetCardLogicValue(CurResult.cbSignedCardData[CurResult.cbSignedCount - 1]))		//µ¥ÅÅ
+		BYTE MinData = GetCardLogicValue(CurCardData[CurCardNum - 1]);		//è·å–æœ€å°ç‰Œ
+		if (MinData == GetCardLogicValue(CurResult.cbSignedCardData[CurResult.cbSignedCount - 1]))		//å•æ’
 		{
 			tmpOutCardData[0] = CurResult.cbSignedCardData[CurResult.cbSignedCount - 1];
 			tmpOutCardNum = 1;
 		}
 
-		else if (MinData == GetCardLogicValue(CurResult.cbThreeCardData[CurResult.cbThreeCount * 3 - 1]))		//Èı´úÒ»
+		else if (MinData == GetCardLogicValue(CurResult.cbThreeCardData[CurResult.cbThreeCount * 3 - 1]))		//ä¸‰ä»£ä¸€
 		{
 			for (int i = 0; i < 3; i++)
 				tmpOutCardData[i] = CurResult.cbThreeCardData[CurResult.cbThreeCount * 3 - 1 - i];
@@ -1457,21 +1457,21 @@ bool CGameData::AnalysePlayerOutCardFirst(WORD OutCardUsr, BYTE OutCardData[], B
 	return true;
 }
 
-//Íæ¼Ò½ÓÅÆ  ÅĞ¶ÏËû¿ÉÒÔ³öµÄÅÆ
+//ç©å®¶æ¥ç‰Œ  åˆ¤æ–­ä»–å¯ä»¥å‡ºçš„ç‰Œ
 bool CGameData::AnalysePlayerOutCard(WORD OutCardUsr, BYTE OutCardData[], BYTE *OutCardNum)
 {
-	//¹¹½¨Öµ
+	//æ„å»ºå€¼
 	BYTE tmpOutCardData[MAX_CARD_COUNT];
 	BYTE tmpOutCardNum = 0;
 	ZeroMemory(&tmpOutCardData, sizeof(tmpOutCardData));
 
-	//»ñµÃ¸ÃÂÖ×î´ó³öÅÆÊı¾İ
+	//è·å¾—è¯¥è½®æœ€å¤§å‡ºç‰Œæ•°æ®
 	BYTE TurnCardNum = m_playing_para.turn_cards_num;
 	BYTE TurnCardData[MAX_CARD_COUNT];
 	ZeroMemory(&TurnCardData, sizeof(TurnCardData));
 	CopyMemory(TurnCardData, m_playing_para.turn_max_cards, sizeof(TurnCardData));
 
-	//»ñÈ¡µ±Ç°Íæ¼ÒµÄÊÖÅÆÊı¾İ
+	//è·å–å½“å‰ç©å®¶çš„æ‰‹ç‰Œæ•°æ®
 	BYTE CurCardNum = m_players_config.players[OutCardUsr].hand_card_num;
 	BYTE CurCardData[MAX_CARD_COUNT];
 	ZeroMemory(&CurCardData, sizeof(CurCardData));
@@ -1481,7 +1481,7 @@ bool CGameData::AnalysePlayerOutCard(WORD OutCardUsr, BYTE OutCardData[], BYTE *
 		CurCardData[i] = m_players_config.hand_cards[OutCardUsr][i];
 	}
 
-	//·ÖÎöÁ½¸öÆË¿ËÅÆĞÍ
+	//åˆ†æä¸¤ä¸ªæ‰‘å…‹ç‰Œå‹
 	tagAnalyseResult TurnResult;
 	tagAnalyseResult CurResult;
 
@@ -1491,22 +1491,22 @@ bool CGameData::AnalysePlayerOutCard(WORD OutCardUsr, BYTE OutCardData[], BYTE *
 	AnalysebCardData(CurCardData, CurCardNum, CurResult);
 	AnalysebCardData(TurnCardData, TurnCardNum, TurnResult);
 
-	//»ñÈ¡³öÅÆÍæ¼ÒµÄÅÆĞÍ
+	//è·å–å‡ºç‰Œç©å®¶çš„ç‰Œå‹
 	int TurnCardType = GetType(TurnResult, TurnCardData, TurnCardNum, TurnCardData);
 	TurnCardType = TransListToInt(0, TurnCardType);
 
-	//¶Ô±ÈÅĞ¶ÏÅÆĞÍ
+	//å¯¹æ¯”åˆ¤æ–­ç‰Œå‹
 	if (TurnCardType == CT_ERROR)	return false;
-	if ((TurnCardType & (1 << CT_MISSILE_CARD)) != 0)    return false;    //ÍõÕ¨ÅĞ¶Ï
+	if ((TurnCardType & (1 << CT_MISSILE_CARD)) != 0)    return false;    //ç‹ç‚¸åˆ¤æ–­
 
-																		  //Õ¨µ¯ÅĞ¶Ï
-	if ((TurnCardType & (1 << CT_BOMB_CARD)) != 0)   //ÉÏ¼Ò³öÕ¨µ¯
+																		  //ç‚¸å¼¹åˆ¤æ–­
+	if ((TurnCardType & (1 << CT_BOMB_CARD)) != 0)   //ä¸Šå®¶å‡ºç‚¸å¼¹
 	{
-		cout << "Õ¨µ¯" << endl;
+		cout << "ç‚¸å¼¹" << endl;
 
-		//»ñÈ¡ÉÏ¼Ò³öÅÆÊıÖµ
+		//è·å–ä¸Šå®¶å‡ºç‰Œæ•°å€¼
 		BYTE TurnLogicValue = GetCardLogicValue(TurnResult.cbFourCardData[0]);
-		int index = 0;   //¸¨Öú±êÊ¶
+		int index = 0;   //è¾…åŠ©æ ‡è¯†
 
 						 //if (CurResult.cbFourCount == 0)    return false;
 		for (int i = 0; i < CurResult.cbFourCount; i++)
@@ -1526,7 +1526,7 @@ bool CGameData::AnalysePlayerOutCard(WORD OutCardUsr, BYTE OutCardData[], BYTE *
 			index += 4;
 		}
 
-		//ÍõÕ¨ÅĞ¶Ï
+		//ç‹ç‚¸åˆ¤æ–­
 		if ((GetCardLogicValue(CurCardData[0]) == 17) && (GetCardLogicValue(CurCardData[1]) == 16))
 		{
 			for (int i = 0; i < 2; i++)
@@ -1543,11 +1543,11 @@ bool CGameData::AnalysePlayerOutCard(WORD OutCardUsr, BYTE OutCardData[], BYTE *
 
 
 	}
-	else if ((TurnCardType & (1 << CT_SINGLE)) != 0)   //µ¥ÕÅ
+	else if ((TurnCardType & (1 << CT_SINGLE)) != 0)   //å•å¼ 
 	{
-		cout << "µ¥ÕÅ" << endl;
+		cout << "å•å¼ " << endl;
 
-		//»ñÈ¡ÉÏ¼Ò³öÅÆÊıÖµ
+		//è·å–ä¸Šå®¶å‡ºç‰Œæ•°å€¼
 		BYTE TurnLogicValue = GetCardLogicValue(TurnResult.cbSignedCardData[0]);
 
 
@@ -1585,7 +1585,7 @@ bool CGameData::AnalysePlayerOutCard(WORD OutCardUsr, BYTE OutCardData[], BYTE *
 			}
 		}
 
-		//Õ¨µ¯ÅĞ¶Ï
+		//ç‚¸å¼¹åˆ¤æ–­
 		if (CurResult.cbFourCount != 0)
 		{
 			int index = 0;
@@ -1601,7 +1601,7 @@ bool CGameData::AnalysePlayerOutCard(WORD OutCardUsr, BYTE OutCardData[], BYTE *
 			return true;
 		}
 
-		//ÍõÕ¨ÅĞ¶Ï
+		//ç‹ç‚¸åˆ¤æ–­
 		if ((GetCardLogicValue(CurCardData[0]) == 17) && (GetCardLogicValue(CurCardData[1]) == 16))
 		{
 			for (int i = 0; i < 2; i++)
@@ -1614,11 +1614,11 @@ bool CGameData::AnalysePlayerOutCard(WORD OutCardUsr, BYTE OutCardData[], BYTE *
 			return true;
 		}
 	}
-	else if ((TurnCardType & (1 << CT_DOUBLE)) != 0)   //¶Ô×Ó
+	else if ((TurnCardType & (1 << CT_DOUBLE)) != 0)   //å¯¹å­
 	{
-		cout << "¶Ô×Ó" << endl;
+		cout << "å¯¹å­" << endl;
 
-		//»ñÈ¡ÉÏ¼Ò³öÅÆÊıÖµ
+		//è·å–ä¸Šå®¶å‡ºç‰Œæ•°å€¼
 		BYTE TurnLogicValue = GetCardLogicValue(TurnResult.cbDoubleCardData[0]);
 
 		int index = (CurResult.cbDoubleCount - 1) * 2;
@@ -1659,7 +1659,7 @@ bool CGameData::AnalysePlayerOutCard(WORD OutCardUsr, BYTE OutCardData[], BYTE *
 			index -= 3;
 		}
 
-		//Õ¨µ¯ÅĞ¶Ï
+		//ç‚¸å¼¹åˆ¤æ–­
 		if (CurResult.cbFourCount != 0)
 		{
 			int index = 0;
@@ -1675,7 +1675,7 @@ bool CGameData::AnalysePlayerOutCard(WORD OutCardUsr, BYTE OutCardData[], BYTE *
 			return true;
 		}
 
-		//ÍõÕ¨ÅĞ¶Ï
+		//ç‹ç‚¸åˆ¤æ–­
 		if ((GetCardLogicValue(CurCardData[0]) == 17) && (GetCardLogicValue(CurCardData[1]) == 16))
 		{
 			for (int i = 0; i < 2; i++)
@@ -1688,11 +1688,11 @@ bool CGameData::AnalysePlayerOutCard(WORD OutCardUsr, BYTE OutCardData[], BYTE *
 			return true;
 		}
 	}
-	else if ((TurnCardType & (1 << CT_THREE)) != 0)   //ÈıÕÅ
+	else if ((TurnCardType & (1 << CT_THREE)) != 0)   //ä¸‰å¼ 
 	{
-		cout << "ÈıÕÅ" << endl;
+		cout << "ä¸‰å¼ " << endl;
 
-		//»ñÈ¡ÉÏ¼Ò³öÅÆÊıÖµ
+		//è·å–ä¸Šå®¶å‡ºç‰Œæ•°å€¼
 		BYTE TurnLogicValue = GetCardLogicValue(TurnResult.cbThreeCardData[0]);
 
 		int index = (CurResult.cbThreeCount - 1) * 3;
@@ -1713,7 +1713,7 @@ bool CGameData::AnalysePlayerOutCard(WORD OutCardUsr, BYTE OutCardData[], BYTE *
 			index -= 3;
 		}
 
-		//Õ¨µ¯ÅĞ¶Ï
+		//ç‚¸å¼¹åˆ¤æ–­
 		if (CurResult.cbFourCount != 0)
 		{
 			int index = 0;
@@ -1729,7 +1729,7 @@ bool CGameData::AnalysePlayerOutCard(WORD OutCardUsr, BYTE OutCardData[], BYTE *
 			return true;
 		}
 
-		//ÍõÕ¨ÅĞ¶Ï
+		//ç‹ç‚¸åˆ¤æ–­
 		if ((GetCardLogicValue(CurCardData[0]) == 17) && (GetCardLogicValue(CurCardData[1]) == 16))
 		{
 			for (int i = 0; i < 2; i++)
@@ -1742,33 +1742,33 @@ bool CGameData::AnalysePlayerOutCard(WORD OutCardUsr, BYTE OutCardData[], BYTE *
 			return true;
 		}
 	}
-	else if ((TurnCardType & (1 << CT_SINGLE_LINE)) != 0)   //Ë³×Ó
+	else if ((TurnCardType & (1 << CT_SINGLE_LINE)) != 0)   //é¡ºå­
 	{
-		cout << "Ë³×Ó" << endl;
+		cout << "é¡ºå­" << endl;
 
-		//»ñÈ¡ÉÏ¼Ò³öÅÆÊıÖµ  ×î´óÖµ
+		//è·å–ä¸Šå®¶å‡ºç‰Œæ•°å€¼  æœ€å¤§å€¼
 		BYTE TurnLogicValue = GetCardLogicValue(TurnResult.cbSignedCardData[0]);
 
 		int flag = 0;
 		int index = 0;
 
-		for (int i = 0; i < CurCardNum; i++)     //¼ÆËãË³×ÓÕÅÊı
+		for (int i = 0; i < CurCardNum; i++)     //è®¡ç®—é¡ºå­å¼ æ•°
 		{
-			printf("µÚ%dÕÅÅÆµÄÁ¬Ğø±êÖ¾£º%d\n", i, flag);
-			if (flag != 0)    //Á¬Ğø²»ÓÃ±ÈÅÆ´óĞ¡
+			printf("ç¬¬%då¼ ç‰Œçš„è¿ç»­æ ‡å¿—ï¼š%d\n", i, flag);
+			if (flag != 0)    //è¿ç»­ä¸ç”¨æ¯”ç‰Œå¤§å°
 			{
 				if (GetCardLogicValue(CurCardData[i + 1]) == GetCardLogicValue(CurCardData[i]))
 				{
 					continue;
 				}
-				if (GetCardLogicValue(CurCardData[i + 1]) == (GetCardLogicValue(CurCardData[i]) - 1) && (GetCardLogicValue(CurCardData[i]) < 15))   //ÅĞ¶ÏÊÇ·ñÁ¬Ğø
+				if (GetCardLogicValue(CurCardData[i + 1]) == (GetCardLogicValue(CurCardData[i]) - 1) && (GetCardLogicValue(CurCardData[i]) < 15))   //åˆ¤æ–­æ˜¯å¦è¿ç»­
 				{
 					tmpOutCardData[index++] = CurCardData[i];
 					tmpOutCardNum++;
 
 					flag++;
 
-					//Ìø³öÌõ¼ş
+					//è·³å‡ºæ¡ä»¶
 					if (flag == TurnResult.cbSignedCount - 1)
 					{
 						tmpOutCardData[index] = CurCardData[i + 1];
@@ -1793,14 +1793,14 @@ bool CGameData::AnalysePlayerOutCard(WORD OutCardUsr, BYTE OutCardData[], BYTE *
 					{
 						continue;
 					}
-					if (GetCardLogicValue(CurCardData[i + 1]) == (GetCardLogicValue(CurCardData[i]) - 1) && (GetCardLogicValue(CurCardData[i]) < 15))   //ÅĞ¶ÏÊÇ·ñÁ¬Ğø
+					if (GetCardLogicValue(CurCardData[i + 1]) == (GetCardLogicValue(CurCardData[i]) - 1) && (GetCardLogicValue(CurCardData[i]) < 15))   //åˆ¤æ–­æ˜¯å¦è¿ç»­
 					{
 						tmpOutCardData[index++] = CurCardData[i];
 						tmpOutCardNum++;
 
 						flag++;
 
-						//Ìø³öÌõ¼ş
+						//è·³å‡ºæ¡ä»¶
 						if (flag == TurnResult.cbSignedCount - 1)
 							break;
 					}
@@ -1824,7 +1824,7 @@ bool CGameData::AnalysePlayerOutCard(WORD OutCardUsr, BYTE OutCardData[], BYTE *
 			return true;
 		}
 
-		//Õ¨µ¯ÅĞ¶Ï
+		//ç‚¸å¼¹åˆ¤æ–­
 		if (CurResult.cbFourCount != 0)
 		{
 			int index = 0;
@@ -1840,7 +1840,7 @@ bool CGameData::AnalysePlayerOutCard(WORD OutCardUsr, BYTE OutCardData[], BYTE *
 			return true;
 		}
 
-		//ÍõÕ¨ÅĞ¶Ï
+		//ç‹ç‚¸åˆ¤æ–­
 		if ((GetCardLogicValue(CurCardData[0]) == 17) && (GetCardLogicValue(CurCardData[1]) == 16))
 		{
 			for (int i = 0; i < 2; i++)
@@ -1853,20 +1853,20 @@ bool CGameData::AnalysePlayerOutCard(WORD OutCardUsr, BYTE OutCardData[], BYTE *
 			return true;
 		}
 	}
-	else if ((TurnCardType & (1 << CT_DOUBLE_LINE)) != 0)   //Á¬¶Ô
+	else if ((TurnCardType & (1 << CT_DOUBLE_LINE)) != 0)   //è¿å¯¹
 	{
-		cout << "Á¬¶Ô" << endl;
+		cout << "è¿å¯¹" << endl;
 
 
-		//»ñÈ¡ÉÏ¼Ò³öÅÆÊıÖµ  ×î´óÖµ
+		//è·å–ä¸Šå®¶å‡ºç‰Œæ•°å€¼  æœ€å¤§å€¼
 		BYTE TurnLogicValue = GetCardLogicValue(TurnResult.cbDoubleCardData[0]);
-		int flag = 0;   //ÅĞ¶ÏÊÇ·ñÁ¬Ğø±êÖ¾
-		int Numflag = 0;   //ÅĞ¶ÏÅÆÊıÊÇ·ñ´ï±êµÄ±êÖ¾
+		int flag = 0;   //åˆ¤æ–­æ˜¯å¦è¿ç»­æ ‡å¿—
+		int Numflag = 0;   //åˆ¤æ–­ç‰Œæ•°æ˜¯å¦è¾¾æ ‡çš„æ ‡å¿—
 		int index = 0;
 
-		for (int i = 0; i < CurCardNum; i++)     //¼ÆËãÁ¬¶ÔÕÅÊı
+		for (int i = 0; i < CurCardNum; i++)     //è®¡ç®—è¿å¯¹å¼ æ•°
 		{
-			if (flag != 0)    //Á¬Ğø²»ÓÃ±ÈÅÆ´óĞ¡
+			if (flag != 0)    //è¿ç»­ä¸ç”¨æ¯”ç‰Œå¤§å°
 			{
 				if (GetCardLogicValue(CurCardData[i + 1]) == GetCardLogicValue(CurCardData[i]))
 				{
@@ -1874,9 +1874,9 @@ bool CGameData::AnalysePlayerOutCard(WORD OutCardUsr, BYTE OutCardData[], BYTE *
 					continue;
 				}
 				if ((GetCardLogicValue(CurCardData[i + 1]) == (GetCardLogicValue(CurCardData[i]) - 1))
-					&& (Numflag > 0) && (GetCardLogicValue(CurCardData[i]) < 15))   //ÅĞ¶ÏÊÇ·ñÁ¬Ğø
+					&& (Numflag > 0) && (GetCardLogicValue(CurCardData[i]) < 15))   //åˆ¤æ–­æ˜¯å¦è¿ç»­
 				{
-					tmpOutCardData[index++] = CurCardData[i];		//Á¬¶Ô¼ÓÁ½´Î
+					tmpOutCardData[index++] = CurCardData[i];		//è¿å¯¹åŠ ä¸¤æ¬¡
 					tmpOutCardNum++;
 
 					tmpOutCardData[index++] = CurCardData[i - 1];
@@ -1884,7 +1884,7 @@ bool CGameData::AnalysePlayerOutCard(WORD OutCardUsr, BYTE OutCardData[], BYTE *
 
 					flag++;
 
-					//Ìø³öÌõ¼ş
+					//è·³å‡ºæ¡ä»¶
 					if (flag == TurnResult.cbDoubleCount)
 						break;
 				}
@@ -1912,9 +1912,9 @@ bool CGameData::AnalysePlayerOutCard(WORD OutCardUsr, BYTE OutCardData[], BYTE *
 						continue;
 					}
 					if (GetCardLogicValue(CurCardData[i + 1]) == (GetCardLogicValue(CurCardData[i]) - 1)
-						&& (Numflag > 0) && (GetCardLogicValue(CurCardData[i]) < 15))   //ÅĞ¶ÏÊÇ·ñÁ¬Ğø
+						&& (Numflag > 0) && (GetCardLogicValue(CurCardData[i]) < 15))   //åˆ¤æ–­æ˜¯å¦è¿ç»­
 					{
-						tmpOutCardData[index++] = CurCardData[i];		//Á¬¶Ô¼ÓÁ½´Î
+						tmpOutCardData[index++] = CurCardData[i];		//è¿å¯¹åŠ ä¸¤æ¬¡
 						tmpOutCardNum++;
 
 						tmpOutCardData[index++] = CurCardData[i - 1];
@@ -1922,7 +1922,7 @@ bool CGameData::AnalysePlayerOutCard(WORD OutCardUsr, BYTE OutCardData[], BYTE *
 
 						flag++;
 
-						//Ìø³öÌõ¼ş
+						//è·³å‡ºæ¡ä»¶
 						if (flag == TurnResult.cbDoubleCount)
 							break;
 					}
@@ -1951,7 +1951,7 @@ bool CGameData::AnalysePlayerOutCard(WORD OutCardUsr, BYTE OutCardData[], BYTE *
 			return true;
 		}
 
-		//Õ¨µ¯ÅĞ¶Ï
+		//ç‚¸å¼¹åˆ¤æ–­
 		if (CurResult.cbFourCount != 0)
 		{
 			int index = 0;
@@ -1967,7 +1967,7 @@ bool CGameData::AnalysePlayerOutCard(WORD OutCardUsr, BYTE OutCardData[], BYTE *
 			return true;
 		}
 
-		//ÍõÕ¨ÅĞ¶Ï
+		//ç‹ç‚¸åˆ¤æ–­
 		if ((GetCardLogicValue(CurCardData[0]) == 17) && (GetCardLogicValue(CurCardData[1]) == 16))
 		{
 			for (int i = 0; i < 2; i++)
@@ -1980,19 +1980,19 @@ bool CGameData::AnalysePlayerOutCard(WORD OutCardUsr, BYTE OutCardData[], BYTE *
 			return true;
 		}
 	}
-	else if ((TurnCardType & (1 << CT_THREE_LINE)) != 0)   //ÈıÁ¬
+	else if ((TurnCardType & (1 << CT_THREE_LINE)) != 0)   //ä¸‰è¿
 	{
-		cout << "ÈıÁ¬" << endl;
+		cout << "ä¸‰è¿" << endl;
 
-		//»ñÈ¡ÉÏ¼Ò³öÅÆÊıÖµ  ×î´óÖµ
+		//è·å–ä¸Šå®¶å‡ºç‰Œæ•°å€¼  æœ€å¤§å€¼
 		BYTE TurnLogicValue = GetCardLogicValue(TurnResult.cbThreeCardData[0]);
-		int flag = 0;   //ÅĞ¶ÏÊÇ·ñÁ¬Ğø±êÖ¾
-		int Numflag = 0;   //ÅĞ¶ÏÅÆÊıÊÇ·ñ´ï±êµÄ±êÖ¾
+		int flag = 0;   //åˆ¤æ–­æ˜¯å¦è¿ç»­æ ‡å¿—
+		int Numflag = 0;   //åˆ¤æ–­ç‰Œæ•°æ˜¯å¦è¾¾æ ‡çš„æ ‡å¿—
 		int index = 0;
 
-		for (int i = 0; i < CurCardNum; i++)     //¼ÆËãÁ¬¶ÔÕÅÊı
+		for (int i = 0; i < CurCardNum; i++)     //è®¡ç®—è¿å¯¹å¼ æ•°
 		{
-			if (flag != 0)    //Á¬Ğø²»ÓÃ±ÈÅÆ´óĞ¡
+			if (flag != 0)    //è¿ç»­ä¸ç”¨æ¯”ç‰Œå¤§å°
 			{
 				if (GetCardLogicValue(CurCardData[i + 1]) == GetCardLogicValue(CurCardData[i]))
 				{
@@ -2000,9 +2000,9 @@ bool CGameData::AnalysePlayerOutCard(WORD OutCardUsr, BYTE OutCardData[], BYTE *
 					continue;
 				}
 				if ((GetCardLogicValue(CurCardData[i + 1]) == (GetCardLogicValue(CurCardData[i]) - 1))
-					&& (Numflag > 1) && (GetCardLogicValue(CurCardData[i]) < 15))   //ÅĞ¶ÏÊÇ·ñÁ¬Ğø
+					&& (Numflag > 1) && (GetCardLogicValue(CurCardData[i]) < 15))   //åˆ¤æ–­æ˜¯å¦è¿ç»­
 				{
-					tmpOutCardData[index++] = CurCardData[i];		//ÈıÁ¬¼ÓÈı´Î
+					tmpOutCardData[index++] = CurCardData[i];		//ä¸‰è¿åŠ ä¸‰æ¬¡
 					tmpOutCardNum++;
 
 					tmpOutCardData[index++] = CurCardData[i - 1];
@@ -2013,7 +2013,7 @@ bool CGameData::AnalysePlayerOutCard(WORD OutCardUsr, BYTE OutCardData[], BYTE *
 
 					flag++;
 
-					//Ìø³öÌõ¼ş
+					//è·³å‡ºæ¡ä»¶
 					if (flag == TurnResult.cbThreeCount)
 						break;
 				}
@@ -2026,7 +2026,7 @@ bool CGameData::AnalysePlayerOutCard(WORD OutCardUsr, BYTE OutCardData[], BYTE *
 					flag = 0;
 				}
 
-				if (GetCardLogicValue(CurCardData[i + 1]) != GetCardLogicValue(CurCardData[i]))   //²»ÊÇÍ¬ÅÆÁË ±êÖ¾Î»ÖÆÁã
+				if (GetCardLogicValue(CurCardData[i + 1]) != GetCardLogicValue(CurCardData[i]))   //ä¸æ˜¯åŒç‰Œäº† æ ‡å¿—ä½åˆ¶é›¶
 				{
 					Numflag = 0;
 				}
@@ -2041,9 +2041,9 @@ bool CGameData::AnalysePlayerOutCard(WORD OutCardUsr, BYTE OutCardData[], BYTE *
 						continue;
 					}
 					if (GetCardLogicValue(CurCardData[i + 1]) == (GetCardLogicValue(CurCardData[i]) - 1)
-						&& (Numflag > 1) && (GetCardLogicValue(CurCardData[i]) < 15))   //ÅĞ¶ÏÊÇ·ñÁ¬Ğø
+						&& (Numflag > 1) && (GetCardLogicValue(CurCardData[i]) < 15))   //åˆ¤æ–­æ˜¯å¦è¿ç»­
 					{
-						tmpOutCardData[index++] = CurCardData[i];		//ÈıÁ¬¼ÓÈı´Î
+						tmpOutCardData[index++] = CurCardData[i];		//ä¸‰è¿åŠ ä¸‰æ¬¡
 						tmpOutCardNum++;
 
 						tmpOutCardData[index++] = CurCardData[i - 1];
@@ -2054,7 +2054,7 @@ bool CGameData::AnalysePlayerOutCard(WORD OutCardUsr, BYTE OutCardData[], BYTE *
 
 						flag++;
 
-						//Ìø³öÌõ¼ş
+						//è·³å‡ºæ¡ä»¶
 						if (flag == TurnResult.cbThreeCount)
 							break;
 					}
@@ -2067,7 +2067,7 @@ bool CGameData::AnalysePlayerOutCard(WORD OutCardUsr, BYTE OutCardData[], BYTE *
 						flag = 0;
 					}
 
-					if (GetCardLogicValue(CurCardData[i + 1]) != GetCardLogicValue(CurCardData[i]))   //²»ÊÇÍ¬ÅÆÁË ±êÖ¾Î»ÖÆÁã
+					if (GetCardLogicValue(CurCardData[i + 1]) != GetCardLogicValue(CurCardData[i]))   //ä¸æ˜¯åŒç‰Œäº† æ ‡å¿—ä½åˆ¶é›¶
 					{
 						Numflag = 0;
 					}
@@ -2083,7 +2083,7 @@ bool CGameData::AnalysePlayerOutCard(WORD OutCardUsr, BYTE OutCardData[], BYTE *
 			return true;
 		}
 
-		//Õ¨µ¯ÅĞ¶Ï
+		//ç‚¸å¼¹åˆ¤æ–­
 		if (CurResult.cbFourCount != 0)
 		{
 			int index = 0;
@@ -2099,7 +2099,7 @@ bool CGameData::AnalysePlayerOutCard(WORD OutCardUsr, BYTE OutCardData[], BYTE *
 			return true;
 		}
 
-		//ÍõÕ¨ÅĞ¶Ï
+		//ç‹ç‚¸åˆ¤æ–­
 		if ((GetCardLogicValue(CurCardData[0]) == 17) && (GetCardLogicValue(CurCardData[1]) == 16))
 		{
 			for (int i = 0; i < 2; i++)
@@ -2112,18 +2112,18 @@ bool CGameData::AnalysePlayerOutCard(WORD OutCardUsr, BYTE OutCardData[], BYTE *
 			return true;
 		}
 	}
-	else if ((TurnCardType & (1 << CT_THREE_LINE_TAKE_ONE)) != 0)   //Èı´úÒ»
+	else if ((TurnCardType & (1 << CT_THREE_LINE_TAKE_ONE)) != 0)   //ä¸‰ä»£ä¸€
 	{
 
-		cout << "Èı´úÒ»" << endl;
+		cout << "ä¸‰ä»£ä¸€" << endl;
 
 
-		//»ñÈ¡ÉÏ¼Ò³öÅÆÊıÖµ
+		//è·å–ä¸Šå®¶å‡ºç‰Œæ•°å€¼
 		BYTE TurnLogicValue = GetCardLogicValue(TurnResult.cbThreeCardData[0]);
 
-		if (CurResult.cbSignedCount >= TurnResult.cbThreeCount)     //Ã»ÓĞµ¥ÕÅ¾ÍÃ»±ØÒª³öÕâ¸öÅÆ
+		if (CurResult.cbSignedCount >= TurnResult.cbThreeCount)     //æ²¡æœ‰å•å¼ å°±æ²¡å¿…è¦å‡ºè¿™ä¸ªç‰Œ
 		{
-			if (TurnResult.cbThreeCount == 1)    //Èı´úÒ»
+			if (TurnResult.cbThreeCount == 1)    //ä¸‰ä»£ä¸€
 			{
 				int index = 0;
 				for (int i = 0; i < CurResult.cbThreeCount; i++)
@@ -2146,22 +2146,22 @@ bool CGameData::AnalysePlayerOutCard(WORD OutCardUsr, BYTE OutCardData[], BYTE *
 					index += 3;
 				}
 			}
-			else		//·É»ú
+			else		//é£æœº
 			{
 				int index = 0;
-				int flag = 1;   //ÅĞ¶Ï·É»ú¼¸¸öÈıÕÅµÄ±êÖ¾
-								//ÅĞ¶ÏÈı¸öÊÇ·ñÁ¬Ğø
+				int flag = 1;   //åˆ¤æ–­é£æœºå‡ ä¸ªä¸‰å¼ çš„æ ‡å¿—
+								//åˆ¤æ–­ä¸‰ä¸ªæ˜¯å¦è¿ç»­
 				for (int i = 0; i < CurResult.cbThreeCount; i++)
 				{
-					if ((GetCardLogicValue(CurResult.cbThreeCardData[index]) - 1) == (GetCardLogicValue(CurResult.cbThreeCardData[index + 3])))  //Á¬Ğø
+					if ((GetCardLogicValue(CurResult.cbThreeCardData[index]) - 1) == (GetCardLogicValue(CurResult.cbThreeCardData[index + 3])))  //è¿ç»­
 					{
 						flag++;
 					}
 
 					if ((GetCardLogicValue(CurResult.cbThreeCardData[index]) >(TurnLogicValue - TurnResult.cbThreeCount + 2))
-						&& (flag == TurnResult.cbThreeCount))   //´óĞ¡±È½Ï
+						&& (flag == TurnResult.cbThreeCount))   //å¤§å°æ¯”è¾ƒ
 					{
-						index = index - TurnResult.cbThreeCount * 3 + 3;     //¸³ÖµµÄÏÂ±ê
+						index = index - TurnResult.cbThreeCount * 3 + 3;     //èµ‹å€¼çš„ä¸‹æ ‡
 						for (int j = 0; j < TurnResult.cbThreeCount * 3; j++)
 						{
 							tmpOutCardData[j] = CurResult.cbThreeCardData[index++];
@@ -2169,7 +2169,7 @@ bool CGameData::AnalysePlayerOutCard(WORD OutCardUsr, BYTE OutCardData[], BYTE *
 
 						for (int j = 0; j < TurnResult.cbThreeCount; j++)
 						{
-							tmpOutCardData[TurnResult.cbThreeCount * 3 + j] = CurResult.cbSignedCardData[TurnResult.cbSignedCount - j - 1];   //·É»ú´øµÄµ¥
+							tmpOutCardData[TurnResult.cbThreeCount * 3 + j] = CurResult.cbSignedCardData[TurnResult.cbSignedCount - j - 1];   //é£æœºå¸¦çš„å•
 						}
 
 						tmpOutCardNum = TurnResult.cbThreeCount * 4;
@@ -2185,7 +2185,7 @@ bool CGameData::AnalysePlayerOutCard(WORD OutCardUsr, BYTE OutCardData[], BYTE *
 			}
 		}
 
-		//Õ¨µ¯ÅĞ¶Ï
+		//ç‚¸å¼¹åˆ¤æ–­
 		if (CurResult.cbFourCount != 0)
 		{
 			int index = 0;
@@ -2201,7 +2201,7 @@ bool CGameData::AnalysePlayerOutCard(WORD OutCardUsr, BYTE OutCardData[], BYTE *
 			return true;
 		}
 
-		//ÍõÕ¨ÅĞ¶Ï
+		//ç‹ç‚¸åˆ¤æ–­
 		if ((GetCardLogicValue(CurCardData[0]) == 17) && (GetCardLogicValue(CurCardData[1]) == 16))
 		{
 			for (int i = 0; i < 2; i++)
@@ -2214,16 +2214,16 @@ bool CGameData::AnalysePlayerOutCard(WORD OutCardUsr, BYTE OutCardData[], BYTE *
 			return true;
 		}
 	}
-	else if ((TurnCardType & (1 << CT_THREE_LINE_TAKE_TWO)) != 0)   //Èı´ú¶ş
+	else if ((TurnCardType & (1 << CT_THREE_LINE_TAKE_TWO)) != 0)   //ä¸‰ä»£äºŒ
 	{
-		cout << "Èı´ú¶ş" << endl;
+		cout << "ä¸‰ä»£äºŒ" << endl;
 
-		//»ñÈ¡ÉÏ¼Ò³öÅÆÊıÖµ
+		//è·å–ä¸Šå®¶å‡ºç‰Œæ•°å€¼
 		BYTE TurnLogicValue = GetCardLogicValue(TurnResult.cbThreeCardData[0]);
 
-		if (CurResult.cbDoubleCount >= TurnResult.cbThreeCount)     //Ã»ÓĞ¶Ô×Ó¾ÍÃ»±ØÒª³öÕâ¸öÅÆ
+		if (CurResult.cbDoubleCount >= TurnResult.cbThreeCount)     //æ²¡æœ‰å¯¹å­å°±æ²¡å¿…è¦å‡ºè¿™ä¸ªç‰Œ
 		{
-			if (TurnResult.cbThreeCount == 1)    //Èı´ú¶ş
+			if (TurnResult.cbThreeCount == 1)    //ä¸‰ä»£äºŒ
 			{
 				int index = 0;
 				for (int i = 0; i < CurResult.cbThreeCount; i++)
@@ -2247,22 +2247,22 @@ bool CGameData::AnalysePlayerOutCard(WORD OutCardUsr, BYTE OutCardData[], BYTE *
 					index += 3;
 				}
 			}
-			else		//·É»ú
+			else		//é£æœº
 			{
 				int index = 0;
-				int flag = 1;   //ÅĞ¶Ï·É»ú¼¸¸öÈıÕÅµÄ±êÖ¾
-								//ÅĞ¶ÏÈı¸öÊÇ·ñÁ¬Ğø
+				int flag = 1;   //åˆ¤æ–­é£æœºå‡ ä¸ªä¸‰å¼ çš„æ ‡å¿—
+								//åˆ¤æ–­ä¸‰ä¸ªæ˜¯å¦è¿ç»­
 				for (int i = 0; i < CurResult.cbThreeCount; i++)
 				{
-					if ((GetCardLogicValue(CurResult.cbThreeCardData[index]) - 1) == (GetCardLogicValue(CurResult.cbThreeCardData[index + 3])))  //Á¬Ğø
+					if ((GetCardLogicValue(CurResult.cbThreeCardData[index]) - 1) == (GetCardLogicValue(CurResult.cbThreeCardData[index + 3])))  //è¿ç»­
 					{
 						flag++;
 					}
 
 					if ((GetCardLogicValue(CurResult.cbThreeCardData[index]) >(TurnLogicValue - TurnResult.cbThreeCount + 2))
-						&& (flag == TurnResult.cbThreeCount))   //´óĞ¡±È½Ï
+						&& (flag == TurnResult.cbThreeCount))   //å¤§å°æ¯”è¾ƒ
 					{
-						index = index - TurnResult.cbThreeCount * 3 + 3;     //¸³ÖµµÄÏÂ±ê
+						index = index - TurnResult.cbThreeCount * 3 + 3;     //èµ‹å€¼çš„ä¸‹æ ‡
 						for (int j = 0; j < TurnResult.cbThreeCount * 3; j++)
 						{
 							tmpOutCardData[j] = CurResult.cbThreeCardData[index++];
@@ -2270,7 +2270,7 @@ bool CGameData::AnalysePlayerOutCard(WORD OutCardUsr, BYTE OutCardData[], BYTE *
 
 						for (int j = 0; j < TurnResult.cbThreeCount * 2; j += 2)
 						{
-							tmpOutCardData[TurnResult.cbThreeCount * 3 + j] = CurResult.cbDoubleCardData[TurnResult.cbDoubleCount * 2 - j - 1];   //·É»ú´øµÄ¶Ô
+							tmpOutCardData[TurnResult.cbThreeCount * 3 + j] = CurResult.cbDoubleCardData[TurnResult.cbDoubleCount * 2 - j - 1];   //é£æœºå¸¦çš„å¯¹
 							tmpOutCardData[TurnResult.cbThreeCount * 3 + j + 1] = CurResult.cbDoubleCardData[TurnResult.cbDoubleCount * 2 - j - 1];
 						}
 
@@ -2287,7 +2287,7 @@ bool CGameData::AnalysePlayerOutCard(WORD OutCardUsr, BYTE OutCardData[], BYTE *
 			}
 		}
 
-		//Õ¨µ¯ÅĞ¶Ï
+		//ç‚¸å¼¹åˆ¤æ–­
 		if (CurResult.cbFourCount != 0)
 		{
 			int index = 0;
@@ -2303,7 +2303,7 @@ bool CGameData::AnalysePlayerOutCard(WORD OutCardUsr, BYTE OutCardData[], BYTE *
 			return true;
 		}
 
-		//ÍõÕ¨ÅĞ¶Ï
+		//ç‹ç‚¸åˆ¤æ–­
 		if ((GetCardLogicValue(CurCardData[0]) == 17) && (GetCardLogicValue(CurCardData[1]) == 16))
 		{
 			for (int i = 0; i < 2; i++)
@@ -2316,11 +2316,11 @@ bool CGameData::AnalysePlayerOutCard(WORD OutCardUsr, BYTE OutCardData[], BYTE *
 			return true;
 		}
 	}
-	else if ((TurnCardType & (1 << CT_FOUR_LINE_TAKE_ONE)) != 0)   //ËÄ´ú¶ş
+	else if ((TurnCardType & (1 << CT_FOUR_LINE_TAKE_ONE)) != 0)   //å››ä»£äºŒ
 	{
-		cout << "ËÄ´ú¶ş" << endl;
+		cout << "å››ä»£äºŒ" << endl;
 
-		//Õ¨µ¯ÅĞ¶Ï
+		//ç‚¸å¼¹åˆ¤æ–­
 		if (CurResult.cbFourCount != 0)
 		{
 			int index = 0;
@@ -2336,7 +2336,7 @@ bool CGameData::AnalysePlayerOutCard(WORD OutCardUsr, BYTE OutCardData[], BYTE *
 			return true;
 		}
 
-		//ÍõÕ¨ÅĞ¶Ï
+		//ç‹ç‚¸åˆ¤æ–­
 		if ((GetCardLogicValue(CurCardData[0]) == 17) && (GetCardLogicValue(CurCardData[1]) == 16))
 		{
 			for (int i = 0; i < 2; i++)
@@ -2349,11 +2349,11 @@ bool CGameData::AnalysePlayerOutCard(WORD OutCardUsr, BYTE OutCardData[], BYTE *
 			return true;
 		}
 	}
-	else if ((TurnCardType & (1 << CT_FOUR_LINE_TAKE_TWO)) != 0)   //ËÄ´ú¶ş¶Ô
+	else if ((TurnCardType & (1 << CT_FOUR_LINE_TAKE_TWO)) != 0)   //å››ä»£äºŒå¯¹
 	{
-		cout << "ËÄ´ú¶ş¶Ô" << endl;
+		cout << "å››ä»£äºŒå¯¹" << endl;
 
-		//Õ¨µ¯ÅĞ¶Ï
+		//ç‚¸å¼¹åˆ¤æ–­
 		if (CurResult.cbFourCount != 0)
 		{
 			int index = 0;
@@ -2369,7 +2369,7 @@ bool CGameData::AnalysePlayerOutCard(WORD OutCardUsr, BYTE OutCardData[], BYTE *
 			return true;
 		}
 
-		//ÍõÕ¨ÅĞ¶Ï
+		//ç‹ç‚¸åˆ¤æ–­
 		if ((GetCardLogicValue(CurCardData[0]) == 17) && (GetCardLogicValue(CurCardData[1]) == 16))
 		{
 			for (int i = 0; i < 2; i++)
@@ -2388,7 +2388,7 @@ bool CGameData::AnalysePlayerOutCard(WORD OutCardUsr, BYTE OutCardData[], BYTE *
 
 }
 
-//¼ÇÅÆÆ÷
+//è®°ç‰Œå™¨
 bool CGameData::CardRecorder(WORD wChairID, tagCardRecorder &Recorder)
 {
 
@@ -2428,18 +2428,18 @@ bool CGameData::CardRecorder(WORD wChairID, tagCardRecorder &Recorder)
 	return true;
 }
 
-// ½áËãµÃ·Ö
+// ç»“ç®—å¾—åˆ†
 int CGameData::Settle()
 {
 	return 0;
 }
 
-// ÇåÀíĞ¡¾ÖÓÎÏ·Êı¾İ
+// æ¸…ç†å°å±€æ¸¸æˆæ•°æ®
 int CGameData::ClearXjGame()
 {
-	cout << "ÇåÀíĞ¡¾ÖÊı¾İ" << endl;
+	cout << "æ¸…ç†å°å±€æ•°æ®" << endl;
 
-	// ÇåÀíĞ¡¾ÖÍæ¼ÒÊı¾İ
+	// æ¸…ç†å°å±€ç©å®¶æ•°æ®
 	memset(m_players_config.hand_cards, 0, sizeof(m_players_config.hand_cards));
 	for (unsigned i = 0; i < m_players_config.player_sum; ++i)
 	{
@@ -2467,24 +2467,24 @@ int CGameData::ClearXjGame()
 		m_players_config.players[i].start_mingpai = 1;
 	}
 
-	//ÇåÀíÓÎÏ·²ÎÊı
+	//æ¸…ç†æ¸¸æˆå‚æ•°
 	m_playing_para.appointbanker = INVALID_CHAIR;
 	m_playing_para.game_state = GS_WK_FREE;
 	m_playing_para.cur_total_bet = 0;
-	m_playing_para.turn_cards_num = 0;   //×î´ó³öÅÆÊı¾İ³õÊ¼»¯
-	m_playing_para.jiaofen_count = 0;	 //³õÊ¼»¯½Ğ·Ö´ÎÊı
+	m_playing_para.turn_cards_num = 0;   //æœ€å¤§å‡ºç‰Œæ•°æ®åˆå§‹åŒ–
+	m_playing_para.jiaofen_count = 0;	 //åˆå§‹åŒ–å«åˆ†æ¬¡æ•°
 	m_playing_para.leave_card_bet = 1;
 
 	m_playing_para.magic_card = 0;
 	m_playing_para.rob_count = 0;
 	m_playing_para.turn_pass_count = 0;
 
-	//ÅÅĞòÈ¨Î»Çå¿Õ
+	//æ’åºæƒä½æ¸…ç©º
 	for (BYTE i = 0; i < LEN_SORT_RIGHT; i++)
 		m_playing_para.sort_right[i] = i * COLOR_RIGHT;
 
-	//Ö÷»¨É«ºÍ¼¶ÅÆÇå¿Õ
-	//m_playing_para.level_value = VALUE_ERROR;	TODO ¿´Ğè²»ĞèÒªÉı¼¶£¬²»Éı¼¶Ã¿´Î¼¶ÅÆ¶¼Îª2
+	//ä¸»èŠ±è‰²å’Œçº§ç‰Œæ¸…ç©º
+	//m_playing_para.level_value = VALUE_ERROR;	TODO çœ‹éœ€ä¸éœ€è¦å‡çº§ï¼Œä¸å‡çº§æ¯æ¬¡çº§ç‰Œéƒ½ä¸º2
 	m_playing_para.main_color = COLOR_ERROR;
 	ZeroMemory(m_playing_para.leave_card, sizeof(m_playing_para.leave_card));
 	m_playing_para.liangzhu_user = INVALID_CHAIR;
@@ -2499,10 +2499,10 @@ int CGameData::ClearXjGame()
 	return 0;
 }
 
-// ÇåÀí´ó¾ÖÓÎÏ·Êı¾İ
+// æ¸…ç†å¤§å±€æ¸¸æˆæ•°æ®
 int  CGameData::ClearDjGame()
 {
-	// ÇåÀí´ó¾ÖÍæ¼ÒÊı¾İ
+	// æ¸…ç†å¤§å±€ç©å®¶æ•°æ®
 	memset(m_players_config.hand_cards, 0, sizeof(m_players_config.hand_cards));
 	for (unsigned i = 0; i < m_players_config.player_sum; ++i)
 	{
@@ -2523,7 +2523,7 @@ int  CGameData::ClearDjGame()
 		//m_players_config.players[i].play_state		= 0;
 	}
 
-	//ÇåÀíÓÎÏ·²ÎÊı
+	//æ¸…ç†æ¸¸æˆå‚æ•°
 	m_playing_para.liangzhu_user = INVALID_CHAIR;
 	m_playing_para.last_winner_id = INVALID_CHAIR;
 	m_playing_para.game_state = GS_WK_FREE;
@@ -2532,7 +2532,7 @@ int  CGameData::ClearDjGame()
 	return 0;
 }
 
-// ÇåÀí·¿¼äÊı¾İ
+// æ¸…ç†æˆ¿é—´æ•°æ®
 int CGameData::ClearRoom()
 {
 	if (m_card_config.game_cards != NULL)
@@ -2543,15 +2543,15 @@ int CGameData::ClearRoom()
 	return 0;
 }
 
-//°´»¨É«È¨Î»ÅÅĞòÆË¿Ë  //À¬»øº¯Êı
+//æŒ‰èŠ±è‰²æƒä½æ’åºæ‰‘å…‹  //åƒåœ¾å‡½æ•°
 void CGameData::SortCardList(BYTE *cbCardData, BYTE cbCardCount)
 {
-	//ÅÅĞòË÷ÒıÊı×é
+	//æ’åºç´¢å¼•æ•°ç»„
 	BYTE cbSortValue[MAX_CARD_COUNT];
 	for (BYTE i = 0; i < cbCardCount; i++)
 		cbSortValue[i] = GetCardSortOrder(cbCardData[i]);
 
-	//ÅÅĞò²Ù×÷
+	//æ’åºæ“ä½œ
 	bool bSorted = true;
 	BYTE bTempData, bLast = cbCardCount - 1;
 	do
@@ -2562,7 +2562,7 @@ void CGameData::SortCardList(BYTE *cbCardData, BYTE cbCardCount)
 			if ((cbSortValue[i] < cbSortValue[i + 1]) ||
 				((cbSortValue[i] == cbSortValue[i + 1]) && (cbCardData[i] < cbCardData[i + 1])))
 			{
-				//½»»»Î»ÖÃ
+				//äº¤æ¢ä½ç½®
 				bTempData = cbCardData[i];
 				cbCardData[i] = cbCardData[i + 1];
 				cbCardData[i + 1] = bTempData;
@@ -2576,27 +2576,27 @@ void CGameData::SortCardList(BYTE *cbCardData, BYTE cbCardCount)
 	} while (bSorted == false);
 }
 
-//°´»¨É«È¨Î»¸øÓÃ»§ÊÖÅÆÅÅĞò
+//æŒ‰èŠ±è‰²æƒä½ç»™ç”¨æˆ·æ‰‹ç‰Œæ’åº
 void CGameData::SortCardList(const WORD &wChairID, BYTE cbCardCount, BYTE cbSortType)
 {
-	//ÊÖÅÆÅÅĞò
+	//æ‰‹ç‰Œæ’åº
 	SortCardList(m_players_config.hand_cards[wChairID], cbCardCount, cbSortType);
 }
 
-//ÅÅÁĞÆË¿Ë
+//æ’åˆ—æ‰‘å…‹
 void CGameData::SortCardList(BYTE cbCardData[], BYTE cbCardCount, BYTE cbSortType)
 {
-	//ÊıÄ¿¹ıÂÇ
+	//æ•°ç›®è¿‡è™‘
 	if (cbCardCount == 0) return;
 
-	//×ª»»ÊıÖµ
+	//è½¬æ¢æ•°å€¼
 	BYTE cbSortValue[MAX_CARD_COUNT];
 	for (BYTE i = 0; i < cbCardCount; i++)
 	{
 		cbSortValue[i] = GetCardLogicValueLaiZi(cbCardData[i]);
 	}
 
-	//ÅÅĞò²Ù×÷
+	//æ’åºæ“ä½œ
 	bool bSorted = true;
 	BYTE cbThreeCount, cbLast = cbCardCount - 1;
 	do
@@ -2607,7 +2607,7 @@ void CGameData::SortCardList(BYTE cbCardData[], BYTE cbCardCount, BYTE cbSortTyp
 			if ((cbSortValue[i] < cbSortValue[i + 1]) ||
 				((cbSortValue[i] == cbSortValue[i + 1]) && (cbCardData[i] < cbCardData[i + 1])))
 			{
-				//½»»»Î»ÖÃ
+				//äº¤æ¢ä½ç½®
 				cbThreeCount = cbCardData[i];
 				cbCardData[i] = cbCardData[i + 1];
 				cbCardData[i + 1] = cbThreeCount;
@@ -2620,27 +2620,27 @@ void CGameData::SortCardList(BYTE cbCardData[], BYTE cbCardCount, BYTE cbSortTyp
 		cbLast--;
 	} while (bSorted == false);
 
-	//ÊıÄ¿ÅÅĞò
+	//æ•°ç›®æ’åº
 	if (cbSortType == ST_COUNT)
 	{
-		//·ÖÎöÆË¿Ë
+		//åˆ†ææ‰‘å…‹
 		BYTE cbIndex = 0;
 		tagAnalyseResult AnalyseResult;
 		AnalysebCardData(cbCardData, cbCardCount, AnalyseResult);
 
-		//¿½±´ËÄÅÆ
+		//æ‹·è´å››ç‰Œ
 		CopyMemory(&cbCardData[cbIndex], AnalyseResult.cbFourCardData, sizeof(BYTE)*AnalyseResult.cbFourCount * 4);
 		cbIndex += AnalyseResult.cbFourCount * 4;
 
-		//¿½±´ÈıÅÆ
+		//æ‹·è´ä¸‰ç‰Œ
 		CopyMemory(&cbCardData[cbIndex], AnalyseResult.cbThreeCardData, sizeof(BYTE)*AnalyseResult.cbThreeCount * 3);
 		cbIndex += AnalyseResult.cbThreeCount * 3;
 
-		//¿½±´¶ÔÅÆ
+		//æ‹·è´å¯¹ç‰Œ
 		CopyMemory(&cbCardData[cbIndex], AnalyseResult.cbDoubleCardData, sizeof(BYTE)*AnalyseResult.cbDoubleCount * 2);
 		cbIndex += AnalyseResult.cbDoubleCount * 2;
 
-		//¿½±´µ¥ÅÆ
+		//æ‹·è´å•ç‰Œ
 		CopyMemory(&cbCardData[cbIndex], AnalyseResult.cbSignedCardData, sizeof(BYTE)*AnalyseResult.cbSignedCount);
 		cbIndex += AnalyseResult.cbSignedCount;
 	}
@@ -2648,33 +2648,33 @@ void CGameData::SortCardList(BYTE cbCardData[], BYTE cbCardCount, BYTE cbSortTyp
 	return;
 }
 
-//»ñµÃ¿¨ÅÆµÄÅÅĞòµÈ¼¶
+//è·å¾—å¡ç‰Œçš„æ’åºç­‰çº§
 BYTE CGameData::GetCardSortOrder(BYTE cbCardData)
 {
-	//¹ıÂËµôÎŞĞ§¿¨ÅÆ
+	//è¿‡æ»¤æ‰æ— æ•ˆå¡ç‰Œ
 	if (INVALID_CARD == cbCardData)
 		return 0;
 
-	//Âß¼­ÊıÖµ
+	//é€»è¾‘æ•°å€¼
 	BYTE cbCardColor = GetCardColor(cbCardData);
 	BYTE cbCardValue = GetCardValue(cbCardData);
 
-	//¹íÅÆ
+	//é¬¼ç‰Œ
 	if ((SMALL_JOKER == cbCardData) || (BIG_JOKER == cbCardData))
 	{
 		BYTE cbSortValueTmp = cbCardValue + 14;
 		return (cbSortValueTmp + m_playing_para.sort_right[4]);
 	}
 
-	//Èô¿¨ÅÆÎªÖ÷»¨É«»òµÈÓÚ¼¶ÅÆ£¬ÅÅĞò»¨É«±ä»»
-	BYTE cbSortColor = cbCardColor;	//»¨É«´Ó1¿ªÊ¼
+	//è‹¥å¡ç‰Œä¸ºä¸»èŠ±è‰²æˆ–ç­‰äºçº§ç‰Œï¼Œæ’åºèŠ±è‰²å˜æ¢
+	BYTE cbSortColor = cbCardColor;	//èŠ±è‰²ä»1å¼€å§‹
 
-									//Èô¿¨ÅÆÖµÎªA£¬AµÄÅÅĞòÔÚÇ°£¬ÔòÅÅĞòÊıÖµ±ä»»
+									//è‹¥å¡ç‰Œå€¼ä¸ºAï¼ŒAçš„æ’åºåœ¨å‰ï¼Œåˆ™æ’åºæ•°å€¼å˜æ¢
 	BYTE cbSortValue = cbCardValue;
 	if (cbCardValue == 1)
 		cbSortValue += 13;
 
-	//¿¨ÅÆÎªñ®×Ó£¬ñ®×Ó·ÅÔÚ×î×ó±ß£¬ÅÅÎ»×î¸ß					//ÏÈÒ»ÂÉ²»¿¼ÂÇñ®×Ó
+	//å¡ç‰Œä¸ºç™å­ï¼Œç™å­æ”¾åœ¨æœ€å·¦è¾¹ï¼Œæ’ä½æœ€é«˜					//å…ˆä¸€å¾‹ä¸è€ƒè™‘ç™å­
 	if (m_room_config.game_laizi_mode > 0)
 	{
 		if (cbCardValue == m_playing_para.magic_card)
@@ -2687,7 +2687,7 @@ BYTE CGameData::GetCardSortOrder(BYTE cbCardData)
 	return (cbSortValue + m_playing_para.sort_right[cbSortColor]);
 }
 
-//»ñµÃ¿¨ÅÆµÄÂß¼­ÊıÖµ
+//è·å¾—å¡ç‰Œçš„é€»è¾‘æ•°å€¼
 BYTE CGameData::GetCardLogicValue(BYTE cbCardData)
 {
 	if (0 == cbCardData)
@@ -2695,34 +2695,34 @@ BYTE CGameData::GetCardLogicValue(BYTE cbCardData)
 		return 0;
 	}
 
-	//Âß¼­ÊıÖµ
+	//é€»è¾‘æ•°å€¼
 	BYTE cbCardColor = GetCardColor(cbCardData);
 	BYTE cbCardValue = GetCardValue(cbCardData);
 
-	//×ª»»ÊıÖµÃ÷ÏÔ³öÏÖ´íÎó
-	if ((cbCardColor << 4) == 0x40) return cbCardValue + 2;		//´óĞ¡Íõ    
+	//è½¬æ¢æ•°å€¼æ˜æ˜¾å‡ºç°é”™è¯¯
+	if ((cbCardColor << 4) == 0x40) return cbCardValue + 2;		//å¤§å°ç‹    
 
 	return (cbCardValue <= 2) ? (cbCardValue + 13) : cbCardValue;
 }
 
-//·ÖÎöÍæ¼ÒÊÇ·ñÄÜÁÁÖ÷
+//åˆ†æç©å®¶æ˜¯å¦èƒ½äº®ä¸»
 bool CGameData::AnalyseUserLiangZhu(const WORD &wChairID, BYTE *cbLiangZhuColor)
 {
-	//Ğ£Ñé
+	//æ ¡éªŒ
 	if ((VALUE_ERROR == m_playing_para.level_value) ||
 		(NULL == cbLiangZhuColor))
 		return false;
 
-	//ÁÙÊ±ÁÁÖ÷»¨É«Êı×é
+	//ä¸´æ—¶äº®ä¸»èŠ±è‰²æ•°ç»„
 	std::vector <BYTE> vecLZcolor;
 
-	//ÅĞ¶ÏÍæ¼ÒÊÖÅÆÖĞÊÇ·ñÓĞµ±Ç°¼¶ÅÆ
+	//åˆ¤æ–­ç©å®¶æ‰‹ç‰Œä¸­æ˜¯å¦æœ‰å½“å‰çº§ç‰Œ
 	for (int i = 0; i < m_card_config.init_card_num; i++)
 	{
 		BYTE cbCardValue = GetCardValue(m_players_config.hand_cards[wChairID][i]);
 		if (cbCardValue == m_playing_para.level_value)
 		{
-			//È¥³ıÖØ¸´µÄÊı¾İ
+			//å»é™¤é‡å¤çš„æ•°æ®
 			std::vector <BYTE>::iterator result = find(vecLZcolor.begin(), vecLZcolor.end(), cbCardValue);
 			if (result == vecLZcolor.end())
 			{
@@ -2732,7 +2732,7 @@ bool CGameData::AnalyseUserLiangZhu(const WORD &wChairID, BYTE *cbLiangZhuColor)
 		}
 	}
 
-	//·µ»ØÄÜÁÁÖ÷µÄ¿¨ÅÆ
+	//è¿”å›èƒ½äº®ä¸»çš„å¡ç‰Œ
 	int nLiangzhuNum = vecLZcolor.size();
 	if (0 != nLiangzhuNum)
 	{
@@ -2746,17 +2746,17 @@ bool CGameData::AnalyseUserLiangZhu(const WORD &wChairID, BYTE *cbLiangZhuColor)
 	return false;
 }
 
-//·ÖÎöÍæ¼ÒÊÇ·ñÄÜ·´Ö÷£¨·´Ö÷°´×ùÎ»Ë³Ğò£©
+//åˆ†æç©å®¶æ˜¯å¦èƒ½åä¸»ï¼ˆåä¸»æŒ‰åº§ä½é¡ºåºï¼‰
 bool CGameData::AnalyseUserFanZhu(const WORD &wChairID, BYTE *cbFanZhuCard)
 {
-	//µ±Ç°·´Ö÷¿¨ÅÆ
+	//å½“å‰åä¸»å¡ç‰Œ
 	BYTE cbCurFanzhuCard = m_playing_para.cur_fanzhu_card;
 	BYTE cbCurFanZhuColor = GetCardColor(m_playing_para.cur_fanzhu_card);
 
-	//ÁÁÖ÷Íæ¼ÒÖ»ÓĞµÈÆäËûÍæ¼Ò·´Ö÷Ö®ºó²ÅÄÜ·´Ö÷
+	//äº®ä¸»ç©å®¶åªæœ‰ç­‰å…¶ä»–ç©å®¶åä¸»ä¹‹åæ‰èƒ½åä¸»
 	if (m_playing_para.appointbanker == wChairID)
 	{
-		//Ğ£ÑéÊÇ·ñÓĞÍæ¼Ò·´Ö÷
+		//æ ¡éªŒæ˜¯å¦æœ‰ç©å®¶åä¸»
 		if (INVALID_CARD != cbCurFanzhuCard)
 		{
 			return IsUserCanFanZhu(wChairID, cbCurFanZhuColor, cbFanZhuCard);
@@ -2764,9 +2764,9 @@ bool CGameData::AnalyseUserFanZhu(const WORD &wChairID, BYTE *cbFanZhuCard)
 	}
 	else
 	{
-		//ÎŞÈË·´Ö÷£¬ÔòÅĞ¶ÏËùÓĞ¼¶ÅÆ
+		//æ— äººåä¸»ï¼Œåˆ™åˆ¤æ–­æ‰€æœ‰çº§ç‰Œ
 		BYTE cbColorIndex = 0;
-		//µ±Ç°ÓĞÍæ¼Ò·´Ö÷,ÔòºóĞøÍæ¼Ò·´Ö÷µÄ»¨É«±ØĞë´óÓÚ¸Ã»¨É«
+		//å½“å‰æœ‰ç©å®¶åä¸»,åˆ™åç»­ç©å®¶åä¸»çš„èŠ±è‰²å¿…é¡»å¤§äºè¯¥èŠ±è‰²
 		if (INVALID_CARD != cbCurFanzhuCard)
 		{
 			cbColorIndex = cbCurFanZhuColor;
@@ -2778,23 +2778,23 @@ bool CGameData::AnalyseUserFanZhu(const WORD &wChairID, BYTE *cbFanZhuCard)
 	return false;
 }
 
-//ÅĞ¶ÏÍæ¼ÒÊÖÅÆÊÇ·ñÄÜ·´Ö÷
+//åˆ¤æ–­ç©å®¶æ‰‹ç‰Œæ˜¯å¦èƒ½åä¸»
 bool CGameData::IsUserCanFanZhu(const WORD &wChairID, const BYTE &cbCurFanZhuColor, BYTE *cbFanZhuCard)
 {
-	//Íæ¼Ò¿¨ÅÆË÷Òı
+	//ç©å®¶å¡ç‰Œç´¢å¼•
 	BYTE cbCardIndex[LEN_MAX_INDEX];
 	SwitchToCardIndex(m_players_config.hand_cards[wChairID], MAX_CARD_COUNT, cbCardIndex);
 
-	//»ñµÃ´óÓÚµ±Ç°Ö÷»¨É«µÄ¼¶ÅÆË÷Òı
+	//è·å¾—å¤§äºå½“å‰ä¸»èŠ±è‰²çš„çº§ç‰Œç´¢å¼•
 	BYTE cbFanzhuTypeNum = 0;
 	for (BYTE i = cbCurFanZhuColor; i < MAX_COLOR_TYPE_NUM; i++)
 	{
-		//¼¶ÅÆ
+		//çº§ç‰Œ
 		BYTE cbTmpCard = ((i << 4) | m_playing_para.level_value);
-		//¼¶ÅÆË÷Òı
+		//çº§ç‰Œç´¢å¼•
 		BYTE cbCurFanzhuIndex = SwitchToCardIndex(cbTmpCard);
 
-		//ÊÇ·ñÓĞÁ½ÕÅÒ»ÑùµÄ¼¶ÅÆ
+		//æ˜¯å¦æœ‰ä¸¤å¼ ä¸€æ ·çš„çº§ç‰Œ
 		if (2 == cbCardIndex[cbCurFanzhuIndex])
 		{
 			if (MAX_FANZHU_TYPE_NUM > cbFanzhuTypeNum)
@@ -2805,7 +2805,7 @@ bool CGameData::IsUserCanFanZhu(const WORD &wChairID, const BYTE &cbCurFanZhuCol
 		}
 	}
 
-	//ÅĞ¶ÏÍæ¼ÒÊÇ·ñÓĞÒ»¶ÔĞ¡Íõ
+	//åˆ¤æ–­ç©å®¶æ˜¯å¦æœ‰ä¸€å¯¹å°ç‹
 	if (2 == cbCardIndex[SMALL_JOKER_INDEX])
 	{
 		if (MAX_FANZHU_TYPE_NUM > cbFanzhuTypeNum)
@@ -2814,7 +2814,7 @@ bool CGameData::IsUserCanFanZhu(const WORD &wChairID, const BYTE &cbCurFanZhuCol
 			cbFanzhuTypeNum++;
 		}
 	}
-	//ÅĞ¶ÏÍæ¼ÒÊÇ·ñÓĞÒ»¶Ô´óÍõ
+	//åˆ¤æ–­ç©å®¶æ˜¯å¦æœ‰ä¸€å¯¹å¤§ç‹
 	if (2 == cbCardIndex[BIG_JOKER_INDEX])
 	{
 		if (MAX_FANZHU_TYPE_NUM > cbFanzhuTypeNum)
@@ -2827,10 +2827,10 @@ bool CGameData::IsUserCanFanZhu(const WORD &wChairID, const BYTE &cbCurFanZhuCol
 	return (cbFanzhuTypeNum > 0);
 }
 
-//·¢ËÍµ×ÅÆ¸øÍæ¼Ò
+//å‘é€åº•ç‰Œç»™ç©å®¶
 void CGameData::SendLeaveCardToUser(const WORD &wChairID)
 {
-	//½«µ×ÅÆ¸³¸øÍæ¼Ò
+	//å°†åº•ç‰Œèµ‹ç»™ç©å®¶
 	for (int i = 0; i < MAX_LEAVE_CARD_NUM; i++)
 	{
 		if (INVALID_CARD != m_playing_para.leave_card[i])
@@ -2841,37 +2841,37 @@ void CGameData::SendLeaveCardToUser(const WORD &wChairID)
 	}
 }
 
-//»ñµÃÒ»×é¿¨ÅÆµÄÅÆÀàĞÍ
+//è·å¾—ä¸€ç»„å¡ç‰Œçš„ç‰Œç±»å‹
 int CGameData::GetCardLogicType(const BYTE *cbCardData, BYTE cbCardCount)
 {
-	//¼òµ¥ÅÆĞÍ
+	//ç®€å•ç‰Œå‹
 	switch (cbCardCount)
 	{
-	case 0:	//¿ÕÅÆ
+	case 0:	//ç©ºç‰Œ
 	{
 		//cout << "0" << endl;
 		return CT_ERROR;
 	}
-	case 1: //µ¥ÅÆ
+	case 1: //å•ç‰Œ
 	{
 		//cout << "1" << endl;
 		return TransListToInt(0, CT_SINGLE);
 	}
-	case 2:	//¶ÔÅÆ»ğ¼ı
+	case 2:	//å¯¹ç‰Œç«ç®­
 	{
 		//cout << "2" << endl;
-		//ÅÆĞÍÅĞ¶Ï
-		if ((cbCardData[0] == 0x4F) && (cbCardData[1] == 0x4E)) return TransListToInt(0, CT_MISSILE_CARD);   //·µ»ØÒ»¸ö 1<<14
+		//ç‰Œå‹åˆ¤æ–­
+		if ((cbCardData[0] == 0x4F) && (cbCardData[1] == 0x4E)) return TransListToInt(0, CT_MISSILE_CARD);   //è¿”å›ä¸€ä¸ª 1<<14
 		if (GetCardLogicValueLaiZi(cbCardData[0]) == GetCardLogicValueLaiZi(cbCardData[1])) return TransListToInt(0, CT_DOUBLE);
 
-		//²ÎÊı¶¨Òå
-		BYTE LaiZiData[MAX_LAIZI_COUNT] = { 0 };	//ñ®×Óµ±ÆÕÍ¨ÅÆµÄÊı¾İ
-		BYTE LaiZiNum = 0;					//ñ®×Óµ±ÆÕÍ¨ÅÆµÄÊıÁ¿
+		//å‚æ•°å®šä¹‰
+		BYTE LaiZiData[MAX_LAIZI_COUNT] = { 0 };	//ç™å­å½“æ™®é€šç‰Œçš„æ•°æ®
+		BYTE LaiZiNum = 0;					//ç™å­å½“æ™®é€šç‰Œçš„æ•°é‡
 
-											//ÇåÁã
+											//æ¸…é›¶
 		SetLaiZiToCommon(LaiZiData, LaiZiNum);
 
-		//Àµ×ÓÅĞ¶Ï
+		//èµ–å­åˆ¤æ–­
 		if (m_room_config.game_laizi_mode > 0)
 		{
 			if (GetCardLogicValueLaiZi(cbCardData[0]) != GetCardLogicValueLaiZi(cbCardData[1]))
@@ -2885,7 +2885,7 @@ int CGameData::GetCardLogicType(const BYTE *cbCardData, BYTE cbCardCount)
 						if (GetCardLogicValueLaiZi(cbCardData[0]) == m_playing_para.magic_card)    LaiZiData[0] = GetCardLogicValue(cbCardData[1]);
 						if (GetCardLogicValueLaiZi(cbCardData[1]) == m_playing_para.magic_card)    LaiZiData[0] = GetCardLogicValue(cbCardData[0]);
 
-						//ÉèÖÃñ®×Ó×öÆÕÍ¨ÅÆ
+						//è®¾ç½®ç™å­åšæ™®é€šç‰Œ
 						SetLaiZiToCommon(LaiZiData, LaiZiNum);
 						return TransListToInt(0, CT_DOUBLE);
 					}
@@ -2893,25 +2893,25 @@ int CGameData::GetCardLogicType(const BYTE *cbCardData, BYTE cbCardCount)
 			}
 		}
 
-		//Ã»ÓĞñ®×Ó ÖÃÁã
+		//æ²¡æœ‰ç™å­ ç½®é›¶
 		SetLaiZiToCommon(LaiZiData, LaiZiNum);
 
-		//printf("¶ÔÅÄÀàĞÍÅÆĞÍÅĞ¶Ï´íÎó\n");
+		//printf("å¯¹æ‹ç±»å‹ç‰Œå‹åˆ¤æ–­é”™è¯¯\n");
 		return CT_ERROR;
 	}
 	}
 
-	//·ÖÎöÆË¿Ë
+	//åˆ†ææ‰‘å…‹
 	tagAnalyseResult AnalyseResult;
 	BYTE bLaiZiCount = GetMagicCardNum(cbCardData, cbCardCount);
 	BYTE bCardDataTemp[MAX_CARD_COUNT];
 	int dCardType = CT_ERROR;
 
-	//²ÎÊı¶¨Òå
-	BYTE LaiZiData[MAX_LAIZI_COUNT] = { 0 };	//ñ®×Óµ±ÆÕÍ¨ÅÆµÄÊı¾İ
-	BYTE LaiZiNum = 0;					//ñ®×Óµ±ÆÕÍ¨ÅÆµÄÊıÁ¿
+	//å‚æ•°å®šä¹‰
+	BYTE LaiZiData[MAX_LAIZI_COUNT] = { 0 };	//ç™å­å½“æ™®é€šç‰Œçš„æ•°æ®
+	BYTE LaiZiNum = 0;					//ç™å­å½“æ™®é€šç‰Œçš„æ•°é‡
 
-										//ÇåÁã
+										//æ¸…é›¶
 	SetLaiZiToCommon(LaiZiData, LaiZiNum);
 
 	memset(bCardDataTemp, 0, sizeof(bCardDataTemp));
@@ -2920,7 +2920,7 @@ int CGameData::GetCardLogicType(const BYTE *cbCardData, BYTE cbCardCount)
 
 	bool SameCard = false;
 
-	//¶¼ÊÇÀµ×Ó×öÆÕÍ¨ÅÆ
+	//éƒ½æ˜¯èµ–å­åšæ™®é€šç‰Œ
 	if (m_room_config.game_laizi_mode > 0)
 	{
 		for (BYTE i = 0; i < cbCardCount; i++)
@@ -2935,51 +2935,51 @@ int CGameData::GetCardLogicType(const BYTE *cbCardData, BYTE cbCardCount)
 		}
 	}
 
-	//Àµ×ÓÅĞ¶Ï
+	//èµ–å­åˆ¤æ–­
 	if (bLaiZiCount != 0 && !SameCard && m_room_config.game_laizi_mode > 0)
 	{
 		for (BYTE i = 0;i<cbCardCount;i++)
 		{
 			if (GetCardLogicValueLaiZi(cbCardData[i]) == m_playing_para.magic_card)
 			{
-				cout << "==============Ò»ÕÅñ®×Ó================" << endl;
-				//Ò»ÕÅÀµ×Ó
+				cout << "==============ä¸€å¼ ç™å­================" << endl;
+				//ä¸€å¼ èµ–å­
 				for (BYTE j = 0;j<13;j++)
 				{
 					bCardDataTemp[i] = m_cbCardData[j];
 
-					//Á½ÕÅÀµ×Ó
+					//ä¸¤å¼ èµ–å­
 					if (bLaiZiCount >= 2)
 					{
 						for (BYTE k = i + 1;k<cbCardCount;k++)
 						{
 							if (GetCardLogicValueLaiZi(cbCardData[k]) == m_playing_para.magic_card)
 							{
-								cout << "==============Á½ÕÅñ®×Ó================" << endl;
+								cout << "==============ä¸¤å¼ ç™å­================" << endl;
 								for (BYTE z = 0;z<13;z++)
 								{
 									bCardDataTemp[k] = m_cbCardData[z];
 
-									//ÈıÕÅÀµ×Ó
+									//ä¸‰å¼ èµ–å­
 									if (bLaiZiCount >= 3)
 									{
 										for (BYTE g = k + 1;g<cbCardCount;g++)
 										{
 											if (GetCardLogicValueLaiZi(cbCardData[g]) == m_playing_para.magic_card)
 											{
-												cout << "==============ÈıÕÅñ®×Ó================" << endl;
+												cout << "==============ä¸‰å¼ ç™å­================" << endl;
 												for (BYTE f = 0;f<13;f++)
 												{
 													bCardDataTemp[g] = m_cbCardData[f];
 
-													//ËÄÕÅÀµ×Ó
+													//å››å¼ èµ–å­
 													if (bLaiZiCount == 4)
 													{
 														for (BYTE h = g + 1;h<cbCardCount;h++)
 														{
 															if (GetCardLogicValueLaiZi(cbCardData[h]) == m_playing_para.magic_card)
 															{
-																cout << "==============ËÄÕÅñ®×Ó================" << endl;
+																cout << "==============å››å¼ ç™å­================" << endl;
 																for (BYTE l = 0;l<13;l++)
 																{
 																	if (l == 1)continue;
@@ -2990,7 +2990,7 @@ int CGameData::GetCardLogicType(const BYTE *cbCardData, BYTE cbCardCount)
 																	if (GetType(AnalyseResult, bCardDataTemp, cbCardCount, cbCardData) == 0)
 																		continue;
 
-																	//¼ÇÂ¼µÚËÄÕÅñ®×Ó
+																	//è®°å½•ç¬¬å››å¼ ç™å­
 																	LaiZiData[0] = GetCardLogicValue(m_cbCardData[j]);
 																	LaiZiData[1] = GetCardLogicValue(m_cbCardData[z]);
 																	LaiZiData[2] = GetCardLogicValue(m_cbCardData[f]);
@@ -2999,7 +2999,7 @@ int CGameData::GetCardLogicType(const BYTE *cbCardData, BYTE cbCardCount)
 																	if ((dCardType&(1 << GetType(AnalyseResult, bCardDataTemp, cbCardCount, cbCardData))) == 0)
 																		dCardType = TransListToInt(dCardType, GetType(AnalyseResult, bCardDataTemp, cbCardCount, cbCardData));
 
-																	//Ä¿Ç°²ßÂÔ Õ¨µ¯Ö±½Ó³ö
+																	//ç›®å‰ç­–ç•¥ ç‚¸å¼¹ç›´æ¥å‡º
 																	if (((1 << CT_RUAN_BOMB)&dCardType) != 0)
 																		break;
 																}
@@ -3023,7 +3023,7 @@ int CGameData::GetCardLogicType(const BYTE *cbCardData, BYTE cbCardCount)
 													if (GetType(AnalyseResult, bCardDataTemp, cbCardCount, cbCardData) == 0)
 														continue;
 
-													//¼ÇÂ¼µÚÈıÕÅñ®×Ó
+													//è®°å½•ç¬¬ä¸‰å¼ ç™å­
 													LaiZiData[0] = GetCardLogicValue(m_cbCardData[j]);
 													LaiZiData[1] = GetCardLogicValue(m_cbCardData[z]);
 													LaiZiData[2] = GetCardLogicValue(m_cbCardData[f]);
@@ -3031,7 +3031,7 @@ int CGameData::GetCardLogicType(const BYTE *cbCardData, BYTE cbCardCount)
 													if ((dCardType&(1 << GetType(AnalyseResult, bCardDataTemp, cbCardCount, cbCardData))) == 0)
 														dCardType = TransListToInt(dCardType, GetType(AnalyseResult, bCardDataTemp, cbCardCount, cbCardData));
 
-													//Ä¿Ç°²ßÂÔ Õ¨µ¯Ö±½Ó³ö
+													//ç›®å‰ç­–ç•¥ ç‚¸å¼¹ç›´æ¥å‡º
 													if (((1 << CT_RUAN_BOMB)&dCardType) != 0)
 														break;
 												}
@@ -3057,16 +3057,16 @@ int CGameData::GetCardLogicType(const BYTE *cbCardData, BYTE cbCardCount)
 									if (GetType(AnalyseResult, bCardDataTemp, cbCardCount, cbCardData) == 0)
 										continue;
 
-									//¼ÇÂ¼µÚ¶şÕÅñ®×Ó
-									cout << "TWOÒ»ñ®×Ó£º£º£º" << (int)GetCardLogicValue(m_cbCardData[j]) << endl;
-									cout << "TWO¶şñ®×Ó£º£º£º" << (int)GetCardLogicValue(m_cbCardData[z]) << endl;
+									//è®°å½•ç¬¬äºŒå¼ ç™å­
+									cout << "TWOä¸€ç™å­ï¼šï¼šï¼š" << (int)GetCardLogicValue(m_cbCardData[j]) << endl;
+									cout << "TWOäºŒç™å­ï¼šï¼šï¼š" << (int)GetCardLogicValue(m_cbCardData[z]) << endl;
 									LaiZiData[0] = GetCardLogicValue(m_cbCardData[j]);
 									LaiZiData[1] = GetCardLogicValue(m_cbCardData[z]);
 
 									if ((dCardType&(1 << GetType(AnalyseResult, bCardDataTemp, cbCardCount, cbCardData))) == 0)
 										dCardType = TransListToInt(dCardType, GetType(AnalyseResult, bCardDataTemp, cbCardCount, cbCardData));
 
-									//Ä¿Ç°²ßÂÔ Õ¨µ¯Ö±½Ó³ö
+									//ç›®å‰ç­–ç•¥ ç‚¸å¼¹ç›´æ¥å‡º
 									if (((1 << CT_RUAN_BOMB)&dCardType) != 0)
 										break;
 								}
@@ -3092,14 +3092,14 @@ int CGameData::GetCardLogicType(const BYTE *cbCardData, BYTE cbCardCount)
 					if (GetType(AnalyseResult, bCardDataTemp, cbCardCount, cbCardData) == 0)
 						continue;
 
-					//¼ÇÂ¼µÚÒ»ÕÅñ®×Ó
-					cout << "ONEÒ»ñ®×Ó£º£º£º" << (int)GetCardLogicValue(m_cbCardData[j]) << endl;
+					//è®°å½•ç¬¬ä¸€å¼ ç™å­
+					cout << "ONEä¸€ç™å­ï¼šï¼šï¼š" << (int)GetCardLogicValue(m_cbCardData[j]) << endl;
 					LaiZiData[0] = GetCardLogicValue(m_cbCardData[j]);
 
 					if ((dCardType&(1 << GetType(AnalyseResult, bCardDataTemp, cbCardCount, cbCardData))) == 0)
 						dCardType = TransListToInt(dCardType, GetType(AnalyseResult, cbCardData, cbCardCount, cbCardData));
 
-					//Ä¿Ç°²ßÂÔ Õ¨µ¯Ö±½Ó³ö
+					//ç›®å‰ç­–ç•¥ ç‚¸å¼¹ç›´æ¥å‡º
 					if (((1 << CT_RUAN_BOMB)&dCardType) != 0)
 						break;
 				}
@@ -3129,7 +3129,7 @@ int CGameData::GetCardLogicType(const BYTE *cbCardData, BYTE cbCardCount)
 			dCardType = TransListToInt(dCardType, GetType(AnalyseResult, bCardDataTemp, cbCardCount, cbCardData));
 	}
 
-	//»ñÈ¡ÊıÁ¿
+	//è·å–æ•°é‡
 	for (int i = 0; i < MAX_LAIZI_COUNT; i++)
 	{
 		if (INVALID_CARD != LaiZiData[i])
@@ -3140,10 +3140,10 @@ int CGameData::GetCardLogicType(const BYTE *cbCardData, BYTE cbCardCount)
 	}
 	cout << endl;
 
-	//ÉèÖÃñ®×Ó×öÆÕÍ¨ÅÆ
+	//è®¾ç½®ç™å­åšæ™®é€šç‰Œ
 	SetLaiZiToCommon(LaiZiData, LaiZiNum);
 
-	//¶¨Ê±Æ÷³öÅÆÊÂ¼şÕ¨µ¯ÀàĞÍµÄÅĞ¶Ï
+	//å®šæ—¶å™¨å‡ºç‰Œäº‹ä»¶ç‚¸å¼¹ç±»å‹çš„åˆ¤æ–­
 	if (((dCardType)&(1 << CT_BOMB_CARD)) != 0)
 	{
 		int index = 0;
@@ -3161,59 +3161,59 @@ int CGameData::GetCardLogicType(const BYTE *cbCardData, BYTE cbCardCount)
 
 }
 
-//»ñµÃ¿¨ÅÆµÄÂß¼­»¨É«
+//è·å¾—å¡ç‰Œçš„é€»è¾‘èŠ±è‰²
 BYTE CGameData::GetCardLogicColor(BYTE cbCardData)
 {
-	//Âß¼­ÊıÖµ
+	//é€»è¾‘æ•°å€¼
 	BYTE cbCardColor = GetCardColor(cbCardData);
 	BYTE cbCardValue = GetCardValue(cbCardData);
 
-	//»¨É«ÅĞ¶Ï
+	//èŠ±è‰²åˆ¤æ–­
 	if (cbCardColor == COLOR_MAIN_CARD) return COLOR_MAIN_CARD;
 	if (cbCardColor == m_playing_para.main_color) return COLOR_MAIN_CARD;
 	if (cbCardColor == m_playing_para.main_color) return COLOR_MAIN_CARD;
 
-	//ÊıÖµÅĞ¶Ï
+	//æ•°å€¼åˆ¤æ–­
 	if (cbCardValue == m_playing_para.nt_value) return COLOR_MAIN_CARD;
 	if (cbCardValue == m_playing_para.level_value) return COLOR_MAIN_CARD;
 
 	return cbCardColor;
 }
 
-//»ñµÃ¿¨ÅÆÊı×éµÄÂß¼­»¨É«
+//è·å¾—å¡ç‰Œæ•°ç»„çš„é€»è¾‘èŠ±è‰²
 BYTE CGameData::GetCardLogicColor(const BYTE *cbCardData, BYTE cbCardCount)
 {
-	//»ñÈ¡¿¨ÅÆÊı×éµÄÍ·Î²»¨É«
+	//è·å–å¡ç‰Œæ•°ç»„çš„å¤´å°¾èŠ±è‰²
 	BYTE cbFirstColor = GetCardLogicColor(cbCardData[0]);
 	BYTE cbSecondColor = GetCardLogicColor(cbCardData[cbCardCount - 1]);
 
-	//Í·Î²ÏàµÈ£¬Ôò·µ»Ø»¨É«£»²»ÏàµÈ£¬·µ»Ø´íÎó
+	//å¤´å°¾ç›¸ç­‰ï¼Œåˆ™è¿”å›èŠ±è‰²ï¼›ä¸ç›¸ç­‰ï¼Œè¿”å›é”™è¯¯
 	return ((cbFirstColor == cbSecondColor) ? cbFirstColor : COLOR_ERROR);
 }
 
-//Á½ÕÅ¿¨ÅÆÊÇ·ñÏàÁ¬£¨µÚÒ»ÕÅÅÆ±ÈµÚ¶şÕÅ´ó£©
+//ä¸¤å¼ å¡ç‰Œæ˜¯å¦ç›¸è¿ï¼ˆç¬¬ä¸€å¼ ç‰Œæ¯”ç¬¬äºŒå¼ å¤§ï¼‰
 bool CGameData::IsLineValue(BYTE cbTurnCard, BYTE cbSecondCard)
 {
 	bool bIsLine = false;
 
-	//»ñÈ¡¿¨ÅÆÂß¼­ÊıÖµ
+	//è·å–å¡ç‰Œé€»è¾‘æ•°å€¼
 	BYTE cbFirstLogicValue = GetCardLogicValue(cbTurnCard);
 	BYTE cbSecondLogicValue = GetCardLogicValue(cbSecondCard);
 
-	//¿¨ÅÆÕæÊµÖµºÍ»¨É«
+	//å¡ç‰ŒçœŸå®å€¼å’ŒèŠ±è‰²
 	BYTE bFirstValue = GetCardValue(cbTurnCard);
 	BYTE bFirstColor = GetCardColor(cbTurnCard);
 	BYTE bNextValue = GetCardValue(cbSecondCard);
 	BYTE bNextColor = GetCardColor(cbSecondCard);
 
-	//´óĞ¡Íõ
+	//å¤§å°ç‹
 	if (bFirstValue == 0x0F && bNextValue == 0x0E) bIsLine = true;
 
-	//Ìø¹ı¼¶ÅÆ£¬Ò²¿ÉÒÔÊÇÍÏÀ­»ú		TODO ¼ÇµÃĞ£Ñé
+	//è·³è¿‡çº§ç‰Œï¼Œä¹Ÿå¯ä»¥æ˜¯æ‹–æ‹‰æœº		TODO è®°å¾—æ ¡éªŒ
 	if ((m_playing_para.level_value != 2) &&
 		(m_playing_para.level_value != 1) &&
 		(m_playing_para.level_value != 14) &&
-		(m_playing_para.level_value != 15))		//¹ıÂËµô×îĞ¡×î´óÖµºÍ´óĞ¡Íõ
+		(m_playing_para.level_value != 15))		//è¿‡æ»¤æ‰æœ€å°æœ€å¤§å€¼å’Œå¤§å°ç‹
 	{
 		if ((bFirstValue = m_playing_para.level_value + 1) &&
 			(bNextValue = m_playing_para.level_value - 1))
@@ -3222,10 +3222,10 @@ bool CGameData::IsLineValue(BYTE cbTurnCard, BYTE cbSecondCard)
 		}
 	}
 
-	//ÏàÁ¬ÅĞ¶Ï
+	//ç›¸è¿åˆ¤æ–­
 	if (cbFirstLogicValue == (cbSecondLogicValue + 1)) bIsLine = true;
 
-	//¹ıÂË£ºÁ½¶Ô¼¶ÅÆ£¬²¢ÇÒ»¨É«ÏàÁ¬ËãÍÏÀ­»úµÄÇé¿ö
+	//è¿‡æ»¤ï¼šä¸¤å¯¹çº§ç‰Œï¼Œå¹¶ä¸”èŠ±è‰²ç›¸è¿ç®—æ‹–æ‹‰æœºçš„æƒ…å†µ
 	if ((bFirstValue == m_playing_para.level_value) &&
 		(bNextValue == m_playing_para.level_value) &&
 		(bFirstColor == bNextColor + 1))
@@ -3236,72 +3236,72 @@ bool CGameData::IsLineValue(BYTE cbTurnCard, BYTE cbSecondCard)
 	return bIsLine;
 }
 
-//Ò»ÂÖ±ÈÅÆ£¬ÅĞ¶ÏÓ®¼Ò
+//ä¸€è½®æ¯”ç‰Œï¼Œåˆ¤æ–­èµ¢å®¶
 WORD CGameData::GetOneRoundWinner()
 {
-	//³õÊ¼Ó®¼ÒÎªµÚÒ»¸ö³öÅÆÍæ¼Ò
+	//åˆå§‹èµ¢å®¶ä¸ºç¬¬ä¸€ä¸ªå‡ºç‰Œç©å®¶
 	WORD wWinner = m_playing_para.start_outcard_user;
 	WORD wFirstIndex = wWinner;
 	BYTE cbCardType = GetCardLogicType(m_players_config.players[wWinner].out_card_info, m_players_config.players[wWinner].out_card_num);
 
-	//¶Ô±ÈÆË¿Ë
+	//å¯¹æ¯”æ‰‘å…‹
 	switch (cbCardType)
 	{
-	case CT_SINGLE:		//µ¥ÅÆÀàĞÍ
-	case CT_SAME_2:		//¶ÔÅÆÀàĞÍ
-	case CT_TRACKOR_2:	//ÍÏÀ­»úĞÍ
-	case CT_TRACKOR_3:	//ÍÏÀ­»úĞÍ
-	case CT_TRACKOR_4:	//ÍÏÀ­»úĞÍ
-	case CT_TRACKOR_5:	//ÍÏÀ­»úĞÍ
-	case CT_TRACKOR_6:	//ÍÏÀ­»úĞÍ
-	case CT_TRACKOR_7:	//ÍÏÀ­»úĞÍ
-	case CT_TRACKOR_8:	//ÍÏÀ­»úĞÍ
-	case CT_TRACKOR_9:	//ÍÏÀ­»úĞÍ
-	case CT_TRACKOR_10:	//ÍÏÀ­»úĞÍ
-	case CT_TRACKOR_11:	//ÍÏÀ­»úĞÍ
-	case CT_TRACKOR_12:	//ÍÏÀ­»úĞÍ
-	case CT_TRACKOR_13:	//ÍÏÀ­»úĞÍ
+	case CT_SINGLE:		//å•ç‰Œç±»å‹
+	case CT_SAME_2:		//å¯¹ç‰Œç±»å‹
+	case CT_TRACKOR_2:	//æ‹–æ‹‰æœºå‹
+	case CT_TRACKOR_3:	//æ‹–æ‹‰æœºå‹
+	case CT_TRACKOR_4:	//æ‹–æ‹‰æœºå‹
+	case CT_TRACKOR_5:	//æ‹–æ‹‰æœºå‹
+	case CT_TRACKOR_6:	//æ‹–æ‹‰æœºå‹
+	case CT_TRACKOR_7:	//æ‹–æ‹‰æœºå‹
+	case CT_TRACKOR_8:	//æ‹–æ‹‰æœºå‹
+	case CT_TRACKOR_9:	//æ‹–æ‹‰æœºå‹
+	case CT_TRACKOR_10:	//æ‹–æ‹‰æœºå‹
+	case CT_TRACKOR_11:	//æ‹–æ‹‰æœºå‹
+	case CT_TRACKOR_12:	//æ‹–æ‹‰æœºå‹
+	case CT_TRACKOR_13:	//æ‹–æ‹‰æœºå‹
 	{
-		//´Ó¿ªÊ¼³öÅÆÍæ¼Ò¿ªÊ¼£¬Á½Á½±È½Ï	
+		//ä»å¼€å§‹å‡ºç‰Œç©å®¶å¼€å§‹ï¼Œä¸¤ä¸¤æ¯”è¾ƒ	
 		wFirstIndex = GetNextUser(wFirstIndex);
 		while (wFirstIndex != m_playing_para.start_outcard_user)
 		{
-			//Ğ£ÑéÅÆĞÍ
+			//æ ¡éªŒç‰Œå‹
 			if (GetCardLogicType(m_players_config.players[wFirstIndex].out_card_info, m_players_config.players[wWinner].out_card_num) == cbCardType)
 			{
-				//±È½Ï´óĞ¡
+				//æ¯”è¾ƒå¤§å°
 				if (CompareUserOutCard(m_players_config.players[wWinner].out_card_info[0], m_players_config.players[wFirstIndex].out_card_info[0]))
 				{
 					wWinner = wFirstIndex;
 				}
 			}
 
-			wFirstIndex = GetNextUser(wFirstIndex);		//»ñµÃÏÂ¼Ò
+			wFirstIndex = GetNextUser(wFirstIndex);		//è·å¾—ä¸‹å®¶
 		}
 
 		return wWinner;
 	}
-	//case CT_THROW_CARD:	//Ë¦ÅÆÀàĞÍ
+	//case CT_THROW_CARD:	//ç”©ç‰Œç±»å‹
 	//	{
-	//		//»¨É«ÅĞ¶Ï
+	//		//èŠ±è‰²åˆ¤æ–­
 	//		if (GetCardLogicColor(cbOutCardData[wWinnerIndex][0])==COLOR_NT) return wFirstIndex;
 
-	//		//·ÖÎöÅÆĞÍ
+	//		//åˆ†æç‰Œå‹
 	//		tagAnalyseResult WinnerResult;
 	//		AnalyseCardData(cbOutCardData[wFirstIndex],cbCardCount,WinnerResult);
 
-	//		//Ñ­»·±È½Ï
+	//		//å¾ªç¯æ¯”è¾ƒ
 	//		for (WORD i=0;i<GAME_PLAYER-1;i++)
 	//		{
-	//			//¹æÔòÅĞ¶Ï
+	//			//è§„åˆ™åˆ¤æ–­
 	//			WORD wUserIndex=(wFirstIndex+i+1)%GAME_PLAYER;
 	//			if (GetCardLogicColor(cbOutCardData[wUserIndex],cbCardCount)!=COLOR_NT) continue;
 
-	//			//¹¹ÔìÅÆĞÍ
+	//			//æ„é€ ç‰Œå‹
 	//			tagAnalyseResult UserResult;
 	//			if (RectifyCardWeave(cbOutCardData[wUserIndex],cbCardCount,WinnerResult,UserResult)==false) continue;
 
-	//			//¶Ô±È½á¹û
+	//			//å¯¹æ¯”ç»“æœ
 	//			if (CompareCardResult(WinnerResult,UserResult)==true)
 	//			{
 	//				wWinnerIndex=wUserIndex;
@@ -3316,53 +3316,53 @@ WORD CGameData::GetOneRoundWinner()
 	return m_playing_para.start_outcard_user;
 }
 
-//¼ÆËãÒ»ÂÖÊäÓ®µÃ·Ö
+//è®¡ç®—ä¸€è½®è¾“èµ¢å¾—åˆ†
 WORD CGameData::SettleOneRound(const WORD &wWinner)
 {
-	//·ÖÊı´æÔÚ×¯¼ÒºÍ×¯¼ÒµÄÏÂ¼ÒÉíÉÏ,×¯¼ÒÊÇÊØ·Ö·½£¬ÏĞ¼ÒÊÇµÃ·Ö·½
+	//åˆ†æ•°å­˜åœ¨åº„å®¶å’Œåº„å®¶çš„ä¸‹å®¶èº«ä¸Š,åº„å®¶æ˜¯å®ˆåˆ†æ–¹ï¼Œé—²å®¶æ˜¯å¾—åˆ†æ–¹
 	WORD score = 0;
 
-	//ÅĞ¶ÏÓ®¼ÒÊÇµÃ·Ö·½»¹ÊÇÊØ·Ö·½
+	//åˆ¤æ–­èµ¢å®¶æ˜¯å¾—åˆ†æ–¹è¿˜æ˜¯å®ˆåˆ†æ–¹
 	if ((wWinner == GetNextUser(m_playing_para.appointbanker)) ||
 		(wWinner == GetLastUser(m_playing_para.appointbanker)))
 	{
-		//»ñµÃµÃ·Ö¿¨ÅÆÊı×é
+		//è·å¾—å¾—åˆ†å¡ç‰Œæ•°ç»„
 		BYTE cbScoreCardNum = GetScoreCard();
 
-		//»ñµÃ×Ü·Ö
+		//è·å¾—æ€»åˆ†
 		score = GetAllCardScore(m_playing_para.score_card, cbScoreCardNum);
 
-		//¼ÆËãÏĞ¼ÒµÃ·Ö£¬·ÖÊı¼ÇÔÚ×¯¼ÒµÄÏÂ¼ÒÉíÉÏ
+		//è®¡ç®—é—²å®¶å¾—åˆ†ï¼Œåˆ†æ•°è®°åœ¨åº„å®¶çš„ä¸‹å®¶èº«ä¸Š
 		WORD wBankerNext = GetNextUser(m_playing_para.appointbanker);
 		if (INVALID_CHAIR != wBankerNext)
 		{
-			//m_players_config.players[wBankerNext].single_score += score;      ¶·µØÖ÷²»´æÔÚ 5 10 K
-			//printf("\n¡¾Ò»ÂÖ½áÊø£¬¸ÃÂÖµÃ·Ö = %d£¬Íæ¼Ò = %d µÄ×Ü·Ö = %d¡¿\n", score, wBankerNext, m_players_config.players[wBankerNext].single_score);
+			//m_players_config.players[wBankerNext].single_score += score;      æ–—åœ°ä¸»ä¸å­˜åœ¨ 5 10 K
+			//printf("\nã€ä¸€è½®ç»“æŸï¼Œè¯¥è½®å¾—åˆ† = %dï¼Œç©å®¶ = %d çš„æ€»åˆ† = %dã€‘\n", score, wBankerNext, m_players_config.players[wBankerNext].single_score);
 		}
 	}
 
-	//×¯¼ÒÓ®²»ĞèÒª¼Ç·Ö
+	//åº„å®¶èµ¢ä¸éœ€è¦è®°åˆ†
 	return score;
 }
 
-//»ñµÃÒ»ÂÖÖĞµÄËùÓĞ·ÖÅÆ
+//è·å¾—ä¸€è½®ä¸­çš„æ‰€æœ‰åˆ†ç‰Œ
 BYTE CGameData::GetScoreCard()
 {
-	//±äÁ¿¶¨Òå
+	//å˜é‡å®šä¹‰
 	BYTE cbPostion = 0;
 
-	//»ñµÃ¸ÃÂÖËùÓĞÍæ¼Ò³öÅÆµÄ·ÖÅÆ
+	//è·å¾—è¯¥è½®æ‰€æœ‰ç©å®¶å‡ºç‰Œçš„åˆ†ç‰Œ
 	for (int i = 0; i < m_room_config.max_chair_sum; i++)
 	{
 		if (USER_PLAYING == m_players_config.players[i].play_state)
 		{
-			//±éÀúÍæ¼Ò³öÅÆÊı¾İ
+			//éå†ç©å®¶å‡ºç‰Œæ•°æ®
 			for (BYTE j = 0; j < m_players_config.players[i].out_card_num; j++)
 			{
-				//»ñÈ¡ÊıÖµ
+				//è·å–æ•°å€¼
 				BYTE cbCardValue = GetCardValue(m_players_config.players[i].out_card_info[j]);
 
-				//ÀÛ¼ÆÆË¿Ë
+				//ç´¯è®¡æ‰‘å…‹
 				if ((cbCardValue == 5) || (cbCardValue == 10) || (cbCardValue == 13))
 				{
 					m_playing_para.score_card[cbPostion++] = m_players_config.players[i].out_card_info[j];
@@ -3374,26 +3374,26 @@ BYTE CGameData::GetScoreCard()
 	return cbPostion;
 }
 
-//»ñÈ¡¿¨ÅÆÊı×é×Ü·ÖÊı
+//è·å–å¡ç‰Œæ•°ç»„æ€»åˆ†æ•°
 WORD CGameData::GetAllCardScore(const BYTE *cbCardData, BYTE cbCardCount)
 {
-	//±äÁ¿¶¨Òå
+	//å˜é‡å®šä¹‰
 	WORD wCardScore = 0;
 
-	//ÆË¿ËÀÛ¼Æ
+	//æ‰‘å…‹ç´¯è®¡
 	for (BYTE i = 0; i < cbCardCount; i++)
 	{
-		//»ñÈ¡ÊıÖµ
+		//è·å–æ•°å€¼
 		BYTE cbCardValue = GetCardValue(cbCardData[i]);
 
-		//ÀÛ¼Æ»ı·Ö
+		//ç´¯è®¡ç§¯åˆ†
 		if (cbCardValue == 5)
 		{
 			wCardScore += 5;
 			continue;
 		}
 
-		//ÀÛ¼Æ»ı·Ö
+		//ç´¯è®¡ç§¯åˆ†
 		if ((cbCardValue == 10) || (cbCardValue == 13))
 		{
 			wCardScore += 10;
@@ -3404,49 +3404,49 @@ WORD CGameData::GetAllCardScore(const BYTE *cbCardData, BYTE cbCardCount)
 	return wCardScore;
 }
 
-//±È½ÏÍæ¼Ò³öÅÆ´óĞ¡£¬ºóÃæ±ÈÇ°Ãæ´ó£¬·µ»Øtrue
+//æ¯”è¾ƒç©å®¶å‡ºç‰Œå¤§å°ï¼Œåé¢æ¯”å‰é¢å¤§ï¼Œè¿”å›true
 bool CGameData::CompareUserOutCard(const BYTE &cbFirstCardData, const WORD &cbNextCardData)
 {
-	//»ñÈ¡»¨É«
+	//è·å–èŠ±è‰²
 	BYTE cbLogicColorNext = GetCardLogicColor(cbNextCardData);
 	BYTE cbLogicColorFirst = GetCardLogicColor(cbFirstCardData);
 
-	//»¨É«ÏàÍ¬»ò¶¼ÊÇÖ÷ÅÆ£¬Ôò¶Ô±È´óĞ¡
+	//èŠ±è‰²ç›¸åŒæˆ–éƒ½æ˜¯ä¸»ç‰Œï¼Œåˆ™å¯¹æ¯”å¤§å°
 	if ((cbLogicColorNext == COLOR_MAIN_CARD) || (cbLogicColorNext == cbLogicColorFirst))
 	{
-		//»ñÈ¡´óĞ¡
+		//è·å–å¤§å°
 		BYTE cbLogicValueNext = GetCardLogicValue(cbNextCardData);
 		BYTE cbLogicValueFirst = GetCardLogicValue(cbFirstCardData);
 
-		//´óĞ¡ÅĞ¶Ï
+		//å¤§å°åˆ¤æ–­
 		if (cbLogicValueNext > cbLogicValueFirst)
 			return true;
 	}
 
-	//»¨É«²»Í¬£¬Ôò¿Ï¶¨ÊÇµÚÒ»¸ö´ó
+	//èŠ±è‰²ä¸åŒï¼Œåˆ™è‚¯å®šæ˜¯ç¬¬ä¸€ä¸ªå¤§
 
 	return false;
 }
 
-//³öÅÆĞ£Ñé    //½«Íæ¼ÒÒª³öµÄÅÆºÍ¸ÃÂÖ×î´óµÄ³öÅÆ½øĞĞ±È½Ï ¿ÉÒÔ³ö·µ»Øtrue
+//å‡ºç‰Œæ ¡éªŒ    //å°†ç©å®¶è¦å‡ºçš„ç‰Œå’Œè¯¥è½®æœ€å¤§çš„å‡ºç‰Œè¿›è¡Œæ¯”è¾ƒ å¯ä»¥å‡ºè¿”å›true
 bool CGameData::EfficacyOutCard(const WORD &wCheckUser, const BYTE *cbOutCardData, const BYTE &cbOutCardCount)
 {
-	//»ñµÃ¸ÃÂÖ×î´óµÄ³öÅÆÊı¾İ
+	//è·å¾—è¯¥è½®æœ€å¤§çš„å‡ºç‰Œæ•°æ®
 	BYTE cbTurnCardNum = m_playing_para.turn_cards_num;
 	BYTE cbTurnCard[MAX_CARD_COUNT];
 	ZeroMemory(&cbTurnCard, sizeof(cbTurnCard));
 	CopyMemory(cbTurnCard, m_playing_para.turn_max_cards, sizeof(cbTurnCard));
 
-	//»ñÈ¡ÀàĞÍ
+	//è·å–ç±»å‹
 	int cbFirstType = GetCardLogicType(cbTurnCard, cbTurnCardNum);
 	int cbNextType = GetCardLogicType(cbOutCardData, cbOutCardCount);
 
-	//ÀàĞÍÅĞ¶Ï
+	//ç±»å‹åˆ¤æ–­
 	if (cbNextType == CT_ERROR) return false;
 	if ((cbFirstType&(1 << CT_MISSILE_CARD)) != 0)  return false;
 	if ((cbNextType&(1 << CT_MISSILE_CARD)) != 0) return true;
 
-	//Õ¨µ¯ÅĞ¶Ï
+	//ç‚¸å¼¹åˆ¤æ–­
 	if ((cbFirstType&(1 << CT_LAIZI_BOMB)) != 0) { return false; }
 	if ((cbNextType&(1 << CT_LAIZI_BOMB)) != 0) { return true; }
 	if ((cbFirstType&(1 << CT_BOMB_CARD)) == 0 && (cbNextType&(1 << CT_BOMB_CARD)) != 0) { return true; }
@@ -3455,15 +3455,15 @@ bool CGameData::EfficacyOutCard(const WORD &wCheckUser, const BYTE *cbOutCardDat
 	if ((cbFirstType&(1 << CT_BOMB_CARD)) == 0 && (cbFirstType&(1 << CT_RUAN_BOMB)) == 0 && (cbNextType&(1 << CT_RUAN_BOMB)) != 0) { return true; }
 
 
-	//¹æÔòÅĞ¶Ï
+	//è§„åˆ™åˆ¤æ–­
 	if (((cbFirstType&cbNextType) == 0 || (cbTurnCardNum != cbOutCardCount)) && (cbFirstType&(1 << CT_BOMB_CARD)) == 0 && (cbFirstType&(1 << CT_RUAN_BOMB)) == 0 &&
 		(cbNextType&(1 << CT_BOMB_CARD)) == 0 && (cbNextType&(1 << CT_RUAN_BOMB)) == 0) return false;
 
-	//¿ªÊ¼¶Ô±È
+	//å¼€å§‹å¯¹æ¯”
 	if ((cbNextType&(1 << CT_BOMB_CARD)) != 0)
 	{
 
-		//·ÖÎöÆË¿Ë
+		//åˆ†ææ‰‘å…‹
 		tagAnalyseResult NextResult;
 		tagAnalyseResult FirstResult;
 
@@ -3473,11 +3473,11 @@ bool CGameData::EfficacyOutCard(const WORD &wCheckUser, const BYTE *cbOutCardDat
 		if (!AnalysebCompare(cbOutCardData, cbOutCardCount, NextResult, CT_BOMB_CARD))return false;
 		if (!AnalysebCompare(cbTurnCard, cbTurnCardNum, FirstResult, CT_BOMB_CARD))return false;
 
-		//»ñÈ¡ÊıÖµ
+		//è·å–æ•°å€¼
 		BYTE cbNextLogicValue = GetCardLogicValue(NextResult.cbFourCardData[0]);
 		BYTE cbFirstLogicValue = GetCardLogicValue(FirstResult.cbFourCardData[0]);
 
-		//³öÅÆ×î´óÖµ
+		//å‡ºç‰Œæœ€å¤§å€¼
 		for (BYTE i = 0; i < FirstResult.cbFourCount; i++)
 		{
 			if (cbFirstLogicValue < GetCardLogicValue(NextResult.cbFourCardData[i]))
@@ -3495,7 +3495,7 @@ bool CGameData::EfficacyOutCard(const WORD &wCheckUser, const BYTE *cbOutCardDat
 	}
 	else if ((cbNextType&(1 << CT_RUAN_BOMB)) != 0)
 	{
-		//·ÖÎöÆË¿Ë
+		//åˆ†ææ‰‘å…‹
 		tagAnalyseResult NextResult;
 		tagAnalyseResult FirstResult;
 
@@ -3505,11 +3505,11 @@ bool CGameData::EfficacyOutCard(const WORD &wCheckUser, const BYTE *cbOutCardDat
 		if (!AnalysebCompare(cbOutCardData, cbOutCardCount, NextResult, CT_RUAN_BOMB))return false;
 		if (!AnalysebCompare(cbTurnCard, cbTurnCardNum, FirstResult, CT_RUAN_BOMB))return false;
 
-		//»ñÈ¡ÊıÖµ
+		//è·å–æ•°å€¼
 		BYTE cbNextLogicValue = GetCardLogicValue(NextResult.cbFourCardData[0]);
 		BYTE cbFirstLogicValue = GetCardLogicValue(FirstResult.cbFourCardData[0]);
 
-		//³öÅÆ×î´óÖµ
+		//å‡ºç‰Œæœ€å¤§å€¼
 		for (BYTE i = 0; i < FirstResult.cbFourCount; i++)
 		{
 			if (cbFirstLogicValue < GetCardLogicValue(NextResult.cbFourCardData[i]))
@@ -3525,7 +3525,7 @@ bool CGameData::EfficacyOutCard(const WORD &wCheckUser, const BYTE *cbOutCardDat
 	}
 	else if ((cbNextType&(1 << CT_SINGLE)) != 0 && cbTurnCardNum == cbOutCardCount)
 	{
-		//·ÖÎöÆË¿Ë
+		//åˆ†ææ‰‘å…‹
 		tagAnalyseResult NextResult;
 		tagAnalyseResult FirstResult;
 
@@ -3535,11 +3535,11 @@ bool CGameData::EfficacyOutCard(const WORD &wCheckUser, const BYTE *cbOutCardDat
 		if (!AnalysebCompare(cbOutCardData, cbOutCardCount, NextResult, CT_SINGLE))return false;
 		if (!AnalysebCompare(cbTurnCard, cbTurnCardNum, FirstResult, CT_SINGLE))return false;
 
-		//»ñÈ¡ÊıÖµ
+		//è·å–æ•°å€¼
 		BYTE cbNextLogicValue = GetCardLogicValue(NextResult.cbSignedCardData[0]);
 		BYTE cbFirstLogicValue = GetCardLogicValue(FirstResult.cbSignedCardData[0]);
 
-		//³öÅÆ×î´óÖµ
+		//å‡ºç‰Œæœ€å¤§å€¼
 		for (BYTE i = 0; i < FirstResult.cbSignedCount; i++)
 		{
 			if (cbFirstLogicValue < GetCardLogicValue(NextResult.cbSignedCardData[i]))
@@ -3555,7 +3555,7 @@ bool CGameData::EfficacyOutCard(const WORD &wCheckUser, const BYTE *cbOutCardDat
 	}
 	else if ((cbNextType&(1 << CT_DOUBLE)) != 0 && cbTurnCardNum == cbOutCardCount)
 	{
-		//·ÖÎöÆË¿Ë
+		//åˆ†ææ‰‘å…‹
 		tagAnalyseResult NextResult;
 		tagAnalyseResult FirstResult;
 
@@ -3565,11 +3565,11 @@ bool CGameData::EfficacyOutCard(const WORD &wCheckUser, const BYTE *cbOutCardDat
 		if (!AnalysebCompare(cbOutCardData, cbOutCardCount, NextResult, CT_DOUBLE))return false;
 		if (!AnalysebCompare(cbTurnCard, cbTurnCardNum, FirstResult, CT_DOUBLE))return false;
 
-		//»ñÈ¡ÊıÖµ
+		//è·å–æ•°å€¼
 		BYTE cbNextLogicValue = GetCardLogicValue(NextResult.cbDoubleCardData[0]);
 		BYTE cbFirstLogicValue = GetCardLogicValue(FirstResult.cbDoubleCardData[0]);
 
-		//³öÅÆ×î´óÖµ
+		//å‡ºç‰Œæœ€å¤§å€¼
 		for (BYTE i = 0; i < FirstResult.cbDoubleCount; i++)
 		{
 			if (cbFirstLogicValue < GetCardLogicValue(NextResult.cbDoubleCardData[i]))
@@ -3585,7 +3585,7 @@ bool CGameData::EfficacyOutCard(const WORD &wCheckUser, const BYTE *cbOutCardDat
 	}
 	else if ((cbNextType&(1 << CT_THREE)) != 0 && cbTurnCardNum == cbOutCardCount)
 	{
-		//·ÖÎöÆË¿Ë
+		//åˆ†ææ‰‘å…‹
 		tagAnalyseResult NextResult;
 		tagAnalyseResult FirstResult;
 
@@ -3595,11 +3595,11 @@ bool CGameData::EfficacyOutCard(const WORD &wCheckUser, const BYTE *cbOutCardDat
 		if (!AnalysebCompare(cbOutCardData, cbOutCardCount, NextResult, CT_THREE))return false;
 		if (!AnalysebCompare(cbTurnCard, cbTurnCardNum, FirstResult, CT_THREE))return false;
 
-		//»ñÈ¡ÊıÖµ
+		//è·å–æ•°å€¼
 		BYTE cbNextLogicValue = GetCardLogicValue(NextResult.cbThreeCardData[0]);
 		BYTE cbFirstLogicValue = GetCardLogicValue(FirstResult.cbThreeCardData[0]);
 
-		//³öÅÆ×î´óÖµ
+		//å‡ºç‰Œæœ€å¤§å€¼
 		for (BYTE i = 0; i < FirstResult.cbThreeCount; i++)
 		{
 			if (cbFirstLogicValue < GetCardLogicValue(NextResult.cbThreeCardData[i]))
@@ -3615,7 +3615,7 @@ bool CGameData::EfficacyOutCard(const WORD &wCheckUser, const BYTE *cbOutCardDat
 	}
 	else if ((cbNextType&(1 << CT_SINGLE_LINE)) != 0 && cbTurnCardNum == cbOutCardCount)
 	{
-		//·ÖÎöÆË¿Ë
+		//åˆ†ææ‰‘å…‹
 		tagAnalyseResult NextResult;
 		tagAnalyseResult FirstResult;
 
@@ -3625,11 +3625,11 @@ bool CGameData::EfficacyOutCard(const WORD &wCheckUser, const BYTE *cbOutCardDat
 		if (!AnalysebCompare(cbOutCardData, cbOutCardCount, NextResult, CT_SINGLE_LINE))return false;
 		if (!AnalysebCompare(cbTurnCard, cbTurnCardNum, FirstResult, CT_SINGLE_LINE))return false;
 
-		//»ñÈ¡ÊıÖµ
+		//è·å–æ•°å€¼
 		BYTE cbNextLogicValue = GetCardLogicValue(NextResult.cbSignedCardData[0]);
 		BYTE cbFirstLogicValue = GetCardLogicValue(FirstResult.cbSignedCardData[0]);
 
-		//³öÅÆ×î´óÖµ
+		//å‡ºç‰Œæœ€å¤§å€¼
 		for (BYTE i = 0; i < FirstResult.cbSignedCount; i++)
 		{
 			if (cbFirstLogicValue < GetCardLogicValue(NextResult.cbSignedCardData[i]))
@@ -3645,7 +3645,7 @@ bool CGameData::EfficacyOutCard(const WORD &wCheckUser, const BYTE *cbOutCardDat
 	}
 	else if ((cbNextType&(1 << CT_DOUBLE_LINE)) != 0 && cbTurnCardNum == cbOutCardCount)
 	{
-		//·ÖÎöÆË¿Ë
+		//åˆ†ææ‰‘å…‹
 		tagAnalyseResult NextResult;
 		tagAnalyseResult FirstResult;
 
@@ -3655,11 +3655,11 @@ bool CGameData::EfficacyOutCard(const WORD &wCheckUser, const BYTE *cbOutCardDat
 		if (!AnalysebCompare(cbOutCardData, cbOutCardCount, NextResult, CT_DOUBLE_LINE))return false;
 		if (!AnalysebCompare(cbTurnCard, cbTurnCardNum, FirstResult, CT_DOUBLE_LINE))return false;
 
-		//»ñÈ¡ÊıÖµ
+		//è·å–æ•°å€¼
 		BYTE cbNextLogicValue = GetCardLogicValue(NextResult.cbDoubleCardData[0]);
 		BYTE cbFirstLogicValue = GetCardLogicValue(FirstResult.cbDoubleCardData[0]);
 
-		//³öÅÆ×î´óÖµ
+		//å‡ºç‰Œæœ€å¤§å€¼
 		for (BYTE i = 0; i < FirstResult.cbDoubleCount; i++)
 		{
 			if (cbFirstLogicValue < GetCardLogicValue(NextResult.cbDoubleCardData[i]))
@@ -3675,7 +3675,7 @@ bool CGameData::EfficacyOutCard(const WORD &wCheckUser, const BYTE *cbOutCardDat
 	}
 	else if ((cbNextType&(1 << CT_THREE_LINE)) != 0 && cbTurnCardNum == cbOutCardCount)
 	{
-		//·ÖÎöÆË¿Ë
+		//åˆ†ææ‰‘å…‹
 		tagAnalyseResult NextResult;
 		tagAnalyseResult FirstResult;
 
@@ -3685,11 +3685,11 @@ bool CGameData::EfficacyOutCard(const WORD &wCheckUser, const BYTE *cbOutCardDat
 		if (!AnalysebCompare(cbOutCardData, cbOutCardCount, NextResult, CT_THREE_LINE))return false;
 		if (!AnalysebCompare(cbTurnCard, cbTurnCardNum, FirstResult, CT_THREE_LINE))return false;
 
-		//»ñÈ¡ÊıÖµ
+		//è·å–æ•°å€¼
 		BYTE cbNextLogicValue = GetCardLogicValue(NextResult.cbThreeCardData[0]);
 		BYTE cbFirstLogicValue = GetCardLogicValue(FirstResult.cbThreeCardData[0]);
 
-		//³öÅÆ×î´óÖµ
+		//å‡ºç‰Œæœ€å¤§å€¼
 		for (BYTE i = 0; i < FirstResult.cbThreeCount; i++)
 		{
 			if (cbFirstLogicValue < GetCardLogicValue(NextResult.cbThreeCardData[i]))
@@ -3705,7 +3705,7 @@ bool CGameData::EfficacyOutCard(const WORD &wCheckUser, const BYTE *cbOutCardDat
 	}
 	else if ((cbNextType&(1 << CT_THREE_LINE_TAKE_ONE)) != 0 && cbTurnCardNum == cbOutCardCount)
 	{
-		//·ÖÎöÆË¿Ë
+		//åˆ†ææ‰‘å…‹
 		tagAnalyseResult NextResult;
 		tagAnalyseResult FirstResult;
 
@@ -3715,11 +3715,11 @@ bool CGameData::EfficacyOutCard(const WORD &wCheckUser, const BYTE *cbOutCardDat
 		if (!AnalysebCompare(cbOutCardData, cbOutCardCount, NextResult, CT_THREE_LINE_TAKE_ONE))return false;
 		if (!AnalysebCompare(cbTurnCard, cbTurnCardNum, FirstResult, CT_THREE_LINE_TAKE_ONE))return false;
 
-		//»ñÈ¡ÊıÖµ
+		//è·å–æ•°å€¼
 		BYTE cbNextLogicValue = GetCardLogicValue(NextResult.cbThreeCardData[0]);
 		BYTE cbFirstLogicValue = GetCardLogicValue(FirstResult.cbThreeCardData[0]);
 
-		//³öÅÆ×î´óÖµ
+		//å‡ºç‰Œæœ€å¤§å€¼
 		for (BYTE i = 0; i < FirstResult.cbThreeCount; i++)
 		{
 			if (cbFirstLogicValue < GetCardLogicValue(NextResult.cbThreeCardData[i * 3]))
@@ -3735,7 +3735,7 @@ bool CGameData::EfficacyOutCard(const WORD &wCheckUser, const BYTE *cbOutCardDat
 	}
 	else if ((cbNextType&(1 << CT_THREE_LINE_TAKE_TWO)) != 0 && cbTurnCardNum == cbOutCardCount)
 	{
-		//·ÖÎöÆË¿Ë
+		//åˆ†ææ‰‘å…‹
 		tagAnalyseResult NextResult;
 		tagAnalyseResult FirstResult;
 
@@ -3745,11 +3745,11 @@ bool CGameData::EfficacyOutCard(const WORD &wCheckUser, const BYTE *cbOutCardDat
 		if (!AnalysebCompare(cbOutCardData, cbOutCardCount, NextResult, CT_THREE_LINE_TAKE_TWO))return false;
 		if (!AnalysebCompare(cbTurnCard, cbTurnCardNum, FirstResult, CT_THREE_LINE_TAKE_TWO))return false;
 
-		//»ñÈ¡ÊıÖµ
+		//è·å–æ•°å€¼
 		BYTE cbNextLogicValue = GetCardLogicValue(NextResult.cbThreeCardData[0]);
 		BYTE cbFirstLogicValue = GetCardLogicValue(FirstResult.cbThreeCardData[0]);
 
-		//³öÅÆ×î´óÖµ
+		//å‡ºç‰Œæœ€å¤§å€¼
 		for (BYTE i = 0; i < FirstResult.cbThreeCount; i++)
 		{
 			if (cbFirstLogicValue < GetCardLogicValue(NextResult.cbThreeCardData[i * 3]))
@@ -3765,7 +3765,7 @@ bool CGameData::EfficacyOutCard(const WORD &wCheckUser, const BYTE *cbOutCardDat
 	}
 	else if ((cbNextType&(1 << CT_FOUR_LINE_TAKE_ONE)) != 0 && cbTurnCardNum == cbOutCardCount)
 	{
-		//·ÖÎöÆË¿Ë
+		//åˆ†ææ‰‘å…‹
 		tagAnalyseResult NextResult;
 		tagAnalyseResult FirstResult;
 		ZeroMemory(&NextResult, sizeof(NextResult));
@@ -3774,11 +3774,11 @@ bool CGameData::EfficacyOutCard(const WORD &wCheckUser, const BYTE *cbOutCardDat
 		if (!AnalysebCompare(cbOutCardData, cbOutCardCount, NextResult, CT_FOUR_LINE_TAKE_ONE))return false;
 		if (!AnalysebCompare(cbTurnCard, cbTurnCardNum, FirstResult, CT_FOUR_LINE_TAKE_ONE))return false;
 
-		//»ñÈ¡ÊıÖµ
+		//è·å–æ•°å€¼
 		BYTE cbNextLogicValue = GetCardLogicValue(NextResult.cbFourCardData[0]);
 		BYTE cbFirstLogicValue = GetCardLogicValue(FirstResult.cbFourCardData[0]);
 
-		//³öÅÆ×î´óÖµ
+		//å‡ºç‰Œæœ€å¤§å€¼
 		for (BYTE i = 0; i < FirstResult.cbFourCount; i++)
 		{
 			if (cbFirstLogicValue < GetCardLogicValue(NextResult.cbFourCardData[i * 4]))
@@ -3794,7 +3794,7 @@ bool CGameData::EfficacyOutCard(const WORD &wCheckUser, const BYTE *cbOutCardDat
 	}
 	else if ((cbNextType&(1 << CT_FOUR_LINE_TAKE_TWO)) != 0 && cbTurnCardNum == cbOutCardCount)
 	{
-		//·ÖÎöÆË¿Ë
+		//åˆ†ææ‰‘å…‹
 		tagAnalyseResult NextResult;
 		tagAnalyseResult FirstResult;
 		ZeroMemory(&NextResult, sizeof(NextResult));
@@ -3803,11 +3803,11 @@ bool CGameData::EfficacyOutCard(const WORD &wCheckUser, const BYTE *cbOutCardDat
 		if (!AnalysebCompare(cbOutCardData, cbOutCardCount, NextResult, CT_FOUR_LINE_TAKE_TWO))return false;
 		if (!AnalysebCompare(cbTurnCard, cbTurnCardNum, FirstResult, CT_FOUR_LINE_TAKE_TWO))return false;
 
-		//»ñÈ¡ÊıÖµ
+		//è·å–æ•°å€¼
 		BYTE cbNextLogicValue = GetCardLogicValue(NextResult.cbFourCardData[0]);
 		BYTE cbFirstLogicValue = GetCardLogicValue(FirstResult.cbFourCardData[0]);
 
-		//³öÅÆ×î´óÖµ
+		//å‡ºç‰Œæœ€å¤§å€¼
 		for (BYTE i = 0; i < FirstResult.cbFourCount; i++)
 		{
 			if (cbFirstLogicValue < GetCardLogicValue(NextResult.cbFourCardData[i * 4]))
@@ -3825,118 +3825,118 @@ bool CGameData::EfficacyOutCard(const WORD &wCheckUser, const BYTE *cbOutCardDat
 	return false;
 }
 
-//¸ù¾İÖ¸¶¨»¨É«ÌáÈ¡ÆË¿Ë
+//æ ¹æ®æŒ‡å®šèŠ±è‰²æå–æ‰‘å…‹
 BYTE CGameData::DistillCardByColor(const BYTE cbCardData[], BYTE cbCardCount, BYTE cbCardColor, BYTE cbResultCard[])
 {
-	//±äÁ¿¶¨Òå
+	//å˜é‡å®šä¹‰
 	BYTE cbResultCount = 0;
 
-	//ÌáÈ¡ÆË¿Ë
+	//æå–æ‰‘å…‹
 	for (BYTE i = 0; i < cbCardCount; i++)
 	{
-		//»¨É«ÅĞ¶Ï
+		//èŠ±è‰²åˆ¤æ–­
 		if (GetCardLogicColor(cbCardData[i]) == cbCardColor)
 		{
 			cbResultCard[cbResultCount++] = cbCardData[i];
 			continue;
 		}
 
-		//ÖÕÖ¹ÅĞ¶Ï
+		//ç»ˆæ­¢åˆ¤æ–­
 		if (cbResultCount > 0) break;
 	}
 
 	return cbResultCount;
 }
 
-//¸ù¾İÊıÄ¿ÌáÈ¡ÆË¿Ë
+//æ ¹æ®æ•°ç›®æå–æ‰‘å…‹
 BYTE CGameData::DistillCardByCount(const BYTE cbCardData[], BYTE cbCardCount, BYTE cbSameCount, tagSameDataInfo &SameDataInfo)
 {
-	//²ÎÊıĞ§Ñé
+	//å‚æ•°æ•ˆéªŒ
 	if ((cbSameCount < 2) || (cbSameCount > MAX_PACK)) return 0;
 
-	//ÉèÖÃ±äÁ¿
+	//è®¾ç½®å˜é‡
 	ZeroMemory(&SameDataInfo, sizeof(SameDataInfo));
 
-	//ÌáÈ¡ÅĞ¶Ï
+	//æå–åˆ¤æ–­
 	if (cbCardCount < cbSameCount) return 0;
 
-	//ÌáÈ¡ÆË¿Ë
+	//æå–æ‰‘å…‹
 	for (BYTE i = 0; i < cbCardCount - cbSameCount + 1; i++)
 	{
-		//ÊıÄ¿ÅĞ¶Ï
+		//æ•°ç›®åˆ¤æ–­
 		BYTE j = 0;
 		for (j = 1; j < cbSameCount; j++)
 		{
 			if (cbCardData[i] != cbCardData[i + j]) break;
 		}
 
-		//³É¹¦´¦Àí
+		//æˆåŠŸå¤„ç†
 		if (j == cbSameCount)
 		{
-			//Í¬ÅÆÊôĞÔ
+			//åŒç‰Œå±æ€§
 			SameDataInfo.cbBlockCount++;
 
-			//ÆË¿ËÊı¾İ
+			//æ‰‘å…‹æ•°æ®
 			for (BYTE k = 0; k < cbSameCount; k++)
 			{
 				SameDataInfo.cbSameData[SameDataInfo.cbCardCount++] = cbCardData[i + k];
 			}
 		}
 
-		//µİÔö´¦Àí
+		//é€’å¢å¤„ç†
 		i += j - 1;
 	}
 
 	return SameDataInfo.cbBlockCount;
 }
 
-//ÌáÈ¡ÍÏÀ­»úÆË¿Ë
+//æå–æ‹–æ‹‰æœºæ‰‘å…‹
 BYTE CGameData::DistillTrackorByCount(const BYTE cbCardData[], BYTE cbCardCount, BYTE cbSameCount, tagTractorDataInfo &TractorDataInfo)
 {
-	//²ÎÊıĞ§Ñé
+	//å‚æ•°æ•ˆéªŒ
 	if ((cbSameCount < 2) || (cbSameCount > MAX_PACK)) return 0;
 
-	//ÉèÖÃ±äÁ¿
+	//è®¾ç½®å˜é‡
 	ZeroMemory(&TractorDataInfo, sizeof(TractorDataInfo));
 
-	//ÌáÈ¡Í¬ÅÆ
+	//æå–åŒç‰Œ
 	tagSameDataInfo SameDataInfo;
 	DistillCardByCount(cbCardData, cbCardCount, cbSameCount, SameDataInfo);
 
-	//ÅÆ¶ÎÅĞ¶Ï
+	//ç‰Œæ®µåˆ¤æ–­
 	if (SameDataInfo.cbBlockCount < 2) return 0;
 
-	//·ÖÎö´¦Àí
+	//åˆ†æå¤„ç†
 	BYTE cbResultIndex = 0;
 	for (BYTE i = 0; i < SameDataInfo.cbBlockCount - 1; i++)
 	{
-		//·ÖÎö¹ıÂË
+		//åˆ†æè¿‡æ»¤
 		if (SameDataInfo.cbSameData[i*cbSameCount] == 0) continue;
 
-		//±äÁ¿¶¨Òå
+		//å˜é‡å®šä¹‰
 		BYTE cbLineCount = 1;
 		BYTE cbTrackorIndex[MAX_TRACKOR] = { i*cbSameCount };
 
-		//Á¬ÅÆÅĞ¶Ï
+		//è¿ç‰Œåˆ¤æ–­
 		for (BYTE j = i; j < SameDataInfo.cbBlockCount - 1; j++)
 		{
-			//·ÖÎö¹ıÂË
+			//åˆ†æè¿‡æ»¤
 			if (SameDataInfo.cbSameData[(j + 1)*cbSameCount] == 0) continue;
 
-			//±äÁ¿¶¨Òå
+			//å˜é‡å®šä¹‰
 			BYTE cbSecondIndex = (j + 1)*cbSameCount;
 			BYTE cbFirstIndex = cbTrackorIndex[cbLineCount - 1];
 			BYTE cbFirstCardData = SameDataInfo.cbSameData[cbFirstIndex];
 			BYTE cbSecondCardData = SameDataInfo.cbSameData[cbSecondIndex];
 
-			//Á¬ÅÆÅĞ¶Ï
+			//è¿ç‰Œåˆ¤æ–­
 			if (IsLineValue(cbFirstCardData, cbSecondCardData) == true)
 			{
 				cbTrackorIndex[cbLineCount++] = cbSecondIndex;
 				continue;
 			}
 
-			//¸±Ö÷¼ä¸ô
+			//å‰¯ä¸»é—´éš”
 			if (cbFirstCardData == cbSecondCardData) continue;
 			if (GetCardValue(cbSecondCardData) == m_playing_para.nt_value) continue;
 			if (GetCardValue(cbSecondCardData) == m_playing_para.level_value) continue;
@@ -3944,23 +3944,23 @@ BYTE CGameData::DistillTrackorByCount(const BYTE cbCardData[], BYTE cbCardCount,
 			break;
 		}
 
-		//³É¹¦ÅĞ¶Ï
+		//æˆåŠŸåˆ¤æ–­
 		if (cbLineCount >= 2)
 		{
-			//×î´ó³¤¶È
+			//æœ€å¤§é•¿åº¦
 			if (cbLineCount > TractorDataInfo.cbTractorMaxLength)
 			{
 				TractorDataInfo.cbTractorMaxLength = cbLineCount;
 				TractorDataInfo.cbTractorMaxIndex = cbResultIndex;
 			}
 
-			//ÉèÖÃ½á¹û
+			//è®¾ç½®ç»“æœ
 			TractorDataInfo.cbTractorCount++;
 			TractorDataInfo.cbCardCount += cbLineCount * cbSameCount;
 			TractorDataInfo.cbTractorData[cbResultIndex++] = cbLineCount;
 			TractorDataInfo.cbTractorData[cbResultIndex++] = cbSameCount;
 
-			//ÉèÖÃÊı¾İ
+			//è®¾ç½®æ•°æ®
 			for (BYTE k = 0; k < cbLineCount; k++)
 			{
 				BYTE cbIndex = cbTrackorIndex[k];
@@ -3978,11 +3978,11 @@ BYTE CGameData::DistillTrackorByCount(const BYTE cbCardData[], BYTE cbCardCount,
 
 BYTE CGameData::GetIntersectionCount(const BYTE cbCardData1[], BYTE cbCardCount1, const BYTE cbCardData2[], BYTE cbCardCount2)
 {
-	//±äÁ¿¶¨Òå
+	//å˜é‡å®šä¹‰
 	BYTE cbAnalyseCard[MAX_CARD_COUNT];
 	CopyMemory(cbAnalyseCard, cbCardData2, sizeof(BYTE)*cbCardCount2);
 
-	//·ÖÎöÅĞ¶Ï
+	//åˆ†æåˆ¤æ–­
 	BYTE cbIntersectionCount = 0;
 	for (BYTE i = 0; i < cbCardCount1; i++)
 	{
@@ -3990,7 +3990,7 @@ BYTE CGameData::GetIntersectionCount(const BYTE cbCardData1[], BYTE cbCardCount1
 		{
 			if (cbCardData1[i] == cbAnalyseCard[j])
 			{
-				//ÉèÖÃ±äÁ¿
+				//è®¾ç½®å˜é‡
 				cbAnalyseCard[j] = 0;
 				cbIntersectionCount++;
 
@@ -4002,7 +4002,7 @@ BYTE CGameData::GetIntersectionCount(const BYTE cbCardData1[], BYTE cbCardCount1
 	return cbIntersectionCount;
 }
 
-//¸ù¾İÒ»ÂÖµÄ¿ªÊ¼³öÅÆÍæ¼Ò£¬·ÖÎöÍæ¼Ò¿ÉÒÔ³öµÄÅÆ
+//æ ¹æ®ä¸€è½®çš„å¼€å§‹å‡ºç‰Œç©å®¶ï¼Œåˆ†æç©å®¶å¯ä»¥å‡ºçš„ç‰Œ
 bool CGameData::AnalyseOutCardNotify(const WORD &wChairID, const BYTE *OutCardData,
 	const BYTE &cbOutCardNum, tagOutCardNotify *cbOutCardNotify)
 {
@@ -4012,28 +4012,28 @@ bool CGameData::AnalyseOutCardNotify(const WORD &wChairID, const BYTE *OutCardDa
 
 }
 
-//ÅĞ¶ÏÓÃ»§ÊÖÅÆÖĞÊÇ·ñÓĞÖ¸¶¨»¨É«µÄ¸ÃÀàĞÍµÄ¿¨ÅÆ
+//åˆ¤æ–­ç”¨æˆ·æ‰‹ç‰Œä¸­æ˜¯å¦æœ‰æŒ‡å®šèŠ±è‰²çš„è¯¥ç±»å‹çš„å¡ç‰Œ
 bool CGameData::IsHaveSpecificType(const WORD &wChairID, const BYTE &color, const BYTE &cbOutCardType,
 	const BYTE &cbOutCardNum, tagOutCardNotify &cbOutCardNotify)
 {
-	//Ğ£Ñé
+	//æ ¡éªŒ
 	if ((CT_ERROR == cbOutCardType) || (0 == cbOutCardNum))
 		return false;
 
-	//³öÅÆÊıÄ¿
+	//å‡ºç‰Œæ•°ç›®
 	cbOutCardNotify.cbOutCardNum = cbOutCardType;
 
-	//ÅĞ¶ÏÊÖÅÆÖĞÊÇ·ñÓĞ¸Ã»¨É«µÄÅÆ
+	//åˆ¤æ–­æ‰‹ç‰Œä¸­æ˜¯å¦æœ‰è¯¥èŠ±è‰²çš„ç‰Œ
 	BYTE cbHandCardNum = GetUserCurCardNum(wChairID);
 	bool bHaveColor = false;
 
-	//Íæ¼ÒÊÖÅÆÖĞÖ¸¶¨»¨É«µÄ¿¨ÅÆÊı×é
+	//ç©å®¶æ‰‹ç‰Œä¸­æŒ‡å®šèŠ±è‰²çš„å¡ç‰Œæ•°ç»„
 	std::vector<BYTE> vecColorCard;
 
-	//Íæ¼ÒÊÖÅÆÖĞ³ıÁËÖ¸¶¨»¨É«µÄ¿¨ÅÆÊı¾İ
+	//ç©å®¶æ‰‹ç‰Œä¸­é™¤äº†æŒ‡å®šèŠ±è‰²çš„å¡ç‰Œæ•°æ®
 	std::vector<BYTE> vecNotColorCard;
 
-	//±éÀúÊÖÅÆ
+	//éå†æ‰‹ç‰Œ
 	for (int i = 0; i < cbHandCardNum; i++)
 	{
 		BYTE cbCardColor = GetCardLogicColor(m_players_config.hand_cards[wChairID][i]);
@@ -4048,16 +4048,16 @@ bool CGameData::IsHaveSpecificType(const WORD &wChairID, const BYTE &color, cons
 		}
 	}
 
-	//ÈôÓĞ¸Ã»¨É«£¬ÔÙÅĞ¶ÏÀàĞÍ
+	//è‹¥æœ‰è¯¥èŠ±è‰²ï¼Œå†åˆ¤æ–­ç±»å‹
 	if (bHaveColor)
 	{
-		//ÊÖÅÆÖĞ¸Ã»¨É«µÄ¿¨ÅÆÊıÄ¿
+		//æ‰‹ç‰Œä¸­è¯¥èŠ±è‰²çš„å¡ç‰Œæ•°ç›®
 		BYTE cbColorNum = vecColorCard.size();
 
-		//µ¥ÅÆÀàĞÍ
+		//å•ç‰Œç±»å‹
 		if ((CT_SINGLE == cbOutCardType) && (1 == cbOutCardNum))
 		{
-			//ÄÜ³öµÄÅÆÎª¸Ã»¨É«È«²¿µÄÅÆ
+			//èƒ½å‡ºçš„ç‰Œä¸ºè¯¥èŠ±è‰²å…¨éƒ¨çš„ç‰Œ
 			for (BYTE i = 0; i < vecColorCard.size(); i++)
 			{
 				cbOutCardNotify.cbMustOutCard[i] = vecColorCard[i];
@@ -4065,42 +4065,42 @@ bool CGameData::IsHaveSpecificType(const WORD &wChairID, const BYTE &color, cons
 			return true;
 		}
 
-		//¶Ô×ÓÀàĞÍ
+		//å¯¹å­ç±»å‹
 		if ((CT_SAME_2 == cbOutCardType) && (2 == cbOutCardNum))
 		{
-			//¸Ã»¨É«¿¨ÅÆ²»×ã
+			//è¯¥èŠ±è‰²å¡ç‰Œä¸è¶³
 			if (cbColorNum < cbOutCardNum)
 			{
-				//±ØĞë³öµÄ¿¨ÅÆÎª£º¸Ã»¨É«µÄÅÆ
+				//å¿…é¡»å‡ºçš„å¡ç‰Œä¸ºï¼šè¯¥èŠ±è‰²çš„ç‰Œ
 				for (int i = 0; i < cbColorNum; i++)
 				{
 					cbOutCardNotify.cbMustOutCard[i] = vecColorCard[i];
 				}
 
-				//¿ÉÑ¡³öµÄ¿¨ÅÆÎª£ºÆäËû»¨É«¿¨ÅÆ
+				//å¯é€‰å‡ºçš„å¡ç‰Œä¸ºï¼šå…¶ä»–èŠ±è‰²å¡ç‰Œ
 				for (BYTE i = 0; i < vecNotColorCard.size(); i++)
 				{
 					cbOutCardNotify.cbOptionalCard[i] = vecNotColorCard[i];
 				}
 			}
-			else		//¿¨ÅÆ×ã¹»£¬ÔòÅĞ¶ÏÊÖÅÆ¶Ô×Ó
+			else		//å¡ç‰Œè¶³å¤Ÿï¼Œåˆ™åˆ¤æ–­æ‰‹ç‰Œå¯¹å­
 			{
-				//»ñµÃÍæ¼Ò¸Ã»¨É«µÄËùÓĞ¶Ô×Ó
+				//è·å¾—ç©å®¶è¯¥èŠ±è‰²çš„æ‰€æœ‰å¯¹å­
 				int nPairNum = 0;
 				for (int i = 0; i < cbColorNum; i += 2)
 				{
 					int nSameNum = count(vecColorCard.begin(), vecColorCard.end(), vecColorCard[i]);
-					if (2 == nSameNum)	//ÓĞ¶Ô×Ó£¬Ö»ÄÜ³ö¶Ô×Ó
+					if (2 == nSameNum)	//æœ‰å¯¹å­ï¼Œåªèƒ½å‡ºå¯¹å­
 					{
 						cbOutCardNotify.cbMustOutCard[nPairNum++] = vecColorCard[i];
 						cbOutCardNotify.cbMustOutCard[nPairNum++] = vecColorCard[i];
 					}
 				}
 
-				//Ã»¶Ô×Ó£¬±ØĞë³ö¸Ã»¨É«µÄÆäËûÅÆ
+				//æ²¡å¯¹å­ï¼Œå¿…é¡»å‡ºè¯¥èŠ±è‰²çš„å…¶ä»–ç‰Œ
 				if (0 == nPairNum)
 				{
-					//ÄÜ³öµÄÅÆÎª¸Ã»¨É«È«²¿µÄÅÆ
+					//èƒ½å‡ºçš„ç‰Œä¸ºè¯¥èŠ±è‰²å…¨éƒ¨çš„ç‰Œ
 					for (int i = 0; i < cbColorNum; i++)
 					{
 						cbOutCardNotify.cbMustOutCard[i] = vecColorCard[i];
@@ -4111,95 +4111,95 @@ bool CGameData::IsHaveSpecificType(const WORD &wChairID, const BYTE &color, cons
 			return true;
 		}
 
-		//ÍÏÀ­»úÀàĞÍ£¨Á¬¶Ô£©
+		//æ‹–æ‹‰æœºç±»å‹ï¼ˆè¿å¯¹ï¼‰
 		if ((CT_TRACKOR_2 <= cbOutCardType) && (CT_TRACKOR_13 >= cbOutCardType))
 		{
-			//»ñµÃÍæ¼Ò¸Ã»¨É«µÄËùÓĞ¶Ô×Ó
+			//è·å¾—ç©å®¶è¯¥èŠ±è‰²çš„æ‰€æœ‰å¯¹å­
 			std::vector<BYTE> vecPair;
 			for (int i = 0; i < cbColorNum; i += 2)
 			{
 				int nSameNum = count(vecColorCard.begin(), vecColorCard.end(), vecColorCard[i]);
-				if (2 == nSameNum)	//ÓĞ¶Ô×Ó£¬Ö»ÄÜ³ö¶Ô×Ó
+				if (2 == nSameNum)	//æœ‰å¯¹å­ï¼Œåªèƒ½å‡ºå¯¹å­
 				{
 					vecPair.push_back(vecColorCard[i]);
 					vecPair.push_back(vecColorCard[i]);
 				}
 			}
-			//¶Ô×ÓÊı×é´óĞ¡
+			//å¯¹å­æ•°ç»„å¤§å°
 			int nPairNum = vecPair.size();
 
-			//¸Ã»¨É«¿¨ÅÆ²»×ã
+			//è¯¥èŠ±è‰²å¡ç‰Œä¸è¶³
 			if (cbColorNum < cbOutCardNum)
 			{
-				//ÓĞ¶Ô×Ó³ö¶Ô×Ó
+				//æœ‰å¯¹å­å‡ºå¯¹å­
 				int nIndex = 0;
 				for (int i = 0; i < nPairNum; i++)
 				{
 					cbOutCardNotify.cbMustOutCard[nIndex++] = vecPair[i];
 				}
 
-				//³öÍê¶Ô×Ó£¬ÔÙ³öÍê¸Ã»¨É«µÄÅÆ £¬×îºóÔÙ³öÈÎÒâ¿¨ÅÆ
+				//å‡ºå®Œå¯¹å­ï¼Œå†å‡ºå®Œè¯¥èŠ±è‰²çš„ç‰Œ ï¼Œæœ€åå†å‡ºä»»æ„å¡ç‰Œ
 				for (int i = 0; i < cbColorNum; i++)
 				{
-					//¹ıÂË¶Ô×ÓÖĞµÄ¿¨ÅÆ
+					//è¿‡æ»¤å¯¹å­ä¸­çš„å¡ç‰Œ
 					if (vecPair.end() == find(vecPair.begin(), vecPair.end(), vecColorCard[i]))
 					{
 						cbOutCardNotify.cbMustOutCard[nIndex++] = vecColorCard[i];
 					}
 				}
 
-				//ÔÙ³öÈÎÒâ¿¨ÅÆ
+				//å†å‡ºä»»æ„å¡ç‰Œ
 				for (BYTE i = 0; i < vecNotColorCard.size(); i++)
 				{
 					cbOutCardNotify.cbOptionalCard[i] = vecNotColorCard[i];
 				}
 			}
-			else		//¿¨ÅÆ×ã¹»£¬ÔòÅĞ¶ÏÊÖÅÆ¶Ô×Ó
+			else		//å¡ç‰Œè¶³å¤Ÿï¼Œåˆ™åˆ¤æ–­æ‰‹ç‰Œå¯¹å­
 			{
-				//Ã»¶Ô×Ó£¬±ØĞë³ö¸Ã»¨É«µÄÆäËûÅÆ
+				//æ²¡å¯¹å­ï¼Œå¿…é¡»å‡ºè¯¥èŠ±è‰²çš„å…¶ä»–ç‰Œ
 				if (0 == nPairNum)
 				{
-					//ÄÜ³öµÄÅÆÎª¸Ã»¨É«È«²¿µÄÅÆ
+					//èƒ½å‡ºçš„ç‰Œä¸ºè¯¥èŠ±è‰²å…¨éƒ¨çš„ç‰Œ
 					for (int i = 0; i < cbColorNum; i++)
 					{
 						cbOutCardNotify.cbMustOutCard[i] = vecColorCard[i];
 					}
 				}
-				else	//ÓĞ¶Ô×Ó£¬ÏÈÅĞ¶ÏÓĞÃ»ÓĞÍÏÀ­»ú£¬ÔÙÅĞ¶Ï¶Ô×ÓÊÇ·ñ×ã¹»
+				else	//æœ‰å¯¹å­ï¼Œå…ˆåˆ¤æ–­æœ‰æ²¡æœ‰æ‹–æ‹‰æœºï¼Œå†åˆ¤æ–­å¯¹å­æ˜¯å¦è¶³å¤Ÿ
 				{
-					//ÓĞ×ã¹»¶àµÄ¶Ô×Ó
+					//æœ‰è¶³å¤Ÿå¤šçš„å¯¹å­
 					if (nPairNum >= cbOutCardNum)
 					{
-						//ÅĞ¶ÏÊÇ²»ÊÇÍÏÀ­»ú
+						//åˆ¤æ–­æ˜¯ä¸æ˜¯æ‹–æ‹‰æœº
 						BYTE *cbTmpPair = new BYTE[nPairNum];
 						for (int i = 0; i < nPairNum; i++)
 							cbTmpPair[i] = vecPair[i];
 
-						//ÍÏÀ­»úËùĞèµÄ¶Ô×ÓÊı
+						//æ‹–æ‹‰æœºæ‰€éœ€çš„å¯¹å­æ•°
 						BYTE cbTrackorPair = cbOutCardNum / 2;
 
-						//Ñ­»·±éÀúËùÓĞ¶Ô×Ó,ÅĞ¶ÏÓĞÃ»ÓĞÍÏÀ­»ú
+						//å¾ªç¯éå†æ‰€æœ‰å¯¹å­,åˆ¤æ–­æœ‰æ²¡æœ‰æ‹–æ‹‰æœº
 						int nStartIndex = 0;
 						int nEndIndex = nStartIndex + cbTrackorPair * 2 - 1;
 						bool bHaveTrackor = false;
 						while (nEndIndex < nPairNum)
 						{
-							//ÅĞ¶ÏÊÇ²»ÊÇÍÏÀ­»ú						
+							//åˆ¤æ–­æ˜¯ä¸æ˜¯æ‹–æ‹‰æœº						
 							if (cbOutCardType == GetCardLogicType(cbTmpPair + nStartIndex, cbOutCardNum))
 							{
 								bHaveTrackor = true;
-								//»ñµÃ±ØĞë³öÅÆµÄÊı¾İ
+								//è·å¾—å¿…é¡»å‡ºç‰Œçš„æ•°æ®
 								for (int i = nStartIndex; i < nEndIndex; i++)
 								{
 									cbOutCardNotify.cbMustOutCard[i] = cbTmpPair[i];
 								}
 							}
-							//ºóÒÆÁ½ÕÅÅÆµÄÎ»ÖÃ
+							//åç§»ä¸¤å¼ ç‰Œçš„ä½ç½®
 							nStartIndex += 2;
 							nEndIndex += 2;
 						}
 
-						//Ã»ÓĞÍÏÀ­»ú,Ôò±ØĞë³ö¶Ô×Ó
+						//æ²¡æœ‰æ‹–æ‹‰æœº,åˆ™å¿…é¡»å‡ºå¯¹å­
 						if (!bHaveTrackor)
 						{
 							for (int i = 0; i < nPairNum; i++)
@@ -4208,24 +4208,24 @@ bool CGameData::IsHaveSpecificType(const WORD &wChairID, const BYTE &color, cons
 							}
 						}
 
-						//ÊÍ·ÅÄÚ´æ
+						//é‡Šæ”¾å†…å­˜
 						delete cbTmpPair;
 						return true;
 					}
-					else	//Ã»ÓĞ×ã¹»µÄ¶Ô×Ó£¬³ö¶Ô×Ó + ¸Ã»¨É«µÄµ¥ÅÆ
+					else	//æ²¡æœ‰è¶³å¤Ÿçš„å¯¹å­ï¼Œå‡ºå¯¹å­ + è¯¥èŠ±è‰²çš„å•ç‰Œ
 					{
-						//ÓĞ¶Ô×Ó³ö¶Ô×Ó
+						//æœ‰å¯¹å­å‡ºå¯¹å­
 						int nIndex = 0;
 						for (int i = 0; i < nPairNum; i++)
 						{
 							cbOutCardNotify.cbMustOutCard[nIndex++] = vecPair[i];
 						}
 
-						//³öÍê¶Ô×Ó£¬ÔÙ³öÍê¸Ã»¨É«µÄÅÆ 
+						//å‡ºå®Œå¯¹å­ï¼Œå†å‡ºå®Œè¯¥èŠ±è‰²çš„ç‰Œ 
 						nIndex = 0;
 						for (int i = 0; i < cbColorNum; i++)
 						{
-							//¹ıÂË¶Ô×ÓÖĞµÄ¿¨ÅÆ
+							//è¿‡æ»¤å¯¹å­ä¸­çš„å¡ç‰Œ
 							if (vecPair.end() == find(vecPair.begin(), vecPair.end(), vecColorCard[i]))
 							{
 								cbOutCardNotify.cbMustOutCard[nIndex++] = vecColorCard[i];
@@ -4239,9 +4239,9 @@ bool CGameData::IsHaveSpecificType(const WORD &wChairID, const BYTE &color, cons
 			return true;
 		}
 	}
-	else	//Ã»¸Ã»¨É«£¬³öÊ²Ã´¶¼¿ÉÒÔ£¬ÓÃ»§ÊÖÅÆ¶¼¿ÉÒÔ³ö
+	else	//æ²¡è¯¥èŠ±è‰²ï¼Œå‡ºä»€ä¹ˆéƒ½å¯ä»¥ï¼Œç”¨æˆ·æ‰‹ç‰Œéƒ½å¯ä»¥å‡º
 	{
-		//»ñµÃÊÖÅÆ
+		//è·å¾—æ‰‹ç‰Œ
 		for (int i = 0; i < cbHandCardNum; i++)
 		{
 			cbOutCardNotify.cbOptionalCard[i] = m_players_config.hand_cards[wChairID][i];
@@ -4252,23 +4252,23 @@ bool CGameData::IsHaveSpecificType(const WORD &wChairID, const BYTE &color, cons
 }
 
 /******************************************************************************/
-/*********************************  ²éÑ¯½Ó¿ÚÊµÏÖ  *******************************/
+/*********************************  æŸ¥è¯¢æ¥å£å®ç°  *******************************/
 
 /**
- * ½«·şÎñÆ÷¶ËµÄÅÆ×ª»»µ½¿Í»§¶Ë£¬²éÑ¯ÓÃ»§ÅÆ×é
- * @param			wChairID			[in]		ÒÎ×Ó±àºÅ
- * @param			cards			[out]		·µ»ØµÄÅÆ×é»º³åÇø
- * @param			cardsum			[in-out]	·µ»ØµÄ»º³åÇø³¤¶È£¬°´BYTEËã
+ * å°†æœåŠ¡å™¨ç«¯çš„ç‰Œè½¬æ¢åˆ°å®¢æˆ·ç«¯ï¼ŒæŸ¥è¯¢ç”¨æˆ·ç‰Œç»„
+ * @param			wChairID			[in]		æ¤…å­ç¼–å·
+ * @param			cards			[out]		è¿”å›çš„ç‰Œç»„ç¼“å†²åŒº
+ * @param			cardsum			[in-out]	è¿”å›çš„ç¼“å†²åŒºé•¿åº¦ï¼ŒæŒ‰BYTEç®—
  */
 int __stdcall CGameData::GetClientHandCards(WORD wChairID, BYTE *cards, const int &cardsum)
 {
-	//Ğ£Ñé
+	//æ ¡éªŒ
 	if (NULL == cards || 0 == cardsum)
 	{
 		return -1;
 	}
 
-	//¿¨ÅÆ×ª»»
+	//å¡ç‰Œè½¬æ¢
 	for (int i = 0; i < cardsum; ++i)
 	{
 		cards[i] = m_players_config.hand_cards[wChairID][i];
@@ -4277,59 +4277,59 @@ int __stdcall CGameData::GetClientHandCards(WORD wChairID, BYTE *cards, const in
 	return 0;
 }
 
-// ÉèÖÃµ±Ç°ÓÎÏ·ÀàĞÍID
+// è®¾ç½®å½“å‰æ¸¸æˆç±»å‹ID
 int __stdcall CGameData::SetKindID(DWORD id)
 {
 	m_room_config.kind_id = id;
 	return 0;
 }
 
-// ²éÑ¯µ±Ç°ÓÎÏ·ÀàĞÍID
+// æŸ¥è¯¢å½“å‰æ¸¸æˆç±»å‹ID
 DWORD __stdcall CGameData::GetKindID()
 {
 	return m_room_config.kind_id;
 }
 
-////²éÑ¯Ã¿¸öÈËÄÃµ½µÄ×î´óÅÆÊı
+////æŸ¥è¯¢æ¯ä¸ªäººæ‹¿åˆ°çš„æœ€å¤§ç‰Œæ•°
 //DWORD __stdcall CGameData::GetGameMaxCardNum()
 //{
 //	return m_card_config.game_cards_sum;
 //}
 
-// ²éÑ¯Íæ¼ÒĞ¡¾ÖµÃ·Ö
+// æŸ¥è¯¢ç©å®¶å°å±€å¾—åˆ†
 SCORE __stdcall CGameData::GetPlayerSingleScore(WORD wChairID)
 {
 	return m_players_config.players[wChairID].single_score;
 }
 
-// ÉèÖÃÍæ¼Ò·¿¼äÄÚ×ÜµÃ·Ö
+// è®¾ç½®ç©å®¶æˆ¿é—´å†…æ€»å¾—åˆ†
 DWORD __stdcall CGameData::SetPlayerTotalScore(WORD wChairID, SCORE score)
 {
 	m_players_config.players[wChairID].total_score += score;
 	return 0;
 }
 
-// ²éÑ¯Íæ¼Ò·¿¼äÄÚ×ÜµÃ·Ö
+// æŸ¥è¯¢ç©å®¶æˆ¿é—´å†…æ€»å¾—åˆ†
 SCORE __stdcall CGameData::GetPlayerTotalScore(WORD wChairID)
 {
 	return m_players_config.players[wChairID].total_score;
 }
 
-// ²éÑ¯Íæ¼ÒÓÎÏ·ÖĞ×´Ì¬-×¼±¸×´Ì¬
+// æŸ¥è¯¢ç©å®¶æ¸¸æˆä¸­çŠ¶æ€-å‡†å¤‡çŠ¶æ€
 BYTE __stdcall CGameData::GetXjReadyState(WORD wChairID)
 {
 	return m_players_config.players[wChairID].xj_ready_state;
 
 }
 
-// ÉèÖÃÍæ¼ÒÓÎÏ·ÖĞ×´Ì¬-×¼±¸
+// è®¾ç½®ç©å®¶æ¸¸æˆä¸­çŠ¶æ€-å‡†å¤‡
 int __stdcall CGameData::SetXjReadyState(WORD wChairID, BYTE ready)
 {
 	m_players_config.players[wChairID].xj_ready_state = ready;
 	return 0;
 }
 
-//¼ÇÂ¼Íæ¼Ò×¯¼Ò´ÎÊı  ´ó¾Ö½áËã
+//è®°å½•ç©å®¶åº„å®¶æ¬¡æ•°  å¤§å±€ç»“ç®—
 int __stdcall CGameData::SetPlayerBankCount(WORD wChairID)
 {
 	if (wChairID > GetMaxChairCount() || wChairID < 0)
@@ -4339,136 +4339,136 @@ int __stdcall CGameData::SetPlayerBankCount(WORD wChairID)
 	return 0;
 }
 
-//»ñÈ¡Íæ¼Ò×¯¼Ò´ÎÊı  
+//è·å–ç©å®¶åº„å®¶æ¬¡æ•°  
 int __stdcall CGameData::GetPlayerBankCount(WORD wChairID)
 {
 	return m_players_config.players[wChairID].bank_count;
 }
 
-// ÉèÖÃÍæ¼ÒÓ®¾ÖÊı
+// è®¾ç½®ç©å®¶èµ¢å±€æ•°
 int __stdcall CGameData::SetWinSum(WORD wChairID, BYTE winsum)
 {
 	m_players_config.players[wChairID].winsum += winsum;
 	return 0;
 }
 
-// ²éÑ¯Íæ¼ÒÓ®¾ÖÊı
+// æŸ¥è¯¢ç©å®¶èµ¢å±€æ•°
 int __stdcall CGameData::GetWinSum(WORD wChairID, BYTE &winsum)
 {
 	winsum = m_players_config.players[wChairID].winsum;
 	return 0;
 }
 
-// ²éÑ¯µ±Ç°¾ÖÊı
+// æŸ¥è¯¢å½“å‰å±€æ•°
 BYTE __stdcall CGameData::GetCurGameCount()
 {
 	return m_playing_para.game_cur_count;
 }
 
-// ÉèÖÃµ±Ç°¾ÖÊı
+// è®¾ç½®å½“å‰å±€æ•°
 int __stdcall CGameData::SetGameCount(BYTE count)
 {
 	m_playing_para.game_cur_count = count;
 	return 0;
 }
 
-// ²éÑ¯×Ü¾ÖÊı
+// æŸ¥è¯¢æ€»å±€æ•°
 BYTE __stdcall CGameData::GetAllCount()
 {
 	return m_room_config.game_count;
 }
 
-// ÉèÖÃ×Ü¾ÖÊı
+// è®¾ç½®æ€»å±€æ•°
 int __stdcall CGameData::SetAllCount(BYTE count)
 {
-	//Ğ£Ñé
-	if (count < 1)		//²âÊÔÓÃ ÉèÖÃ¹Ì¶¨¾ÖÊı
+	//æ ¡éªŒ
+	if (count < 1)		//æµ‹è¯•ç”¨ è®¾ç½®å›ºå®šå±€æ•°
 	{
 		count = 2;
 	}
 
-	printf("×Ü¾ÖÊı£º%d\n", count);
+	printf("æ€»å±€æ•°ï¼š%d\n", count);
 
 	m_room_config.game_count = count;
 	return 0;
 }
 
-// ²éÑ¯·¿¼äµ×·Ö
+// æŸ¥è¯¢æˆ¿é—´åº•åˆ†
 DWORD __stdcall CGameData::GetCellScore()
 {
 	return m_room_config.room_cell;
 }
 
-// ÉèÖÃÏÂ×¢µ×·Ö
+// è®¾ç½®ä¸‹æ³¨åº•åˆ†
 int __stdcall CGameData::SetCellScore(DWORD score)
 {
-	//Ğ£Ñé
+	//æ ¡éªŒ
 	if (score < ROOMRULE_MIN_CELL_SCORE)
 	{
 		score = ROOMRULE_MIN_CELL_SCORE;
 	}
 
-	printf("´òÓ¡·¿¼äµ×·Ö£º%d\n", score);
+	printf("æ‰“å°æˆ¿é—´åº•åˆ†ï¼š%d\n", score);
 
 	m_room_config.room_cell = score;
 	return 0;
 }
 
-// ²éÑ¯Íæ¼ÒÏÂ×¢Íê³É±êÖ¾
+// æŸ¥è¯¢ç©å®¶ä¸‹æ³¨å®Œæˆæ ‡å¿—
 BYTE __stdcall CGameData::GetAddScoreState(WORD wChairID)
 {
 	return m_players_config.players[wChairID].bet_state;
 }
 
-// ÉèÖÃÍæ¼ÒÏÂ×¢Íê³É±êÖ¾		0-ÏÂ×¢Î´Íê³É		1-ÏÂ×¢Íê³É
+// è®¾ç½®ç©å®¶ä¸‹æ³¨å®Œæˆæ ‡å¿—		0-ä¸‹æ³¨æœªå®Œæˆ		1-ä¸‹æ³¨å®Œæˆ
 int __stdcall CGameData::SetAddScoreState(WORD wChairID, BYTE beted)
 {
 	m_players_config.players[wChairID].bet_state = beted;
 	return 0;
 }
 
-// ²éÑ¯Íæ¼ÒÃ÷ÅÆÍê³É±êÖ¾
+// æŸ¥è¯¢ç©å®¶æ˜ç‰Œå®Œæˆæ ‡å¿—
 BYTE __stdcall CGameData::GetMingPaiState(WORD wChairID)
 {
 	return m_players_config.players[wChairID].mingpai_state;
 }
 
-// ÉèÖÃÍæ¼ÒÃ÷ÅÆÍê³É±êÖ¾		0-Ã÷ÅÆÎ´Íê³É		1-Ã÷ÅÆÍê³É
+// è®¾ç½®ç©å®¶æ˜ç‰Œå®Œæˆæ ‡å¿—		0-æ˜ç‰Œæœªå®Œæˆ		1-æ˜ç‰Œå®Œæˆ
 int __stdcall CGameData::SetMingPaiState(WORD wChairID, BYTE state)
 {
 	m_players_config.players[wChairID].mingpai_state = state;
 	return 0;
 }
 
-// ²éÑ¯Íæ¼ÒÏÂ×¢Íê³É±êÖ¾
+// æŸ¥è¯¢ç©å®¶ä¸‹æ³¨å®Œæˆæ ‡å¿—
 BYTE __stdcall CGameData::GetUserOperateState(WORD wChairID)
 {
 	return m_players_config.players[wChairID].action_state;
 }
 
-// ÉèÖÃÍæ¼ÒÏÂ×¢Íê³É±êÖ¾		0-ÏÂ×¢Î´Íê³É		1-ÏÂ×¢Íê³É
+// è®¾ç½®ç©å®¶ä¸‹æ³¨å®Œæˆæ ‡å¿—		0-ä¸‹æ³¨æœªå®Œæˆ		1-ä¸‹æ³¨å®Œæˆ
 int __stdcall CGameData::SetUserOperateState(WORD wChairID, BYTE state)
 {
 	m_players_config.players[wChairID].action_state = state;
 	return 0;
 }
 
-// »ñÈ¡Íæ¼Ò×Ü·Ö
+// è·å–ç©å®¶æ€»åˆ†
 DWORD __stdcall CGameData::GetAllBet(WORD wChairID)
 {
 	return  m_players_config.players[wChairID].bet;
 }
 
-// ²éÑ¯ÒÎ×Ó×ÜÊı
+// æŸ¥è¯¢æ¤…å­æ€»æ•°
 BYTE __stdcall CGameData::GetMaxChairCount()
 {
 	return m_room_config.max_chair_sum;
 }
 
-// ÉèÖÃÒÎ×Ó×ÜÊı
+// è®¾ç½®æ¤…å­æ€»æ•°
 int __stdcall CGameData::SetMaxChairCount(BYTE count)
 {
-	//¿ò¼Ü´«À´µÄ×î´óÒÎ×ÓÊı²»ÄÜ´óÓÚ´ËÊı
+	//æ¡†æ¶ä¼ æ¥çš„æœ€å¤§æ¤…å­æ•°ä¸èƒ½å¤§äºæ­¤æ•°
 	if (MAX_CHAIR_COUNT < count || count < 1)
 	{
 		count = MAX_CHAIR_COUNT;
@@ -4478,23 +4478,23 @@ int __stdcall CGameData::SetMaxChairCount(BYTE count)
 	return 0;
 }
 
-// ÉèÖÃÒ»ÂÖÖĞÍæ¼ÒÊÇ³öÅÆ»¹ÊÇ¹ı
+// è®¾ç½®ä¸€è½®ä¸­ç©å®¶æ˜¯å‡ºç‰Œè¿˜æ˜¯è¿‡
 int __stdcall CGameData::SetTurnOutCardType(const WORD wChairID, DWORD type)
 {
 	m_playing_para.out_card_type[wChairID] = type;
 	return 0;
 }
 
-// »ñÈ¡Ò»ÂÖÖĞÍæ¼ÒÊÇ³öÅÆ»¹ÊÇ¹ı
+// è·å–ä¸€è½®ä¸­ç©å®¶æ˜¯å‡ºç‰Œè¿˜æ˜¯è¿‡
 DWORD __stdcall CGameData::GetTurnOutCardType(const WORD wChairID)
 {
 	return m_playing_para.out_card_type[wChairID];
 }
 
-//ÉèÖÃÓÎÏ·Ï´ÅÆÄ£Ê½
+//è®¾ç½®æ¸¸æˆæ´—ç‰Œæ¨¡å¼
 int __stdcall CGameData::SetGameScoreMode(BYTE nMode)
 {
-	//Ğ£Ñé
+	//æ ¡éªŒ
 	if (GAME_SCORE_MODE_CLASSIC != nMode && GAME_SCORE_MODE_BUXIPAI != nMode)
 	{
 		nMode = GAME_SCORE_MODE_CLASSIC;
@@ -4503,16 +4503,16 @@ int __stdcall CGameData::SetGameScoreMode(BYTE nMode)
 	return 0;
 }
 
-//»ñµÃÓÎÏ·Ï´ÅÆÄ£Ê½
+//è·å¾—æ¸¸æˆæ´—ç‰Œæ¨¡å¼
 BYTE __stdcall CGameData::GetGameScoreMode()
 {
 	return m_room_config.game_score_mode;
 }
 
-//ÉèÖÃÓÎÏ·ÇÀ×¯Ä£Ê½£º0 - ÇÀ×¯		1 - ½ĞÈı·Ö
+//è®¾ç½®æ¸¸æˆæŠ¢åº„æ¨¡å¼ï¼š0 - æŠ¢åº„		1 - å«ä¸‰åˆ†
 int __stdcall CGameData::SetRobBankMode(BYTE nMode)
 {
-	//¹Ì¶¨
+	//å›ºå®š
 
 	if (ROOMRULE_OPTION_ROBTYPE_FREE > nMode || ROOMRULE_OPTION_ROBTYPE_JIAOSANFEN < nMode)
 	{
@@ -4522,50 +4522,50 @@ int __stdcall CGameData::SetRobBankMode(BYTE nMode)
 	return 0;
 }
 
-//»ñÈ¡ÇÀ×¯Ä£Ê½
+//è·å–æŠ¢åº„æ¨¡å¼
 BYTE __stdcall CGameData::GetRobBankMode()
 {
 	return m_room_config.game_robBank_mode;
 }
 
-// ÉèÖÃµ±Ç°ÇÀ×¯´ÎÊı
+// è®¾ç½®å½“å‰æŠ¢åº„æ¬¡æ•°
 int __stdcall CGameData::SetCurBankerCount(BYTE count)
 {
 	m_playing_para.rob_count = count;
 	return 0;
 }
 
-// »ñÈ¡µ±Ç°ÇÀ×¯´ÎÊı
+// è·å–å½“å‰æŠ¢åº„æ¬¡æ•°
 BYTE __stdcall CGameData::GetCurBankerCount()
 {
 	return m_playing_para.rob_count;
 }
 
-//ÉèÖÃÍæ¼ÒÇÀ×¯·ÖÊı
+//è®¾ç½®ç©å®¶æŠ¢åº„åˆ†æ•°
 int __stdcall CGameData::SetUserRobScore(const WORD &wChairID, BYTE score)
 {
 	m_players_config.players[wChairID].rob_score = score;
 	return 0;
 }
 
-//ÉèÖÃÍæ¼ÒÇÀ×¯´ÎÊı
+//è®¾ç½®ç©å®¶æŠ¢åº„æ¬¡æ•°
 int __stdcall CGameData::SetUserRobNum(const WORD &wChairID, BYTE cbNum)
 {
 	m_players_config.players[wChairID].rob_num = cbNum;
 	return 0;
 }
 
-//»ñµÃÍæ¼ÒÇÀ×¯´ÎÊı
+//è·å¾—ç©å®¶æŠ¢åº„æ¬¡æ•°
 BYTE __stdcall CGameData::GetUserRobNum(const WORD &wChairID)
 {
 	return m_players_config.players[wChairID].rob_num;
 }
 
-// ²éÑ¯µ±Ç°Íæ¼ÒÊı(Ö»Òª×øÏÂ¾ÍÊÇÍæ¼Ò)
-//TODONOW added by WangChengQing 2017.9.22 Ôö¼ÓÅĞ¶Ï -- Èç¹ûÓÎÏ·ÔÚ½øĞĞÖĞ. Èôclient·¢ËÍ×øÏÂÇëÇó, serverÓ¦¸ÃÌáÊ¾ "±ØĞëµÈµ½¸Ã¾Ö½áÊøºó ²Å¿ÉÒÔ×øÏÂ"  ´ËÅĞ¶ÏÓ¦¸ÃÔÚ×øÏÂº¯ÊıÖĞÏìÓ¦
+// æŸ¥è¯¢å½“å‰ç©å®¶æ•°(åªè¦åä¸‹å°±æ˜¯ç©å®¶)
+//TODONOW added by WangChengQing 2017.9.22 å¢åŠ åˆ¤æ–­ -- å¦‚æœæ¸¸æˆåœ¨è¿›è¡Œä¸­. è‹¥clientå‘é€åä¸‹è¯·æ±‚, serveråº”è¯¥æç¤º "å¿…é¡»ç­‰åˆ°è¯¥å±€ç»“æŸå æ‰å¯ä»¥åä¸‹"  æ­¤åˆ¤æ–­åº”è¯¥åœ¨åä¸‹å‡½æ•°ä¸­å“åº”
 BYTE __stdcall CGameData::GetCurPlayerCount()
 {
-	// ¼ÆËãÓÎÏ·ÈËÊı
+	// è®¡ç®—æ¸¸æˆäººæ•°
 	BYTE cbPlayerNum = 0;
 
 	for (int i = 0; i < m_room_config.max_chair_sum; ++i)
@@ -4579,13 +4579,13 @@ BYTE __stdcall CGameData::GetCurPlayerCount()
 	return cbPlayerNum;
 }
 
-// ²éÑ¯µ±Ç°ÓÎ¿ÍÊı
+// æŸ¥è¯¢å½“å‰æ¸¸å®¢æ•°
 BYTE __stdcall CGameData::GetCurLookerCount()
 {
 	BYTE curLookerCount = 0;
 	for (BYTE i = 0; i < GetMaxChairCount(); i++)
 	{
-		if (USER_STANDUP == GetPlayerState(i))	//¸ù¾İÒÎ×ÓµÄ×´Ì¬À´ÅĞ¶Ï
+		if (USER_STANDUP == GetPlayerState(i))	//æ ¹æ®æ¤…å­çš„çŠ¶æ€æ¥åˆ¤æ–­
 		{
 			curLookerCount++;
 		}
@@ -4593,64 +4593,64 @@ BYTE __stdcall CGameData::GetCurLookerCount()
 	return curLookerCount;
 }
 
-// ÉèÖÃµ±Ç°×¯¼Ò
+// è®¾ç½®å½“å‰åº„å®¶
 int __stdcall CGameData::SetBankerID(const WORD &wChairID)
 {
 	m_playing_para.appointbanker = wChairID;
 	return 0;
 }
 
-// ²éÑ¯µ±Ç°×¯¼Ò
+// æŸ¥è¯¢å½“å‰åº„å®¶
 WORD __stdcall CGameData::GetBankerID()
 {
 	return m_playing_para.appointbanker;
 }
 
 
-// »ñµÃÍæ¼ÒµÄÏÂ¼Ò -- ÄæÊ±Õë»ñÈ¡
+// è·å¾—ç©å®¶çš„ä¸‹å®¶ -- é€†æ—¶é’ˆè·å–
 WORD __stdcall CGameData::GetNextUser(const WORD &wChariID)
 {
 	if (INVALID_CHAIR == wChariID)
 	{
 		return INVALID_CHAIR;
 	}
-	//Ñ°ÕÒÏÂ¼Ò
+	//å¯»æ‰¾ä¸‹å®¶
 	WORD wNextChairID = INVALID_CHAIR;
 	int nMaxChairCount = m_room_config.max_chair_sum;
 
 	wNextChairID = (wChariID + 1) % nMaxChairCount;
 
-	//ÏÂ¼ÒÔÚÓÎÏ·ÖĞ
+	//ä¸‹å®¶åœ¨æ¸¸æˆä¸­
 	if (USER_PLAYING == m_players_config.players[wNextChairID].play_state)
 	{
 		return wNextChairID;
 	}
 	else
-		return GetNextUser(wNextChairID); //Èç¹ûÊ§°Ü,¼ÌĞø»ñÈ¡ÏÂÒ»¸ö
+		return GetNextUser(wNextChairID); //å¦‚æœå¤±è´¥,ç»§ç»­è·å–ä¸‹ä¸€ä¸ª
 }
 
-// »ñÈ¡ÉÏ¸öÍæ¼Ò  Ë³Ê±Õë»ñÈ¡
+// è·å–ä¸Šä¸ªç©å®¶  é¡ºæ—¶é’ˆè·å–
 WORD __stdcall CGameData::GetLastUser(const WORD &wChariID)
 {
 	if (INVALID_CHAIR == wChariID)
 	{
 		return INVALID_CHAIR;
 	}
-	//Ñ°ÕÒÉÏ¼Ò
+	//å¯»æ‰¾ä¸Šå®¶
 	WORD wLastChairID = INVALID_CHAIR;
 	int nMaxChairCount = m_room_config.max_chair_sum;
 	wLastChairID = (wChariID + nMaxChairCount - 1) % nMaxChairCount;
 
-	//ÏÂ¼ÒÔÚÓÎÏ·ÖĞ
+	//ä¸‹å®¶åœ¨æ¸¸æˆä¸­
 	if (USER_PLAYING == m_players_config.players[wLastChairID].play_state)
 	{
 		return wLastChairID;
 	}
 	else
-		return GetLastUser(wLastChairID); //Èç¹ûÊ§°Ü,¼ÌĞø»ñÈ¡ÏÂÒ»¸ö
+		return GetLastUser(wLastChairID); //å¦‚æœå¤±è´¥,ç»§ç»­è·å–ä¸‹ä¸€ä¸ª
 }
 
-// »ñµÃ¶Ô¼Ò
+// è·å¾—å¯¹å®¶
 WORD __stdcall CGameData::GetOppositeUser(const WORD &wChariID)
 {
 	if ((INVALID_CHAIR == wChariID) ||
@@ -4658,13 +4658,13 @@ WORD __stdcall CGameData::GetOppositeUser(const WORD &wChariID)
 	{
 		return INVALID_CHAIR;
 	}
-	//Ñ°ÕÒ¶Ô¼Ò
+	//å¯»æ‰¾å¯¹å®¶
 	WORD wOpposite = INVALID_CHAIR;
 	int nMaxChairCount = m_room_config.max_chair_sum;
 
 	wOpposite = (wChariID + 2) % nMaxChairCount;
 
-	//¶Ô¼ÒÔÚÓÎÏ·ÖĞ
+	//å¯¹å®¶åœ¨æ¸¸æˆä¸­
 	if (USER_PLAYING == m_players_config.players[wOpposite].play_state)
 	{
 		return wOpposite;
@@ -4673,7 +4673,7 @@ WORD __stdcall CGameData::GetOppositeUser(const WORD &wChariID)
 	return INVALID_CHAIR;
 }
 
-// ÉèÖÃÓÃ»§×´Ì¬£¬´Ó·şÎñÆ÷¿ò¼Ü»ñµÃ£¬ÓÃ»§×øÏÂ¡¢×¼±¸¡¢ÅÔ¹Û¡¢ÓÎÏ·ÖĞ
+// è®¾ç½®ç”¨æˆ·çŠ¶æ€ï¼Œä»æœåŠ¡å™¨æ¡†æ¶è·å¾—ï¼Œç”¨æˆ·åä¸‹ã€å‡†å¤‡ã€æ—è§‚ã€æ¸¸æˆä¸­
 int __stdcall CGameData::SetPlayerState(WORD wChairID, DWORD state)
 {
 	if (wChairID == INVALID_CHAIR)
@@ -4684,33 +4684,33 @@ int __stdcall CGameData::SetPlayerState(WORD wChairID, DWORD state)
 	return 0;
 }
 
-// ²éÑ¯ÓÃ»§×´Ì¬£¬ÓÃ»§×øÏÂ¡¢×¼±¸¡¢ÅÔ¹Û¡¢ÓÎÏ·ÖĞ
+// æŸ¥è¯¢ç”¨æˆ·çŠ¶æ€ï¼Œç”¨æˆ·åä¸‹ã€å‡†å¤‡ã€æ—è§‚ã€æ¸¸æˆä¸­
 DWORD __stdcall CGameData::GetPlayerState(WORD wChairID)
 {
 	return m_players_config.players[wChairID].play_state;
 }
 
-// ÉèÖÃÓÎÏ·×´Ì¬
+// è®¾ç½®æ¸¸æˆçŠ¶æ€
 int __stdcall CGameData::SetGameStatus(DWORD state)
 {
 	m_playing_para.game_state = state;
 	return 0;
 }
 
-// ²éÑ¯ÓÎÏ·×´Ì¬
+// æŸ¥è¯¢æ¸¸æˆçŠ¶æ€
 DWORD __stdcall CGameData::GetGameStatus()
 {
 	return m_playing_para.game_state;
 }
 
-// ²éÑ¯ÓÎÏ·ÖĞ×´Ì¬-Íæ¼ÒÌ¯ÅÆ
+// æŸ¥è¯¢æ¸¸æˆä¸­çŠ¶æ€-ç©å®¶æ‘Šç‰Œ
 BYTE __stdcall CGameData::GetShowCardState(WORD wChairID)
 {
 	return m_players_config.players[wChairID].showcard_state;
 
 }
 
-// ÉèÖÃÓÎÏ·ÖĞ×´Ì¬-Íæ¼ÒÌ¯ÅÆ		0-Î´Ì¯ÅÆ	1-Ì¯ÅÆ
+// è®¾ç½®æ¸¸æˆä¸­çŠ¶æ€-ç©å®¶æ‘Šç‰Œ		0-æœªæ‘Šç‰Œ	1-æ‘Šç‰Œ
 int __stdcall CGameData::SetShowCardState(WORD wChairID, BYTE state)
 {
 	m_players_config.players[wChairID].showcard_state = state;
@@ -4718,12 +4718,12 @@ int __stdcall CGameData::SetShowCardState(WORD wChairID, BYTE state)
 }
 
 /*************************************************
-@Description:		ÉèÖÃ·¿¼ä¹æÔò£¬´Ó·şÎñÆ÷¿ò¼Ü»ñµÃÊı¾İ£ºÓÎÏ·id¡¢×Ü¾ÖÊı¡¢
-					×î´óÒÎ×ÓÊı¡¢ÏÂ×¢µ×·Ö¡¢ÇÀ×¯Ä£Ê½¡¢µÃ·ÖÄ£Ê½¡¢·¿Ö÷
-@Input:				pData-¿Í»§¶Ë´«À´µÄ½á¹¹ÌåÊı¾İ
-					wDataSize-Êı¾İ´óĞ¡
-@Output:          ÎŞ
-@Return:          ÎŞ
+@Description:		è®¾ç½®æˆ¿é—´è§„åˆ™ï¼Œä»æœåŠ¡å™¨æ¡†æ¶è·å¾—æ•°æ®ï¼šæ¸¸æˆidã€æ€»å±€æ•°ã€
+					æœ€å¤§æ¤…å­æ•°ã€ä¸‹æ³¨åº•åˆ†ã€æŠ¢åº„æ¨¡å¼ã€å¾—åˆ†æ¨¡å¼ã€æˆ¿ä¸»
+@Input:				pData-å®¢æˆ·ç«¯ä¼ æ¥çš„ç»“æ„ä½“æ•°æ®
+					wDataSize-æ•°æ®å¤§å°
+@Output:          æ— 
+@Return:          æ— 
 @author & data:	lizhihu 2017.11.2
 *************************************************/
 bool __stdcall CGameData::SetRoomRule(tagTableCfg * pRoomRuleOption)
@@ -4733,58 +4733,58 @@ bool __stdcall CGameData::SetRoomRule(tagTableCfg * pRoomRuleOption)
 		return false;
 	}
 
-	//³õÊ¼»¯Îª0
+	//åˆå§‹åŒ–ä¸º0
 	ZeroMemory(&m_room_config, sizeof(m_room_config));
 	ZeroMemory(&m_players_config, sizeof(m_players_config));
 	ZeroMemory(&m_card_config, sizeof(m_card_config));
 	ZeroMemory(&m_playing_para, sizeof(m_playing_para));
 
-	//ÉèÖÃÓÎÏ·ÀàĞÍID
+	//è®¾ç½®æ¸¸æˆç±»å‹ID
 	SetKindID(KIND_ID);
 
-	//ÉèÖÃ¾ÖÊı
+	//è®¾ç½®å±€æ•°
 	SetAllCount(pRoomRuleOption->com_rule->GameCount);
 
-	//ÉèÖÃÒÎ×ÓºÍÍæ¼ÒÊıÄ¿
+	//è®¾ç½®æ¤…å­å’Œç©å®¶æ•°ç›®
 	SetMaxChairCount(pRoomRuleOption->com_rule->PlayerCount);
 
-	// ÉèÖÃÓÎÏ·µ×·Ö
+	// è®¾ç½®æ¸¸æˆåº•åˆ†
 	SetCellScore(pRoomRuleOption->sub_rule.Cellscore);
 
-	//ÉèÖÃÓÎÏ·Ä£Ê½£¬¾­µäÄ£Ê½»ò²»Ï´ÅÆ   ---------×ÓÓÎÏ·¹æÔò´ıÉè¶¨
+	//è®¾ç½®æ¸¸æˆæ¨¡å¼ï¼Œç»å…¸æ¨¡å¼æˆ–ä¸æ´—ç‰Œ   ---------å­æ¸¸æˆè§„åˆ™å¾…è®¾å®š
 	SetGameScoreMode(pRoomRuleOption->sub_rule.DontCutCards);
 
-	//ÉèÖÃÓÎÏ·ÇÀ×¯Ä£Ê½£º0 - ÇÀ×¯		1 - ½ĞÈı·Ö
+	//è®¾ç½®æ¸¸æˆæŠ¢åº„æ¨¡å¼ï¼š0 - æŠ¢åº„		1 - å«ä¸‰åˆ†
 	SetRobBankMode(pRoomRuleOption->sub_rule.GameDiZhu);
 
-	//ÉèÖÃ·¿Ö÷
-	SetRoomFangzhu(0);		//ÏÈÄ¬ÈÏÎª0
+	//è®¾ç½®æˆ¿ä¸»
+	SetRoomFangzhu(0);		//å…ˆé»˜è®¤ä¸º0
 
 	m_card_config.leave_card_num = NORMAL_LEAVE_CARD_NUM;
 	m_card_config.init_card_num = NORMAL_HAND_CARD_NUM;
 
-	//ÉèÖÃ·â¶¥±¶Êı
+	//è®¾ç½®å°é¡¶å€æ•°
 	SetRoomMaxBet(pRoomRuleOption->sub_rule.GameFengDing);
 
-	//ÉèÖÃÓÎÏ·ñ®×ÓÄ£Ê½  0-¾­µä  1-ñ®×Ó  2-ÌìµØñ®×Ó
+	//è®¾ç½®æ¸¸æˆç™å­æ¨¡å¼  0-ç»å…¸  1-ç™å­  2-å¤©åœ°ç™å­
 	SetLaiZiMode(pRoomRuleOption->sub_rule.GameWanFa);
 
-	//ÉèÖÃµ×ÅÆ·­±¶   0-²»·­±¶  1-·­±¶
+	//è®¾ç½®åº•ç‰Œç¿»å€   0-ä¸ç¿»å€  1-ç¿»å€
 	SetISLeaveCardDouble(pRoomRuleOption->sub_rule.BaseCardAddMultiple);
 
-	//ÉèÖÃÊÇ·ñÃ÷ÅÆ   0-²»Ã÷ÅÆ   1-Ã÷ÅÆ
+	//è®¾ç½®æ˜¯å¦æ˜ç‰Œ   0-ä¸æ˜ç‰Œ   1-æ˜ç‰Œ
 	SetMingPaiMode(pRoomRuleOption->sub_rule.ShowCards);
 
-	//ÉèÖÃÊÇ·ñ¼Ó±¶   0-²»¼Ó±¶   1-¼Ó±¶
+	//è®¾ç½®æ˜¯å¦åŠ å€   0-ä¸åŠ å€   1-åŠ å€
 	SetAddBetMode(pRoomRuleOption->sub_rule.AddMultiple);
 
 	return true;
 }
 
-//ÉèÖÃ·¿Ö÷
+//è®¾ç½®æˆ¿ä¸»
 int __stdcall CGameData::SetRoomFangzhu(WORD nFangzhu_id)
 {
-	//Ğ£Ñé
+	//æ ¡éªŒ
 	if (nFangzhu_id < 0 || nFangzhu_id > m_players_config.player_sum)
 	{
 		nFangzhu_id = 0;
@@ -4793,108 +4793,108 @@ int __stdcall CGameData::SetRoomFangzhu(WORD nFangzhu_id)
 	return 0;
 }
 
-//»ñµÃ·¿Ö÷ÒÎ×ÓID
+//è·å¾—æˆ¿ä¸»æ¤…å­ID
 WORD __stdcall CGameData::GetRoomFangzhu()
 {
 	return m_room_config.fangzhu_id;
 }
 
-//µÃµ½Ò»¸öÓÃ»§³õÊ¼¿¨ÅÆÊıÄ¿
+//å¾—åˆ°ä¸€ä¸ªç”¨æˆ·åˆå§‹å¡ç‰Œæ•°ç›®
 int __stdcall CGameData::GetPlayerInitCardNum()
 {
 	return m_card_config.init_card_num;
 }
 
-//ÉèÖÃÓÃ»§µÄ³õÊ¼¿¨ÅÆÊıÄ¿
+//è®¾ç½®ç”¨æˆ·çš„åˆå§‹å¡ç‰Œæ•°ç›®
 int __stdcall CGameData::SetPlayerInitCardNum()
 {
-	//¸ù¾İÈËÊı£¬ÉèÖÃÍæ¼Ò³õÊ¼ÊÖÅÆÊı
+	//æ ¹æ®äººæ•°ï¼Œè®¾ç½®ç©å®¶åˆå§‹æ‰‹ç‰Œæ•°
 	m_card_config.init_card_num = (m_card_config.game_cards_sum - m_card_config.leave_card_num) / m_players_config.player_sum;
 
-	//²âÊÔÓÃ 17ÕÅÅÆ
+	//æµ‹è¯•ç”¨ 17å¼ ç‰Œ
 	m_card_config.init_card_num = 17;
 
 	return 0;
 }
 
-//»ñµÃÉÏ¾ÖÓ®¼ÒÒÎ×ÓºÅ
+//è·å¾—ä¸Šå±€èµ¢å®¶æ¤…å­å·
 WORD __stdcall CGameData::GetLastGameWinner()
 {
 	return m_playing_para.last_winner_id;
 }
 
-//»ñµÃÉÏ¾ÖÓ®¼ÒÒÎ×ÓºÅ
+//è·å¾—ä¸Šå±€èµ¢å®¶æ¤…å­å·
 int __stdcall CGameData::SetLastGameWinner(const WORD &wChairID)
 {
 	m_playing_para.last_winner_id = wChairID;
 	return 0;
 }
 
-//ÉèÖÃÉı¼¶Ö÷»¨É«
+//è®¾ç½®å‡çº§ä¸»èŠ±è‰²
 int __stdcall CGameData::SetMainColor(const BYTE &color)
 {
 	m_playing_para.main_color = color;
 	return 0;
 }
 
-//»ñÈ¡Éı¼¶Ö÷»¨É«
+//è·å–å‡çº§ä¸»èŠ±è‰²
 BYTE __stdcall CGameData::GetMainColor()
 {
 	return m_playing_para.main_color;
 }
 
-//ÉèÖÃÁÁÖ÷Íæ¼Ò
+//è®¾ç½®äº®ä¸»ç©å®¶
 int __stdcall CGameData::SetLiangZhuUser(const WORD &wChairID)
 {
 	m_playing_para.liangzhu_user = wChairID;
 	return 0;
 }
 
-//»ñÈ¡ÁÁÖ÷Íæ¼Ò
+//è·å–äº®ä¸»ç©å®¶
 WORD __stdcall CGameData::GetLiangZhuUser()
 {
 	return m_playing_para.liangzhu_user;
 }
 
-//ÉèÖÃµ±Ç°¼¶ÅÆ
+//è®¾ç½®å½“å‰çº§ç‰Œ
 int __stdcall CGameData::SetLevelValue(const BYTE &value)
 {
 	m_playing_para.level_value = value;
 	return 0;
 }
 
-//»ñÈ¡µ±Ç°¼¶ÅÆ
+//è·å–å½“å‰çº§ç‰Œ
 BYTE __stdcall CGameData::GetLevelValue()
 {
 	return m_playing_para.level_value;
 }
 
-//»ñµÃµ×ÅÆ
+//è·å¾—åº•ç‰Œ
 void __stdcall CGameData::GetLeaveCard(BYTE* cbLeaveCard, int nLeaveCardSize)
 {
-	//Ğ£Ñé
+	//æ ¡éªŒ
 	if ((NULL == cbLeaveCard) || (nLeaveCardSize != MAX_LEAVE_CARD_NUM))
 	{
 		return;
 	}
 
-	//»ñµÃµ×ÅÆ
+	//è·å¾—åº•ç‰Œ
 	memcpy(cbLeaveCard, m_playing_para.leave_card, sizeof(BYTE)* MAX_LEAVE_CARD_NUM);
 }
 
-//»ñµÃÍæ¼Òµ±Ç°¿¨ÅÆÊıÄ¿
+//è·å¾—ç©å®¶å½“å‰å¡ç‰Œæ•°ç›®
 BYTE __stdcall CGameData::GetUserCurCardNum(const WORD &wChairID)
 {
 	return m_players_config.players[wChairID].hand_card_num;
 }
 
-//»ñµÃÍæ¼Òµ±ÊÖÅÆÖĞµÄÖ÷ÅÆ¸öÊı
+//è·å¾—ç©å®¶å½“æ‰‹ç‰Œä¸­çš„ä¸»ç‰Œä¸ªæ•°
 BYTE __stdcall CGameData::GetUserMainColorNum(const WORD &wChairID)
 {
-	//Ö÷»¨É«¸öÊı
+	//ä¸»èŠ±è‰²ä¸ªæ•°
 	BYTE cbMainCount = 0;
 
-	//±éÀúÊÖÅÆ
+	//éå†æ‰‹ç‰Œ
 	for (int i = 0; i < m_players_config.players[wChairID].hand_card_num; i++)
 	{
 		BYTE cbCardData = m_players_config.hand_cards[wChairID][i];
@@ -4906,25 +4906,25 @@ BYTE __stdcall CGameData::GetUserMainColorNum(const WORD &wChairID)
 	return cbMainCount;
 }
 
-// ÉèÖÃµ±Ç°³öÅÆÓÃ»§
+// è®¾ç½®å½“å‰å‡ºç‰Œç”¨æˆ·
 int __stdcall CGameData::SetCurOutCardUser(const WORD &wChairID)
 {
 	m_playing_para.cur_outcard_user = wChairID;
 	return 0;
 }
 
-// »ñµÃµ±Ç°³öÅÆÓÃ»§
+// è·å¾—å½“å‰å‡ºç‰Œç”¨æˆ·
 WORD __stdcall CGameData::GetCurOutCardUser()
 {
 	return m_playing_para.cur_outcard_user;
 }
 
-// ÉèÖÃÒ»ÂÖÖĞ×îÏÈ¿ªÊ¼³öÅÆµÄÓÃ»§
+// è®¾ç½®ä¸€è½®ä¸­æœ€å…ˆå¼€å§‹å‡ºç‰Œçš„ç”¨æˆ·
 int __stdcall CGameData::SetStartOutCardUser(const WORD &wChairID)
 {
 	m_playing_para.start_outcard_user = wChairID;
 
-	//Çå¿ÕÉÏÂÖµÄ³öÅÆÊı¾İ
+	//æ¸…ç©ºä¸Šè½®çš„å‡ºç‰Œæ•°æ®
 	for (int i = 0; i < m_room_config.max_chair_sum; i++)
 	{
 		m_players_config.players[i].out_card_num = 0;
@@ -4934,14 +4934,14 @@ int __stdcall CGameData::SetStartOutCardUser(const WORD &wChairID)
 	return 0;
 }
 
-// »ñµÃÒ»ÂÖÖĞ×îÏÈ¿ªÊ¼³öÅÆµÄÓÃ»§
+// è·å¾—ä¸€è½®ä¸­æœ€å…ˆå¼€å§‹å‡ºç‰Œçš„ç”¨æˆ·
 WORD __stdcall CGameData::GetStartOutCardUser()
 {
 	return m_playing_para.start_outcard_user;
 }
 
 
-// ÉèÖÃÒ»ÂÖÖĞ×îºó³öÅÆµÄÓÃ»§
+// è®¾ç½®ä¸€è½®ä¸­æœ€åå‡ºç‰Œçš„ç”¨æˆ·
 int __stdcall CGameData::SetLastOutCardUser(const WORD &wChairID)
 {
 	m_playing_para.last_outcard_user = wChairID;
@@ -4949,124 +4949,124 @@ int __stdcall CGameData::SetLastOutCardUser(const WORD &wChairID)
 	return 0;
 }
 
-// »ñµÃÒ»ÂÖÖĞ×îºó³öÅÆµÄÓÃ»§
+// è·å¾—ä¸€è½®ä¸­æœ€åå‡ºç‰Œçš„ç”¨æˆ·
 WORD __stdcall CGameData::GetLastOutCardUser()
 {
 	return m_playing_para.last_outcard_user;
 }
 
-// ÉèÖÃÍæ¼Ò³öÅÆ¿¨ÅÆÊı¾İ
+// è®¾ç½®ç©å®¶å‡ºç‰Œå¡ç‰Œæ•°æ®
 bool __stdcall CGameData::SetUserOutCard(const WORD wChairID, const BYTE *cbCardData, const BYTE &cbCardNum)
 {
-	//Ğ£Ñé
+	//æ ¡éªŒ
 	if ((NULL == cbCardData) ||
 		(0 == cbCardNum))
 		return false;
 
-	//³öÅÆÊı¾İ
+	//å‡ºç‰Œæ•°æ®
 	memcpy(m_players_config.players[wChairID].out_card_info, cbCardData, sizeof(BYTE)*cbCardNum);
-	//³öÅÆ¸öÊı
+	//å‡ºç‰Œä¸ªæ•°
 	m_players_config.players[wChairID].out_card_num = cbCardNum;
 
 	return true;
 }
 
-// »ñµÃÍæ¼Ò³öÅÆ¿¨ÅÆÊı¾İ
+// è·å¾—ç©å®¶å‡ºç‰Œå¡ç‰Œæ•°æ®
 BYTE __stdcall CGameData::GetUserOutCard(const WORD wChairID, BYTE *cbCardData)
 {
 	BYTE cbCardNum = m_players_config.players[wChairID].out_card_num;
 
-	//Ğ£Ñé
+	//æ ¡éªŒ
 	if (NULL == cbCardData)
 		return cbCardNum;
 
-	//³öÅÆÊı¾İ
+	//å‡ºç‰Œæ•°æ®
 	memcpy(cbCardData, m_players_config.players[wChairID].out_card_info, sizeof(BYTE)*cbCardNum);
 
 	return cbCardNum;
 }
 
-// »ñµÃµ×ÅÆÊıÄ¿
+// è·å¾—åº•ç‰Œæ•°ç›®
 BYTE __stdcall CGameData::GetLeaveCardNum()
 {
 	return m_card_config.leave_card_num;
 }
 
-// ÉèÖÃµ±Ç°·´Ö÷¿¨ÅÆ
+// è®¾ç½®å½“å‰åä¸»å¡ç‰Œ
 int __stdcall CGameData::SetCurFanZhuCard(const BYTE &card)
 {
 	m_playing_para.cur_fanzhu_card = card;
 	return 0;
 }
 
-// »ñµÃÍæ¼Òµ±Ç°¼¶Êı
+// è·å¾—ç©å®¶å½“å‰çº§æ•°
 int __stdcall CGameData::GetUserCurLevel(const WORD &wChairID)
 {
 	return m_players_config.players[wChairID].level;
 }
 
-// ÉèÖÃµ±Ç°·´Ö÷Íæ¼Ò
+// è®¾ç½®å½“å‰åä¸»ç©å®¶
 int __stdcall CGameData::SetCurFanzhuUser(const WORD &wChairID)
 {
 	m_playing_para.cur_fanzhu_user = wChairID;
 	return 0;
 }
 
-// »ñµÃµ±Ç°·´Ö÷Íæ¼Ò
+// è·å¾—å½“å‰åä¸»ç©å®¶
 WORD __stdcall CGameData::GetCurFanzhuUser()
 {
 	return m_playing_para.cur_fanzhu_user;
 }
 
-// ÉèÖÃµ±Ç°¿Ûµ×Íæ¼Ò
+// è®¾ç½®å½“å‰æ‰£åº•ç©å®¶
 int __stdcall CGameData::SetCurKoudiUser(const WORD &wChairID)
 {
 	m_playing_para.cur_koudi_user = wChairID;
 	return 0;
 }
 
-// »ñµÃµ±Ç°¿Ûµ×Íæ¼Ò
+// è·å¾—å½“å‰æ‰£åº•ç©å®¶
 WORD __stdcall CGameData::GetCurKoudiUser()
 {
 	return m_playing_para.cur_koudi_user;
 }
 
-// ÉèÖÃ×î¿ªÊ¼ÇÀ×¯Íæ¼Ò
+// è®¾ç½®æœ€å¼€å§‹æŠ¢åº„ç©å®¶
 int __stdcall CGameData::SetStartRobUser(const WORD &wChairID)
 {
 	m_playing_para.start_rob_user = wChairID;
 	return 0;
 }
 
-// »ñµÃ×î¿ªÊ¼ÇÀ×¯Íæ¼Ò
+// è·å¾—æœ€å¼€å§‹æŠ¢åº„ç©å®¶
 WORD __stdcall CGameData::GetStartRobUser()
 {
 	return m_playing_para.start_rob_user;
 }
 
-// ÉèÖÃÒ»ÂÖ½áÊø
+// è®¾ç½®ä¸€è½®ç»“æŸ
 int __stdcall CGameData::SetOneTurnEnd(const BYTE &cbEnd)
 {
 	m_playing_para.turn_end = cbEnd;
 	return 0;
 }
 
-// »ñµÃÒ»ÂÖ½áÊø
+// è·å¾—ä¸€è½®ç»“æŸ
 BYTE __stdcall CGameData::GetOneTurnEnd()
 {
 	return m_playing_para.turn_end;
 }
 
-// ÉèÖÃÒ»ÂÖÖĞ×î´ó¿¨ÅÆÊı¾İ
+// è®¾ç½®ä¸€è½®ä¸­æœ€å¤§å¡ç‰Œæ•°æ®
 int __stdcall CGameData::SetTurnMaxCards(BYTE *cbCardData, BYTE cbCardNum)
 {
-	//ÏÈÇå³ı±£´æµÄÊı¾İ
+	//å…ˆæ¸…é™¤ä¿å­˜çš„æ•°æ®
 	ZeroMemory(&m_playing_para.turn_max_cards, sizeof(m_playing_para.turn_max_cards));
 
-	//¿¨ÅÆ¸öÊı
+	//å¡ç‰Œä¸ªæ•°
 	m_playing_para.turn_cards_num = cbCardNum;
 
-	//¸³Öµ
+	//èµ‹å€¼
 	for (int i = 0; i < cbCardNum && i < MAX_CARD_COUNT; i++)
 	{
 		m_playing_para.turn_max_cards[i] = cbCardData[i];
@@ -5074,14 +5074,14 @@ int __stdcall CGameData::SetTurnMaxCards(BYTE *cbCardData, BYTE cbCardNum)
 	return 0;
 }
 
-// »ñµÃÒ»ÂÖÖĞ×î´ó¿¨ÅÆÊı¾İ
+// è·å¾—ä¸€è½®ä¸­æœ€å¤§å¡ç‰Œæ•°æ®
 BYTE __stdcall CGameData::GetTurnMaxCards(BYTE *cbCardData, BYTE &cbCardNum)
 {
-	//Ğ£Ñé
+	//æ ¡éªŒ
 	if (NULL == cbCardData)
 		return 0;
 
-	//¸³Öµ
+	//èµ‹å€¼
 	cbCardNum = m_playing_para.turn_cards_num;
 	for (int i = 0; i < cbCardNum; i++)
 	{
@@ -5091,7 +5091,7 @@ BYTE __stdcall CGameData::GetTurnMaxCards(BYTE *cbCardData, BYTE &cbCardNum)
 	return cbCardNum;
 }
 
-// »ñµÃÀµ×ÓÊıÄ¿
+// è·å¾—èµ–å­æ•°ç›®
 BYTE __stdcall CGameData::GetMagicCardNum(const BYTE cbHandCardData[], BYTE cbHandCardCount)
 {
 	BYTE bLaiZiCount = 0;
@@ -5107,40 +5107,40 @@ BYTE __stdcall CGameData::GetMagicCardNum(const BYTE cbHandCardData[], BYTE cbHa
 	return bLaiZiCount;
 }
 
-// »ñµÃÍæ¼ÒÊÖÅÆÀµ×ÓÊıÄ¿
+// è·å¾—ç©å®¶æ‰‹ç‰Œèµ–å­æ•°ç›®
 BYTE __stdcall CGameData::GetMagicCardNum(const WORD &wChairID)
 {
-	//Íæ¼ÒÊÖÅÆ
+	//ç©å®¶æ‰‹ç‰Œ
 	BYTE cbHandCardData[MAX_CARD_COUNT];
 	memcpy(cbHandCardData, m_players_config.hand_cards[wChairID], sizeof(cbHandCardData));
 
 	return GetMagicCardNum(cbHandCardData, m_players_config.players[wChairID].hand_card_num);
 }
 
-//ÉèÖÃµ±Ç°ñ®×Ó
+//è®¾ç½®å½“å‰ç™å­
 int __stdcall CGameData::SetMagicCard(const BYTE &cbCard)
 {
-	m_playing_para.magic_card = ((cbCard >= 14) ? (cbCard - 13) : cbCard) + 0x50;   //ñ®×ÓÂß¼­ÖµÓĞÕâÃ´´ó
+	m_playing_para.magic_card = ((cbCard >= 14) ? (cbCard - 13) : cbCard) + 0x50;   //ç™å­é€»è¾‘å€¼æœ‰è¿™ä¹ˆå¤§
 	return 0;
 }
 
-//»ñµÃµ±Ç°ñ®×Ó
+//è·å¾—å½“å‰ç™å­
 BYTE __stdcall CGameData::GetMagicCard()
 {
 	return m_playing_para.magic_card;
 }
 
-//ÉèÖÃÍæ¼ÒÕ¨µ¯ĞÅÏ¢
+//è®¾ç½®ç©å®¶ç‚¸å¼¹ä¿¡æ¯
 int __stdcall CGameData::SetUserBoomInfo(const WORD &wChairID, const DWORD cbBoomType)
 {
-	//Ğ£Ñé
+	//æ ¡éªŒ
 	if (((1 << CT_RUAN_BOMB) > cbBoomType) || ((1 << CT_MISSILE_CARD) < cbBoomType))
 		cout << "Error!!!" << endl;
 
-	// ÉèÖÃµ±Ç°·¿¼ä±¶Êı²¢¼ÇÂ¼¸÷Íæ¼Ò±¶Êı
-	if (((cbBoomType&(1 << CT_MISSILE_CARD)) != 0))    //ÍõÕ¨
+	// è®¾ç½®å½“å‰æˆ¿é—´å€æ•°å¹¶è®°å½•å„ç©å®¶å€æ•°
+	if (((cbBoomType&(1 << CT_MISSILE_CARD)) != 0))    //ç‹ç‚¸
 	{
-		for (int i = 0; i < m_room_config.max_chair_sum; i++)      //°ÑÕ¨µ¯±¶ÊıÌí¼ÓÉÏ
+		for (int i = 0; i < m_room_config.max_chair_sum; i++)      //æŠŠç‚¸å¼¹å€æ•°æ·»åŠ ä¸Š
 		{
 			if (USER_PLAYING == GetPlayerState(i))
 			{
@@ -5150,17 +5150,17 @@ int __stdcall CGameData::SetUserBoomInfo(const WORD &wChairID, const DWORD cbBoo
 					m_players_config.players[i].bet *= RUAN_BOOM_TIMES;
 			}
 
-			if (m_players_config.players[i].bet > m_playing_para.max_room_bet)   //ÅĞ¶ÏÊÇ·ñ·â¶¥
+			if (m_players_config.players[i].bet > m_playing_para.max_room_bet)   //åˆ¤æ–­æ˜¯å¦å°é¡¶
 				m_players_config.players[i].bet = m_playing_para.max_room_bet;
 		}
 
-		//¸³Öµ
+		//èµ‹å€¼
 		BYTE &cbBoomNum = m_players_config.players[wChairID].boom_info.cbBoomNum;
 		m_players_config.players[wChairID].boom_info.cbBoomType[cbBoomNum++] = cbBoomType;
 	}
-	else if (((cbBoomType & (1 << CT_BOMB_CARD)) != 0))    //Ó²Õ¨
+	else if (((cbBoomType & (1 << CT_BOMB_CARD)) != 0))    //ç¡¬ç‚¸
 	{
-		for (int i = 0; i < m_room_config.max_chair_sum; i++)      //°ÑÕ¨µ¯±¶ÊıÌí¼ÓÉÏ
+		for (int i = 0; i < m_room_config.max_chair_sum; i++)      //æŠŠç‚¸å¼¹å€æ•°æ·»åŠ ä¸Š
 		{
 			if (USER_PLAYING == GetPlayerState(i))
 			{
@@ -5170,45 +5170,45 @@ int __stdcall CGameData::SetUserBoomInfo(const WORD &wChairID, const DWORD cbBoo
 					m_players_config.players[i].bet *= RUAN_BOOM_TIMES;
 			}
 
-			if (m_players_config.players[i].bet > m_playing_para.max_room_bet)   //ÅĞ¶ÏÊÇ·ñ·â¶¥
+			if (m_players_config.players[i].bet > m_playing_para.max_room_bet)   //åˆ¤æ–­æ˜¯å¦å°é¡¶
 				m_players_config.players[i].bet = m_playing_para.max_room_bet;
 		}
 
-		//¸³Öµ
+		//èµ‹å€¼
 		BYTE &cbBoomNum = m_players_config.players[wChairID].boom_info.cbBoomNum;
 		m_players_config.players[wChairID].boom_info.cbBoomType[cbBoomNum++] = cbBoomType;
 	}
-	else if (((cbBoomType & (1 << CT_RUAN_BOMB)) != 0))    //ÈíÕ¨
+	else if (((cbBoomType & (1 << CT_RUAN_BOMB)) != 0))    //è½¯ç‚¸
 	{
-		for (int i = 0; i < m_room_config.max_chair_sum; i++)      //°ÑÕ¨µ¯±¶ÊıÌí¼ÓÉÏ
+		for (int i = 0; i < m_room_config.max_chair_sum; i++)      //æŠŠç‚¸å¼¹å€æ•°æ·»åŠ ä¸Š
 		{
 			if (USER_PLAYING == GetPlayerState(i) && 0 < GetLaiZiMode())
 			{
 				m_players_config.players[i].bet *= RUAN_BOOM_TIMES;
 			}
 
-			if (m_players_config.players[i].bet > m_playing_para.max_room_bet)   //ÅĞ¶ÏÊÇ·ñ·â¶¥
+			if (m_players_config.players[i].bet > m_playing_para.max_room_bet)   //åˆ¤æ–­æ˜¯å¦å°é¡¶
 				m_players_config.players[i].bet = m_playing_para.max_room_bet;
 		}
 
-		//¸³Öµ
+		//èµ‹å€¼
 		BYTE &cbBoomNum = m_players_config.players[wChairID].boom_info.cbBoomNum;
 		m_players_config.players[wChairID].boom_info.cbBoomType[cbBoomNum++] = cbBoomType;
 	}
-	else if (((cbBoomType & (1 << CT_LAIZI_BOMB)) != 0))    //ñ®×ÓÕ¨µ¯
+	else if (((cbBoomType & (1 << CT_LAIZI_BOMB)) != 0))    //ç™å­ç‚¸å¼¹
 	{
-		for (int i = 0; i < m_room_config.max_chair_sum; i++)      //°ÑÕ¨µ¯±¶ÊıÌí¼ÓÉÏ
+		for (int i = 0; i < m_room_config.max_chair_sum; i++)      //æŠŠç‚¸å¼¹å€æ•°æ·»åŠ ä¸Š
 		{
 			if (USER_PLAYING == GetPlayerState(i) && 0 < GetLaiZiMode())
 			{
 				m_players_config.players[i].bet *= HARD_BOOM_TIMES;
 			}
 
-			if (m_players_config.players[i].bet > m_playing_para.max_room_bet)   //ÅĞ¶ÏÊÇ·ñ·â¶¥
+			if (m_players_config.players[i].bet > m_playing_para.max_room_bet)   //åˆ¤æ–­æ˜¯å¦å°é¡¶
 				m_players_config.players[i].bet = m_playing_para.max_room_bet;
 		}
 
-		//¸³Öµ
+		//èµ‹å€¼
 		BYTE &cbBoomNum = m_players_config.players[wChairID].boom_info.cbBoomNum;
 		m_players_config.players[wChairID].boom_info.cbBoomType[cbBoomNum++] = cbBoomType;
 	}
@@ -5216,10 +5216,10 @@ int __stdcall CGameData::SetUserBoomInfo(const WORD &wChairID, const DWORD cbBoo
 	return 0;
 }
 
-//»ñµÃÍæ¼ÒÕ¨µ¯ĞÅÏ¢
+//è·å¾—ç©å®¶ç‚¸å¼¹ä¿¡æ¯
 BYTE __stdcall CGameData::GetUserBoomInfo(const WORD &wChairID, tagBoomInfo &strBoomInfo)
 {
-	//¸³Öµ
+	//èµ‹å€¼
 	strBoomInfo.cbBoomNum = m_players_config.players[wChairID].boom_info.cbBoomNum;
 	for (int i = 0; i < MAX_BOOM_NUM; i++)
 	{
@@ -5230,50 +5230,50 @@ BYTE __stdcall CGameData::GetUserBoomInfo(const WORD &wChairID, tagBoomInfo &str
 }
 
 /******************************************************************************/
-/*******************************  ¸¨Öúº¯Êı  *******************************/
+/*******************************  è¾…åŠ©å‡½æ•°  *******************************/
 /******************************************************************************/
-// ¸ù¾İÓÎÏ·ÅäÖÃ´´½¨¿¨ÅÆÊı¾İ
+// æ ¹æ®æ¸¸æˆé…ç½®åˆ›å»ºå¡ç‰Œæ•°æ®
 int CGameData::LoadGameCards()
 {
 	int result = 0;
 
-	//¸ù¾İÈ«¾ÖÅäÖÃÎÄ¼ş±äÁ¿£¬¸³Öµ¸ø³ÉÔ±±äÁ¿
+	//æ ¹æ®å…¨å±€é…ç½®æ–‡ä»¶å˜é‡ï¼Œèµ‹å€¼ç»™æˆå‘˜å˜é‡
 	if ((NULL != CGameConfig::gComCardPara.group) &&
 		(0 != CGameConfig::gComCardPara.groupNum) &&
 		(0 != CGameConfig::gComCardPara.game_cards_num))
 	{
-		//Êµ¼Ê¿¨ÅÆ×ÜÊı
+		//å®é™…å¡ç‰Œæ€»æ•°
 		m_card_config.game_cards_sum = CGameConfig::gComCardPara.game_cards_num;
 
-		//ÓÎÏ·ÄÚ¿¨ÅÆ
+		//æ¸¸æˆå†…å¡ç‰Œ
 		m_card_config.game_cards = new CARD_DESC[m_card_config.game_cards_sum];
 		for (BYTE i = 0; i < m_card_config.game_cards_sum; i++)
 		{
 			m_card_config.game_cards[i] = CGameConfig::gComCardPara.game_cards[i];
 		}
 
-		//Íæ¼Ò³õÊ¼ÊÖÅÆÊı
+		//ç©å®¶åˆå§‹æ‰‹ç‰Œæ•°
 		SetPlayerInitCardNum();
 	}
 	else
 	{
-		cout << "ÅäÖÃµÄÈ«¾Ö±äÁ¿ERR" << endl;
+		cout << "é…ç½®çš„å…¨å±€å˜é‡ERR" << endl;
 	}
 
 	return result;
 }
 
-// ¸ù¾İÓÎÏ·ÅäÖÃ´´½¨Íæ¼ÒÊı¾İ
+// æ ¹æ®æ¸¸æˆé…ç½®åˆ›å»ºç©å®¶æ•°æ®
 int CGameData::LoadPlayers()
 {
 	int result = 0;
 
-	PLAYER_TYPE _play_type = 0;		//Ò»¸öword´æ´¢ÁËÍæ¼ÒµÄ2¸öÊı¾İcard_sum£¬player_sum
+	PLAYER_TYPE _play_type = 0;		//ä¸€ä¸ªwordå­˜å‚¨äº†ç©å®¶çš„2ä¸ªæ•°æ®card_sumï¼Œplayer_sum
 
-	//´ÓÈ«¾ÖÅäÖÃÎÄ¼şÖĞ¶ÁÈ¡Íæ¼ÒÀàĞÍ
+	//ä»å…¨å±€é…ç½®æ–‡ä»¶ä¸­è¯»å–ç©å®¶ç±»å‹
 	_play_type = CGameConfig::gComPlayerPara.type;
 
-	// ´´½¨ËùÓĞÍæ¼Ò£¬Íæ¼ÒÊıÄ¿¹Ì¶¨Îª×î´óÒÎ×ÓÊı£¬´Ó·şÎñÆ÷¿ò¼Ü»ñµÃ
+	// åˆ›å»ºæ‰€æœ‰ç©å®¶ï¼Œç©å®¶æ•°ç›®å›ºå®šä¸ºæœ€å¤§æ¤…å­æ•°ï¼Œä»æœåŠ¡å™¨æ¡†æ¶è·å¾—
 	m_players_config.players = new PLAYER_DESC[m_players_config.player_sum];
 	memset(m_players_config.players, 0, sizeof(PLAYER_DESC)*m_players_config.player_sum);
 
@@ -5282,15 +5282,15 @@ int CGameData::LoadPlayers()
 	return result;
 }
 
-// ÅäÖÃÓÎÏ·¹æÔò
+// é…ç½®æ¸¸æˆè§„åˆ™
 int  CGameData::LoadGameRule(const BYTE cbGameScoreMode)
 {
-	//»òµÃ·Ö±¶Êı
-	if (cbGameScoreMode == GAME_SCORE_MODE_CLASSIC)	//¾­µäÄ£Ê½
+	//æˆ–å¾—åˆ†å€æ•°
+	if (cbGameScoreMode == GAME_SCORE_MODE_CLASSIC)	//ç»å…¸æ¨¡å¼
 	{
 		memcpy(&m_room_config.game_score_times, &CGameConfig::gComGamePara.game_normal_times, sizeof(m_room_config.game_score_times));
 	}
-	//else if (cbGameScoreMode == GAME_SCORE_MODE_CRAZY)	//·è¿ñÄ£Ê½
+	//else if (cbGameScoreMode == GAME_SCORE_MODE_CRAZY)	//ç–¯ç‹‚æ¨¡å¼
 	//{
 	//	memcpy(&m_room_config.game_score_times, &CGameConfig::gComGamePara.game_crazy_times, sizeof(m_room_config.game_score_times));
 	//}
@@ -5298,29 +5298,29 @@ int  CGameData::LoadGameRule(const BYTE cbGameScoreMode)
 	return 0;
 }
 
-// Êä³öÅÆ¾ÖĞÅÏ¢
+// è¾“å‡ºç‰Œå±€ä¿¡æ¯
 int CGameData::OutGameInfor()
 {
 	/*TODOLATER
-	//m_plog->LogSingleLine(L"×¯¼Ò£º %d", m_room_config.appointbanker ); // Êä³ö×¯¼ÒID
+	//m_plog->LogSingleLine(L"åº„å®¶ï¼š %d", m_room_config.appointbanker ); // è¾“å‡ºåº„å®¶ID
 
-	// Êä³öÍæ¼ÒÊÖÅÆ
+	// è¾“å‡ºç©å®¶æ‰‹ç‰Œ
 	for ( unsigned i = 0 ;i < GetCurPlayerCount() ; ++i)
 	{
 		wchar_t **_str = new wchar_t* [__GETCARDSUM( m_players_config.players[i].type ) + 1]();
 		_str[0] = new wchar_t[64]();
-		swprintf_s(_str[0], 64,  L"%s\t%s\t%s\n", L"µãÊı", L"»¨É«", L"×éID");
+		swprintf_s(_str[0], 64,  L"%s\t%s\t%s\n", L"ç‚¹æ•°", L"èŠ±è‰²", L"ç»„ID");
 		for ( int j = 1 ;j < __GETCARDSUM( m_players_config.players[i].type ) + 1 ; ++j )
 		{
-			// Ìî³ä»º³åÇø
+			// å¡«å……ç¼“å†²åŒº
 			_str[j] = new wchar_t[64]();
 			swprintf_s(_str[j], 64,  L"%d\t%d\t%d\n", __GETSCORE( m_players_config.hand_cards[i][j - 1]),  __GETCOLOR( m_players_config.hand_cards[i][j - 1]), __GETGROUPID( m_players_config.hand_cards[i][j - 1] ));
 		}
 		int *a = NULL;
-		// Ğ´ÈÕÖ¾
+		// å†™æ—¥å¿—
 		//m_plog->LogMutilLine(_str, a, __GETCARDSUM( m_players_config.players[i].type ) + 1);
 
-		// »ØÊÕ
+		// å›æ”¶
 		for ( int j = 0; j < __GETCARDSUM( m_players_config.players[i].type ) + 1; ++ j )
 		{
 			delete [] _str[j];
@@ -5331,11 +5331,11 @@ int CGameData::OutGameInfor()
 		_str = NULL;
 	}
 
-	// Êä³öÍæ¼ÒµÃ·Ö
+	// è¾“å‡ºç©å®¶å¾—åˆ†
 	int nPlayerNum = GetCurPlayerCount() + 1;
 	wchar_t **_str = new wchar_t* [nPlayerNum]();
 	_str[0] = new wchar_t[64]();
-	swprintf_s(_str[0], 64,  L"%s\t%s\t%s\t%s\t%s\t%s\t%s\n", L"µãÊı", L"ÏÂ×¢", L"ÅÆĞÍ", L"¹«ÅÆÊı", L"µ¥¾Ö·Ö", L"×ÜµÃ·Ö", L"±¶Êı", L"Íæ¼ÒType");
+	swprintf_s(_str[0], 64,  L"%s\t%s\t%s\t%s\t%s\t%s\t%s\n", L"ç‚¹æ•°", L"ä¸‹æ³¨", L"ç‰Œå‹", L"å…¬ç‰Œæ•°", L"å•å±€åˆ†", L"æ€»å¾—åˆ†", L"å€æ•°", L"ç©å®¶Type");
 	for( unsigned i = 1; i < nPlayerNum; ++i)
 	{
 		_str[i] = new wchar_t[64]();
@@ -5348,7 +5348,7 @@ int CGameData::OutGameInfor()
 								m_players_config.players[i - 1].type);
 	}
 
-	// Ğ´ÈÕÖ¾
+	// å†™æ—¥å¿—
 	int *a = NULL;
 	//m_plog->LogMutilLine(_str, a, nPlayerNum);
 
@@ -5361,29 +5361,29 @@ int CGameData::OutGameInfor()
 	delete [] _str;
 	_str = NULL;
 
-	//m_plog->LogSingleLine(L"========================== »ªÀöµÄ·Ö¸îÏß ==========================", NULL);
+	//m_plog->LogSingleLine(L"========================== åä¸½çš„åˆ†å‰²çº¿ ==========================", NULL);
 
 	return 0;
 */
 	return 0;
 }
 
-// ³õÊ¼»¯ÓÎÏ·Êı¾İ
+// åˆå§‹åŒ–æ¸¸æˆæ•°æ®
 int CGameData::InitGameData()
 {
-	//m_playing_para.appointbanker = 0;		//µ±Ç°×¯¼Ò
+	//m_playing_para.appointbanker = 0;		//å½“å‰åº„å®¶
 
-	//½øÈë·¿¼äÊ±£¬»ı·ÖÎª0
+	//è¿›å…¥æˆ¿é—´æ—¶ï¼Œç§¯åˆ†ä¸º0
 	for (unsigned i = 0; i < m_players_config.player_sum; ++i)
 	{
 		m_players_config.players[i].total_score = 0;
 		m_players_config.players[i].single_score = 0;
 		m_players_config.players[i].winsum = 0;
 		m_players_config.players[i].level = START_LEVEL_VALUE;
-		m_players_config.players[i].bet = 1;   //³õÊ¼¼Ó±¶Ã÷ÅÆ±¶ÊıÎª1
+		m_players_config.players[i].bet = 1;   //åˆå§‹åŠ å€æ˜ç‰Œå€æ•°ä¸º1
 		m_players_config.players[i].bank_count = 0;
 		m_players_config.players[i].rob_num = 0;
-		m_players_config.players[i].best_bet = 0;  //×î´ó±¶Êı³õÊ¼»¯Îª0
+		m_players_config.players[i].best_bet = 0;  //æœ€å¤§å€æ•°åˆå§‹åŒ–ä¸º0
 		m_players_config.players[i].addscore_bet = 1;
 		m_players_config.players[i].mingpai_bet = 1;
 		m_players_config.players[i].start_mingpai = 1;
@@ -5396,9 +5396,9 @@ int CGameData::InitGameData()
 		m_players_config.players[i].bank_state = 0;
 	}
 
-	//³õÊ¼»¯·¿¼ä±¶Êı
-	m_playing_para.turn_cards_num = 0;   //×î´ó³öÅÆÊı¾İ³õÊ¼»¯
-	m_playing_para.jiaofen_count = 0;	 //³õÊ¼»¯½Ğ·Ö´ÎÊı
+	//åˆå§‹åŒ–æˆ¿é—´å€æ•°
+	m_playing_para.turn_cards_num = 0;   //æœ€å¤§å‡ºç‰Œæ•°æ®åˆå§‹åŒ–
+	m_playing_para.jiaofen_count = 0;	 //åˆå§‹åŒ–å«åˆ†æ¬¡æ•°
 	m_playing_para.leave_card_bet = 1;
 	m_playing_para.game_cur_count = 0;
 	m_playing_para.cur_outcard_user = INVALID_CHAIR;
@@ -5407,11 +5407,11 @@ int CGameData::InitGameData()
 	m_playing_para.rob_count = 0;
 	m_playing_para.turn_pass_count = 0;
 
-	//ÅÅĞòÈ¨Î»³õÊ¼»¯
+	//æ’åºæƒä½åˆå§‹åŒ–
 	for (BYTE i = 0; i < LEN_SORT_RIGHT; i++)
 		m_playing_para.sort_right[i] = i * COLOR_RIGHT;
 
-	//Ö÷»¨É«ºÍ¼¶ÅÆ³õÊ¼»¯
+	//ä¸»èŠ±è‰²å’Œçº§ç‰Œåˆå§‹åŒ–
 	m_playing_para.level_value = START_LEVEL_VALUE;
 	m_playing_para.main_color = COLOR_ERROR;
 	m_playing_para.appointbanker = INVALID_CHAIR;
@@ -5425,16 +5425,16 @@ int CGameData::InitGameData()
 }
 
 
-// ·şÎñÆ÷µ½¿Í»§¶Ë¿¨ÅÆ×ª»»
+// æœåŠ¡å™¨åˆ°å®¢æˆ·ç«¯å¡ç‰Œè½¬æ¢
 int CGameData::CardTrans_S2C(const CARD_DESC &card_s, BYTE &card_c)
 {
-	//»ñµÃÅÆĞÍºÍ»¨É«£¬²»ÒªÅÆ×éid
-	card_c = card_s & 0xff;		//È¡µÍ°ËÎ»
+	//è·å¾—ç‰Œå‹å’ŒèŠ±è‰²ï¼Œä¸è¦ç‰Œç»„id
+	card_c = card_s & 0xff;		//å–ä½å…«ä½
 
 	return 0;
 }
 
-// ¿Í»§¶Ëµ½·şÎñÆ÷¿¨ÅÆ×ª»»
+// å®¢æˆ·ç«¯åˆ°æœåŠ¡å™¨å¡ç‰Œè½¬æ¢
 int CGameData::CardTrans_C2S(CARD_DESC &card_s, const BYTE &card_c)
 {
 	int result = 0;
@@ -5452,7 +5452,7 @@ int CGameData::CardTrans_C2S(CARD_DESC &card_s, const BYTE &card_c)
 		}
 		else if ((m_card_config.game_cards_sum - 1) == i)
 		{
-			//m_plog->LogSingleLine(L"¿¨ÅÆ½âÎöÊ§°Ü: %d", card_c );
+			//m_plog->LogSingleLine(L"å¡ç‰Œè§£æå¤±è´¥: %d", card_c );
 			result = -1;
 		}
 	}
@@ -5461,22 +5461,22 @@ int CGameData::CardTrans_C2S(CARD_DESC &card_s, const BYTE &card_c)
 
 }
 
-//ÅÆ×é×ª»»	(½«32ÕÅÅÆµÄÊ¹ÓÃÇé¿ö×ª»¯ÎªÒ»¸ö32Î»ÕûĞÍ)
+//ç‰Œç»„è½¬æ¢	(å°†32å¼ ç‰Œçš„ä½¿ç”¨æƒ…å†µè½¬åŒ–ä¸ºä¸€ä¸ª32ä½æ•´å‹)
 int CGameData::TransListToInt(int iOldType, int iNewType)
 {
-	//Êı¾İĞ£Ñé
+	//æ•°æ®æ ¡éªŒ
 	if (iNewType == 0) return 0;
 
-	//±äÁ¿¶¨Òå
+	//å˜é‡å®šä¹‰
 	int nList = 0;
 	nList |= (1 << iNewType);
 
-	//cout << "×ª»¯µÄÒ»¸ö32Î»ÕûĞÍ: " <<nList << endl;
+	//cout << "è½¬åŒ–çš„ä¸€ä¸ª32ä½æ•´å‹: " <<nList << endl;
 
 	return iOldType | nList;
 }
 
-//²âÊÔºúÅÆµÄº¯Êı--Æß¶Ô
+//æµ‹è¯•èƒ¡ç‰Œçš„å‡½æ•°--ä¸ƒå¯¹
 void CGameData::SetCardData_Leo(const WORD &wChairID, CARD_DESC *cards)
 {
 	BYTE cardtmp[108] = { 0x4f,0x4f,0x22,0x32,0x31,0x31,0x3d,0x3d,0x3c,0x3c,0x3b,0x3b,0x3a,0x3a,0x2c,0x2b,0x29,0x0d,0x17,0x0c,0x0b,0x0b,0x0a,0x09,0x07,
@@ -5485,14 +5485,14 @@ void CGameData::SetCardData_Leo(const WORD &wChairID, CARD_DESC *cards)
 					   0x21,0x21,0x2d,0x2d,0x2c,0x28,0x27,0x26,0x25,0x24,0x34,0x1d,0x1c,0x1a,0x19,0x16,0x15,0x15,0x13,0x01,0x0d,0x0a,0x06,0x04,0x03,
 					   0x13,0x02,0x11,0x14,0x36,0x27,0x09,0x01 };
 
-	//¸³Öµ
+	//èµ‹å€¼
 	for (int i = 0; i < 108; i++)
 	{
 		cards[i] = cardtmp[i];
 	}
 }
 
-//ÆË¿ËË÷Òı×ª»»³ÉÊı¾İ
+//æ‰‘å…‹ç´¢å¼•è½¬æ¢æˆæ•°æ®
 BYTE __stdcall CGameData::SwitchToCardData(BYTE cbCardIndex)
 {
 	if (cbCardIndex == SMALL_JOKER_INDEX)
@@ -5507,17 +5507,17 @@ BYTE __stdcall CGameData::SwitchToCardData(BYTE cbCardIndex)
 		return ((cbCardIndex / 13) << 4) | (cbCardIndex % 13 + 1);
 }
 
-//ÆË¿ËÊı¾İ×ª»»³ÉË÷Òı cardIndex:£¨0-12·½ 13-25Ã·»¨ 26-38ºìÌÒ 39-51ºÚÌÒ 65-66Ğ¡Íõ´óÍõ£©
+//æ‰‘å…‹æ•°æ®è½¬æ¢æˆç´¢å¼• cardIndex:ï¼ˆ0-12æ–¹ 13-25æ¢…èŠ± 26-38çº¢æ¡ƒ 39-51é»‘æ¡ƒ 65-66å°ç‹å¤§ç‹ï¼‰
 BYTE __stdcall CGameData::SwitchToCardIndex(BYTE cbCardData)
 {
 	BYTE card = ((cbCardData&MASK_COLOR) >> 4) * 13 + (cbCardData&MASK_VALUE) - 1;
-	return card;	//¸ßËÄÎ»»¨É«£¬µÍËÄÎ»µãÊı
+	return card;	//é«˜å››ä½èŠ±è‰²ï¼Œä½å››ä½ç‚¹æ•°
 }
 
-//ÆË¿ËË÷ÒıÊı¾İ×ª»»Êı¾İÊı×é
+//æ‰‘å…‹ç´¢å¼•æ•°æ®è½¬æ¢æ•°æ®æ•°ç»„
 BYTE __stdcall CGameData::SwitchToCardData(const BYTE cbCardIndex[LEN_MAX_INDEX], BYTE cbCardData[MAX_CARD_COUNT])
 {
-	//×ª»»ÆË¿Ë
+	//è½¬æ¢æ‰‘å…‹
 	BYTE cbPosition = 0;
 
 	for (BYTE i = 0; i < LEN_MAX_INDEX; i++)
@@ -5534,13 +5534,13 @@ BYTE __stdcall CGameData::SwitchToCardData(const BYTE cbCardIndex[LEN_MAX_INDEX]
 	return cbPosition;
 }
 
-//ÆË¿ËÊı¾İÊı×é×ª»»³ÉË÷ÒıÊı×é
+//æ‰‘å…‹æ•°æ®æ•°ç»„è½¬æ¢æˆç´¢å¼•æ•°ç»„
 BYTE __stdcall CGameData::SwitchToCardIndex(const BYTE *cbCardData, BYTE cbCardCount, BYTE *cbCardIndex)
 {
-	//ÉèÖÃ±äÁ¿
+	//è®¾ç½®å˜é‡
 	ZeroMemory(cbCardIndex, sizeof(BYTE)*LEN_MAX_INDEX);
 
-	//×ª»»ÆË¿Ë
+	//è½¬æ¢æ‰‘å…‹
 	for (BYTE i = 0; i < cbCardCount; i++)
 	{
 		cbCardIndex[SwitchToCardIndex(cbCardData[i])]++;
@@ -5549,18 +5549,18 @@ BYTE __stdcall CGameData::SwitchToCardIndex(const BYTE *cbCardData, BYTE cbCardC
 	return cbCardCount;
 }
 
-//É¾³ıÆË¿Ë
+//åˆ é™¤æ‰‘å…‹
 bool __stdcall CGameData::RemoveCard(const BYTE *cbRemoveCard, BYTE cbRemoveCount, BYTE *cbCardData, BYTE cbCardCount)
 {
-	//¼ìÑéÊı¾İ
+	//æ£€éªŒæ•°æ®
 	if (cbRemoveCount > cbCardCount)
 	{
-		cout << "¼ìÑéÊı¾İÊ§°Ü" << endl;
+		cout << "æ£€éªŒæ•°æ®å¤±è´¥" << endl;
 		return false;
 
 	}
 
-	//¶¨Òå±äÁ¿
+	//å®šä¹‰å˜é‡
 	BYTE cbDeleteCount = 0;
 	BYTE cbTempCardData[MAX_CARD_COUNT];
 	if (cbCardCount > MAX_CARD_COUNT)
@@ -5570,10 +5570,10 @@ bool __stdcall CGameData::RemoveCard(const BYTE *cbRemoveCard, BYTE cbRemoveCoun
 	}
 	CopyMemory(cbTempCardData, cbCardData, MAX_CARD_COUNT * sizeof(cbCardData[0]));
 
-	//½«ĞèÒªÉ¾³ıµÄÆË¿ËÖÃÁã
+	//å°†éœ€è¦åˆ é™¤çš„æ‰‘å…‹ç½®é›¶
 	for (BYTE i = 0; i < cbRemoveCount; i++)
 	{
-		//ÅĞ¶ÏÊÇ·ñÓĞñ®×Ó ²¢É¾³ıñ®×Ó  add by lih
+		//åˆ¤æ–­æ˜¯å¦æœ‰ç™å­ å¹¶åˆ é™¤ç™å­  add by lih
 		if (cbRemoveCard[i] > 0x50)
 		{
 			for (BYTE j = 0; j < cbCardCount; j++)
@@ -5604,7 +5604,7 @@ bool __stdcall CGameData::RemoveCard(const BYTE *cbRemoveCard, BYTE cbRemoveCoun
 		return false;
 	}
 
-	//ÖØĞÂ¸³Öµ
+	//é‡æ–°èµ‹å€¼
 	BYTE cbCardPos = 0;
 	for (BYTE i = 0; i < cbCardCount; i++)
 	{
@@ -5612,7 +5612,7 @@ bool __stdcall CGameData::RemoveCard(const BYTE *cbRemoveCard, BYTE cbRemoveCoun
 			cbCardData[cbCardPos++] = cbTempCardData[i];
 	}
 
-	//È¥³ıºóÃæÃ»É¾³ıµÄÊı¾İ
+	//å»é™¤åé¢æ²¡åˆ é™¤çš„æ•°æ®
 	for (int i = cbCardPos; i < cbCardCount; i++)
 	{
 		cbCardData[i] = 0;
@@ -5621,10 +5621,10 @@ bool __stdcall CGameData::RemoveCard(const BYTE *cbRemoveCard, BYTE cbRemoveCoun
 	return true;
 }
 
-//´ÓÍæ¼ÒÊÖÅÆÖĞÉ¾³ıÆË¿Ë
+//ä»ç©å®¶æ‰‹ç‰Œä¸­åˆ é™¤æ‰‘å…‹
 bool __stdcall CGameData::RemoveCard(const WORD &wChairID, const BYTE *cbRemoveCard, BYTE cbRemoveCount)
 {
-	//¹ıÂËÎŞĞ§¿¨ÅÆ
+	//è¿‡æ»¤æ— æ•ˆå¡ç‰Œ
 	for (int i = 0; i < cbRemoveCount; i++)
 	{
 		if (INVALID_CARD == cbRemoveCard[i])
@@ -5633,9 +5633,9 @@ bool __stdcall CGameData::RemoveCard(const WORD &wChairID, const BYTE *cbRemoveC
 		}
 	}
 
-	//Íæ¼Òµ±Ç°ÊÖÅÆÊı
+	//ç©å®¶å½“å‰æ‰‹ç‰Œæ•°
 	BYTE cbCardCount = GetUserCurCardNum(wChairID);
-	//É¾³ı¿¨ÅÆ
+	//åˆ é™¤å¡ç‰Œ
 	if (RemoveCard(cbRemoveCard, cbRemoveCount, m_players_config.hand_cards[wChairID], cbCardCount))
 	{
 		m_players_config.players[wChairID].hand_card_num -= cbRemoveCount;
@@ -5645,20 +5645,20 @@ bool __stdcall CGameData::RemoveCard(const WORD &wChairID, const BYTE *cbRemoveC
 }
 
 
-//ÉèÖÃµ±Ç°ÇÀ×¯µÄÍæ¼Ò
+//è®¾ç½®å½“å‰æŠ¢åº„çš„ç©å®¶
 int __stdcall CGameData::SetCurRobUser(const WORD wChairID)
 {
 	m_playing_para.currobuser = wChairID;
 	return 0;
 }
 
-//»ñÈ¡µ±Ç°ÇÀ×¯µÄÍæ¼Ò
+//è·å–å½“å‰æŠ¢åº„çš„ç©å®¶
 WORD __stdcall CGameData::GetCurRobUser()
 {
 	return m_playing_para.currobuser;
 }
 
-//¼ÇÂ¼Íæ¼ÒÏÂ×¢
+//è®°å½•ç©å®¶ä¸‹æ³¨
 int __stdcall CGameData::SetPlayerAddScore(WORD wChairID, WORD lScore)
 {
 	if (lScore < 1)
@@ -5670,13 +5670,13 @@ int __stdcall CGameData::SetPlayerAddScore(WORD wChairID, WORD lScore)
 	return 0;
 }
 
-//»ñÈ¡Íæ¼ÒÏÂ×¢
+//è·å–ç©å®¶ä¸‹æ³¨
 WORD __stdcall CGameData::GetPlayerAddScore(WORD wChairID)
 {
 	return m_players_config.players[wChairID].addscore_bet;
 }
 
-//¼ÇÂ¼Íæ¼ÒÃ÷ÅÆ±¶Êı
+//è®°å½•ç©å®¶æ˜ç‰Œå€æ•°
 int __stdcall CGameData::SetPlayerMingPaiBet(WORD wChairID, WORD bet)
 {
 	if (bet < 1)
@@ -5689,30 +5689,30 @@ int __stdcall CGameData::SetPlayerMingPaiBet(WORD wChairID, WORD bet)
 }
 
 
-//»ñÈ¡Íæ¼ÒÃ÷ÅÆ±¶Êı
+//è·å–ç©å®¶æ˜ç‰Œå€æ•°
 int __stdcall CGameData::GetPlayerMingPaiBet(WORD wChairID)
 {
 	return m_players_config.players[wChairID].mingpai_bet;
 }
 
 
-//ÉèÖÃÒ»´ó¾ÖÖĞÍæ¼Ò»ñµÃ¹ıµÄ×î´ó±¶Êı
+//è®¾ç½®ä¸€å¤§å±€ä¸­ç©å®¶è·å¾—è¿‡çš„æœ€å¤§å€æ•°
 int __stdcall CGameData::SetDJPlayerBestBet(WORD wChairID, SCORE bet)
 {
 	m_players_config.players[wChairID].best_bet = bet;
 	return 0;
 }
 
-//»ñµÃÒ»´ó¾ÖÖĞÍæ¼Ò»ñµÃ¹ıµÄ×î´ó±¶Êı
+//è·å¾—ä¸€å¤§å±€ä¸­ç©å®¶è·å¾—è¿‡çš„æœ€å¤§å€æ•°
 SCORE __stdcall CGameData::GetDJPlayerBestBet(WORD wChairID)
 {
 	return  m_players_config.players[wChairID].best_bet;
 }
 
-//ÉèÖÃÓÎÏ··â¶¥±¶Êı
+//è®¾ç½®æ¸¸æˆå°é¡¶å€æ•°
 int __stdcall CGameData::SetRoomMaxBet(DWORD Max_Bet)
 {
-	if (Max_Bet == 0)   //²»·â¶¥
+	if (Max_Bet == 0)   //ä¸å°é¡¶
 	{
 		m_playing_para.max_room_bet = (1 << 30);
 		return 0;
@@ -5726,66 +5726,66 @@ int __stdcall CGameData::SetRoomMaxBet(DWORD Max_Bet)
 	return 0;
 }
 
-//»ñÈ¡ÓÎÏ··â¶¥±¶Êı
+//è·å–æ¸¸æˆå°é¡¶å€æ•°
 DWORD __stdcall CGameData::GetRoomMaxBet()
 {
 
 	return m_playing_para.max_room_bet;
 }
 
-//¼ÇÂ¼Íæ¼ÒÊÇ·ñ¿ªÊ¼ÓÎÏ·Ã÷ÅÆ  5-¿ªÊ¼ÓÎÏ·Ã÷ÅÆ  4-·¢ÅÆÃ÷ÅÆ
+//è®°å½•ç©å®¶æ˜¯å¦å¼€å§‹æ¸¸æˆæ˜ç‰Œ  5-å¼€å§‹æ¸¸æˆæ˜ç‰Œ  4-å‘ç‰Œæ˜ç‰Œ
 int __stdcall CGameData::SetStartMingPai(WORD wChairID, DWORD state)
 {
 	m_players_config.players[wChairID].start_mingpai = state;
 	return 0;
 }
 
-//»ñÈ¡Íæ¼ÒÊÇ·ñ¿ªÊ¼ÓÎÏ·Ã÷ÅÆ
+//è·å–ç©å®¶æ˜¯å¦å¼€å§‹æ¸¸æˆæ˜ç‰Œ
 DWORD __stdcall CGameData::GetStartMingPai(WORD wChairID)
 {
 	return m_players_config.players[wChairID].start_mingpai;
 }
 
-//ÉèÖÃÒ»¸ö²ÎÊı¼ÇÂ¼½Ğ·Ö´ÎÊı 
+//è®¾ç½®ä¸€ä¸ªå‚æ•°è®°å½•å«åˆ†æ¬¡æ•° 
 int __stdcall CGameData::SetJiaoFenCount(WORD count)
 {
 	m_playing_para.jiaofen_count = count;
 	return 0;
 }
 
-//»ñµÃ½Ğ·Ö´ÎÊı 
+//è·å¾—å«åˆ†æ¬¡æ•° 
 WORD __stdcall CGameData::GetJiaoFenCount()
 {
 	return m_playing_para.jiaofen_count;
 }
 
-//¼ÇÂ¼µ±Ç°Íæ¼ÒµÄ½Ğ·Ö×´Ì¬
+//è®°å½•å½“å‰ç©å®¶çš„å«åˆ†çŠ¶æ€
 int __stdcall CGameData::SetCurJiaoFenState(WORD wChairID, WORD state)
 {
 	m_players_config.players[wChairID].jiaofen_state = state;
 	return 0;
 }
 
-//»ñµÃµ±Ç°Íæ¼ÒµÄ½Ğ·Ö×´Ì¬
+//è·å¾—å½“å‰ç©å®¶çš„å«åˆ†çŠ¶æ€
 int __stdcall CGameData::GetCurJiaoFenState(WORD wChairID)
 {
 	return m_players_config.players[wChairID].jiaofen_state;
 }
 
-//ÉèÖÃµ±Ç°ÕıÔÚ½Ğ·ÖµÄÍæ¼Ò     
+//è®¾ç½®å½“å‰æ­£åœ¨å«åˆ†çš„ç©å®¶     
 int __stdcall CGameData::SetCurJiaoFenUser(WORD wChairID)
 {
 	m_playing_para.cur_jiaofen_player = wChairID;
 	return 0;
 }
 
-//»ñÈ¡µ±Ç°ÕıÔÚ½Ğ·ÖµÄÍæ¼Ò     
+//è·å–å½“å‰æ­£åœ¨å«åˆ†çš„ç©å®¶     
 WORD __stdcall CGameData::GetCurJiaoFenUser()
 {
 	return m_playing_para.cur_jiaofen_player;
 }
 
-//Çå³ı¸÷Íæ¼ÒµÄ¸öÈË±¶Êı
+//æ¸…é™¤å„ç©å®¶çš„ä¸ªäººå€æ•°
 WORD __stdcall CGameData::CleanAllBet()
 {
 	for (int i = 0; i < GetCurPlayerCount(); i++)
@@ -5795,20 +5795,20 @@ WORD __stdcall CGameData::CleanAllBet()
 	return 0;
 }
 
-//»ñÈ¡²»ÇÀ×¯µÄÂÖÊı
+//è·å–ä¸æŠ¢åº„çš„è½®æ•°
 WORD __stdcall CGameData::GetTurnPassCount()
 {
 	return m_playing_para.turn_pass_count;
 }
 
-//ÉèÖÃ²»ÇÀ×¯µÄÂÖÊı
+//è®¾ç½®ä¸æŠ¢åº„çš„è½®æ•°
 int __stdcall CGameData::SetTurnPassCount(WORD count)
 {
 	m_playing_para.turn_pass_count = count;
 	return 0;
 }
 
-//ÉèÖÃÓÎÏ·ñ®×ÓÄ£Ê½
+//è®¾ç½®æ¸¸æˆç™å­æ¨¡å¼
 int __stdcall CGameData::SetLaiZiMode(WORD Mode)
 {
 	if (Mode > 1 || Mode < 0)
@@ -5820,31 +5820,31 @@ int __stdcall CGameData::SetLaiZiMode(WORD Mode)
 	return 0;
 }
 
-//»ñÈ¡ÓÎÏ·ñ®×ÓÄ£Ê½
+//è·å–æ¸¸æˆç™å­æ¨¡å¼
 int __stdcall CGameData::GetLaiZiMode()
 {
 	return m_room_config.game_laizi_mode;
 }
 
-//³õÊ¼»¯µ±Ç°ÂÖÊÖÅÆ¸ø»úÆ÷ÈË
+//åˆå§‹åŒ–å½“å‰è½®æ‰‹ç‰Œç»™æœºå™¨äºº
 void __stdcall CGameData::GetTurnMaxCardToRobot(GameSituation &gst, AILogic &m_AILogic)
 {
 	memset(&(gst.uctNowCardGroup), 0, sizeof(gst.uctNowCardGroup));
 
-	//»ñÈ¡µ±Ç°ÂÖµÄ¿¨ÅÆÀàĞÍ  ¶ş½øÖÆ
+	//è·å–å½“å‰è½®çš„å¡ç‰Œç±»å‹  äºŒè¿›åˆ¶
 	DWORD m_type = GetCardLogicType(m_playing_para.turn_max_cards, m_playing_para.turn_cards_num);
 
-	//¸³Öµ
-	gst.NowOutUser = m_playing_para.cur_outcard_user;   //µ±Ç°³öÅÆÓÃ»§
-	gst.nCardDroit = m_playing_para.last_outcard_user;    //×îºó³öÅÆÓÃ»§
-	gst.nDiZhuID = m_playing_para.appointbanker;			//×¯¼Ò
+	//èµ‹å€¼
+	gst.NowOutUser = m_playing_para.cur_outcard_user;   //å½“å‰å‡ºç‰Œç”¨æˆ·
+	gst.nCardDroit = m_playing_para.last_outcard_user;    //æœ€åå‡ºç‰Œç”¨æˆ·
+	gst.nDiZhuID = m_playing_para.appointbanker;			//åº„å®¶
 
-	//¶¨Òå
-	int  nValue = 0;								//¸ÃÅÆµÄ¼ÛÖµ
-	int  nCount = m_playing_para.turn_cards_num;		//º¬ÅÆµÄ¸öÊı
-	int  nMaxCard = 0;								//ÅÆÖĞ¾ö¶¨´óĞ¡µÄÅÆÖµ£¬ÓÃÓÚ¶Ô±È
+	//å®šä¹‰
+	int  nValue = 0;								//è¯¥ç‰Œçš„ä»·å€¼
+	int  nCount = m_playing_para.turn_cards_num;		//å«ç‰Œçš„ä¸ªæ•°
+	int  nMaxCard = 0;								//ç‰Œä¸­å†³å®šå¤§å°çš„ç‰Œå€¼ï¼Œç”¨äºå¯¹æ¯”
 
-	//·ÖÎö±È½Ï»ñÈ¡¾ö¶¨ÅÆÖµµÄ×î´óµÄÄÇÕÅÅÆ²¢¸øgst¸³Öµ
+	//åˆ†ææ¯”è¾ƒè·å–å†³å®šç‰Œå€¼çš„æœ€å¤§çš„é‚£å¼ ç‰Œå¹¶ç»™gstèµ‹å€¼
 	if ((1 << CT_SINGLE) == m_type)
 	{
 		gst.uctNowCardGroup = m_AILogic.get_GroupData(cgSINGLE, GetCardLogicValue(m_playing_para.turn_max_cards[0]), nCount);
@@ -5869,7 +5869,7 @@ void __stdcall CGameData::GetTurnMaxCardToRobot(GameSituation &gst, AILogic &m_A
 	{
 		gst.uctNowCardGroup = m_AILogic.get_GroupData(cgTHREE_LINE, GetCardLogicValue(m_playing_para.turn_max_cards[0]), nCount);
 	}
-	else if ((1 << CT_THREE_LINE_TAKE_ONE) == m_type)    //Èı´úÒ»ºÍ·É»ú
+	else if ((1 << CT_THREE_LINE_TAKE_ONE) == m_type)    //ä¸‰ä»£ä¸€å’Œé£æœº
 	{
 		if (nCount == 4)
 		{
@@ -5880,7 +5880,7 @@ void __stdcall CGameData::GetTurnMaxCardToRobot(GameSituation &gst, AILogic &m_A
 			gst.uctNowCardGroup = m_AILogic.get_GroupData(cgTHREE_TAKE_ONE_LINE, GetCardLogicValue(m_playing_para.turn_max_cards[0]), nCount);
 		}
 	}
-	else if ((1 << CT_THREE_LINE_TAKE_TWO) == m_type)    //Èı´øÒ»¶ÔºÍ·É»ú
+	else if ((1 << CT_THREE_LINE_TAKE_TWO) == m_type)    //ä¸‰å¸¦ä¸€å¯¹å’Œé£æœº
 	{
 		if (nCount == 5)
 		{
@@ -5920,7 +5920,7 @@ void __stdcall CGameData::GetTurnMaxCardToRobot(GameSituation &gst, AILogic &m_A
 	return;
 }
 
-//½«Òª³öµÄÅÆ´ÓÂß¼­Öµ×ª»»³ÉÓĞ»¨É«
+//å°†è¦å‡ºçš„ç‰Œä»é€»è¾‘å€¼è½¬æ¢æˆæœ‰èŠ±è‰²
 void __stdcall CGameData::GetCardColorValue(WORD OutCardUser, HandCardData &m_HandCardData, BYTE *OutCardData, BYTE &OutCardNum)
 {
 	BYTE CurCardData[MAX_CARD_COUNT] = { 0 };
@@ -5928,10 +5928,10 @@ void __stdcall CGameData::GetCardColorValue(WORD OutCardUser, HandCardData &m_Ha
 
 	GetClientHandCards(OutCardUser, CurCardData, CurCardNum);
 
-	//±êÖ¾Á¿
+	//æ ‡å¿—é‡
 	int index = 0;
 
-	//Ò»¸öÒ»¸ö×÷±È½Ï½»»»
+	//ä¸€ä¸ªä¸€ä¸ªä½œæ¯”è¾ƒäº¤æ¢
 	for (list<int>::iterator it = m_HandCardData.value_nPutCardList.begin(); it != m_HandCardData.value_nPutCardList.end(); it++)
 	{
 		for (int i = 0; i < CurCardNum; i++)
@@ -5947,24 +5947,24 @@ void __stdcall CGameData::GetCardColorValue(WORD OutCardUser, HandCardData &m_Ha
 
 	OutCardNum = index;
 
-	//¸øOutCardÅÅĞò
+	//ç»™OutCardæ’åº
 	SortCardList(OutCardData, OutCardNum, ST_ORDER);
 
 	return;
 }
 
-//¼ÆËãµ×ÅÆÊÇ·ñ·­±¶ ²¢°Ñ±¶Êı¸ø¸÷Íæ¼Ò³ËÉÏ     ¸Ãº¯ÊıÔÚ·¢ÅÆºóµ÷ÓÃ
+//è®¡ç®—åº•ç‰Œæ˜¯å¦ç¿»å€ å¹¶æŠŠå€æ•°ç»™å„ç©å®¶ä¹˜ä¸Š     è¯¥å‡½æ•°åœ¨å‘ç‰Œåè°ƒç”¨
 DWORD __stdcall CGameData::IsDoubleLeaveCard()
 {
-	//»ñÈ¡ÈıÕÅµ×ÅÆ
+	//è·å–ä¸‰å¼ åº•ç‰Œ
 	BYTE LeaveCard[NORMAL_LEAVE_CARD_NUM] = { 0 };
 
 	GetLeaveCard(LeaveCard, NORMAL_LEAVE_CARD_NUM);
 
-	//ÅĞ¶Ïµ×ÅÆÅÆĞÍ²¢ÉèÖÃ±¶Êı
+	//åˆ¤æ–­åº•ç‰Œç‰Œå‹å¹¶è®¾ç½®å€æ•°
 	if (((0x4F == LeaveCard[0] && 0x4E != LeaveCard[1]) || 0x4E == LeaveCard[0]))		m_playing_para.leave_card_bet = 2;
 	if (0x4F == LeaveCard[0] && 0x4E == LeaveCard[1])									m_playing_para.leave_card_bet = 4;
-	if (GetCardColor(LeaveCard[0]) == GetCardColor(LeaveCard[1]) && GetCardColor(LeaveCard[1]) == GetCardColor(LeaveCard[2]))		//Í¬»¨Ë³
+	if (GetCardColor(LeaveCard[0]) == GetCardColor(LeaveCard[1]) && GetCardColor(LeaveCard[1]) == GetCardColor(LeaveCard[2]))		//åŒèŠ±é¡º
 	{
 		if (15 != GetCardLogicValue(LeaveCard[0]) &&
 			(GetCardLogicValue(LeaveCard[0]) == (GetCardLogicValue(LeaveCard[1]) + 1) && (GetCardLogicValue(LeaveCard[1]) + 1) == (GetCardLogicValue(LeaveCard[2]) + 2)))
@@ -5994,13 +5994,13 @@ DWORD __stdcall CGameData::IsDoubleLeaveCard()
 	return 0;
 }
 
-//»ñÈ¡µ×ÅÆ·­±¶±¶Êı
+//è·å–åº•ç‰Œç¿»å€å€æ•°
 DWORD __stdcall CGameData::GetLeaveCardBet()
 {
 	return m_playing_para.leave_card_bet;
 }
 
-//ÉèÖÃÊÇ·ñµ×ÅÆ·­±¶
+//è®¾ç½®æ˜¯å¦åº•ç‰Œç¿»å€
 int __stdcall CGameData::SetISLeaveCardDouble(WORD Mode)
 {
 	if (Mode != 0 && Mode != 1)
@@ -6010,13 +6010,13 @@ int __stdcall CGameData::SetISLeaveCardDouble(WORD Mode)
 	return 0;
 }
 
-//»ñÈ¡µ×ÅÆÊÇ·ñ·­±¶
+//è·å–åº•ç‰Œæ˜¯å¦ç¿»å€
 WORD __stdcall CGameData::GetISLeaveCardDouble()
 {
 	return m_room_config.game_leave_card;
 }
 
-//ÉèÖÃÊÇ·ñÃ÷ÅÆ			0-²»Ã÷ÅÆ   1-Ã÷ÅÆ
+//è®¾ç½®æ˜¯å¦æ˜ç‰Œ			0-ä¸æ˜ç‰Œ   1-æ˜ç‰Œ
 int __stdcall CGameData::SetMingPaiMode(WORD Mode)
 {
 	if (Mode != 0 && Mode != 1)
@@ -6026,13 +6026,13 @@ int __stdcall CGameData::SetMingPaiMode(WORD Mode)
 	return 0;
 }
 
-//»ñÈ¡ÊÇ·ñÃ÷ÅÆ
+//è·å–æ˜¯å¦æ˜ç‰Œ
 WORD __stdcall CGameData::GetMingPaiMode()
 {
 	return m_room_config.game_mingpai;
 }
 
-//ÉèÖÃÊÇ·ñ¼Ó±¶       0-²»¼Ó±¶  1-¼Ó±¶
+//è®¾ç½®æ˜¯å¦åŠ å€       0-ä¸åŠ å€  1-åŠ å€
 int __stdcall CGameData::SetAddBetMode(WORD Mode)
 {
 	if (Mode != 0 && Mode != 1)
@@ -6042,20 +6042,20 @@ int __stdcall CGameData::SetAddBetMode(WORD Mode)
 	return 0;
 }
 
-//»ñÈ¡ÊÇ·ñ¼Ó±¶
+//è·å–æ˜¯å¦åŠ å€
 WORD __stdcall CGameData::GetAddBetMode()
 {
 	return m_room_config.game_addbet;
 }
 
-//¼ÇÂ¼Íæ¼ÒÊÇ·ñ³ö¹ıÅÆ
+//è®°å½•ç©å®¶æ˜¯å¦å‡ºè¿‡ç‰Œ
 int __stdcall CGameData::SetSpring(WORD wChairID, WORD spring)
 {
 	m_players_config.players[wChairID].spring_state += spring;
 	return 0;
 }
 
-//ÅĞ¶ÏÍæ¼ÒÊÇ·ñ´ºÌì  0-²»ÊÇ 1-ÊÇ  ³ËÉÏ±¶Êı
+//åˆ¤æ–­ç©å®¶æ˜¯å¦æ˜¥å¤©  0-ä¸æ˜¯ 1-æ˜¯  ä¹˜ä¸Šå€æ•°
 int __stdcall CGameData::JudgeSpring(WORD wChairID)
 {
 	if (INVALID_CHAIR == m_playing_para.appointbanker)
@@ -6064,7 +6064,7 @@ int __stdcall CGameData::JudgeSpring(WORD wChairID)
 	}
 
 	int flag = 0;
-	if (m_playing_para.appointbanker == wChairID)   //×¯¼ÒÓ®ÁË
+	if (m_playing_para.appointbanker == wChairID)   //åº„å®¶èµ¢äº†
 	{
 		for (int i = 0; i < GetCurPlayerCount(); i++)
 		{
@@ -6093,7 +6093,7 @@ int __stdcall CGameData::JudgeSpring(WORD wChairID)
 			return 0;
 		}
 	}
-	//Å©ÃñÓ®ÁË
+	//å†œæ°‘èµ¢äº†
 	else
 	{
 		if (1 == m_players_config.players[m_playing_para.appointbanker].spring_state)
@@ -6125,59 +6125,59 @@ int __stdcall CGameData::JudgeSpring(WORD wChairID)
 	}
 }
 
-//»ñÈ¡Íæ¼ÒÊÇ·ñ´ºÌì
+//è·å–ç©å®¶æ˜¯å¦æ˜¥å¤©
 int __stdcall CGameData::GetSpring(WORD wChairID)
 {
 	return m_players_config.players[wChairID].spring;
 }
 
-//ÉèÖÃÍæ¼ÒÍĞ¹Ü
+//è®¾ç½®ç©å®¶æ‰˜ç®¡
 int __stdcall CGameData::SetPlayerTuoGuan(WORD wChairID, WORD state)
 {
 	m_players_config.players[wChairID].player_tuo_guan = state;
 	return 0;
 }
 
-//»ñÈ¡Íæ¼ÒÍĞ¹Ü
+//è·å–ç©å®¶æ‰˜ç®¡
 int __stdcall CGameData::GetPlayerTuoGuan(WORD wChairID)
 {
 	return m_players_config.players[wChairID].player_tuo_guan;
 }
 
-//ÉèÖÃÍæ¼ÒÁ¬Ğø³¬Ê±³öÅÆ´ÎÊı
+//è®¾ç½®ç©å®¶è¿ç»­è¶…æ—¶å‡ºç‰Œæ¬¡æ•°
 int __stdcall CGameData::SetPlayerTimeOutNum(WORD wChairID, WORD num)
 {
 	m_players_config.players[wChairID].out_time_num = num;
 	return 0;
 }
 
-//»ñÈ¡Íæ¼ÒÁ¬Ğø³¬Ê±³öÅÆ´ÎÊı
+//è·å–ç©å®¶è¿ç»­è¶…æ—¶å‡ºç‰Œæ¬¡æ•°
 int __stdcall CGameData::GetPlayerTimeOutNum(WORD wChairID)
 {
 	return m_players_config.players[wChairID].out_time_num;
 }
 
-//»ñÈ¡³öÅÆÍæ¼Ò¶¯×÷ĞĞÎª
+//è·å–å‡ºç‰Œç©å®¶åŠ¨ä½œè¡Œä¸º
 BYTE __stdcall CGameData::GetOutCardActionType(WORD wChairID)
 {
-	//Àµ×ÓÇé¿ö
+	//èµ–å­æƒ…å†µ
 	if (0 < m_room_config.game_laizi_mode)
 	{
 		if (0 == GetOneTurnEnd())
 		{
-			return 1;  //µÚÒ»¸ö³öÅÆ   ÏÔÊ¾³öÅÆºÍÌáÊ¾°´Å¥         0101  
+			return 1;  //ç¬¬ä¸€ä¸ªå‡ºç‰Œ   æ˜¾ç¤ºå‡ºç‰Œå’Œæç¤ºæŒ‰é’®         0101  
 		}
 		else
 		{
-			//ÅĞ¶ÏÊÇ²»ÊÇÒª²»Æğ
+			//åˆ¤æ–­æ˜¯ä¸æ˜¯è¦ä¸èµ·
 			if (JudgeLaiZiPlayerOutCard(wChairID))
 			{
-				cout << "³öÅÆ" << endl;
+				cout << "å‡ºç‰Œ" << endl;
 				return  (1 + (1 << 1) + (1 << 2));    //0111
 			}
 			else
 			{
-				cout << "Òª²»Æğ" << endl;
+				cout << "è¦ä¸èµ·" << endl;
 				return (1 << 3);    //1000
 			}
 		}
@@ -6186,28 +6186,28 @@ BYTE __stdcall CGameData::GetOutCardActionType(WORD wChairID)
 	{
 		if (0 == GetOneTurnEnd())
 		{
-			return 1;  //µÚÒ»¸ö³öÅÆ   ÏÔÊ¾³öÅÆºÍÌáÊ¾°´Å¥         0101  
+			return 1;  //ç¬¬ä¸€ä¸ªå‡ºç‰Œ   æ˜¾ç¤ºå‡ºç‰Œå’Œæç¤ºæŒ‰é’®         0101  
 		}
 		else
 		{
-			//ÅĞ¶ÏÊÇ²»ÊÇÒª²»Æğ
+			//åˆ¤æ–­æ˜¯ä¸æ˜¯è¦ä¸èµ·
 			if (JudgePlayerOutCard(wChairID))
 			{
-				cout << "³öÅÆ" << endl;
+				cout << "å‡ºç‰Œ" << endl;
 				return  (1 + (1 << 1) + (1 << 2));    //0111
 			}
 			else
 			{
-				cout << "Òª²»Æğ" << endl;
+				cout << "è¦ä¸èµ·" << endl;
 				return (1 << 3);    //1000
 			}
 		}
 	}
 }
 
-//================================================ñ®×Ó³¡ÅĞ¶Ï=================================================   add by lih
+//================================================ç™å­åœºåˆ¤æ–­=================================================   add by lih
 
-//»ñµÃÓÚ°üº¬ñ®×ÓµÄ¿¨ÅÆµÄÂß¼­ÊıÖµ
+//è·å¾—äºåŒ…å«ç™å­çš„å¡ç‰Œçš„é€»è¾‘æ•°å€¼
 BYTE CGameData::GetCardLogicValueLaiZi(BYTE cbCardData)
 {
 	if (0 == cbCardData)
@@ -6215,17 +6215,17 @@ BYTE CGameData::GetCardLogicValueLaiZi(BYTE cbCardData)
 		return 0;
 	}
 
-	//Âß¼­ÊıÖµ
+	//é€»è¾‘æ•°å€¼
 	BYTE cbCardColor = GetCardColor(cbCardData);
 	BYTE cbCardValue = GetCardValue(cbCardData);
 
-	//×ª»»ÊıÖµÃ÷ÏÔ³öÏÖ´íÎó
-	if ((cbCardColor << 4) == 0x40) return cbCardValue + 2;		//´óĞ¡Íõ   
+	//è½¬æ¢æ•°å€¼æ˜æ˜¾å‡ºç°é”™è¯¯
+	if ((cbCardColor << 4) == 0x40) return cbCardValue + 2;		//å¤§å°ç‹   
 
 	if (m_room_config.game_laizi_mode > 0)
 	{
-		//ñ®×Ó·ÅÔÚ×î×ó±ß
-		if ((m_playing_para.magic_card != 0) && (m_playing_para.magic_card == 16 * 5 + cbCardValue))     //²»¿¼ÂÇñ®×Ó
+		//ç™å­æ”¾åœ¨æœ€å·¦è¾¹
+		if ((m_playing_para.magic_card != 0) && (m_playing_para.magic_card == 16 * 5 + cbCardValue))     //ä¸è€ƒè™‘ç™å­
 		{
 			return (cbCardValue + 16 * 5);
 		}
@@ -6235,7 +6235,7 @@ BYTE CGameData::GetCardLogicValueLaiZi(BYTE cbCardData)
 
 }
 
-//ÉèÖÃñ®×Óµ±³ÉµÄÆÕÍ¨ÅÆ
+//è®¾ç½®ç™å­å½“æˆçš„æ™®é€šç‰Œ
 int CGameData::SetLaiZiToCommon(BYTE LaiZiData[], BYTE Count)
 {
 	if (LaiZiData == NULL)
@@ -6249,7 +6249,7 @@ int CGameData::SetLaiZiToCommon(BYTE LaiZiData[], BYTE Count)
 	return 0;
 }
 
-//»ñÈ¡ñ®×Óµ±³ÉµÄÆÕÍ¨ÅÆ
+//è·å–ç™å­å½“æˆçš„æ™®é€šç‰Œ
 int CGameData::GetLaiZiToCommon(BYTE LaiZiData[], BYTE &Count)
 {
 	if (LaiZiData == NULL)
@@ -6265,7 +6265,7 @@ int CGameData::GetLaiZiToCommon(BYTE LaiZiData[], BYTE &Count)
 	return 0;
 }
 
-//½«Íæ¼ÒÊÖÅÆÖĞµÄñ®×Ó½øĞĞÅÆÖµÌæ»»
+//å°†ç©å®¶æ‰‹ç‰Œä¸­çš„ç™å­è¿›è¡Œç‰Œå€¼æ›¿æ¢
 bool CGameData::ReplaceLaiZiCard(WORD wChairID, BYTE cbCardNum)
 {
 	if (0 == m_room_config.game_laizi_mode)
@@ -6282,20 +6282,20 @@ bool CGameData::ReplaceLaiZiCard(WORD wChairID, BYTE cbCardNum)
 	return true;
 }
 
-//¶·µØÖ÷²»¿¼ÂÇñ®×ÓµÄÅÅĞò
+//æ–—åœ°ä¸»ä¸è€ƒè™‘ç™å­çš„æ’åº
 void CGameData::SortCardListNoLaiZi(BYTE cbCardData[], BYTE cbCardCount, BYTE cbSortType)
 {
-	//ÊıÄ¿¹ıÂÇ
+	//æ•°ç›®è¿‡è™‘
 	if (cbCardCount == 0) return;
 
-	//×ª»»ÊıÖµ
+	//è½¬æ¢æ•°å€¼
 	BYTE cbSortValue[MAX_CARD_COUNT];
 	for (BYTE i = 0; i < cbCardCount; i++)
 	{
 		cbSortValue[i] = GetCardLogicValue(cbCardData[i]);
 	}
 
-	//ÅÅĞò²Ù×÷
+	//æ’åºæ“ä½œ
 	bool bSorted = true;
 	BYTE cbThreeCount, cbLast = cbCardCount - 1;
 	do
@@ -6306,7 +6306,7 @@ void CGameData::SortCardListNoLaiZi(BYTE cbCardData[], BYTE cbCardCount, BYTE cb
 			if ((cbSortValue[i] < cbSortValue[i + 1]) ||
 				((cbSortValue[i] == cbSortValue[i + 1]) && (cbCardData[i] < cbCardData[i + 1])))
 			{
-				//½»»»Î»ÖÃ
+				//äº¤æ¢ä½ç½®
 				cbThreeCount = cbCardData[i];
 				cbCardData[i] = cbCardData[i + 1];
 				cbCardData[i + 1] = cbThreeCount;
@@ -6322,33 +6322,33 @@ void CGameData::SortCardListNoLaiZi(BYTE cbCardData[], BYTE cbCardCount, BYTE cb
 	return;
 }
 
-//ÅĞ¶Ïñ®×Ó³¡µÄÍæ¼ÒÊÇ·ñÄÜ³öÅÆ
+//åˆ¤æ–­ç™å­åœºçš„ç©å®¶æ˜¯å¦èƒ½å‡ºç‰Œ
 bool CGameData::JudgeLaiZiPlayerOutCard(WORD wChairID)
 {
-	//Ğ£Ñé
+	//æ ¡éªŒ
 	if (wChairID < 0 || wChairID > MAX_CHAIR_COUNT)
 		return false;
 
-	//»ñÈ¡Íæ¼ÒµÄÊÖÅÆ
+	//è·å–ç©å®¶çš„æ‰‹ç‰Œ
 	BYTE HandCardData[MAX_CARD_COUNT];
 	BYTE HandCardNum = m_players_config.players[wChairID].hand_card_num;
 
 	ZeroMemory(&HandCardData, sizeof(HandCardData));
 	CopyMemory(HandCardData, m_players_config.hand_cards[wChairID], sizeof(BYTE)*HandCardNum);
 
-	//»ñÈ¡ñ®×ÓÊıÁ¿
+	//è·å–ç™å­æ•°é‡
 	BYTE LaiZiNum = GetMagicCardNum(HandCardData, HandCardNum);
 
 	cout << "LaiZiCount:::" << (int)LaiZiNum << endl;
 
-	//¶¨Òåñ®×Óµ±ÆÕÍ¨ÅÆµÄÅÆÖµ DOLATER
-	BYTE ReplaceData[MAX_LAIZI_COUNT] = { 0 };		//ñ®×Óµ±ÆÕÍ¨ÅÆµÄÊı¾İ
-	BYTE ReplaceNum = 0;							//ñ®×Óµ±ÆÕÍ¨ÅÆµÄÊıÁ¿
+	//å®šä¹‰ç™å­å½“æ™®é€šç‰Œçš„ç‰Œå€¼ DOLATER
+	BYTE ReplaceData[MAX_LAIZI_COUNT] = { 0 };		//ç™å­å½“æ™®é€šç‰Œçš„æ•°æ®
+	BYTE ReplaceNum = 0;							//ç™å­å½“æ™®é€šç‰Œçš„æ•°é‡
 
-													//ÇåÁã
+													//æ¸…é›¶
 	SetLaiZiToCommon(ReplaceData, ReplaceNum);
 
-	//ÊÇ·ñ¶¼ÊÇñ®×Ó
+	//æ˜¯å¦éƒ½æ˜¯ç™å­
 	bool LaiFlag = false;
 	for (int i = 0; i < HandCardNum; i++)
 	{
@@ -6358,17 +6358,17 @@ bool CGameData::JudgeLaiZiPlayerOutCard(WORD wChairID)
 			LaiFlag = false;
 	}
 
-	//¸¨Öú²ÎÊı¶¨Òå
+	//è¾…åŠ©å‚æ•°å®šä¹‰
 	BYTE OutCardData[MAX_CARD_COUNT];
 	BYTE OutCardNum;
 	ZeroMemory(&OutCardData, sizeof(OutCardData));
 
-	//Ìæ»»Êı×é¶¨Òå
+	//æ›¿æ¢æ•°ç»„å®šä¹‰
 	BYTE tmpCard[MAX_CARD_COUNT];
 	ZeroMemory(&tmpCard, sizeof(tmpCard));
 	CopyMemory(tmpCard, HandCardData, sizeof(BYTE)*HandCardNum);
 
-	//µ±ñ®×ÓÅÆ×öÆÕÍ¨ÅÆ
+	//å½“ç™å­ç‰Œåšæ™®é€šç‰Œ
 	if (!LaiFlag && LaiZiNum != 0)
 	{
 		for (int a = 0; a < HandCardNum; a++)
@@ -6376,13 +6376,13 @@ bool CGameData::JudgeLaiZiPlayerOutCard(WORD wChairID)
 			if (m_playing_para.magic_card == GetCardLogicValueLaiZi(HandCardData[a]))
 			{
 				cout << "==============OneLai================" << endl;
-				//Ò»ÕÅñ®×Ó
+				//ä¸€å¼ ç™å­
 				for (int b = 0; b < 13; b++)
 				{
-					//ÅÆÌæ»»
+					//ç‰Œæ›¿æ¢
 					tmpCard[a] = m_cbCardData[b] + 0x50;
 
-					//Á½ÕÅñ®×Ó
+					//ä¸¤å¼ ç™å­
 					if (LaiZiNum >= 2)
 					{
 						for (int c = a + 1; c < HandCardNum; c++)
@@ -6392,10 +6392,10 @@ bool CGameData::JudgeLaiZiPlayerOutCard(WORD wChairID)
 								cout << "==============TwoLai================" << endl;
 								for (int d = 0; d < 13; d++)
 								{
-									//ÅÆÌæ»»
+									//ç‰Œæ›¿æ¢
 									tmpCard[c] = m_cbCardData[d] + 0x50;
 
-									//ÈıÕÅñ®×Ó
+									//ä¸‰å¼ ç™å­
 									if (LaiZiNum >= 3)
 									{
 										for (int e = c + 1; e < HandCardNum; e++)
@@ -6405,10 +6405,10 @@ bool CGameData::JudgeLaiZiPlayerOutCard(WORD wChairID)
 												cout << "==============ThreeLai================" << endl;
 												for (int f = 0; f < 13; f++)
 												{
-													//ÅÆÌæ»»
+													//ç‰Œæ›¿æ¢
 													tmpCard[e] = m_cbCardData[f] + 0x50;
 
-													//ËÄÕÅñ®×Ó
+													//å››å¼ ç™å­
 													if (LaiZiNum >= 4)
 													{
 														for (int g = e + 1; g < HandCardNum; g++)
@@ -6418,12 +6418,12 @@ bool CGameData::JudgeLaiZiPlayerOutCard(WORD wChairID)
 																cout << "==============FourLai================" << endl;
 																for (int h = 0; h < 13; h++)
 																{
-																	//ÅÆÌæ»»
+																	//ç‰Œæ›¿æ¢
 																	tmpCard[g] = m_cbCardData[h] + 0x50;
 
-																	//ÎåÕÅñ®×Ó  Ğ´ÌìµØñ®×ÓÇåÔÚÕâÀï¼Ó
+																	//äº”å¼ ç™å­  å†™å¤©åœ°ç™å­æ¸…åœ¨è¿™é‡ŒåŠ 
 
-																	//ÅĞ¶ÏÊÇ·ñÒªµÄÆğ
+																	//åˆ¤æ–­æ˜¯å¦è¦çš„èµ·
 																	if (LaiZiCompareCard(tmpCard, HandCardNum, OutCardData, &OutCardNum))
 																		return true;
 																	else
@@ -6434,7 +6434,7 @@ bool CGameData::JudgeLaiZiPlayerOutCard(WORD wChairID)
 														}
 													}
 
-													//ÅĞ¶ÏÊÇ·ñÒªµÄÆğ
+													//åˆ¤æ–­æ˜¯å¦è¦çš„èµ·
 													if (LaiZiCompareCard(tmpCard, HandCardNum, OutCardData, &OutCardNum))
 														return true;
 													else
@@ -6445,7 +6445,7 @@ bool CGameData::JudgeLaiZiPlayerOutCard(WORD wChairID)
 										}
 									}
 
-									//ÅĞ¶ÏÊÇ·ñÒªµÄÆğ
+									//åˆ¤æ–­æ˜¯å¦è¦çš„èµ·
 									if (LaiZiCompareCard(tmpCard, HandCardNum, OutCardData, &OutCardNum))
 										return true;
 									else
@@ -6456,7 +6456,7 @@ bool CGameData::JudgeLaiZiPlayerOutCard(WORD wChairID)
 						}
 					}
 
-					//ÅĞ¶ÏÊÇ·ñÒªµÄÆğ
+					//åˆ¤æ–­æ˜¯å¦è¦çš„èµ·
 					if (LaiZiCompareCard(tmpCard, HandCardNum, OutCardData, &OutCardNum))
 						return true;
 					else
@@ -6477,10 +6477,10 @@ bool CGameData::JudgeLaiZiPlayerOutCard(WORD wChairID)
 	return false;
 }
 
-//ñ®×Ó£ºÍæ¼ÒµÚÒ»¸ö³öÅÆ  ÅĞ¶ÏËû¿ÉÒÔ³öµÄºÏÊÊµÄÅÆ
+//ç™å­ï¼šç©å®¶ç¬¬ä¸€ä¸ªå‡ºç‰Œ  åˆ¤æ–­ä»–å¯ä»¥å‡ºçš„åˆé€‚çš„ç‰Œ
 bool CGameData::LaiZiAnalysePlayerOutCardFirst(WORD OutCardUsr, BYTE OutCardData[], BYTE *OutCardNum)
 {
-	//Ğ£Ñé
+	//æ ¡éªŒ
 	if (OutCardUsr < 0 || OutCardUsr > MAX_CHAIR_COUNT || OutCardData == NULL)
 		return false;
 
@@ -6489,33 +6489,33 @@ bool CGameData::LaiZiAnalysePlayerOutCardFirst(WORD OutCardUsr, BYTE OutCardData
 	return true;
 }
 
-//ñ®×Ó£ºÍæ¼Ò½ÓÅÆ
+//ç™å­ï¼šç©å®¶æ¥ç‰Œ
 bool CGameData::LaiZiAnalysePlayerOutCard(WORD OutCardUsr, BYTE OutCardData[], BYTE *OutCardNum)
 {
-	//Ğ£Ñé
+	//æ ¡éªŒ
 	if (OutCardUsr < 0 || OutCardUsr > MAX_CHAIR_COUNT || OutCardData == NULL)
 		return false;
 
-	//»ñÈ¡Íæ¼ÒµÄÊÖÅÆ
+	//è·å–ç©å®¶çš„æ‰‹ç‰Œ
 	BYTE HandCardData[MAX_CARD_COUNT];
 	BYTE HandCardNum = m_players_config.players[OutCardUsr].hand_card_num;
 
 	ZeroMemory(&HandCardData, sizeof(HandCardData));
 	CopyMemory(HandCardData, m_players_config.hand_cards[OutCardUsr], sizeof(BYTE)*HandCardNum);
 
-	//»ñÈ¡ñ®×ÓÊıÁ¿
+	//è·å–ç™å­æ•°é‡
 	BYTE LaiZiNum = GetMagicCardNum(HandCardData, HandCardNum);
 
 	cout << "LaiZiCount:::" << (int)LaiZiNum << endl;
 
-	//¶¨Òåñ®×Óµ±ÆÕÍ¨ÅÆµÄÅÆÖµ DOLATER
-	BYTE ReplaceData[MAX_LAIZI_COUNT] = { 0 };		//ñ®×Óµ±ÆÕÍ¨ÅÆµÄÊı¾İ
-	BYTE ReplaceNum = 0;							//ñ®×Óµ±ÆÕÍ¨ÅÆµÄÊıÁ¿
+	//å®šä¹‰ç™å­å½“æ™®é€šç‰Œçš„ç‰Œå€¼ DOLATER
+	BYTE ReplaceData[MAX_LAIZI_COUNT] = { 0 };		//ç™å­å½“æ™®é€šç‰Œçš„æ•°æ®
+	BYTE ReplaceNum = 0;							//ç™å­å½“æ™®é€šç‰Œçš„æ•°é‡
 
-													//ÇåÁã
+													//æ¸…é›¶
 	SetLaiZiToCommon(ReplaceData, ReplaceNum);
 
-	//ÊÇ·ñ¶¼ÊÇñ®×Ó
+	//æ˜¯å¦éƒ½æ˜¯ç™å­
 	bool LaiFlag = false;
 	for (int i = 0; i < HandCardNum; i++)
 	{
@@ -6525,12 +6525,12 @@ bool CGameData::LaiZiAnalysePlayerOutCard(WORD OutCardUsr, BYTE OutCardData[], B
 			LaiFlag = false;
 	}
 
-	//Ìæ»»Êı×é¶¨Òå
+	//æ›¿æ¢æ•°ç»„å®šä¹‰
 	BYTE tmpCard[MAX_CARD_COUNT];
 	ZeroMemory(&tmpCard, sizeof(tmpCard));
 	CopyMemory(tmpCard, HandCardData, sizeof(BYTE)*HandCardNum);
 
-	//µ±ñ®×ÓÅÆ×öÆÕÍ¨ÅÆ
+	//å½“ç™å­ç‰Œåšæ™®é€šç‰Œ
 	if (!LaiFlag && LaiZiNum != 0)
 	{
 		for (int a = 0; a < HandCardNum; a++)
@@ -6538,13 +6538,13 @@ bool CGameData::LaiZiAnalysePlayerOutCard(WORD OutCardUsr, BYTE OutCardData[], B
 			if (m_playing_para.magic_card == GetCardLogicValueLaiZi(HandCardData[a]))
 			{
 				cout << "==============OneLai================" << endl;
-				//Ò»ÕÅñ®×Ó
+				//ä¸€å¼ ç™å­
 				for (int b = 0; b < 13; b++)
 				{
-					//ÅÆÌæ»»
+					//ç‰Œæ›¿æ¢
 					tmpCard[a] = m_cbCardData[b] + 0x50;
 
-					//Á½ÕÅñ®×Ó
+					//ä¸¤å¼ ç™å­
 					if (LaiZiNum >= 2)
 					{
 						for (int c = a + 1; c < HandCardNum; c++)
@@ -6554,10 +6554,10 @@ bool CGameData::LaiZiAnalysePlayerOutCard(WORD OutCardUsr, BYTE OutCardData[], B
 								cout << "==============TwoLai================" << endl;
 								for (int d = 0; d < 13; d++)
 								{
-									//ÅÆÌæ»»
+									//ç‰Œæ›¿æ¢
 									tmpCard[c] = m_cbCardData[d] + 0x50;
 
-									//ÈıÕÅñ®×Ó
+									//ä¸‰å¼ ç™å­
 									if (LaiZiNum >= 3)
 									{
 										for (int e = c + 1; e < HandCardNum; e++)
@@ -6567,10 +6567,10 @@ bool CGameData::LaiZiAnalysePlayerOutCard(WORD OutCardUsr, BYTE OutCardData[], B
 												cout << "==============ThreeLai================" << endl;
 												for (int f = 0; f < 13; f++)
 												{
-													//ÅÆÌæ»»
+													//ç‰Œæ›¿æ¢
 													tmpCard[e] = m_cbCardData[f] + 0x50;
 
-													//ËÄÕÅñ®×Ó
+													//å››å¼ ç™å­
 													if (LaiZiNum >= 4)
 													{
 														for (int g = e + 1; g < HandCardNum; g++)
@@ -6580,12 +6580,12 @@ bool CGameData::LaiZiAnalysePlayerOutCard(WORD OutCardUsr, BYTE OutCardData[], B
 																cout << "==============FourLai================" << endl;
 																for (int h = 0; h < 13; h++)
 																{
-																	//ÅÆÌæ»»
+																	//ç‰Œæ›¿æ¢
 																	tmpCard[g] = m_cbCardData[h] + 0x50;
 
-																	//ÎåÕÅñ®×Ó  Ğ´ÌìµØñ®×ÓÇåÔÚÕâÀï¼Ó
+																	//äº”å¼ ç™å­  å†™å¤©åœ°ç™å­æ¸…åœ¨è¿™é‡ŒåŠ 
 
-																	//ÅĞ¶ÏÊÇ·ñÒªµÄÆğ
+																	//åˆ¤æ–­æ˜¯å¦è¦çš„èµ·
 																	if (LaiZiCompareCard(tmpCard, HandCardNum, OutCardData, OutCardNum))
 																		return true;
 																	else
@@ -6596,7 +6596,7 @@ bool CGameData::LaiZiAnalysePlayerOutCard(WORD OutCardUsr, BYTE OutCardData[], B
 														}
 													}
 
-													//ÅĞ¶ÏÊÇ·ñÒªµÄÆğ
+													//åˆ¤æ–­æ˜¯å¦è¦çš„èµ·
 													if (LaiZiCompareCard(tmpCard, HandCardNum, OutCardData, OutCardNum))
 														return true;
 													else
@@ -6607,7 +6607,7 @@ bool CGameData::LaiZiAnalysePlayerOutCard(WORD OutCardUsr, BYTE OutCardData[], B
 										}
 									}
 
-									//ÅĞ¶ÏÊÇ·ñÒªµÄÆğ
+									//åˆ¤æ–­æ˜¯å¦è¦çš„èµ·
 									if (LaiZiCompareCard(tmpCard, HandCardNum, OutCardData, OutCardNum))
 										return true;
 									else
@@ -6618,7 +6618,7 @@ bool CGameData::LaiZiAnalysePlayerOutCard(WORD OutCardUsr, BYTE OutCardData[], B
 						}
 					}
 
-					//ÅĞ¶ÏÊÇ·ñÒªµÄÆğ
+					//åˆ¤æ–­æ˜¯å¦è¦çš„èµ·
 					if (LaiZiCompareCard(tmpCard, HandCardNum, OutCardData, OutCardNum))
 						return true;
 					else
@@ -6639,33 +6639,33 @@ bool CGameData::LaiZiAnalysePlayerOutCard(WORD OutCardUsr, BYTE OutCardData[], B
 	return false;
 }
 
-//ñ®×Ó£º·ÖÎö±È½ÏÊÖÅÆ
+//ç™å­ï¼šåˆ†ææ¯”è¾ƒæ‰‹ç‰Œ
 bool CGameData::LaiZiCompareCard(BYTE Card[], BYTE CardCount, BYTE OutCardData[]/*out*/, BYTE *OutCardNum)
 {
-	//Ğ£Ñé
+	//æ ¡éªŒ
 	if (Card == NULL || OutCardData == NULL)
 		return false;
 
-	//CardÊı×é
+	//Cardæ•°ç»„
 	BYTE tmpCard[MAX_CARD_COUNT];
 	ZeroMemory(&tmpCard, sizeof(tmpCard));
 	CopyMemory(tmpCard, Card, sizeof(BYTE)*CardCount);
 
-	//¿¨ÅÆÅÅĞò
+	//å¡ç‰Œæ’åº
 	SortCardListNoLaiZi(tmpCard, CardCount, ST_ORDER);
 
-	//¹¹½¨Öµ
+	//æ„å»ºå€¼
 	BYTE tmpOutCardData[MAX_CARD_COUNT];
 	BYTE tmpOutCardNum = 0;
 	ZeroMemory(&tmpOutCardData, sizeof(tmpOutCardData));
 
-	//»ñµÃ¸ÃÂÖ×î´ó³öÅÆÊı¾İ
+	//è·å¾—è¯¥è½®æœ€å¤§å‡ºç‰Œæ•°æ®
 	BYTE TurnCardNum = m_playing_para.turn_cards_num;
 	BYTE TurnCardData[MAX_CARD_COUNT];
 	ZeroMemory(&TurnCardData, sizeof(TurnCardData));
 	CopyMemory(TurnCardData, m_playing_para.turn_max_cards, sizeof(TurnCardData));
 
-	//»ñÈ¡µ±Ç°Íæ¼ÒµÄÊÖÅÆÊı¾İ
+	//è·å–å½“å‰ç©å®¶çš„æ‰‹ç‰Œæ•°æ®
 	BYTE CurCardNum = CardCount;
 	BYTE CurCardData[MAX_CARD_COUNT];
 	ZeroMemory(&CurCardData, sizeof(CurCardData));
@@ -6675,7 +6675,7 @@ bool CGameData::LaiZiCompareCard(BYTE Card[], BYTE CardCount, BYTE OutCardData[]
 		CurCardData[i] = tmpCard[i];
 	}
 
-	//·ÖÎöÁ½¸öÆË¿ËÅÆĞÍ
+	//åˆ†æä¸¤ä¸ªæ‰‘å…‹ç‰Œå‹
 	tagAnalyseResult TurnResult;
 	tagAnalyseResult CurResult;
 
@@ -6685,22 +6685,22 @@ bool CGameData::LaiZiCompareCard(BYTE Card[], BYTE CardCount, BYTE OutCardData[]
 	AnalysebCardData(CurCardData, CurCardNum, CurResult);
 	AnalysebCardData(TurnCardData, TurnCardNum, TurnResult);
 
-	//»ñÈ¡³öÅÆÍæ¼ÒµÄÅÆĞÍ
+	//è·å–å‡ºç‰Œç©å®¶çš„ç‰Œå‹
 	int TurnCardType = GetType(TurnResult, TurnCardData, TurnCardNum, TurnCardData);
 	TurnCardType = TransListToInt(0, TurnCardType);
 
-	//¶Ô±ÈÅĞ¶ÏÅÆĞÍ
+	//å¯¹æ¯”åˆ¤æ–­ç‰Œå‹
 	if (TurnCardType == CT_ERROR)	return false;
-	if ((TurnCardType & (1 << CT_MISSILE_CARD)) != 0)    return false;    //ÍõÕ¨ÅĞ¶Ï
+	if ((TurnCardType & (1 << CT_MISSILE_CARD)) != 0)    return false;    //ç‹ç‚¸åˆ¤æ–­
 
-																		  //Õ¨µ¯ÅĞ¶Ï
-	if ((TurnCardType & (1 << CT_BOMB_CARD)) != 0)   //ÉÏ¼Ò³öÕ¨µ¯
+																		  //ç‚¸å¼¹åˆ¤æ–­
+	if ((TurnCardType & (1 << CT_BOMB_CARD)) != 0)   //ä¸Šå®¶å‡ºç‚¸å¼¹
 	{
-		cout << "Õ¨µ¯" << endl;
+		cout << "ç‚¸å¼¹" << endl;
 
-		//»ñÈ¡ÉÏ¼Ò³öÅÆÊıÖµ
+		//è·å–ä¸Šå®¶å‡ºç‰Œæ•°å€¼
 		BYTE TurnLogicValue = GetCardLogicValue(TurnResult.cbFourCardData[0]);
-		int index = 0;   //¸¨Öú±êÊ¶
+		int index = 0;   //è¾…åŠ©æ ‡è¯†
 
 						 //if (CurResult.cbFourCount == 0)    return false;
 		for (int i = 0; i < CurResult.cbFourCount; i++)
@@ -6731,7 +6731,7 @@ bool CGameData::LaiZiCompareCard(BYTE Card[], BYTE CardCount, BYTE OutCardData[]
 			index += 4;
 		}
 
-		//ÍõÕ¨ÅĞ¶Ï
+		//ç‹ç‚¸åˆ¤æ–­
 		if ((GetCardLogicValue(CurCardData[0]) == 17) && (GetCardLogicValue(CurCardData[1]) == 16))
 		{
 			for (int i = 0; i < 2; i++)
@@ -6746,13 +6746,13 @@ bool CGameData::LaiZiCompareCard(BYTE Card[], BYTE CardCount, BYTE OutCardData[]
 			return true;
 		}
 	}
-	else if ((TurnCardType & (1 << CT_RUAN_BOMB)) != 0)   //ÉÏ¼Ò³öÈíÕ¨
+	else if ((TurnCardType & (1 << CT_RUAN_BOMB)) != 0)   //ä¸Šå®¶å‡ºè½¯ç‚¸
 	{
-		cout << "ÈíÕ¨" << endl;
+		cout << "è½¯ç‚¸" << endl;
 
-		//»ñÈ¡ÉÏ¼Ò³öÅÆÊıÖµ
+		//è·å–ä¸Šå®¶å‡ºç‰Œæ•°å€¼
 		BYTE TurnLogicValue = GetCardLogicValue(TurnResult.cbFourCardData[0]);
-		int index = 0;   //¸¨Öú±êÊ¶
+		int index = 0;   //è¾…åŠ©æ ‡è¯†
 
 						 //if (CurResult.cbFourCount == 0)    return false;
 		for (int i = 0; i < CurResult.cbFourCount; i++)
@@ -6779,7 +6779,7 @@ bool CGameData::LaiZiCompareCard(BYTE Card[], BYTE CardCount, BYTE OutCardData[]
 			index += 4;
 		}
 
-		//ÍõÕ¨ÅĞ¶Ï
+		//ç‹ç‚¸åˆ¤æ–­
 		if ((GetCardLogicValue(CurCardData[0]) == 17) && (GetCardLogicValue(CurCardData[1]) == 16))
 		{
 			for (int i = 0; i < 2; i++)
@@ -6794,9 +6794,9 @@ bool CGameData::LaiZiCompareCard(BYTE Card[], BYTE CardCount, BYTE OutCardData[]
 			return true;
 		}
 	}
-	else if ((TurnCardType & (1 << CT_LAIZI_BOMB)) != 0)   //ñ®×ÓÕ¨µ¯
+	else if ((TurnCardType & (1 << CT_LAIZI_BOMB)) != 0)   //ç™å­ç‚¸å¼¹
 	{
-		//ÍõÕ¨ÅĞ¶Ï
+		//ç‹ç‚¸åˆ¤æ–­
 		if ((GetCardLogicValue(CurCardData[0]) == 17) && (GetCardLogicValue(CurCardData[1]) == 16))
 		{
 			for (int i = 0; i < 2; i++)
@@ -6811,11 +6811,11 @@ bool CGameData::LaiZiCompareCard(BYTE Card[], BYTE CardCount, BYTE OutCardData[]
 			return true;
 		}
 	}
-	else if ((TurnCardType & (1 << CT_SINGLE)) != 0)   //µ¥ÕÅ
+	else if ((TurnCardType & (1 << CT_SINGLE)) != 0)   //å•å¼ 
 	{
-		cout << "µ¥ÕÅ" << endl;
+		cout << "å•å¼ " << endl;
 
-		//»ñÈ¡ÉÏ¼Ò³öÅÆÊıÖµ
+		//è·å–ä¸Šå®¶å‡ºç‰Œæ•°å€¼
 		BYTE TurnLogicValue = GetCardLogicValue(TurnResult.cbSignedCardData[0]);
 
 		int index = (CurResult.cbSignedCount - 1);
@@ -6852,7 +6852,7 @@ bool CGameData::LaiZiCompareCard(BYTE Card[], BYTE CardCount, BYTE OutCardData[]
 			}
 		}
 
-		//Õ¨µ¯ÅĞ¶Ï
+		//ç‚¸å¼¹åˆ¤æ–­
 		if (CurResult.cbFourCount != 0)
 		{
 			int index = 0;
@@ -6868,7 +6868,7 @@ bool CGameData::LaiZiCompareCard(BYTE Card[], BYTE CardCount, BYTE OutCardData[]
 			return true;
 		}
 
-		//ÍõÕ¨ÅĞ¶Ï
+		//ç‹ç‚¸åˆ¤æ–­
 		if ((GetCardLogicValue(CurCardData[0]) == 17) && (GetCardLogicValue(CurCardData[1]) == 16))
 		{
 			for (int i = 0; i < 2; i++)
@@ -6881,11 +6881,11 @@ bool CGameData::LaiZiCompareCard(BYTE Card[], BYTE CardCount, BYTE OutCardData[]
 			return true;
 		}
 	}
-	else if ((TurnCardType & (1 << CT_DOUBLE)) != 0)   //¶Ô×Ó
+	else if ((TurnCardType & (1 << CT_DOUBLE)) != 0)   //å¯¹å­
 	{
-		cout << "¶Ô×Ó" << endl;
+		cout << "å¯¹å­" << endl;
 
-		//»ñÈ¡ÉÏ¼Ò³öÅÆÊıÖµ
+		//è·å–ä¸Šå®¶å‡ºç‰Œæ•°å€¼
 		BYTE TurnLogicValue = GetCardLogicValue(TurnResult.cbDoubleCardData[0]);
 
 		int index = (CurResult.cbDoubleCount - 1) * 2;
@@ -6926,7 +6926,7 @@ bool CGameData::LaiZiCompareCard(BYTE Card[], BYTE CardCount, BYTE OutCardData[]
 			index -= 3;
 		}
 
-		//Õ¨µ¯ÅĞ¶Ï
+		//ç‚¸å¼¹åˆ¤æ–­
 		if (CurResult.cbFourCount != 0)
 		{
 			int index = 0;
@@ -6942,7 +6942,7 @@ bool CGameData::LaiZiCompareCard(BYTE Card[], BYTE CardCount, BYTE OutCardData[]
 			return true;
 		}
 
-		//ÍõÕ¨ÅĞ¶Ï
+		//ç‹ç‚¸åˆ¤æ–­
 		if ((GetCardLogicValue(CurCardData[0]) == 17) && (GetCardLogicValue(CurCardData[1]) == 16))
 		{
 			for (int i = 0; i < 2; i++)
@@ -6955,11 +6955,11 @@ bool CGameData::LaiZiCompareCard(BYTE Card[], BYTE CardCount, BYTE OutCardData[]
 			return true;
 		}
 	}
-	else if ((TurnCardType & (1 << CT_THREE)) != 0)   //ÈıÕÅ
+	else if ((TurnCardType & (1 << CT_THREE)) != 0)   //ä¸‰å¼ 
 	{
-		cout << "ÈıÕÅ" << endl;
+		cout << "ä¸‰å¼ " << endl;
 
-		//»ñÈ¡ÉÏ¼Ò³öÅÆÊıÖµ
+		//è·å–ä¸Šå®¶å‡ºç‰Œæ•°å€¼
 		BYTE TurnLogicValue = GetCardLogicValue(TurnResult.cbThreeCardData[0]);
 
 		int index = (CurResult.cbThreeCount - 1) * 3;
@@ -6980,7 +6980,7 @@ bool CGameData::LaiZiCompareCard(BYTE Card[], BYTE CardCount, BYTE OutCardData[]
 			index -= 3;
 		}
 
-		//Õ¨µ¯ÅĞ¶Ï
+		//ç‚¸å¼¹åˆ¤æ–­
 		if (CurResult.cbFourCount != 0)
 		{
 			int index = 0;
@@ -6996,7 +6996,7 @@ bool CGameData::LaiZiCompareCard(BYTE Card[], BYTE CardCount, BYTE OutCardData[]
 			return true;
 		}
 
-		//ÍõÕ¨ÅĞ¶Ï
+		//ç‹ç‚¸åˆ¤æ–­
 		if ((GetCardLogicValue(CurCardData[0]) == 17) && (GetCardLogicValue(CurCardData[1]) == 16))
 		{
 			for (int i = 0; i < 2; i++)
@@ -7009,32 +7009,32 @@ bool CGameData::LaiZiCompareCard(BYTE Card[], BYTE CardCount, BYTE OutCardData[]
 			return true;
 		}
 	}
-	else if ((TurnCardType & (1 << CT_SINGLE_LINE)) != 0)   //Ë³×Ó
+	else if ((TurnCardType & (1 << CT_SINGLE_LINE)) != 0)   //é¡ºå­
 	{
-		cout << "Ë³×Ó" << endl;
+		cout << "é¡ºå­" << endl;
 
-		//»ñÈ¡ÉÏ¼Ò³öÅÆÊıÖµ  ×î´óÖµ
+		//è·å–ä¸Šå®¶å‡ºç‰Œæ•°å€¼  æœ€å¤§å€¼
 		BYTE TurnLogicValue = GetCardLogicValue(TurnResult.cbSignedCardData[0]);
 
 		int flag = 0;
 		int index = 0;
 
-		for (int i = 0; i < CurCardNum; i++)     //¼ÆËãË³×ÓÕÅÊı
+		for (int i = 0; i < CurCardNum; i++)     //è®¡ç®—é¡ºå­å¼ æ•°
 		{
-			if (flag != 0)    //Á¬Ğø²»ÓÃ±ÈÅÆ´óĞ¡
+			if (flag != 0)    //è¿ç»­ä¸ç”¨æ¯”ç‰Œå¤§å°
 			{
 				if (GetCardLogicValue(CurCardData[i + 1]) == GetCardLogicValue(CurCardData[i]))
 				{
 					continue;
 				}
-				if (GetCardLogicValue(CurCardData[i + 1]) == (GetCardLogicValue(CurCardData[i]) - 1) && (GetCardLogicValue(CurCardData[i]) < 15))   //ÅĞ¶ÏÊÇ·ñÁ¬Ğø
+				if (GetCardLogicValue(CurCardData[i + 1]) == (GetCardLogicValue(CurCardData[i]) - 1) && (GetCardLogicValue(CurCardData[i]) < 15))   //åˆ¤æ–­æ˜¯å¦è¿ç»­
 				{
 					tmpOutCardData[index++] = CurCardData[i];
 					tmpOutCardNum++;
 
 					flag++;
 
-					//Ìø³öÌõ¼ş
+					//è·³å‡ºæ¡ä»¶
 					if (flag == TurnResult.cbSignedCount - 1)
 					{
 						tmpOutCardData[index] = CurCardData[i + 1];
@@ -7059,14 +7059,14 @@ bool CGameData::LaiZiCompareCard(BYTE Card[], BYTE CardCount, BYTE OutCardData[]
 					{
 						continue;
 					}
-					if (GetCardLogicValue(CurCardData[i + 1]) == (GetCardLogicValue(CurCardData[i]) - 1) && (GetCardLogicValue(CurCardData[i]) < 15))   //ÅĞ¶ÏÊÇ·ñÁ¬Ğø
+					if (GetCardLogicValue(CurCardData[i + 1]) == (GetCardLogicValue(CurCardData[i]) - 1) && (GetCardLogicValue(CurCardData[i]) < 15))   //åˆ¤æ–­æ˜¯å¦è¿ç»­
 					{
 						tmpOutCardData[index++] = CurCardData[i];
 						tmpOutCardNum++;
 
 						flag++;
 
-						//Ìø³öÌõ¼ş
+						//è·³å‡ºæ¡ä»¶
 						if (flag == TurnResult.cbSignedCount - 1)
 							break;
 					}
@@ -7090,7 +7090,7 @@ bool CGameData::LaiZiCompareCard(BYTE Card[], BYTE CardCount, BYTE OutCardData[]
 			return true;
 		}
 
-		//Õ¨µ¯ÅĞ¶Ï
+		//ç‚¸å¼¹åˆ¤æ–­
 		if (CurResult.cbFourCount != 0)
 		{
 			int index = 0;
@@ -7106,7 +7106,7 @@ bool CGameData::LaiZiCompareCard(BYTE Card[], BYTE CardCount, BYTE OutCardData[]
 			return true;
 		}
 
-		//ÍõÕ¨ÅĞ¶Ï
+		//ç‹ç‚¸åˆ¤æ–­
 		if ((GetCardLogicValue(CurCardData[0]) == 17) && (GetCardLogicValue(CurCardData[1]) == 16))
 		{
 			for (int i = 0; i < 2; i++)
@@ -7119,20 +7119,20 @@ bool CGameData::LaiZiCompareCard(BYTE Card[], BYTE CardCount, BYTE OutCardData[]
 			return true;
 		}
 	}
-	else if ((TurnCardType & (1 << CT_DOUBLE_LINE)) != 0)   //Á¬¶Ô
+	else if ((TurnCardType & (1 << CT_DOUBLE_LINE)) != 0)   //è¿å¯¹
 	{
-		cout << "Á¬¶Ô" << endl;
+		cout << "è¿å¯¹" << endl;
 
 
-		//»ñÈ¡ÉÏ¼Ò³öÅÆÊıÖµ  ×î´óÖµ
+		//è·å–ä¸Šå®¶å‡ºç‰Œæ•°å€¼  æœ€å¤§å€¼
 		BYTE TurnLogicValue = GetCardLogicValue(TurnResult.cbDoubleCardData[0]);
-		int flag = 0;   //ÅĞ¶ÏÊÇ·ñÁ¬Ğø±êÖ¾
-		int Numflag = 0;   //ÅĞ¶ÏÅÆÊıÊÇ·ñ´ï±êµÄ±êÖ¾
+		int flag = 0;   //åˆ¤æ–­æ˜¯å¦è¿ç»­æ ‡å¿—
+		int Numflag = 0;   //åˆ¤æ–­ç‰Œæ•°æ˜¯å¦è¾¾æ ‡çš„æ ‡å¿—
 		int index = 0;
 
-		for (int i = 0; i < CurCardNum; i++)     //¼ÆËãÁ¬¶ÔÕÅÊı
+		for (int i = 0; i < CurCardNum; i++)     //è®¡ç®—è¿å¯¹å¼ æ•°
 		{
-			if (flag != 0)    //Á¬Ğø²»ÓÃ±ÈÅÆ´óĞ¡
+			if (flag != 0)    //è¿ç»­ä¸ç”¨æ¯”ç‰Œå¤§å°
 			{
 				if (GetCardLogicValue(CurCardData[i + 1]) == GetCardLogicValue(CurCardData[i]))
 				{
@@ -7140,9 +7140,9 @@ bool CGameData::LaiZiCompareCard(BYTE Card[], BYTE CardCount, BYTE OutCardData[]
 					continue;
 				}
 				if ((GetCardLogicValue(CurCardData[i + 1]) == (GetCardLogicValue(CurCardData[i]) - 1))
-					&& (Numflag > 0) && (GetCardLogicValue(CurCardData[i]) < 15))   //ÅĞ¶ÏÊÇ·ñÁ¬Ğø
+					&& (Numflag > 0) && (GetCardLogicValue(CurCardData[i]) < 15))   //åˆ¤æ–­æ˜¯å¦è¿ç»­
 				{
-					tmpOutCardData[index++] = CurCardData[i];		//Á¬¶Ô¼ÓÁ½´Î
+					tmpOutCardData[index++] = CurCardData[i];		//è¿å¯¹åŠ ä¸¤æ¬¡
 					tmpOutCardNum++;
 
 					tmpOutCardData[index++] = CurCardData[i - 1];
@@ -7150,7 +7150,7 @@ bool CGameData::LaiZiCompareCard(BYTE Card[], BYTE CardCount, BYTE OutCardData[]
 
 					flag++;
 
-					//Ìø³öÌõ¼ş
+					//è·³å‡ºæ¡ä»¶
 					if (flag == TurnResult.cbDoubleCount)
 						break;
 				}
@@ -7178,9 +7178,9 @@ bool CGameData::LaiZiCompareCard(BYTE Card[], BYTE CardCount, BYTE OutCardData[]
 						continue;
 					}
 					if (GetCardLogicValue(CurCardData[i + 1]) == (GetCardLogicValue(CurCardData[i]) - 1)
-						&& (Numflag > 0) && (GetCardLogicValue(CurCardData[i]) < 15))   //ÅĞ¶ÏÊÇ·ñÁ¬Ğø
+						&& (Numflag > 0) && (GetCardLogicValue(CurCardData[i]) < 15))   //åˆ¤æ–­æ˜¯å¦è¿ç»­
 					{
-						tmpOutCardData[index++] = CurCardData[i];		//Á¬¶Ô¼ÓÁ½´Î
+						tmpOutCardData[index++] = CurCardData[i];		//è¿å¯¹åŠ ä¸¤æ¬¡
 						tmpOutCardNum++;
 
 						tmpOutCardData[index++] = CurCardData[i - 1];
@@ -7188,7 +7188,7 @@ bool CGameData::LaiZiCompareCard(BYTE Card[], BYTE CardCount, BYTE OutCardData[]
 
 						flag++;
 
-						//Ìø³öÌõ¼ş
+						//è·³å‡ºæ¡ä»¶
 						if (flag == TurnResult.cbDoubleCount)
 							break;
 					}
@@ -7217,7 +7217,7 @@ bool CGameData::LaiZiCompareCard(BYTE Card[], BYTE CardCount, BYTE OutCardData[]
 			return true;
 		}
 
-		//Õ¨µ¯ÅĞ¶Ï
+		//ç‚¸å¼¹åˆ¤æ–­
 		if (CurResult.cbFourCount != 0)
 		{
 			int index = 0;
@@ -7233,7 +7233,7 @@ bool CGameData::LaiZiCompareCard(BYTE Card[], BYTE CardCount, BYTE OutCardData[]
 			return true;
 		}
 
-		//ÍõÕ¨ÅĞ¶Ï
+		//ç‹ç‚¸åˆ¤æ–­
 		if ((GetCardLogicValue(CurCardData[0]) == 17) && (GetCardLogicValue(CurCardData[1]) == 16))
 		{
 			for (int i = 0; i < 2; i++)
@@ -7246,19 +7246,19 @@ bool CGameData::LaiZiCompareCard(BYTE Card[], BYTE CardCount, BYTE OutCardData[]
 			return true;
 		}
 	}
-	else if ((TurnCardType & (1 << CT_THREE_LINE)) != 0)   //ÈıÁ¬
+	else if ((TurnCardType & (1 << CT_THREE_LINE)) != 0)   //ä¸‰è¿
 	{
-		cout << "ÈıÁ¬" << endl;
+		cout << "ä¸‰è¿" << endl;
 
-		//»ñÈ¡ÉÏ¼Ò³öÅÆÊıÖµ  ×î´óÖµ
+		//è·å–ä¸Šå®¶å‡ºç‰Œæ•°å€¼  æœ€å¤§å€¼
 		BYTE TurnLogicValue = GetCardLogicValue(TurnResult.cbThreeCardData[0]);
-		int flag = 0;   //ÅĞ¶ÏÊÇ·ñÁ¬Ğø±êÖ¾
-		int Numflag = 0;   //ÅĞ¶ÏÅÆÊıÊÇ·ñ´ï±êµÄ±êÖ¾
+		int flag = 0;   //åˆ¤æ–­æ˜¯å¦è¿ç»­æ ‡å¿—
+		int Numflag = 0;   //åˆ¤æ–­ç‰Œæ•°æ˜¯å¦è¾¾æ ‡çš„æ ‡å¿—
 		int index = 0;
 
-		for (int i = 0; i < CurCardNum; i++)     //¼ÆËãÁ¬¶ÔÕÅÊı
+		for (int i = 0; i < CurCardNum; i++)     //è®¡ç®—è¿å¯¹å¼ æ•°
 		{
-			if (flag != 0)    //Á¬Ğø²»ÓÃ±ÈÅÆ´óĞ¡
+			if (flag != 0)    //è¿ç»­ä¸ç”¨æ¯”ç‰Œå¤§å°
 			{
 				if (GetCardLogicValue(CurCardData[i + 1]) == GetCardLogicValue(CurCardData[i]))
 				{
@@ -7266,9 +7266,9 @@ bool CGameData::LaiZiCompareCard(BYTE Card[], BYTE CardCount, BYTE OutCardData[]
 					continue;
 				}
 				if ((GetCardLogicValue(CurCardData[i + 1]) == (GetCardLogicValue(CurCardData[i]) - 1))
-					&& (Numflag > 1) && (GetCardLogicValue(CurCardData[i]) < 15))   //ÅĞ¶ÏÊÇ·ñÁ¬Ğø
+					&& (Numflag > 1) && (GetCardLogicValue(CurCardData[i]) < 15))   //åˆ¤æ–­æ˜¯å¦è¿ç»­
 				{
-					tmpOutCardData[index++] = CurCardData[i];		//ÈıÁ¬¼ÓÈı´Î
+					tmpOutCardData[index++] = CurCardData[i];		//ä¸‰è¿åŠ ä¸‰æ¬¡
 					tmpOutCardNum++;
 
 					tmpOutCardData[index++] = CurCardData[i - 1];
@@ -7279,7 +7279,7 @@ bool CGameData::LaiZiCompareCard(BYTE Card[], BYTE CardCount, BYTE OutCardData[]
 
 					flag++;
 
-					//Ìø³öÌõ¼ş
+					//è·³å‡ºæ¡ä»¶
 					if (flag == TurnResult.cbThreeCount)
 						break;
 				}
@@ -7292,7 +7292,7 @@ bool CGameData::LaiZiCompareCard(BYTE Card[], BYTE CardCount, BYTE OutCardData[]
 					flag = 0;
 				}
 
-				if (GetCardLogicValue(CurCardData[i + 1]) != GetCardLogicValue(CurCardData[i]))   //²»ÊÇÍ¬ÅÆÁË ±êÖ¾Î»ÖÆÁã
+				if (GetCardLogicValue(CurCardData[i + 1]) != GetCardLogicValue(CurCardData[i]))   //ä¸æ˜¯åŒç‰Œäº† æ ‡å¿—ä½åˆ¶é›¶
 				{
 					Numflag = 0;
 				}
@@ -7307,9 +7307,9 @@ bool CGameData::LaiZiCompareCard(BYTE Card[], BYTE CardCount, BYTE OutCardData[]
 						continue;
 					}
 					if (GetCardLogicValue(CurCardData[i + 1]) == (GetCardLogicValue(CurCardData[i]) - 1)
-						&& (Numflag > 1) && (GetCardLogicValue(CurCardData[i]) < 15))   //ÅĞ¶ÏÊÇ·ñÁ¬Ğø
+						&& (Numflag > 1) && (GetCardLogicValue(CurCardData[i]) < 15))   //åˆ¤æ–­æ˜¯å¦è¿ç»­
 					{
-						tmpOutCardData[index++] = CurCardData[i];		//ÈıÁ¬¼ÓÈı´Î
+						tmpOutCardData[index++] = CurCardData[i];		//ä¸‰è¿åŠ ä¸‰æ¬¡
 						tmpOutCardNum++;
 
 						tmpOutCardData[index++] = CurCardData[i - 1];
@@ -7320,7 +7320,7 @@ bool CGameData::LaiZiCompareCard(BYTE Card[], BYTE CardCount, BYTE OutCardData[]
 
 						flag++;
 
-						//Ìø³öÌõ¼ş
+						//è·³å‡ºæ¡ä»¶
 						if (flag == TurnResult.cbThreeCount)
 							break;
 					}
@@ -7333,7 +7333,7 @@ bool CGameData::LaiZiCompareCard(BYTE Card[], BYTE CardCount, BYTE OutCardData[]
 						flag = 0;
 					}
 
-					if (GetCardLogicValue(CurCardData[i + 1]) != GetCardLogicValue(CurCardData[i]))   //²»ÊÇÍ¬ÅÆÁË ±êÖ¾Î»ÖÆÁã
+					if (GetCardLogicValue(CurCardData[i + 1]) != GetCardLogicValue(CurCardData[i]))   //ä¸æ˜¯åŒç‰Œäº† æ ‡å¿—ä½åˆ¶é›¶
 					{
 						Numflag = 0;
 					}
@@ -7349,7 +7349,7 @@ bool CGameData::LaiZiCompareCard(BYTE Card[], BYTE CardCount, BYTE OutCardData[]
 			return true;
 		}
 
-		//Õ¨µ¯ÅĞ¶Ï
+		//ç‚¸å¼¹åˆ¤æ–­
 		if (CurResult.cbFourCount != 0)
 		{
 			int index = 0;
@@ -7365,7 +7365,7 @@ bool CGameData::LaiZiCompareCard(BYTE Card[], BYTE CardCount, BYTE OutCardData[]
 			return true;
 		}
 
-		//ÍõÕ¨ÅĞ¶Ï
+		//ç‹ç‚¸åˆ¤æ–­
 		if ((GetCardLogicValue(CurCardData[0]) == 17) && (GetCardLogicValue(CurCardData[1]) == 16))
 		{
 			for (int i = 0; i < 2; i++)
@@ -7378,18 +7378,18 @@ bool CGameData::LaiZiCompareCard(BYTE Card[], BYTE CardCount, BYTE OutCardData[]
 			return true;
 		}
 	}
-	else if ((TurnCardType & (1 << CT_THREE_LINE_TAKE_ONE)) != 0)   //Èı´úÒ»
+	else if ((TurnCardType & (1 << CT_THREE_LINE_TAKE_ONE)) != 0)   //ä¸‰ä»£ä¸€
 	{
 
-		cout << "Èı´úÒ»" << endl;
+		cout << "ä¸‰ä»£ä¸€" << endl;
 
 
-		//»ñÈ¡ÉÏ¼Ò³öÅÆÊıÖµ
+		//è·å–ä¸Šå®¶å‡ºç‰Œæ•°å€¼
 		BYTE TurnLogicValue = GetCardLogicValue(TurnResult.cbThreeCardData[0]);
 
-		if (CurResult.cbSignedCount >= TurnResult.cbThreeCount)     //Ã»ÓĞµ¥ÕÅ¾ÍÃ»±ØÒª³öÕâ¸öÅÆ
+		if (CurResult.cbSignedCount >= TurnResult.cbThreeCount)     //æ²¡æœ‰å•å¼ å°±æ²¡å¿…è¦å‡ºè¿™ä¸ªç‰Œ
 		{
-			if (TurnResult.cbThreeCount == 1)    //Èı´úÒ»
+			if (TurnResult.cbThreeCount == 1)    //ä¸‰ä»£ä¸€
 			{
 				int index = 0;
 				for (int i = 0; i < CurResult.cbThreeCount; i++)
@@ -7412,22 +7412,22 @@ bool CGameData::LaiZiCompareCard(BYTE Card[], BYTE CardCount, BYTE OutCardData[]
 					index += 3;
 				}
 			}
-			else		//·É»ú
+			else		//é£æœº
 			{
 				int index = 0;
-				int flag = 1;   //ÅĞ¶Ï·É»ú¼¸¸öÈıÕÅµÄ±êÖ¾
-								//ÅĞ¶ÏÈı¸öÊÇ·ñÁ¬Ğø
+				int flag = 1;   //åˆ¤æ–­é£æœºå‡ ä¸ªä¸‰å¼ çš„æ ‡å¿—
+								//åˆ¤æ–­ä¸‰ä¸ªæ˜¯å¦è¿ç»­
 				for (int i = 0; i < CurResult.cbThreeCount; i++)
 				{
-					if ((GetCardLogicValue(CurResult.cbThreeCardData[index]) - 1) == (GetCardLogicValue(CurResult.cbThreeCardData[index + 3])))  //Á¬Ğø
+					if ((GetCardLogicValue(CurResult.cbThreeCardData[index]) - 1) == (GetCardLogicValue(CurResult.cbThreeCardData[index + 3])))  //è¿ç»­
 					{
 						flag++;
 					}
 
 					if ((GetCardLogicValue(CurResult.cbThreeCardData[index]) >(TurnLogicValue - TurnResult.cbThreeCount + 2))
-						&& (flag == TurnResult.cbThreeCount))   //´óĞ¡±È½Ï
+						&& (flag == TurnResult.cbThreeCount))   //å¤§å°æ¯”è¾ƒ
 					{
-						index = index - TurnResult.cbThreeCount * 3 + 3;     //¸³ÖµµÄÏÂ±ê
+						index = index - TurnResult.cbThreeCount * 3 + 3;     //èµ‹å€¼çš„ä¸‹æ ‡
 						for (int j = 0; j < TurnResult.cbThreeCount * 3; j++)
 						{
 							tmpOutCardData[j] = CurResult.cbThreeCardData[index++];
@@ -7435,7 +7435,7 @@ bool CGameData::LaiZiCompareCard(BYTE Card[], BYTE CardCount, BYTE OutCardData[]
 
 						for (int j = 0; j < TurnResult.cbThreeCount; j++)
 						{
-							tmpOutCardData[TurnResult.cbThreeCount * 3 + j] = CurResult.cbSignedCardData[TurnResult.cbSignedCount - j - 1];   //·É»ú´øµÄµ¥
+							tmpOutCardData[TurnResult.cbThreeCount * 3 + j] = CurResult.cbSignedCardData[TurnResult.cbSignedCount - j - 1];   //é£æœºå¸¦çš„å•
 						}
 
 						tmpOutCardNum = TurnResult.cbThreeCount * 4;
@@ -7451,7 +7451,7 @@ bool CGameData::LaiZiCompareCard(BYTE Card[], BYTE CardCount, BYTE OutCardData[]
 			}
 		}
 
-		//Õ¨µ¯ÅĞ¶Ï
+		//ç‚¸å¼¹åˆ¤æ–­
 		if (CurResult.cbFourCount != 0)
 		{
 			int index = 0;
@@ -7467,7 +7467,7 @@ bool CGameData::LaiZiCompareCard(BYTE Card[], BYTE CardCount, BYTE OutCardData[]
 			return true;
 		}
 
-		//ÍõÕ¨ÅĞ¶Ï
+		//ç‹ç‚¸åˆ¤æ–­
 		if ((GetCardLogicValue(CurCardData[0]) == 17) && (GetCardLogicValue(CurCardData[1]) == 16))
 		{
 			for (int i = 0; i < 2; i++)
@@ -7480,16 +7480,16 @@ bool CGameData::LaiZiCompareCard(BYTE Card[], BYTE CardCount, BYTE OutCardData[]
 			return true;
 		}
 	}
-	else if ((TurnCardType & (1 << CT_THREE_LINE_TAKE_TWO)) != 0)   //Èı´ú¶ş
+	else if ((TurnCardType & (1 << CT_THREE_LINE_TAKE_TWO)) != 0)   //ä¸‰ä»£äºŒ
 	{
-		cout << "Èı´ú¶ş" << endl;
+		cout << "ä¸‰ä»£äºŒ" << endl;
 
-		//»ñÈ¡ÉÏ¼Ò³öÅÆÊıÖµ
+		//è·å–ä¸Šå®¶å‡ºç‰Œæ•°å€¼
 		BYTE TurnLogicValue = GetCardLogicValue(TurnResult.cbThreeCardData[0]);
 
-		if (CurResult.cbDoubleCount >= TurnResult.cbThreeCount)     //Ã»ÓĞ¶Ô×Ó¾ÍÃ»±ØÒª³öÕâ¸öÅÆ
+		if (CurResult.cbDoubleCount >= TurnResult.cbThreeCount)     //æ²¡æœ‰å¯¹å­å°±æ²¡å¿…è¦å‡ºè¿™ä¸ªç‰Œ
 		{
-			if (TurnResult.cbThreeCount == 1)    //Èı´ú¶ş
+			if (TurnResult.cbThreeCount == 1)    //ä¸‰ä»£äºŒ
 			{
 				int index = 0;
 				for (int i = 0; i < CurResult.cbThreeCount; i++)
@@ -7513,22 +7513,22 @@ bool CGameData::LaiZiCompareCard(BYTE Card[], BYTE CardCount, BYTE OutCardData[]
 					index += 3;
 				}
 			}
-			else		//·É»ú
+			else		//é£æœº
 			{
 				int index = 0;
-				int flag = 1;   //ÅĞ¶Ï·É»ú¼¸¸öÈıÕÅµÄ±êÖ¾
-								//ÅĞ¶ÏÈı¸öÊÇ·ñÁ¬Ğø
+				int flag = 1;   //åˆ¤æ–­é£æœºå‡ ä¸ªä¸‰å¼ çš„æ ‡å¿—
+								//åˆ¤æ–­ä¸‰ä¸ªæ˜¯å¦è¿ç»­
 				for (int i = 0; i < CurResult.cbThreeCount; i++)
 				{
-					if ((GetCardLogicValue(CurResult.cbThreeCardData[index]) - 1) == (GetCardLogicValue(CurResult.cbThreeCardData[index + 3])))  //Á¬Ğø
+					if ((GetCardLogicValue(CurResult.cbThreeCardData[index]) - 1) == (GetCardLogicValue(CurResult.cbThreeCardData[index + 3])))  //è¿ç»­
 					{
 						flag++;
 					}
 
 					if ((GetCardLogicValue(CurResult.cbThreeCardData[index]) >(TurnLogicValue - TurnResult.cbThreeCount + 2))
-						&& (flag == TurnResult.cbThreeCount))   //´óĞ¡±È½Ï
+						&& (flag == TurnResult.cbThreeCount))   //å¤§å°æ¯”è¾ƒ
 					{
-						index = index - TurnResult.cbThreeCount * 3 + 3;     //¸³ÖµµÄÏÂ±ê
+						index = index - TurnResult.cbThreeCount * 3 + 3;     //èµ‹å€¼çš„ä¸‹æ ‡
 						for (int j = 0; j < TurnResult.cbThreeCount * 3; j++)
 						{
 							tmpOutCardData[j] = CurResult.cbThreeCardData[index++];
@@ -7536,7 +7536,7 @@ bool CGameData::LaiZiCompareCard(BYTE Card[], BYTE CardCount, BYTE OutCardData[]
 
 						for (int j = 0; j < TurnResult.cbThreeCount * 2; j += 2)
 						{
-							tmpOutCardData[TurnResult.cbThreeCount * 3 + j] = CurResult.cbDoubleCardData[TurnResult.cbDoubleCount * 2 - j - 1];   //·É»ú´øµÄ¶Ô
+							tmpOutCardData[TurnResult.cbThreeCount * 3 + j] = CurResult.cbDoubleCardData[TurnResult.cbDoubleCount * 2 - j - 1];   //é£æœºå¸¦çš„å¯¹
 							tmpOutCardData[TurnResult.cbThreeCount * 3 + j + 1] = CurResult.cbDoubleCardData[TurnResult.cbDoubleCount * 2 - j - 1];
 						}
 
@@ -7553,7 +7553,7 @@ bool CGameData::LaiZiCompareCard(BYTE Card[], BYTE CardCount, BYTE OutCardData[]
 			}
 		}
 
-		//Õ¨µ¯ÅĞ¶Ï
+		//ç‚¸å¼¹åˆ¤æ–­
 		if (CurResult.cbFourCount != 0)
 		{
 			int index = 0;
@@ -7569,7 +7569,7 @@ bool CGameData::LaiZiCompareCard(BYTE Card[], BYTE CardCount, BYTE OutCardData[]
 			return true;
 		}
 
-		//ÍõÕ¨ÅĞ¶Ï
+		//ç‹ç‚¸åˆ¤æ–­
 		if ((GetCardLogicValue(CurCardData[0]) == 17) && (GetCardLogicValue(CurCardData[1]) == 16))
 		{
 			for (int i = 0; i < 2; i++)
@@ -7582,11 +7582,11 @@ bool CGameData::LaiZiCompareCard(BYTE Card[], BYTE CardCount, BYTE OutCardData[]
 			return true;
 		}
 	}
-	else if ((TurnCardType & (1 << CT_FOUR_LINE_TAKE_ONE)) != 0)   //ËÄ´ú¶ş
+	else if ((TurnCardType & (1 << CT_FOUR_LINE_TAKE_ONE)) != 0)   //å››ä»£äºŒ
 	{
-		cout << "ËÄ´ú¶ş" << endl;
+		cout << "å››ä»£äºŒ" << endl;
 
-		//Õ¨µ¯ÅĞ¶Ï
+		//ç‚¸å¼¹åˆ¤æ–­
 		if (CurResult.cbFourCount != 0)
 		{
 			int index = 0;
@@ -7602,7 +7602,7 @@ bool CGameData::LaiZiCompareCard(BYTE Card[], BYTE CardCount, BYTE OutCardData[]
 			return true;
 		}
 
-		//ÍõÕ¨ÅĞ¶Ï
+		//ç‹ç‚¸åˆ¤æ–­
 		if ((GetCardLogicValue(CurCardData[0]) == 17) && (GetCardLogicValue(CurCardData[1]) == 16))
 		{
 			for (int i = 0; i < 2; i++)
@@ -7615,11 +7615,11 @@ bool CGameData::LaiZiCompareCard(BYTE Card[], BYTE CardCount, BYTE OutCardData[]
 			return true;
 		}
 	}
-	else if ((TurnCardType & (1 << CT_FOUR_LINE_TAKE_TWO)) != 0)   //ËÄ´ú¶ş¶Ô
+	else if ((TurnCardType & (1 << CT_FOUR_LINE_TAKE_TWO)) != 0)   //å››ä»£äºŒå¯¹
 	{
-		cout << "ËÄ´ú¶ş¶Ô" << endl;
+		cout << "å››ä»£äºŒå¯¹" << endl;
 
-		//Õ¨µ¯ÅĞ¶Ï
+		//ç‚¸å¼¹åˆ¤æ–­
 		if (CurResult.cbFourCount != 0)
 		{
 			int index = 0;
@@ -7635,7 +7635,7 @@ bool CGameData::LaiZiCompareCard(BYTE Card[], BYTE CardCount, BYTE OutCardData[]
 			return true;
 		}
 
-		//ÍõÕ¨ÅĞ¶Ï
+		//ç‹ç‚¸åˆ¤æ–­
 		if ((GetCardLogicValue(CurCardData[0]) == 17) && (GetCardLogicValue(CurCardData[1]) == 16))
 		{
 			for (int i = 0; i < 2; i++)
@@ -7653,4 +7653,4 @@ bool CGameData::LaiZiCompareCard(BYTE Card[], BYTE CardCount, BYTE OutCardData[]
 	return false;
 
 }
-//================================================ñ®×Ó³¡ÅĞ¶Ï=================================================
+//================================================ç™å­åœºåˆ¤æ–­=================================================

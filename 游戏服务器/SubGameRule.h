@@ -10,21 +10,21 @@ public:
 	CSubGameRule(void) {}
 	~CSubGameRule(void) {}
 
-/** ÓÎÏ·¹æÔò½Ó¿Ú **/
+/** æ¸¸æˆè§„åˆ™æ¥å£ **/
 public:
 
-	// ·ÖÎöÓÃ»§ÅÆĞÍ
+	// åˆ†æç”¨æˆ·ç‰Œå‹
 	virtual int __stdcall AnsysCardsType( );
 
-	// ½áËãµÃ·Ö
+	// ç»“ç®—å¾—åˆ†
 	virtual int __stdcall Settle();
 
-//Ëã·Ö
+//ç®—åˆ†
 protected:
-	//Éı¼¶Ëã·Ö
+	//å‡çº§ç®—åˆ†
 	int SettleUpGrade();
 
-	//¶·µØÖ÷Ëã·Ö
+	//æ–—åœ°ä¸»ç®—åˆ†
 	int SettleFightLandLord();
 };
 

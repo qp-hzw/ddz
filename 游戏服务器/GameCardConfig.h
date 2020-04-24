@@ -2,31 +2,31 @@
 #pragma once
 #include <windows.h>
 #include "cfg.h"
-typedef BYTE *CARD_SCOR_RANK,	CARD_SCOR;	// Ö½ÅÆµãÊıÅÅĞòÃèÊö
-typedef BYTE *CARD_COLOR_RANK,	CARD_COLOR;	// Ö½ÅÆ»¨É«ÅÅĞòÃèÊö
-typedef BYTE *CARD_DESCS,		CARD_DESC;	// Ö½ÅÆÃèÊö
+typedef BYTE *CARD_SCOR_RANK,	CARD_SCOR;	// çº¸ç‰Œç‚¹æ•°æ’åºæè¿°
+typedef BYTE *CARD_COLOR_RANK,	CARD_COLOR;	// çº¸ç‰ŒèŠ±è‰²æ’åºæè¿°
+typedef BYTE *CARD_DESCS,		CARD_DESC;	// çº¸ç‰Œæè¿°
 
-#define __GETSCORE( A )			CGameCardConfig::GetCardScore( A )		// »ñÈ¡µ¥ÕÅÊÖÅÆµãÊı
-#define __GETGROUPID( A )		CGameCardConfig::GetCardGroup( A )		// »ñÈ¡µ¥ÕÅÊÖÅÆËùÊô×éID
-#define __GETCOLOR( A )			CGameCardConfig::GetCardColor( A )		// »ñÈ¡µ¥ÕÅÊÖÅÆ»¨É«
+#define __GETSCORE( A )			CGameCardConfig::GetCardScore( A )		// è·å–å•å¼ æ‰‹ç‰Œç‚¹æ•°
+#define __GETGROUPID( A )		CGameCardConfig::GetCardGroup( A )		// è·å–å•å¼ æ‰‹ç‰Œæ‰€å±ç»„ID
+#define __GETCOLOR( A )			CGameCardConfig::GetCardColor( A )		// è·å–å•å¼ æ‰‹ç‰ŒèŠ±è‰²
 
-#define MAX_CARD_GROUP_NUM			20				//×î´óµÄ¿¨ÅÆÅÆ×éÊıÄ¿
-#define MAX_TOTAL_CARD_NUM			108				//Ä¬ÈÏµÄ¿¨ÅÆ×ÜÊı
+#define MAX_CARD_GROUP_NUM			20				//æœ€å¤§çš„å¡ç‰Œç‰Œç»„æ•°ç›®
+#define MAX_TOTAL_CARD_NUM			108				//é»˜è®¤çš„å¡ç‰Œæ€»æ•°
 
-// ÅÆ×éÃèÊö
+// ç‰Œç»„æè¿°
 typedef struct _tagCARD_GOURP
 {
-	//BYTE			id;			// ×é±êÊ¶·û
-	//CARD_SCOR		begin;		// ¿ªÊ¼ÅÆ
-	//CARD_SCOR		end;		// ½áÎ²ÅÆ
-	//CARD_COLOR_RANK	colors;		// »¨É«×éºÏ 1·½¿é; 2Ã·»¨; 3ºìÌÒ; 4ºÚÌÒ
-	//BYTE			clrsum;		// »¨É«ÊıÁ¿
-	//BYTE			sum;		// ÊıÁ¿
-	BYTE			id;			// ×é±êÊ¶·û
-	BYTE			color;		// »¨É«
-	CARD_SCOR		begin;		// ¿ªÊ¼ÅÆ
-	CARD_SCOR		end;		// ½áÎ²ÅÆ
-	BYTE			sum;		// Í¬Ò»ÕÅÅÆÓĞ¼¸ÕÅ
+	//BYTE			id;			// ç»„æ ‡è¯†ç¬¦
+	//CARD_SCOR		begin;		// å¼€å§‹ç‰Œ
+	//CARD_SCOR		end;		// ç»“å°¾ç‰Œ
+	//CARD_COLOR_RANK	colors;		// èŠ±è‰²ç»„åˆ 1æ–¹å—; 2æ¢…èŠ±; 3çº¢æ¡ƒ; 4é»‘æ¡ƒ
+	//BYTE			clrsum;		// èŠ±è‰²æ•°é‡
+	//BYTE			sum;		// æ•°é‡
+	BYTE			id;			// ç»„æ ‡è¯†ç¬¦
+	BYTE			color;		// èŠ±è‰²
+	CARD_SCOR		begin;		// å¼€å§‹ç‰Œ
+	CARD_SCOR		end;		// ç»“å°¾ç‰Œ
+	BYTE			sum;		// åŒä¸€å¼ ç‰Œæœ‰å‡ å¼ 
 }CARD_GOURP, *CARD_GOURPS;
 
 class CServerLog;
@@ -38,68 +38,68 @@ public:
 	~CGameCardConfig(void) {}
 
 
-// ½âÎöÖ½ÅÆÊı¾İ
+// è§£æçº¸ç‰Œæ•°æ®
 public:
 /**
- * »ñÈ¡Ò»¸±ÅÆµÄ¹À¼ÆÊıÁ¿
- * Ê¹ÓÃ xml ÅäÖÃÎÄ¼ş ½âÎöÒ»¸±ÅÆµÄÊıÁ¿
- * @param  configfile					[in]			ÅäÖÃÎÄ¼ş
- * @param  cards_sum					[in-out]		ÆË¿Ë×ÜÊıÄ¿
- * @param  m_plog						[in]			ÈÕÖ¾¼ÇÂ¼
- * return					0				Õı³£
- *							-1				Òì³£
+ * è·å–ä¸€å‰¯ç‰Œçš„ä¼°è®¡æ•°é‡
+ * ä½¿ç”¨ xml é…ç½®æ–‡ä»¶ è§£æä¸€å‰¯ç‰Œçš„æ•°é‡
+ * @param  configfile					[in]			é…ç½®æ–‡ä»¶
+ * @param  cards_sum					[in-out]		æ‰‘å…‹æ€»æ•°ç›®
+ * @param  m_plog						[in]			æ—¥å¿—è®°å½•
+ * return					0				æ­£å¸¸
+ *							-1				å¼‚å¸¸
  */
 static int LoadCardsSum(DWORD &cards_sum);
 
 
 /**
-* »ñÈ¡¶·Å£ÓÎÏ·µÄµÃ·Ö¼Ó±¶Ä£Ê½
-* Ê¹ÓÃ xml ÅäÖÃÎÄ¼ş ½âÎöÓÎÏ·µÄµÃ·Ö¼Ó±¶Ä£Ê½
-* @param  configfile					[in]			ÅäÖÃÎÄ¼ş
-* @param  game_score_Mode				[in]			ÓÎÏ·µÃ·ÖÄ£Ê½£º¾­µä»ò·è¿ñÄ£Ê½
-* @param  game_score_times				[in-out]		ÓÎÏ·µÃ·Ö¼Ó±¶Êı×é
-* @param  m_plog						[in]			ÈÕÖ¾¼ÇÂ¼
-* return					0				Õı³£
-*							-1				Òì³£
+* è·å–æ–—ç‰›æ¸¸æˆçš„å¾—åˆ†åŠ å€æ¨¡å¼
+* ä½¿ç”¨ xml é…ç½®æ–‡ä»¶ è§£ææ¸¸æˆçš„å¾—åˆ†åŠ å€æ¨¡å¼
+* @param  configfile					[in]			é…ç½®æ–‡ä»¶
+* @param  game_score_Mode				[in]			æ¸¸æˆå¾—åˆ†æ¨¡å¼ï¼šç»å…¸æˆ–ç–¯ç‹‚æ¨¡å¼
+* @param  game_score_times				[in-out]		æ¸¸æˆå¾—åˆ†åŠ å€æ•°ç»„
+* @param  m_plog						[in]			æ—¥å¿—è®°å½•
+* return					0				æ­£å¸¸
+*							-1				å¼‚å¸¸
 */
 static int LoadGameScoreTimes(BYTE game_score_Mode, BYTE *game_score_times);
 
 
 /**
- * Ìî³ä×é 
- * ½âÎöXML ÖĞ ËùÓĞÅÆ×é½ÚµãĞÅÏ¢ 
- * @param  configfile				[in]			ÅäÖÃÎÄ¼ş
- * @param  ppgroups					[out]			ÆË¿ËÅäÖÃ
- * @param  group_sum				[in-out]		×éÊµ¼ÊÊıÁ¿
- * @m_plog					[in]			ÈÕÖ¾¼ÇÂ¼
- * return					0				Õı³£
- *							-1				Òì³£
+ * å¡«å……ç»„ 
+ * è§£æXML ä¸­ æ‰€æœ‰ç‰Œç»„èŠ‚ç‚¹ä¿¡æ¯ 
+ * @param  configfile				[in]			é…ç½®æ–‡ä»¶
+ * @param  ppgroups					[out]			æ‰‘å…‹é…ç½®
+ * @param  group_sum				[in-out]		ç»„å®é™…æ•°é‡
+ * @m_plog					[in]			æ—¥å¿—è®°å½•
+ * return					0				æ­£å¸¸
+ *							-1				å¼‚å¸¸
  */
 static int LoadCardGroups(CARD_GOURP *groups, DWORD &group_sum);
 
 /**
- * ÌáÈ¡ËùÓĞ×é
- * ´Ëº¯Êı´ÓÆË¿ËÁĞ±íÖĞÕÒ³öËùÓĞÂú×ã group Ìõ¼şµÄÖ½ÅÆ²¢Ìî³äµ½ cards Êı×éÖĞ£¬ ²¢·µ»ØÖ´ĞĞÍê³Éºó cards Êı×éÖĞµÄ³ÉÔ±Êı
- * @param		groups					[in]			ÆË¿Ë×é Êı×é
- * @param		groups_len				[in]			ÆË¿Ë×é Êı×é×î´ó³¤¶È£¬×¢Òâ£¬²»ĞèÒªÊÇÊı×éÖĞÊµ¼Ê³ÉÔ±¸öÊı
- * @param		card_rank				[in]			ÆË¿ËµãÊıÅÅÁĞ
- * @param		card_ranks_sum			[in]			ÆË¿ËµãÊıÅÅÁĞÊıÄ¿
- * @param		ppcards					[out]			ÆË¿ËÊı×é
- * @param		cardslen				[in-out]		ÆË¿ËÊı×é³¤¶È,ÊäÈë¹À²â³¤¶È£¬·µ»ØÊµ¼Ê³¤¶È
+ * æå–æ‰€æœ‰ç»„
+ * æ­¤å‡½æ•°ä»æ‰‘å…‹åˆ—è¡¨ä¸­æ‰¾å‡ºæ‰€æœ‰æ»¡è¶³ group æ¡ä»¶çš„çº¸ç‰Œå¹¶å¡«å……åˆ° cards æ•°ç»„ä¸­ï¼Œ å¹¶è¿”å›æ‰§è¡Œå®Œæˆå cards æ•°ç»„ä¸­çš„æˆå‘˜æ•°
+ * @param		groups					[in]			æ‰‘å…‹ç»„ æ•°ç»„
+ * @param		groups_len				[in]			æ‰‘å…‹ç»„ æ•°ç»„æœ€å¤§é•¿åº¦ï¼Œæ³¨æ„ï¼Œä¸éœ€è¦æ˜¯æ•°ç»„ä¸­å®é™…æˆå‘˜ä¸ªæ•°
+ * @param		card_rank				[in]			æ‰‘å…‹ç‚¹æ•°æ’åˆ—
+ * @param		card_ranks_sum			[in]			æ‰‘å…‹ç‚¹æ•°æ’åˆ—æ•°ç›®
+ * @param		ppcards					[out]			æ‰‘å…‹æ•°ç»„
+ * @param		cardslen				[in-out]		æ‰‘å…‹æ•°ç»„é•¿åº¦,è¾“å…¥ä¼°æµ‹é•¿åº¦ï¼Œè¿”å›å®é™…é•¿åº¦
  */
 static int TransGroups(const CARD_GOURP group[MAX_CARD_GROUP_NUM], const int &nGroupLen,
 										CARD_DESC *pGameCards, DWORD &dwCardSum);
 
-// ¹¤¾ßÀàº¯Êı
+// å·¥å…·ç±»å‡½æ•°
 public:
 
 	/** 
-	 * ÂÒĞòÅÅÁĞÊı×é, Ï´ÅÆ
-	 * Ã¿¾Ö¿ªÊ¼Ê±, ½«ÅÆµÄË³Ğò´òÂÒ
-	 * @param		dest_cards			[in-out]		Ä¿µÄÊı×é£¬ ÂÒĞòºóµÄÊı×é
-	 * @param		dest_len			[in]			Ä¿µÄÊı×é³¤¶È
-	 * @param		src_cards			[in]			Ô´ÅÆÊı×é£¬ ÓÉÅäÖÃÎÄ¼şÉú³ÉµÄÓÎÏ·ÅÆ×é
-	 * @param		src_len				[in]			Ô´ÅÆÊıÁ¿£¬ ×¢Òâ£¬´ËÊı¾İ±ØĞëÊÇÅÆ×éµÄÊµ¼Ê³¤¶È
+	 * ä¹±åºæ’åˆ—æ•°ç»„, æ´—ç‰Œ
+	 * æ¯å±€å¼€å§‹æ—¶, å°†ç‰Œçš„é¡ºåºæ‰“ä¹±
+	 * @param		dest_cards			[in-out]		ç›®çš„æ•°ç»„ï¼Œ ä¹±åºåçš„æ•°ç»„
+	 * @param		dest_len			[in]			ç›®çš„æ•°ç»„é•¿åº¦
+	 * @param		src_cards			[in]			æºç‰Œæ•°ç»„ï¼Œ ç”±é…ç½®æ–‡ä»¶ç”Ÿæˆçš„æ¸¸æˆç‰Œç»„
+	 * @param		src_len				[in]			æºç‰Œæ•°é‡ï¼Œ æ³¨æ„ï¼Œæ­¤æ•°æ®å¿…é¡»æ˜¯ç‰Œç»„çš„å®é™…é•¿åº¦
 	 */
 	static int OutOrder(CARD_DESCS dest_cards,
 									const DWORD dest_len,
@@ -113,15 +113,15 @@ public:
 public:
 
 	/**
-	 * ½«Ö¸¶¨µÄ×éËù±êÊ¶µÄÅÆ×é×ª»»ÎªÖ½ÅÆÊı×éÖĞµÄÊı¾İ
-	 * ´Ëº¯Êı´ÓÆË¿ËÁĞ±íÖĞÕÒ³öËùÓĞÂú×ã group Ìõ¼şµÄÖ½ÅÆ²¢Ìî³äµ½ cards Êı×éÖĞ£¬ ²¢·µ»ØÖ´ĞĞÍê³Éºó cards Êı×éÖĞµÄ³ÉÔ±Êı
-	 * @param		group					[in]			ÆË¿Ë×é
-	 * @param		card_ranks				[in]			ÆË¿ËÅÅÁĞ
-	 * @param		card_ranks_sum			[in]			ÆË¿ËÅÅÁĞÊıÄ¿
-	 * @param		cards					[in-out]		ÆË¿ËÊı×é
-	 * @param		cardslen				[in]			ÆË¿ËÊı×é³¤¶È
-	 * @param		curlen					[in-out]		ÒÑ¾­Ìî³äµÄ³¤¶È£¬ ×¢Òâ£¬´Ë²ÎÊı»á½«ÏÖÓĞÖµÓëÌî³ä½øÈ¥µÄÖµÏà¼Ó
-	 *														ËùÒÔ´Ë²ÎÊıµÄÊä³öÖµÓëÊäÈëÖµÓĞ¹Ø
+	 * å°†æŒ‡å®šçš„ç»„æ‰€æ ‡è¯†çš„ç‰Œç»„è½¬æ¢ä¸ºçº¸ç‰Œæ•°ç»„ä¸­çš„æ•°æ®
+	 * æ­¤å‡½æ•°ä»æ‰‘å…‹åˆ—è¡¨ä¸­æ‰¾å‡ºæ‰€æœ‰æ»¡è¶³ group æ¡ä»¶çš„çº¸ç‰Œå¹¶å¡«å……åˆ° cards æ•°ç»„ä¸­ï¼Œ å¹¶è¿”å›æ‰§è¡Œå®Œæˆå cards æ•°ç»„ä¸­çš„æˆå‘˜æ•°
+	 * @param		group					[in]			æ‰‘å…‹ç»„
+	 * @param		card_ranks				[in]			æ‰‘å…‹æ’åˆ—
+	 * @param		card_ranks_sum			[in]			æ‰‘å…‹æ’åˆ—æ•°ç›®
+	 * @param		cards					[in-out]		æ‰‘å…‹æ•°ç»„
+	 * @param		cardslen				[in]			æ‰‘å…‹æ•°ç»„é•¿åº¦
+	 * @param		curlen					[in-out]		å·²ç»å¡«å……çš„é•¿åº¦ï¼Œ æ³¨æ„ï¼Œæ­¤å‚æ•°ä¼šå°†ç°æœ‰å€¼ä¸å¡«å……è¿›å»çš„å€¼ç›¸åŠ 
+	 *														æ‰€ä»¥æ­¤å‚æ•°çš„è¾“å‡ºå€¼ä¸è¾“å…¥å€¼æœ‰å…³
 	 */
 	static int TransGroup(const CARD_GOURP *group,
 										CARD_DESCS cards,
@@ -129,59 +129,59 @@ public:
 										DWORD &curIndex);
 
 	/**
-	 * Éú³ÉÒ»¸öÂÒĞòÊı×é
-	 * ´Ëº¯Êı»áÉú³ÉÒ»¸öarlen ³¤¶ÈµÄÂÒĞòÊı×é£¨0µ½src_len-1£©²¢Ìî³äµ½arrayµÄ0µ½src_len-1Î»ÖÃ
-	 * @param			randarray			[in-out]		Êı×é	
-	 * @param			src_len				[in]			Êı×é³¤¶È	
-	 * @param			m_plog				[in]			ÈÕÖ¾	
+	 * ç”Ÿæˆä¸€ä¸ªä¹±åºæ•°ç»„
+	 * æ­¤å‡½æ•°ä¼šç”Ÿæˆä¸€ä¸ªarlen é•¿åº¦çš„ä¹±åºæ•°ç»„ï¼ˆ0åˆ°src_len-1ï¼‰å¹¶å¡«å……åˆ°arrayçš„0åˆ°src_len-1ä½ç½®
+	 * @param			randarray			[in-out]		æ•°ç»„	
+	 * @param			src_len				[in]			æ•°ç»„é•¿åº¦	
+	 * @param			m_plog				[in]			æ—¥å¿—	
 	 */
 	static int CreateOutOrderArray( DWORD randarray[], const int src_len );
 
 	/**
-	 * ±È½ÏÁ½ÕÅÅÆ´óĞ¡
-	 * @param			self			[in]		ÅÆ	
-	 * @param			rival			[in]		ÅÆ	
-	 * @param			flag			[in-out]	·µ»Ø£¬ Èôself ´ó, Ôò·µ»ØTRUE, ·ñÔò·µ»ØFLASE	
+	 * æ¯”è¾ƒä¸¤å¼ ç‰Œå¤§å°
+	 * @param			self			[in]		ç‰Œ	
+	 * @param			rival			[in]		ç‰Œ	
+	 * @param			flag			[in-out]	è¿”å›ï¼Œ è‹¥self å¤§, åˆ™è¿”å›TRUE, å¦åˆ™è¿”å›FLASE	
 	 */
 	static int CompareCards( const CARD_DESC *self, const CARD_DESC *rival, BOOL *flag);
 
 	////////////////////////////////////////////////////////
-	//²»Ï´ÅÆÄ£Ê½µÄÏ´ÅÆËã·¨       by  lih
+	//ä¸æ´—ç‰Œæ¨¡å¼çš„æ´—ç‰Œç®—æ³•       by  lih
 	static int CreateBuXiPaiArray(BYTE randarray[], const int src_len);
 	/////////////////////////////////////////////////////////
 
 	/**
-	 * ÅÆÅÅĞò
-	 * ÏÈ°´µãÊıÅÅ£¬È»ºó°´»¨É«ÅÅ
-	 * @param			cards				[in-out]		ÅÆ×é	
-	 * @param			cardslen			[in]			ÅÆ×é³¤¶È	
-	 * @param			card_ranks			[in]			µãÊıÅÅĞò	
-	 * @param			card_ranks_sum		[in]			µãÊıÅÅĞò³¤¶È	
-	 * @param			color_ranks			[in]			»¨É«ÅÅĞò	
-	 * @param			color_ranks_sum		[in]			»¨É«ÅÅĞò³¤¶È	
+	 * ç‰Œæ’åº
+	 * å…ˆæŒ‰ç‚¹æ•°æ’ï¼Œç„¶åæŒ‰èŠ±è‰²æ’
+	 * @param			cards				[in-out]		ç‰Œç»„	
+	 * @param			cardslen			[in]			ç‰Œç»„é•¿åº¦	
+	 * @param			card_ranks			[in]			ç‚¹æ•°æ’åº	
+	 * @param			card_ranks_sum		[in]			ç‚¹æ•°æ’åºé•¿åº¦	
+	 * @param			color_ranks			[in]			èŠ±è‰²æ’åº	
+	 * @param			color_ranks_sum		[in]			èŠ±è‰²æ’åºé•¿åº¦	
 	 */
 	static int OrderCards(	CARD_DESCS cards, 
 							const DWORD cardslen );
 
 	/**
-	 * ÌáÈ¡¿¨ÅÆµãÊı
+	 * æå–å¡ç‰Œç‚¹æ•°
 	 */
 	static BYTE GetCardScore( CARD_DESC card );
 
 	/**
-	 * ÌáÈ¡¿¨ÅÆ»¨É«
+	 * æå–å¡ç‰ŒèŠ±è‰²
 	 */
 	static BYTE GetCardColor(CARD_DESC card);
 
 	/**
-	 * ÌáÈ¡¿¨ÅÆ×é
+	 * æå–å¡ç‰Œç»„
 	 */
 	static BYTE GetCardGroup( CARD_DESC card );
 
-	//²»Ï´ÅÆÄ£Ê½µÄ¿¨ÅÆÊı¾ÖË÷ÒıÖµ
-	static const BYTE	m_CardData[FULL_COUNT];			//Ô­Ê¼ÆË¿ËÊı¾İ
+	//ä¸æ´—ç‰Œæ¨¡å¼çš„å¡ç‰Œæ•°å±€ç´¢å¼•å€¼
+	static const BYTE	m_CardData[FULL_COUNT];			//åŸå§‹æ‰‘å…‹æ•°æ®
 
-	//Á½ÖÖÅÆĞÍµÄÅÆÖµÓ³Éäº¯Êı
+	//ä¸¤ç§ç‰Œå‹çš„ç‰Œå€¼æ˜ å°„å‡½æ•°
 	static BYTE   MapOfCardValue(BYTE CardData);
 
 	static bool flushcard(BYTE card[], int &cardsum, BYTE boomcard[], int &boomsum);

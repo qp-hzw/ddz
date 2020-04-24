@@ -1,50 +1,50 @@
 #pragma once
 #include <windows.h>
 #include "cfg.h"
-typedef		WORD	PLAYER_TYPE;  // Íæ¼ÒÀàĞÍÃèÊö
+typedef		WORD	PLAYER_TYPE;  // ç©å®¶ç±»å‹æè¿°
 
-#define __GETCARDSUM( _type )		CGamePlayerConfig::GetPlayerCardSum( _type ) // ÌáÈ¡Íæ¼ÒÊÖÅÆÊıÁ¿
+#define __GETCARDSUM( _type )		CGamePlayerConfig::GetPlayerCardSum( _type ) // æå–ç©å®¶æ‰‹ç‰Œæ•°é‡
 
-// Íæ¼ÒÃèÊö
+// ç©å®¶æè¿°
 typedef struct _tagPLAYER_DESC
 {
-	PLAYER_TYPE			type;				// Íæ¼ÒTYPE£¬Êı×é£¬Ã¿¸öÊı´ú±íÄ³¸öÓÃ»§ÀàĞÍµÄid¡¢Íæ¼ÒÊıÄ¿¡¢ÊÖÅÆÊıÄ¿
-	BYTE				card_type;			// ÊÖÅÆÅÆĞÍID
-	int					times;				// ÊÖÅÆ±¶Êı
-	DWORD				bet;				// Íæ¼ÒÏÂ×¢·ÖÊı
-	BYTE				bank_state;			// Íæ¼ÒÇÀ×¯		0-¹ı	1-½ĞµØÖ÷	2-ÇÀµØÖ÷
-	BYTE				rob_num;			// Íæ¼ÒÇÀ×¯´ÎÊı
-	DWORD               rob_score;          // Íæ¼ÒÇÀ×¯µÄ·ÖÊı£¬ ÀıÈç"Á½ÕÅÅÆ"ÖĞµÄÉ¸×ÓµãÊı
-	DWORD				play_state;			// Íæ¼Ò×´Ì¬
-	BYTE				showcard_state;		// Ì¯ÅÆ×´Ì¬			0 Î´Íê³É£¬	1 Íê³É
-	BYTE				xj_ready_state;		// Ğ¡¾ÖÍæ¼Ò×¼±¸			0 Î´×¼±¸£¬	1 ×¼±¸
-	BYTE				bet_state;			// Íæ¼ÒÏÂ×¢×´Ì¬		0 Î´Íê³É£¬	1 Íê³É
-	BYTE				mingpai_state;		// Íæ¼ÒÃ÷ÅÆ×´Ì¬		0 Î´Íê³É£¬	1 Íê³É
-	BYTE				action_state;		// Íæ¼Ò¶¯×÷×´Ì¬		0 Î´Íê³É,   1 Íê³É
-	BYTE				action;				// Íæ¼Ò¶¯×÷			1-¹ı 2-Åö 3-³Ô 4-´ø
-	SCORE				single_score;		// µ¥¾ÖµÃ·Ö
-	SCORE				total_score;		// Íæ¼Ò×ÜµÃ·Ö
-	BYTE				winsum;				// Ó®¾ÖÊı
-	DWORD				bank_count;			// ×ö×¯µÄ´ÎÊı
-	WORD				addscore_bet;		// ÏÂ×¢µÄ±¶Êı
-	WORD				mingpai_bet;		// Ã÷ÅÆµÄ±¶Êı
-	SCORE				best_bet;			// Íæ¼ÒÒ»´ó¾ÖÖĞ»ñµÃ¹ıµÄ×î´ó±¶Êı
-	BASE_PLAYERINFO		player_info;				// ¼ÇÂ¼Íæ¼ÒĞÅÏ¢
-	DWORD				start_mingpai;		//ÊÇ·ñ¿ªÊ¼ÓÎÏ·Ã÷ÅÆ
-	WORD				jiaofen_state;		//¼ÇÂ¼Íæ¼Ò½ĞµÄ·Ö
-	WORD				spring_state;		//¼ÇÂ¼ÊÇ·ñ³ö¹ıÅÆ
-	WORD				spring;				//¼ÇÂ¼ÊÇ·ñ´ºÌì
-	WORD				player_tuo_guan;	//Íæ¼ÒÊÇ·ñÍĞ¹Ü   0-²»ÍĞ¹Ü
-	WORD				out_time_num;		//Íæ¼Ò³öÅÆ³¬Ê±´ÎÊı
+	PLAYER_TYPE			type;				// ç©å®¶TYPEï¼Œæ•°ç»„ï¼Œæ¯ä¸ªæ•°ä»£è¡¨æŸä¸ªç”¨æˆ·ç±»å‹çš„idã€ç©å®¶æ•°ç›®ã€æ‰‹ç‰Œæ•°ç›®
+	BYTE				card_type;			// æ‰‹ç‰Œç‰Œå‹ID
+	int					times;				// æ‰‹ç‰Œå€æ•°
+	DWORD				bet;				// ç©å®¶ä¸‹æ³¨åˆ†æ•°
+	BYTE				bank_state;			// ç©å®¶æŠ¢åº„		0-è¿‡	1-å«åœ°ä¸»	2-æŠ¢åœ°ä¸»
+	BYTE				rob_num;			// ç©å®¶æŠ¢åº„æ¬¡æ•°
+	DWORD               rob_score;          // ç©å®¶æŠ¢åº„çš„åˆ†æ•°ï¼Œ ä¾‹å¦‚"ä¸¤å¼ ç‰Œ"ä¸­çš„ç­›å­ç‚¹æ•°
+	DWORD				play_state;			// ç©å®¶çŠ¶æ€
+	BYTE				showcard_state;		// æ‘Šç‰ŒçŠ¶æ€			0 æœªå®Œæˆï¼Œ	1 å®Œæˆ
+	BYTE				xj_ready_state;		// å°å±€ç©å®¶å‡†å¤‡			0 æœªå‡†å¤‡ï¼Œ	1 å‡†å¤‡
+	BYTE				bet_state;			// ç©å®¶ä¸‹æ³¨çŠ¶æ€		0 æœªå®Œæˆï¼Œ	1 å®Œæˆ
+	BYTE				mingpai_state;		// ç©å®¶æ˜ç‰ŒçŠ¶æ€		0 æœªå®Œæˆï¼Œ	1 å®Œæˆ
+	BYTE				action_state;		// ç©å®¶åŠ¨ä½œçŠ¶æ€		0 æœªå®Œæˆ,   1 å®Œæˆ
+	BYTE				action;				// ç©å®¶åŠ¨ä½œ			1-è¿‡ 2-ç¢° 3-åƒ 4-å¸¦
+	SCORE				single_score;		// å•å±€å¾—åˆ†
+	SCORE				total_score;		// ç©å®¶æ€»å¾—åˆ†
+	BYTE				winsum;				// èµ¢å±€æ•°
+	DWORD				bank_count;			// åšåº„çš„æ¬¡æ•°
+	WORD				addscore_bet;		// ä¸‹æ³¨çš„å€æ•°
+	WORD				mingpai_bet;		// æ˜ç‰Œçš„å€æ•°
+	SCORE				best_bet;			// ç©å®¶ä¸€å¤§å±€ä¸­è·å¾—è¿‡çš„æœ€å¤§å€æ•°
+	BASE_PLAYERINFO		player_info;				// è®°å½•ç©å®¶ä¿¡æ¯
+	DWORD				start_mingpai;		//æ˜¯å¦å¼€å§‹æ¸¸æˆæ˜ç‰Œ
+	WORD				jiaofen_state;		//è®°å½•ç©å®¶å«çš„åˆ†
+	WORD				spring_state;		//è®°å½•æ˜¯å¦å‡ºè¿‡ç‰Œ
+	WORD				spring;				//è®°å½•æ˜¯å¦æ˜¥å¤©
+	WORD				player_tuo_guan;	//ç©å®¶æ˜¯å¦æ‰˜ç®¡   0-ä¸æ‰˜ç®¡
+	WORD				out_time_num;		//ç©å®¶å‡ºç‰Œè¶…æ—¶æ¬¡æ•°
 
-	BYTE				hand_card_num;						// µ±Ç°ÊÖÅÆÊı
-	BYTE				out_card_num;						// Íæ¼Ò¸ÃÂÖµÄ³öÅÆÊıÄ¿	
-	BYTE				out_card_info[MAX_CARD_COUNT];		// Íæ¼Ò¸ÃÂÖ³öµÄ¿¨ÅÆÊı¾İ
-	BYTE				level;				//Íæ¼Ò¼¶Êı£¨´Ó2¿ªÊ¼£©
+	BYTE				hand_card_num;						// å½“å‰æ‰‹ç‰Œæ•°
+	BYTE				out_card_num;						// ç©å®¶è¯¥è½®çš„å‡ºç‰Œæ•°ç›®	
+	BYTE				out_card_info[MAX_CARD_COUNT];		// ç©å®¶è¯¥è½®å‡ºçš„å¡ç‰Œæ•°æ®
+	BYTE				level;				//ç©å®¶çº§æ•°ï¼ˆä»2å¼€å§‹ï¼‰
 
-	//¶·µØÖ÷
-	BYTE				out_card_pass;		//³öÅÆÊÇ·ñ¹ı	0-Õı³£³öÅÆ	1-¹ı
-	tagBoomInfo			boom_info;			//Õ¨µ¯ĞÅÏ¢
+	//æ–—åœ°ä¸»
+	BYTE				out_card_pass;		//å‡ºç‰Œæ˜¯å¦è¿‡	0-æ­£å¸¸å‡ºç‰Œ	1-è¿‡
+	tagBoomInfo			boom_info;			//ç‚¸å¼¹ä¿¡æ¯
 
 }PLAYER_DESC, *PLAYER_DESCS;
 
@@ -55,57 +55,57 @@ public:
 	~CGamePlayerConfig(void) {}
 
 
-	// ½âÎöÍæ¼ÒÊı¾İ
+	// è§£æç©å®¶æ•°æ®
 public:
 
 	/**
-	 * ½âÎöËùÓĞµÄÍæ¼Ò×é £¬Êä³ö Íæ¼Ò×éÊı×é
-	 * @param		configfile				[in]			ÆË¿Ë×é Êı×é
-	 * @param		ppplayers				[out]			ÆË¿Ë×é Êı×é
-	 * @param		player_sum				[in-out]		ÆË¿Ë×é Êı×é
-	 * @param		m_plog					[in]			ÈÕÖ¾½Ó¿Ú
+	 * è§£ææ‰€æœ‰çš„ç©å®¶ç»„ ï¼Œè¾“å‡º ç©å®¶ç»„æ•°ç»„
+	 * @param		configfile				[in]			æ‰‘å…‹ç»„ æ•°ç»„
+	 * @param		ppplayers				[out]			æ‰‘å…‹ç»„ æ•°ç»„
+	 * @param		player_sum				[in-out]		æ‰‘å…‹ç»„ æ•°ç»„
+	 * @param		m_plog					[in]			æ—¥å¿—æ¥å£
 	 */
 	static int LoadPlayerDesc(PLAYER_TYPE &player_type);
 
 	/**
-	 * ¸ù¾İÍæ¼Ò×éÃèÊöÊı×é¹¹ÔìÍæ¼ÒÃèÊöÊı×é
-	 * @param		dst_player_types	in]			Ä¿µÄÍæ¼Ò×éÊı×é
-	 * @param		player_sum			[in-out]	Íæ¼Ò×éÊı×é³¤¶È
-	 * @param		src_player_type		[in]		Ô´Íæ¼ÒÀàĞÍ
-	 * @param		m_plog				[in]		Íæ¼Ò×éÊı×é³¤¶È
+	 * æ ¹æ®ç©å®¶ç»„æè¿°æ•°ç»„æ„é€ ç©å®¶æè¿°æ•°ç»„
+	 * @param		dst_player_types	in]			ç›®çš„ç©å®¶ç»„æ•°ç»„
+	 * @param		player_sum			[in-out]	ç©å®¶ç»„æ•°ç»„é•¿åº¦
+	 * @param		src_player_type		[in]		æºç©å®¶ç±»å‹
+	 * @param		m_plog				[in]		ç©å®¶ç»„æ•°ç»„é•¿åº¦
 	 */
 	static int CreatePlayerDesc( PLAYER_DESCS &dst_player_types, const DWORD player_sum, const PLAYER_TYPE &src_player_type );
 
 public:
 	/**
-	 * ÉèÖÃÍæ¼ÒÀàĞÍ×éID
+	 * è®¾ç½®ç©å®¶ç±»å‹ç»„ID
 	 */
 	static void SetPlayerGroupID( PLAYER_TYPE &_type, BYTE _id); 
 		
 	/**
-	 * ÉèÖÃÍæ¼ÒÀàÊıÁ¿ 
+	 * è®¾ç½®ç©å®¶ç±»æ•°é‡ 
 	 *	TODONOW  added by WangChengQing
-	 *  1. Êı¾İ´Óframework´«Èë   2. Ã»ÓĞÇø·ÖpalytypeID, ËùÒÔµ¼ÖÂÅäÖÃÎÄ¼şÖĞµÄÍæ¼ÒÀàĞÍIDÎŞÓÃ
+	 *  1. æ•°æ®ä»frameworkä¼ å…¥   2. æ²¡æœ‰åŒºåˆ†palytypeID, æ‰€ä»¥å¯¼è‡´é…ç½®æ–‡ä»¶ä¸­çš„ç©å®¶ç±»å‹IDæ— ç”¨
 	 */
 	static void SetPlayerSum( PLAYER_TYPE &_type, BYTE _sum); 
 
 	/**
-	 * ÉèÖÃÍæ¼ÒÀàĞÍÊÖÅÆÊıÁ¿
+	 * è®¾ç½®ç©å®¶ç±»å‹æ‰‹ç‰Œæ•°é‡
 	 */
 	static void SetPlayerCardSum( PLAYER_TYPE &_type, BYTE _card_sum );
 
 	/**
-	 * »ñÈ¡Íæ¼ÒÀàĞÍ×éID
+	 * è·å–ç©å®¶ç±»å‹ç»„ID
 	 */
 	static BYTE GetPlayerGroupID( PLAYER_TYPE _type); 
 
 	/**
-	 * »ñÈ¡Íæ¼ÒÀàÊıÁ¿
+	 * è·å–ç©å®¶ç±»æ•°é‡
 	 */
 	static BYTE GetPlayerSum( PLAYER_TYPE _type); 
 
 	/**
-	 * »ñÈ¡Íæ¼ÒÀàĞÍÊÖÅÆÊıÁ¿
+	 * è·å–ç©å®¶ç±»å‹æ‰‹ç‰Œæ•°é‡
 	 */
 	static BYTE GetPlayerCardSum( PLAYER_TYPE _type );
 };

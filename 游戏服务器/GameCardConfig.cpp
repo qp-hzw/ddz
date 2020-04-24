@@ -5,17 +5,17 @@
 using namespace MSXML2;
 #include <time.h>
 
-//ÓÃÓÚ²»Ï´ÅÆÄ£Ê½µÄ¿¨ÅÆÊı×é
+//ç”¨äºä¸æ´—ç‰Œæ¨¡å¼çš„å¡ç‰Œæ•°ç»„
 const BYTE CGameCardConfig::m_CardData[FULL_COUNT] = {
-	0x01,0x02,0x03,0x04,0x05,0x06,0x07,0x08,0x09,0x0A,0x0B,0x0C,0x0D,	//·½¿é A - K
-	0x11,0x12,0x13,0x14,0x15,0x16,0x17,0x18,0x19,0x1A,0x1B,0x1C,0x1D,	//Ã·»¨ A - K
-	0x21,0x22,0x23,0x24,0x25,0x26,0x27,0x28,0x29,0x2A,0x2B,0x2C,0x2D,	//ºìÌÒ A - K
-	0x31,0x32,0x33,0x34,0x35,0x36,0x37,0x38,0x39,0x3A,0x3B,0x3C,0x3D,	//ºÚÌÒ A - K
+	0x01,0x02,0x03,0x04,0x05,0x06,0x07,0x08,0x09,0x0A,0x0B,0x0C,0x0D,	//æ–¹å— A - K
+	0x11,0x12,0x13,0x14,0x15,0x16,0x17,0x18,0x19,0x1A,0x1B,0x1C,0x1D,	//æ¢…èŠ± A - K
+	0x21,0x22,0x23,0x24,0x25,0x26,0x27,0x28,0x29,0x2A,0x2B,0x2C,0x2D,	//çº¢æ¡ƒ A - K
+	0x31,0x32,0x33,0x34,0x35,0x36,0x37,0x38,0x39,0x3A,0x3B,0x3C,0x3D,	//é»‘æ¡ƒ A - K
 	0x4E,0x4F,
 };
 
 
-//Á½ÖÖÅÆĞÍµÄÅÆÖµÓ³Éäº¯Êı
+//ä¸¤ç§ç‰Œå‹çš„ç‰Œå€¼æ˜ å°„å‡½æ•°
 BYTE    CGameCardConfig::MapOfCardValue(BYTE CardData)
 {
 	if (0 == CardData)
@@ -23,7 +23,7 @@ BYTE    CGameCardConfig::MapOfCardValue(BYTE CardData)
 		return 0;
 	}
 
-	//ÅĞ¶ÏAºÍ2ºÍ´óĞ¡ÍõµÄÇé¿ö
+	//åˆ¤æ–­Aå’Œ2å’Œå¤§å°ç‹çš„æƒ…å†µ
 	if (CardData > 140 && CardData < 160)
 	{
 		return ((CardData % 10 - 1) * 16 + (CardData / 10) - 13);
@@ -34,37 +34,37 @@ BYTE    CGameCardConfig::MapOfCardValue(BYTE CardData)
 		return (CardData == 165 ? 0x4E : 0x4F);
 	}
 
-	//´Ó ÅÆÖµ+»¨É«   ==>  »¨É«+ÅÆÖµ
+	//ä» ç‰Œå€¼+èŠ±è‰²   ==>  èŠ±è‰²+ç‰Œå€¼
 	return ((CardData % 10 - 1) * 16 + CardData / 10);
 }
 
 /**
- * »ñÈ¡Ò»¸±ÅÆµÄÊıÁ¿
- * Ê¹ÓÃ xml ÅäÖÃÎÄ¼ş ½âÎöÒ»¸±ÅÆµÄÊıÁ¿
- * @param  configfile				[in]			ÅäÖÃÎÄ¼ş
- * @param  cards_sum				[in-out]		ÆË¿ËÊıÄ¿
- * @param  m_plog						[in]			ÈÕÖ¾¼ÇÂ¼
- * return					0				Õı³£
- *							-1				Òì³£
+ * è·å–ä¸€å‰¯ç‰Œçš„æ•°é‡
+ * ä½¿ç”¨ xml é…ç½®æ–‡ä»¶ è§£æä¸€å‰¯ç‰Œçš„æ•°é‡
+ * @param  configfile				[in]			é…ç½®æ–‡ä»¶
+ * @param  cards_sum				[in-out]		æ‰‘å…‹æ•°ç›®
+ * @param  m_plog						[in]			æ—¥å¿—è®°å½•
+ * return					0				æ­£å¸¸
+ *							-1				å¼‚å¸¸
  */
 int CGameCardConfig::LoadCardsSum(DWORD &cards_sum)
 {
 	int result = 0;
 
-	//Éı¼¶Ä¬ÈÏÁ½¸±ÅÆ
+	//å‡çº§é»˜è®¤ä¸¤å‰¯ç‰Œ
 	cards_sum = 108;
 
-	// ³õÊ¼»¯Êä³ö²ÎÊı
-	cards_sum = MAX_TOTAL_CARD_NUM;			//Ä¬ÈÏÖµ
+	// åˆå§‹åŒ–è¾“å‡ºå‚æ•°
+	cards_sum = MAX_TOTAL_CARD_NUM;			//é»˜è®¤å€¼
 	
 	CWHCfg::Instance()->GetItemValue("GAME", "CardSum", cards_sum);
 	if (cards_sum == 0)
 	{
-		//CLog::Log(log_error, "»ñÈ¡Ê§°Ü");
+		//CLog::Log(log_error, "è·å–å¤±è´¥");
 		result = -1;
 	}
 
-	if (result == -1) // ½âÎöÊ§°Ü
+	if (result == -1) // è§£æå¤±è´¥
 	{
 		cards_sum = 0;
 	}
@@ -74,14 +74,14 @@ int CGameCardConfig::LoadCardsSum(DWORD &cards_sum)
 
 
 /**
-* »ñÈ¡¶·Å£ÓÎÏ·µÄµÃ·Ö¼Ó±¶Ä£Ê½
-* Ê¹ÓÃ xml ÅäÖÃÎÄ¼ş ½âÎöÓÎÏ·µÄµÃ·Ö¼Ó±¶Ä£Ê½
-* @param  configfile					[in]			ÅäÖÃÎÄ¼ş
-* @param  game_score_Mode				[in]			ÓÎÏ·µÃ·ÖÄ£Ê½£º¾­µä»ò·è¿ñÄ£Ê½
-* @param  game_score_times				[in-out]		ÓÎÏ·µÃ·Ö¼Ó±¶Êı×é
-* @param  m_plog						[in]			ÈÕÖ¾¼ÇÂ¼
-* return					0				Õı³£
-*							-1				Òì³£
+* è·å–æ–—ç‰›æ¸¸æˆçš„å¾—åˆ†åŠ å€æ¨¡å¼
+* ä½¿ç”¨ xml é…ç½®æ–‡ä»¶ è§£ææ¸¸æˆçš„å¾—åˆ†åŠ å€æ¨¡å¼
+* @param  configfile					[in]			é…ç½®æ–‡ä»¶
+* @param  game_score_Mode				[in]			æ¸¸æˆå¾—åˆ†æ¨¡å¼ï¼šç»å…¸æˆ–ç–¯ç‹‚æ¨¡å¼
+* @param  game_score_times				[in-out]		æ¸¸æˆå¾—åˆ†åŠ å€æ•°ç»„
+* @param  m_plog						[in]			æ—¥å¿—è®°å½•
+* return					0				æ­£å¸¸
+*							-1				å¼‚å¸¸
 */
 int CGameCardConfig::LoadGameScoreTimes(BYTE game_score_Mode, BYTE *game_score_times)
 {
@@ -92,13 +92,13 @@ int CGameCardConfig::LoadGameScoreTimes(BYTE game_score_Mode, BYTE *game_score_t
 	}
 	memset(game_score_times, 1, sizeof(BYTE)*MAX_GAME_SCORE_TYPES);
 
-	// Ñ¡³ö¾­µäÄ£Ê½
+	// é€‰å‡ºç»å…¸æ¨¡å¼
 	BYTE type_sum = 0;
 	CWHCfg::Instance()->GetItemValue("CAME_SCORE_MODE_CLASSIC", "sum", type_sum);
 	type_sum = (type_sum > MAX_GAME_SCORE_TYPES) ? MAX_GAME_SCORE_TYPES : type_sum;
 	if (type_sum == 0)
 	{
-		//CLog::Log(log_error, "¶ÁÈ¡ µÃ·ÖÄ£Ê½Ê§°Ü");
+		//CLog::Log(log_error, "è¯»å– å¾—åˆ†æ¨¡å¼å¤±è´¥");
 		return -2;
 	}
 	for (int j = 0; j < type_sum; j++)
@@ -107,8 +107,8 @@ int CGameCardConfig::LoadGameScoreTimes(BYTE game_score_Mode, BYTE *game_score_t
 		sprintf(sz, "FF_%d", j);
 		CWHCfg::Instance()->GetItemValue("CAME_SCORE_MODE_CLASSIC", sz, game_score_times[j]);
 	}
-	// Ñ¡³ö·è¿ñ¼Ó±¶Ä£Ê½
-	// ÔİÊ±²»ĞèÒªÔö¼Ó
+	// é€‰å‡ºç–¯ç‹‚åŠ å€æ¨¡å¼
+	// æš‚æ—¶ä¸éœ€è¦å¢åŠ 
 
 	return result;
 }
@@ -116,14 +116,14 @@ int CGameCardConfig::LoadGameScoreTimes(BYTE game_score_Mode, BYTE *game_score_t
 
 
 /**
- * Ìî³ä×é 
- * ½âÎöXML ÖĞ ËùÓĞÅÆ×é½ÚµãĞÅÏ¢ 
- * @param  configfile				[in]			ÅäÖÃÎÄ¼ş
- * @param  ppgroups					[out]			ÆË¿ËÅäÖÃ
- * @param  group_sum				[in-out]		×éÊµ¼ÊÊıÁ¿
- * @m_plog							[in]			ÈÕÖ¾¼ÇÂ¼
- * return							 0				Õı³£
- *							        -1				Òì³£
+ * å¡«å……ç»„ 
+ * è§£æXML ä¸­ æ‰€æœ‰ç‰Œç»„èŠ‚ç‚¹ä¿¡æ¯ 
+ * @param  configfile				[in]			é…ç½®æ–‡ä»¶
+ * @param  ppgroups					[out]			æ‰‘å…‹é…ç½®
+ * @param  group_sum				[in-out]		ç»„å®é™…æ•°é‡
+ * @m_plog							[in]			æ—¥å¿—è®°å½•
+ * return							 0				æ­£å¸¸
+ *							        -1				å¼‚å¸¸
  */
 int CGameCardConfig::LoadCardGroups(CARD_GOURP *groups, DWORD &group_sum)
 {
@@ -137,16 +137,16 @@ int CGameCardConfig::LoadCardGroups(CARD_GOURP *groups, DWORD &group_sum)
 	BYTE card_group_num = 0;
 	CWHCfg::Instance()->GetItemValue("GAME", "CardGroupNum", card_group_num);
 
-	//È¡×îĞ¡µÄ¿¨ÅÆÅÆ×éÊı
+	//å–æœ€å°çš„å¡ç‰Œç‰Œç»„æ•°
 	group_sum = (card_group_num > MAX_CARD_GROUP_NUM) ? MAX_CARD_GROUP_NUM : card_group_num;
 
 	if (group_sum <= 0)
 	{
-		//CLog::Log(log_error, "¶ÁÈ¡ÅäÖÃÎÄ¼ş, card group numÊ§°Ü");
+		//CLog::Log(log_error, "è¯»å–é…ç½®æ–‡ä»¶, card group numå¤±è´¥");
 		return -1;
 	}
 
-	for (int j = 0; j < group_sum; j++)	 // ±éÀúËùÓĞµÄ CARD_GOURP
+	for (int j = 0; j < group_sum; j++)	 // éå†æ‰€æœ‰çš„ CARD_GOURP
 	{
 		char psz[20];
 		sprintf(psz, "CARD_GROUP_%d", j);
@@ -160,15 +160,15 @@ int CGameCardConfig::LoadCardGroups(CARD_GOURP *groups, DWORD &group_sum)
 }
 
 /**
- * ½«Ö¸¶¨µÄ×éËù±êÊ¶µÄÅÆ×é×ª»»ÎªÖ½ÅÆÊı×éÖĞµÄÊı¾İ
- * ´Ëº¯Êı´ÓÆË¿ËÁĞ±íÖĞÕÒ³öËùÓĞÂú×ã group Ìõ¼şµÄÖ½ÅÆ²¢Ìî³äµ½ cards Êı×éÖĞ£¬ ²¢·µ»ØÖ´ĞĞÍê³Éºó cards Êı×éÖĞµÄ³ÉÔ±Êı
- * @param		group					[in]			ÆË¿Ë×é
- * @param		card_ranks				[in]			ÆË¿ËÅäÖÃ
- * @param		card_ranks_sum			[in]			ÆË¿ËÅÅÁĞÊıÄ¿
- * @param		cards					[in-out]		ÆË¿ËÊı×é
- * @param		cardslen				[in]			ÆË¿ËÊı×é³¤¶È
- * @param		curlen					[in-out]		ÒÑ¾­Ìî³äµÄ³¤¶È£¬ ×¢Òâ£¬´Ë²ÎÊı»á½«ÏÖÓĞÖµÓëÌî³ä½øÈ¥µÄÖµÏà¼Ó
- *														ËùÒÔ´Ë²ÎÊıµÄÊä³öÖµÓëÊäÈëÖµÓĞ¹Ø
+ * å°†æŒ‡å®šçš„ç»„æ‰€æ ‡è¯†çš„ç‰Œç»„è½¬æ¢ä¸ºçº¸ç‰Œæ•°ç»„ä¸­çš„æ•°æ®
+ * æ­¤å‡½æ•°ä»æ‰‘å…‹åˆ—è¡¨ä¸­æ‰¾å‡ºæ‰€æœ‰æ»¡è¶³ group æ¡ä»¶çš„çº¸ç‰Œå¹¶å¡«å……åˆ° cards æ•°ç»„ä¸­ï¼Œ å¹¶è¿”å›æ‰§è¡Œå®Œæˆå cards æ•°ç»„ä¸­çš„æˆå‘˜æ•°
+ * @param		group					[in]			æ‰‘å…‹ç»„
+ * @param		card_ranks				[in]			æ‰‘å…‹é…ç½®
+ * @param		card_ranks_sum			[in]			æ‰‘å…‹æ’åˆ—æ•°ç›®
+ * @param		cards					[in-out]		æ‰‘å…‹æ•°ç»„
+ * @param		cardslen				[in]			æ‰‘å…‹æ•°ç»„é•¿åº¦
+ * @param		curlen					[in-out]		å·²ç»å¡«å……çš„é•¿åº¦ï¼Œ æ³¨æ„ï¼Œæ­¤å‚æ•°ä¼šå°†ç°æœ‰å€¼ä¸å¡«å……è¿›å»çš„å€¼ç›¸åŠ 
+ *														æ‰€ä»¥æ­¤å‚æ•°çš„è¾“å‡ºå€¼ä¸è¾“å…¥å€¼æœ‰å…³
  */
 int CGameCardConfig::TransGroup(const CARD_GOURP *group,
 	CARD_DESCS cards,
@@ -176,7 +176,7 @@ int CGameCardConfig::TransGroup(const CARD_GOURP *group,
 	DWORD &curIndex)
 
 {
-	// ÊäÈë²ÎÊıĞ£Ñé
+	// è¾“å…¥å‚æ•°æ ¡éªŒ
 	if (NULL == group ||
 		NULL == cards ||
 		maxlen < 1 ||
@@ -188,7 +188,7 @@ int CGameCardConfig::TransGroup(const CARD_GOURP *group,
 
 	int result = 0;
 
-	//Ğ£ÑéÊı¾İ
+	//æ ¡éªŒæ•°æ®
 	if (group->begin < 1 || group->begin >15
 		|| group->end < 1 || group->end  >15
 		|| group->begin > group->end)
@@ -196,22 +196,22 @@ int CGameCardConfig::TransGroup(const CARD_GOURP *group,
 		return -1;
 	}
 
-	// ±éÀúÖ½ÅÆÁĞ±í£¬ÕÒ³öËùÓĞ·ûºÏÌõ¼şµÄÅÆ
-	for (unsigned i = group->begin; i <= group->end; ++i)	//¿¨ÅÆµãÊı
+	// éå†çº¸ç‰Œåˆ—è¡¨ï¼Œæ‰¾å‡ºæ‰€æœ‰ç¬¦åˆæ¡ä»¶çš„ç‰Œ
+	for (unsigned i = group->begin; i <= group->end; ++i)	//å¡ç‰Œç‚¹æ•°
 	{
-		for (unsigned k = 0; k < group->sum; ++k)		//Í¬Ò»ÕÅÓĞ¼¸ÕÅ
+		for (unsigned k = 0; k < group->sum; ++k)		//åŒä¸€å¼ æœ‰å‡ å¼ 
 		{
-			// »¨É«
-			if (curIndex < maxlen) // ¼ì²écard »º³åÇøÊÇ·ñ»¹ÓĞ¿ÕÎ»
+			// èŠ±è‰²
+			if (curIndex < maxlen) // æ£€æŸ¥card ç¼“å†²åŒºæ˜¯å¦è¿˜æœ‰ç©ºä½
 			{
-				cards[curIndex] = i; //µÍËÄÎ»ÎªÅÆÖµ
-				cards[curIndex] += group->color * (0xF + 1);// Ìî³ä»¨É« 5-8Î»±íÊ¾»¨É«
-				cards[curIndex] += group->id * (0xF + 1) * (0xF + 1); //9-12Î»±íÊ¾id
+				cards[curIndex] = i; //ä½å››ä½ä¸ºç‰Œå€¼
+				cards[curIndex] += group->color * (0xF + 1);// å¡«å……èŠ±è‰² 5-8ä½è¡¨ç¤ºèŠ±è‰²
+				cards[curIndex] += group->id * (0xF + 1) * (0xF + 1); //9-12ä½è¡¨ç¤ºid
 				++(curIndex);
 			}
 			else
 			{
-				// Òç³ö
+				// æº¢å‡º
 				result = -1;
 			}
 		}
@@ -221,47 +221,47 @@ int CGameCardConfig::TransGroup(const CARD_GOURP *group,
 }
 
 /**
- * ÌáÈ¡ËùÓĞ×é
- * ´Ëº¯Êı´ÓÆË¿ËÁĞ±íÖĞÕÒ³öËùÓĞÂú×ã group Ìõ¼şµÄÖ½ÅÆ²¢Ìî³äµ½ cards Êı×éÖĞ£¬ ²¢·µ»ØÖ´ĞĞÍê³Éºó cards Êı×éÖĞµÄ³ÉÔ±Êı
- * @param		groups					[in]			ÆË¿Ë×é Êı×é
- * @param		groups_len				[in]			ÆË¿Ë×é Êı×é×î´ó³¤¶È£¬×¢Òâ£¬²»ĞèÒªÊÇÊı×éÖĞÊµ¼Ê³ÉÔ±¸öÊı
- * @param		card_ranks				[in]			ÆË¿ËÅäÖÃ
- * @param		card_ranks_sum			[in]			ÆË¿ËÅÅÁĞÊıÄ¿
- * @param		ppcards					[out]			ÆË¿ËÊı×é
- * @param		cardslen				[in-out]		ÆË¿ËÊı×é³¤¶È,ÊäÈë¹À²â³¤¶È£¬·µ»ØÊµ¼Ê³¤¶È
+ * æå–æ‰€æœ‰ç»„
+ * æ­¤å‡½æ•°ä»æ‰‘å…‹åˆ—è¡¨ä¸­æ‰¾å‡ºæ‰€æœ‰æ»¡è¶³ group æ¡ä»¶çš„çº¸ç‰Œå¹¶å¡«å……åˆ° cards æ•°ç»„ä¸­ï¼Œ å¹¶è¿”å›æ‰§è¡Œå®Œæˆå cards æ•°ç»„ä¸­çš„æˆå‘˜æ•°
+ * @param		groups					[in]			æ‰‘å…‹ç»„ æ•°ç»„
+ * @param		groups_len				[in]			æ‰‘å…‹ç»„ æ•°ç»„æœ€å¤§é•¿åº¦ï¼Œæ³¨æ„ï¼Œä¸éœ€è¦æ˜¯æ•°ç»„ä¸­å®é™…æˆå‘˜ä¸ªæ•°
+ * @param		card_ranks				[in]			æ‰‘å…‹é…ç½®
+ * @param		card_ranks_sum			[in]			æ‰‘å…‹æ’åˆ—æ•°ç›®
+ * @param		ppcards					[out]			æ‰‘å…‹æ•°ç»„
+ * @param		cardslen				[in-out]		æ‰‘å…‹æ•°ç»„é•¿åº¦,è¾“å…¥ä¼°æµ‹é•¿åº¦ï¼Œè¿”å›å®é™…é•¿åº¦
  */
 int CGameCardConfig::TransGroups(const CARD_GOURP group[MAX_CARD_GROUP_NUM], const int &nGroupLen,
 	CARD_DESC *pGameCards, DWORD &dwCardSum)
 {
-	//Ğ£Ñé
+	//æ ¡éªŒ
 	if (NULL == pGameCards || 0 > nGroupLen)
 	{
 		return -1;
 	}
 
-	// Êä³ö²ÎÊı³õÊ¼»¯
+	// è¾“å‡ºå‚æ•°åˆå§‹åŒ–
 	DWORD curIndex = 0;
 
-	// ±éÀú×ª»»
+	// éå†è½¬æ¢
 	int result = 0;
 	for (int i = 0; i < nGroupLen; ++i)
 	{
-		if (0 != group[i].sum) //¼ì²éµ±Ç°×éÊÇ·ñÎª¿Õ
+		if (0 != group[i].sum) //æ£€æŸ¥å½“å‰ç»„æ˜¯å¦ä¸ºç©º
 		{
-			result = TransGroup(&group[i], pGameCards, dwCardSum, curIndex); // ½âÎöµ¥×é
+			result = TransGroup(&group[i], pGameCards, dwCardSum, curIndex); // è§£æå•ç»„
 			if (0 != result)
 			{
-				// ·¢ÉúÒì³£
+				// å‘ç”Ÿå¼‚å¸¸
 				//if (NULL != m_plog)
 				//TODOLATER
-				//m_plog->LogSingleLine(L"Ìî³äÅÆ×éÒì³£", NULL);
+				//m_plog->LogSingleLine(L"å¡«å……ç‰Œç»„å¼‚å¸¸", NULL);
 				result = -1;
 				break;
 			}
 		}
 	}
 
-	// ÅÆÊıĞ£Ñé£¬Èç¹ûÅÆÊıĞ¡ÓÚ×î´óÅÆÊı£¬Ôò°´Êµ¼Ê¿¨ÅÆÊıËã
+	// ç‰Œæ•°æ ¡éªŒï¼Œå¦‚æœç‰Œæ•°å°äºæœ€å¤§ç‰Œæ•°ï¼Œåˆ™æŒ‰å®é™…å¡ç‰Œæ•°ç®—
 	if ((curIndex + 1) < dwCardSum)
 	{
 		dwCardSum = curIndex;
@@ -272,36 +272,36 @@ int CGameCardConfig::TransGroups(const CARD_GOURP group[MAX_CARD_GROUP_NUM], con
 
 
 /**
- * Éú³ÉÒ»¸öÂÒĞòÊı×é
- * ´Ëº¯Êı»áÉú³ÉÒ»¸öarlen ³¤¶ÈµÄÂÒĞòÊı×é£¨0µ½src_len-1£©²¢Ìî³äµ½arrayµÄ0µ½src_len-1Î»ÖÃ
- * @param			randarray			[in-out]		Êı×é	
- * @param			src_len				[in]			Êı×é³¤¶È	
- * @param			m_plog				[in]			ÈÕÖ¾	
+ * ç”Ÿæˆä¸€ä¸ªä¹±åºæ•°ç»„
+ * æ­¤å‡½æ•°ä¼šç”Ÿæˆä¸€ä¸ªarlen é•¿åº¦çš„ä¹±åºæ•°ç»„ï¼ˆ0åˆ°src_len-1ï¼‰å¹¶å¡«å……åˆ°arrayçš„0åˆ°src_len-1ä½ç½®
+ * @param			randarray			[in-out]		æ•°ç»„	
+ * @param			src_len				[in]			æ•°ç»„é•¿åº¦	
+ * @param			m_plog				[in]			æ—¥å¿—	
  */
 int CGameCardConfig::CreateOutOrderArray( DWORD randarray[], const int src_len )
 {
-	// ²ÎÊıĞ£Ñé
+	// å‚æ•°æ ¡éªŒ
 	if( NULL == randarray )
 	{
 
 		return -1;
 	}
 
-	// Éú³ÉÒ»¸öÂÒĞòÊı×é
+	// ç”Ÿæˆä¸€ä¸ªä¹±åºæ•°ç»„
 	memset( randarray, 0, src_len * sizeof( DWORD ));
 	for( int i = 0; i < src_len ; i++ )
 	{
-		// Éú³ÉÒ»¸ö0µ½£¨src_len - i - 1 £©Ö®¼äµÄËæ»úÊı
+		// ç”Ÿæˆä¸€ä¸ª0åˆ°ï¼ˆsrc_len - i - 1 ï¼‰ä¹‹é—´çš„éšæœºæ•°
 		srand((unsigned)time(NULL));
 		int randsum = rand()%( src_len - i );
 
-		// ½« i Ìîµ½µÚ randsum ¸ö¿ÕÎ»£¨´Ó 0 ¿ªÊ¼ Ëã£©
-		int index = 0; // ¿ÕÎ»¸öÊı
+		// å°† i å¡«åˆ°ç¬¬ randsum ä¸ªç©ºä½ï¼ˆä» 0 å¼€å§‹ ç®—ï¼‰
+		int index = 0; // ç©ºä½ä¸ªæ•°
 		for( int j = 0; j < src_len; j++)
 		{
 			if( 0 == randarray[j] )
 			{
-				// ÅĞ¶ÏÊÇ·ñÊÇĞèÒªµÄÎ»ÖÃ
+				// åˆ¤æ–­æ˜¯å¦æ˜¯éœ€è¦çš„ä½ç½®
 				if( index == randsum )
 				{
 					randarray[j] = i;
@@ -317,12 +317,12 @@ int CGameCardConfig::CreateOutOrderArray( DWORD randarray[], const int src_len )
 }
 
 ////////////////////////////////////////////
-//²»Ï´ÅÆÄ£Ê½µÄÏ´ÅÆËã·¨       by  lih
+//ä¸æ´—ç‰Œæ¨¡å¼çš„æ´—ç‰Œç®—æ³•       by  lih
 int CGameCardConfig::CreateBuXiPaiArray(BYTE randarray[], const int src_len)
 {
 	cout << "func CreateBuXiPaiArray begin" << endl;
 
-	// ²ÎÊıĞ£Ñé
+	// å‚æ•°æ ¡éªŒ
 	if (NULL == randarray)
 	{
 		return -1;
@@ -331,7 +331,7 @@ int CGameCardConfig::CreateBuXiPaiArray(BYTE randarray[], const int src_len)
 	BYTE count = 0;
 	BYTE index[2] = { 0 };
 
-	//Ëæ»úÁ½¸öÏÂ±ê½»»»15´Î   //ÏÓÅÆ²»ºÃ ¸Ä³É7´Î
+	//éšæœºä¸¤ä¸ªä¸‹æ ‡äº¤æ¢15æ¬¡   //å«Œç‰Œä¸å¥½ æ”¹æˆ7æ¬¡
 	while (count < 7)
 	{
 		index[0] = rand() % src_len;
@@ -366,10 +366,10 @@ bool CGameCardConfig::flushcard(BYTE card[], int &cardsum, BYTE boomcard[], int 
 	BYTE tmpboom[54] = { 0 };
 	int boomcount = 0;
 
-	//Ëæ»ú2~7¸öÕ¨µ¯
+	//éšæœº2~7ä¸ªç‚¸å¼¹
 	int boomNum = (rand() % 6) + 2;
 
-	//Ëæ»úÈ¡Õ¨µ¯
+	//éšæœºå–ç‚¸å¼¹
 	int index = 0;
 	for (int i = 0; i < boomNum; i++)
 	{
@@ -391,7 +391,7 @@ bool CGameCardConfig::flushcard(BYTE card[], int &cardsum, BYTE boomcard[], int 
 		}
 	}
 
-	//Ï´ÅÆ
+	//æ´—ç‰Œ
 	int iSend = 0;
 	BYTE flushcard[54] = { 0 };
 	do
@@ -402,7 +402,7 @@ bool CGameCardConfig::flushcard(BYTE card[], int &cardsum, BYTE boomcard[], int 
 		tmpcard[station] = tmpcard[54 - iSend];
 	} while (iSend < 54);
 
-	//È¥³ıÎŞĞ§¿¨ÅÆ
+	//å»é™¤æ— æ•ˆå¡ç‰Œ
 	index = 0;
 	for (int i = 0; i < 54; i++)
 	{
@@ -423,12 +423,12 @@ bool CGameCardConfig::flushcard(BYTE card[], int &cardsum, BYTE boomcard[], int 
 ////////////////////////////////////////////
 
 /** 
- * ÂÒĞòÅÅÁĞÊı×é, Ï´ÅÆ
- * Ã¿¾Ö¿ªÊ¼Ê±, ½«ÅÆµÄË³Ğò´òÂÒ
- * @param		dest_cards			[in-out]		Ä¿µÄÊı×é£¬ ÂÒĞòºóµÄÊı×é
- * @param		dest_len			[in]			Ä¿µÄÊı×é³¤¶È
- * @param		src_cards			[in]			Ô´ÅÆÊı×é£¬ ÓÉÅäÖÃÎÄ¼şÉú³ÉµÄÓÎÏ·ÅÆ×é
- * @param		src_len				[in]			Ô´ÅÆÊıÁ¿£¬ ×¢Òâ£¬´ËÊı¾İ±ØĞëÊÇÅÆ×éµÄÊµ¼Ê³¤¶È
+ * ä¹±åºæ’åˆ—æ•°ç»„, æ´—ç‰Œ
+ * æ¯å±€å¼€å§‹æ—¶, å°†ç‰Œçš„é¡ºåºæ‰“ä¹±
+ * @param		dest_cards			[in-out]		ç›®çš„æ•°ç»„ï¼Œ ä¹±åºåçš„æ•°ç»„
+ * @param		dest_len			[in]			ç›®çš„æ•°ç»„é•¿åº¦
+ * @param		src_cards			[in]			æºç‰Œæ•°ç»„ï¼Œ ç”±é…ç½®æ–‡ä»¶ç”Ÿæˆçš„æ¸¸æˆç‰Œç»„
+ * @param		src_len				[in]			æºç‰Œæ•°é‡ï¼Œ æ³¨æ„ï¼Œæ­¤æ•°æ®å¿…é¡»æ˜¯ç‰Œç»„çš„å®é™…é•¿åº¦
  */
 int CGameCardConfig::OutOrder(		CARD_DESCS dest_cards, 
 									const DWORD dest_len, 
@@ -438,7 +438,7 @@ int CGameCardConfig::OutOrder(		CARD_DESCS dest_cards,
 									CARD_DESCS boom_cards,
 									BYTE &boomsum)
 {
-	// Ğ£ÑéÊäÈë²ÎÊı
+	// æ ¡éªŒè¾“å…¥å‚æ•°
 	if( NULL == dest_cards	||
 		NULL == source_cards ||
 		dest_len < src_len  )
@@ -450,8 +450,8 @@ int CGameCardConfig::OutOrder(		CARD_DESCS dest_cards,
 
 	if (GAME_SCORE_MODE_CLASSIC == nMode)
 	{
-		// Éú³ÉÒ»¸öÂÒĞòÊı×é
-		DWORD *randarray = new DWORD[src_len](); // ÂÒĞò»º³åÇø
+		// ç”Ÿæˆä¸€ä¸ªä¹±åºæ•°ç»„
+		DWORD *randarray = new DWORD[src_len](); // ä¹±åºç¼“å†²åŒº
 
 		if (0 == CreateOutOrderArray(randarray, src_len))
 		{
@@ -462,7 +462,7 @@ int CGameCardConfig::OutOrder(		CARD_DESCS dest_cards,
 		}
 		else
 		{
-			// ÂÒĞòÅÅÁĞ´íÎó
+			// ä¹±åºæ’åˆ—é”™è¯¯
 			result = -1;
 		}
 
@@ -470,7 +470,7 @@ int CGameCardConfig::OutOrder(		CARD_DESCS dest_cards,
 	}
 	else
 	{
-		// Éú³ÉÒ»¸ö²»Ï´ÅÆÄ£Ê½µÄÂÒĞòÊı×é
+		// ç”Ÿæˆä¸€ä¸ªä¸æ´—ç‰Œæ¨¡å¼çš„ä¹±åºæ•°ç»„
 		BYTE *tmpCards = new BYTE[src_len]();
 		int tmpNum = 0;
 		BYTE *BoomCards = new BYTE[src_len]();
@@ -492,10 +492,10 @@ int CGameCardConfig::OutOrder(		CARD_DESCS dest_cards,
 }
 
 /**
- * ±È½ÏÁ½ÕÅÅÆ´óĞ¡
- * @param			self			[in]		ÅÆ	
- * @param			rival			[in]		ÅÆ	
- * @param			flag			[in-out]	·µ»Ø£¬ Èôself ´ó, Ôò·µ»ØTRUE, ·ñÔò·µ»ØFLASE	
+ * æ¯”è¾ƒä¸¤å¼ ç‰Œå¤§å°
+ * @param			self			[in]		ç‰Œ	
+ * @param			rival			[in]		ç‰Œ	
+ * @param			flag			[in-out]	è¿”å›ï¼Œ è‹¥self å¤§, åˆ™è¿”å›TRUE, å¦åˆ™è¿”å›FLASE	
  */
 int CGameCardConfig::CompareCards( const CARD_DESC *self, const CARD_DESC *rival, BOOL *flag)
 {
@@ -535,16 +535,16 @@ int CGameCardConfig::CompareCards( const CARD_DESC *self, const CARD_DESC *rival
 }
 
 /**
- * ÅÆÅÅĞò
- * ÏÈ°´µãÊıÅÅ£¬È»ºó°´»¨É«ÅÅ, ·½Ê½Îª´ÓĞ¡µ½´ó
- * @param			cards				[in-out]		ÅÆ×é	
- * @param			cardslen			[in]			ÅÆ×é³¤¶È	
+ * ç‰Œæ’åº
+ * å…ˆæŒ‰ç‚¹æ•°æ’ï¼Œç„¶åæŒ‰èŠ±è‰²æ’, æ–¹å¼ä¸ºä»å°åˆ°å¤§
+ * @param			cards				[in-out]		ç‰Œç»„	
+ * @param			cardslen			[in]			ç‰Œç»„é•¿åº¦	
  */
 int CGameCardConfig::OrderCards( CARD_DESCS cards, const DWORD cardslen )
 {
-	// ÊäÈëĞ£Ñé
+	// è¾“å…¥æ ¡éªŒ
 
-	// ÅÅĞò
+	// æ’åº
 	int result = 0;
 
 	CARD_DESC tmp_cards;
@@ -570,25 +570,25 @@ int CGameCardConfig::OrderCards( CARD_DESCS cards, const DWORD cardslen )
 
 
 /**
- * ÌáÈ¡¿¨ÅÆµãÊı
+ * æå–å¡ç‰Œç‚¹æ•°
  */
 BYTE CGameCardConfig::GetCardScore( CARD_DESC card )
 {
-	return (card & 0x000F); //È¡0-4Î»
+	return (card & 0x000F); //å–0-4ä½
 }
 
 /**
-* ÌáÈ¡¿¨ÅÆ»¨É«
+* æå–å¡ç‰ŒèŠ±è‰²
 */
 BYTE CGameCardConfig::GetCardColor(CARD_DESC card)
 {
-	return (card & 0x00F0 ) >> 4; //È¡4-8Î» << 4
+	return (card & 0x00F0 ) >> 4; //å–4-8ä½ << 4
 }
 
 /**
-* ÌáÈ¡¿¨ÅÆ×é
+* æå–å¡ç‰Œç»„
 */
 BYTE CGameCardConfig::GetCardGroup( CARD_DESC card )
 {
-	return (card & 0x0F00) >> 8; //È¡8-12Î»
+	return (card & 0x0F00) >> 8; //å–8-12ä½
 }

@@ -8,156 +8,156 @@
 
 enum GameRecIndex
 {
-	chariID = 0,				//¡¾ÒÎ×ÓºÅ¡¿¿ªÊ¼×Ö½ÚÊı¡¢Êı¾İ´óĞ¡Ë÷Òı
-	nickName,					//¡¾êÇ³Æ¡¿¿ªÊ¼×Ö½ÚÊı¡¢Êı¾İ´óĞ¡Ë÷Òı
-	robResult,					//¡¾ÇÀ×¯½á¹û¡¿¿ªÊ¼×Ö½ÚÊı¡¢Êı¾İ´óĞ¡Ë÷Òı
-	betStart,					//¡¾ÏÂ×¢¿ªÊ¼¡¿Ê¼×Ö½ÚÊı¡¢Êı¾İ´óĞ¡Ë÷Òı
-	betResult,					//¡¾ÏÂ×¢½á¹û¡¿¿ªÊ¼×Ö½ÚÊı¡¢Êı¾İ´óĞ¡Ë÷Òı		
-	sendCard,					//¡¾·¢ÅÆ¡¿¿ªÊ¼×Ö½ÚÊı¡¢Êı¾İ´óĞ¡Ë÷Òı
-	showCard,					//¡¾Ì¯ÅÆ¡¿¿ªÊ¼×Ö½ÚÊı¡¢Êı¾İ´óĞ¡Ë÷Òı
-	xjGameEnd					//¡¾Ğ¡¾Ö½áÊø¡¿¿ªÊ¼×Ö½ÚÊı¡¢Êı¾İ´óĞ¡Ë÷Òı
+	chariID = 0,				//ã€æ¤…å­å·ã€‘å¼€å§‹å­—èŠ‚æ•°ã€æ•°æ®å¤§å°ç´¢å¼•
+	nickName,					//ã€æ˜µç§°ã€‘å¼€å§‹å­—èŠ‚æ•°ã€æ•°æ®å¤§å°ç´¢å¼•
+	robResult,					//ã€æŠ¢åº„ç»“æœã€‘å¼€å§‹å­—èŠ‚æ•°ã€æ•°æ®å¤§å°ç´¢å¼•
+	betStart,					//ã€ä¸‹æ³¨å¼€å§‹ã€‘å§‹å­—èŠ‚æ•°ã€æ•°æ®å¤§å°ç´¢å¼•
+	betResult,					//ã€ä¸‹æ³¨ç»“æœã€‘å¼€å§‹å­—èŠ‚æ•°ã€æ•°æ®å¤§å°ç´¢å¼•		
+	sendCard,					//ã€å‘ç‰Œã€‘å¼€å§‹å­—èŠ‚æ•°ã€æ•°æ®å¤§å°ç´¢å¼•
+	showCard,					//ã€æ‘Šç‰Œã€‘å¼€å§‹å­—èŠ‚æ•°ã€æ•°æ®å¤§å°ç´¢å¼•
+	xjGameEnd					//ã€å°å±€ç»“æŸã€‘å¼€å§‹å­—èŠ‚æ•°ã€æ•°æ®å¤§å°ç´¢å¼•
 };
 
-//Ğ¡¾ÖÓÎÏ·½áÊø£¬ÓÎÏ·Â¼Ïñ½á¹¹Ìå
-//(ÒÎ×ÓID + Íæ¼ÒêÇ³Æ + ÇÀ×¯½á¹û + ÏÂ×¢½á¹û + Ì¯ÅÆ)*MAX_CHAIR_COUNT + (ÏÂ×¢¿ªÊ¼ + ·¢ÅÆ + Ğ¡¾Ö½áÊø)*1 + ¶¨Ê±Æ÷*3
+//å°å±€æ¸¸æˆç»“æŸï¼Œæ¸¸æˆå½•åƒç»“æ„ä½“
+//(æ¤…å­ID + ç©å®¶æ˜µç§° + æŠ¢åº„ç»“æœ + ä¸‹æ³¨ç»“æœ + æ‘Šç‰Œ)*MAX_CHAIR_COUNT + (ä¸‹æ³¨å¼€å§‹ + å‘ç‰Œ + å°å±€ç»“æŸ)*1 + å®šæ—¶å™¨*3
 struct GameRecord
 {
-	BYTE *pRecData;			// ÓÎÏ·Â¼ÏñÊı¾İ	//pRecDataµÄ´óĞ¡ =  nEachGameSize
-	int nRecOffset[8];		// ÓÎÏ·Â¼ÏñÊı×éË÷Òı£¬ÓÃÀ´Ë÷ÒıÂ¼ÏñÊı¾İ,ÀıÈçÍæ¼ÒêÇ³Æ´ÓµÚ25¸ö×Ö½Ú¿ªÊ¼
-	int nStructSize[8];		// Ã¿¸ö´æÈëÂ¼ÏñµÄ½á¹¹ÌåÊı¾İ´óĞ¡
-	int nEachGameSize;		// Ã¿¾ÖÓÎÏ·µÄÊı¾İ´óĞ¡
-	time_t time_start;		// Ä³¸ö¼ÆÊ±Æ÷¿ªÊ¼µÄÊ±¼ä
-	time_t time_end;		// Ä³¸ö¶¨Ê±Æ÷½áÊøµÄÊ±¼ä
+	BYTE *pRecData;			// æ¸¸æˆå½•åƒæ•°æ®	//pRecDataçš„å¤§å° =  nEachGameSize
+	int nRecOffset[8];		// æ¸¸æˆå½•åƒæ•°ç»„ç´¢å¼•ï¼Œç”¨æ¥ç´¢å¼•å½•åƒæ•°æ®,ä¾‹å¦‚ç©å®¶æ˜µç§°ä»ç¬¬25ä¸ªå­—èŠ‚å¼€å§‹
+	int nStructSize[8];		// æ¯ä¸ªå­˜å…¥å½•åƒçš„ç»“æ„ä½“æ•°æ®å¤§å°
+	int nEachGameSize;		// æ¯å±€æ¸¸æˆçš„æ•°æ®å¤§å°
+	time_t time_start;		// æŸä¸ªè®¡æ—¶å™¨å¼€å§‹çš„æ—¶é—´
+	time_t time_end;		// æŸä¸ªå®šæ—¶å™¨ç»“æŸçš„æ—¶é—´
 };
 
 
-//ÓÎÏ·×À×ÓÀà
+//æ¸¸æˆæ¡Œå­ç±»
 class CTableFrameSink : public ITableFrameSink
 {
-	//×é¼ş±äÁ¿
+	//ç»„ä»¶å˜é‡
 protected:
-	//Èı¸öÀà´¦ÀíÆåÅÆ×ÓÓÎÏ·Í¨ÓÃµÄ²¿·Ö
-	CGameData						m_GameData;								//ÓÎÏ·Âß¼­¹ÜÀí
-	CGameLogic						* m_GameLogic;							//ÓÎÏ·Âß¼­½Ó¿Ú
-	CGameAccess						* m_GameAccess;							//ÓÎÏ·²éÑ¯½Ó¿Ú
+	//ä¸‰ä¸ªç±»å¤„ç†æ£‹ç‰Œå­æ¸¸æˆé€šç”¨çš„éƒ¨åˆ†
+	CGameData						m_GameData;								//æ¸¸æˆé€»è¾‘ç®¡ç†
+	CGameLogic						* m_GameLogic;							//æ¸¸æˆé€»è¾‘æ¥å£
+	CGameAccess						* m_GameAccess;							//æ¸¸æˆæŸ¥è¯¢æ¥å£
 
-	ITableFrame						* m_pITableFrame;						//¿ò¼Ü½Ó¿Ú
+	ITableFrame						* m_pITableFrame;						//æ¡†æ¶æ¥å£
 
-	tagTableCfg						* m_pRoomRuleOption;					//·¿¼ä¹æÔò
+	tagTableCfg						* m_pRoomRuleOption;					//æˆ¿é—´è§„åˆ™
 
-	GameRecord						m_GameRec;								//ÓÎÏ·Â¼ÏñÊı¾İ½á¹¹Ìå
+	GameRecord						m_GameRec;								//æ¸¸æˆå½•åƒæ•°æ®ç»“æ„ä½“
 
-	AILogic							m_AILogic;							    //AI³öÅÆÂß¼­Àà
-	HandCardData					m_HandCardData[MAX_CHAIR_COUNT];						//AIÊÖÅÆÊı¾İÀà
+	AILogic							m_AILogic;							    //AIå‡ºç‰Œé€»è¾‘ç±»
+	HandCardData					m_HandCardData[MAX_CHAIR_COUNT];						//AIæ‰‹ç‰Œæ•°æ®ç±»
 
-	//º¯Êı¶¨Òå
+	//å‡½æ•°å®šä¹‰
 public:
-	//¹¹Ôìº¯Êı
+	//æ„é€ å‡½æ•°
 	CTableFrameSink();
-	//Îö¹¹º¯Êı
+	//ææ„å‡½æ•°
 	virtual ~CTableFrameSink();
 
-	//¹ÜÀí½Ó¿Ú
+	//ç®¡ç†æ¥å£
 public:
-	//³õÊ¼»¯
+	//åˆå§‹åŒ–
 	virtual bool Initialization(ITableFrame *pTableFrame, tagTableRule *comRule);
 
-	//ÓÎÏ·ÊÂ¼ş
+	//æ¸¸æˆäº‹ä»¶
 public:
-	//ÓÎÏ·¿ªÊ¼
+	//æ¸¸æˆå¼€å§‹
 	virtual bool OnEventGameStart();
-	//ÓÎÏ·½áÊø
+	//æ¸¸æˆç»“æŸ
 	virtual bool OnEventGameConclude(BYTE cbReason);
-	//·¢ËÍ³¡¾°
+	//å‘é€åœºæ™¯
 	virtual bool OnEventSendGameScene(WORD wChairID);
 
-	//ÊÂ¼ş½Ó¿Ú
+	//äº‹ä»¶æ¥å£
 public:
-	// ¶¨Ê±Æ÷ÊÂ¼ş
+	// å®šæ—¶å™¨äº‹ä»¶
 	virtual bool OnTimerMessage(DWORD wTimerID, WPARAM wBindParam);
-	//ÓÎÏ·ÏûÏ¢´¦Àí
+	//æ¸¸æˆæ¶ˆæ¯å¤„ç†
 	virtual bool OnGameMessage(WORD wSubCmdID, VOID * pData, WORD wDataSize, WORD wChairID);
 
-	//ÍĞ¹Ü½Ó¿Ú
+	//æ‰˜ç®¡æ¥å£
 public:
-	//ÍĞ¹Ü
+	//æ‰˜ç®¡
 	virtual bool PlayerTuoGuan(WORD wChairID);
-	//È¡ÏûÍĞ¹Ü
+	//å–æ¶ˆæ‰˜ç®¡
 	virtual bool PlayerCancelTuoGuan(WORD wChairID);
 
-	//ÏìÓ¦clientÊÂ¼ş
+	//å“åº”clientäº‹ä»¶
 protected:
-	//ÁÁÖ÷ÊÂ¼ş
+	//äº®ä¸»äº‹ä»¶
 	void OnUserLiangZhu(WORD wChairID, BYTE cbCardColor);
-	//·´Ö÷ÊÂ¼ş
+	//åä¸»äº‹ä»¶
 	void OnUserFanZhu(WORD wChairID, BYTE cbCard, BYTE cbFanzhuFlag);
-	//¿Ûµ×ÊÂ¼ş
+	//æ‰£åº•äº‹ä»¶
 	void OnUserKouDi(WORD wChairID, BYTE cbLeaveCard[MAX_LEAVE_CARD_NUM]);
-	//³öÅÆÊÂ¼ş
+	//å‡ºç‰Œäº‹ä»¶
 	void On_Sub_UserOutCard(WORD wOutCardUser, BYTE *cbOutCard, BYTE cbOutCardNum, const bool &bPass);
 
-	//ÇÀ×¯ÊÂ¼ş
+	//æŠ¢åº„äº‹ä»¶
 	void OnUserCallBanker(WORD wChairID, BYTE cbResult);
-	//ÏÂ×¢ÊÂ¼ş
+	//ä¸‹æ³¨äº‹ä»¶
 	void OnUserAddScore(WORD wChairID, WORD wTYPE);
-	//Ã÷ÅÆÊÂ¼ş
+	//æ˜ç‰Œäº‹ä»¶
 	void On_Sub_UserMingPai(WORD wChairID, const BYTE &cbMPType, BYTE cbFlag, BYTE FlushCardBet = 1);
 
-	//ÓÎÏ·½áÊøµÄ»ñÈ¡¹«¹²±¶ÊıĞÅÏ¢
+	//æ¸¸æˆç»“æŸçš„è·å–å…¬å…±å€æ•°ä¿¡æ¯
 	void OnUserPublicBet(WORD wChairID);
 
-	//´¦Àí¿Í»§¶Ë·¢À´µÄ¼ÇÅÆÆ÷ÏûÏ¢
+	//å¤„ç†å®¢æˆ·ç«¯å‘æ¥çš„è®°ç‰Œå™¨æ¶ˆæ¯
 	void OnUserJiPaiQi(WORD wChairID);
 
-	//ÏìÓ¦clientÊ±¼äµÄ ÄÚ²¿º¯Êı
+	//å“åº”clientæ—¶é—´çš„ å†…éƒ¨å‡½æ•°
 protected:
-	// È«²¿ÇÀ×¯Íê³É
+	// å…¨éƒ¨æŠ¢åº„å®Œæˆ
 	void AllRobBankerOver();
-	// Ğ¡¾ÖÓÎÏ·½áÊø
+	// å°å±€æ¸¸æˆç»“æŸ
 	bool XjGameConclude(int nTotalGameCount, int nCurGameCount);
 
-	//¸¨Öúº¯Êı
+	//è¾…åŠ©å‡½æ•°
 protected:
-	//¿ªÊ¼ÓÎÏ·
+	//å¼€å§‹æ¸¸æˆ
 	void StartGame();
-	//¿ªÊ¼Â¼Ïñ
+	//å¼€å§‹å½•åƒ
 	void StartRecord();
-	//½áÊøÂ¼Ïñ
+	//ç»“æŸå½•åƒ
 	void CloseRecord();
-	//´¦Àí·¢ÅÆÁ÷³Ì
+	//å¤„ç†å‘ç‰Œæµç¨‹
 	void HandleDeal();
-	//´¦Àí·¢ËÍµ×ÅÆ
+	//å¤„ç†å‘é€åº•ç‰Œ
 	void HandleSendLeaveCard(const WORD &wSendCardUser);
-	//´¦Àí³öÅÆ¿ªÊ¼ÏûÏ¢
+	//å¤„ç†å‡ºç‰Œå¼€å§‹æ¶ˆæ¯
 	void HandleOutCardStart(const WORD &wOutCardUser);
-	//´¦ÀíÓÃ»§Õı³£³öÅÆ
+	//å¤„ç†ç”¨æˆ·æ­£å¸¸å‡ºç‰Œ
 	void HandleOutCard(WORD wOutCardUser, BYTE *cbOutCard, BYTE cbOutCardNum);
-	//´¦ÀíÓÃ»§³öÅÆ¹ı
+	//å¤„ç†ç”¨æˆ·å‡ºç‰Œè¿‡
 	void HandleOutCardPass(WORD wOutCardUser);
-	//´¦ÀíÒ»ÂÖ³öÅÆ½áÊø
+	//å¤„ç†ä¸€è½®å‡ºç‰Œç»“æŸ
 	void HandleRoundEnd(const WORD &wWinner);
-	//´¦Àí½ĞÈı·Ö
+	//å¤„ç†å«ä¸‰åˆ†
 	void HandleJiaoFenRobBanker();
-	//·¢ËÍ½ĞÈı·Ö¿ªÊ¼ÏûÏ¢
+	//å‘é€å«ä¸‰åˆ†å¼€å§‹æ¶ˆæ¯
 	void SendJiaoFenStart(WORD wChairID, const BYTE &ActionType);
-	//´¦Àí¿Í»§¶Ë·¢À´µÄ½ĞÈı·ÖÏûÏ¢
+	//å¤„ç†å®¢æˆ·ç«¯å‘æ¥çš„å«ä¸‰åˆ†æ¶ˆæ¯
 	void OnUserJiaoFen(WORD wChairID, BYTE Score);
-	//´¦ÀíÇÀ×¯
+	//å¤„ç†æŠ¢åº„
 	void HandleRobBanker();
-	//´¦Àí×ÔÓÉÇÀ×¯
+	//å¤„ç†è‡ªç”±æŠ¢åº„
 	void HandleFreeRobBanker();
-	//·¢ËÍÇÀ×¯¿ªÊ¼ÏûÏ¢
+	//å‘é€æŠ¢åº„å¼€å§‹æ¶ˆæ¯
 	void SendRobStart(const WORD &wChairID, const BYTE &cbType);
-	//·¢ËÍÖ¸¶¨×¯¼ÒÏûÏ¢
+	//å‘é€æŒ‡å®šåº„å®¶æ¶ˆæ¯
 	void SendAppointBanker(const WORD &wBanker);
-	//·¢ËÍÏÂ×¢¿ªÊ¼ÏûÏ¢
+	//å‘é€ä¸‹æ³¨å¼€å§‹æ¶ˆæ¯
 	void SendAddScoreStart(const WORD &wChairID);
-	//·¢ËÍÃ÷ÅÆ¿ªÊ¼ÏûÏ¢
+	//å‘é€æ˜ç‰Œå¼€å§‹æ¶ˆæ¯
 	void SendMingPaiStart(const WORD &wChairID, const BYTE &cbMPType);
-	//·¢ËÍ³öÅÆ½á¹û
+	//å‘é€å‡ºç‰Œç»“æœ
 	void SendOutCardResult(WORD wOutCardUser, BYTE *cbOutCard, BYTE cbOutCardNum, 
 						const int &cbCardType, const BYTE &cbSuccess, const BYTE &cbFlag);
-	//ÅĞ¶ÏÍæ¼ÒÊÇ·ñÄÜ³öÅÆ
+	//åˆ¤æ–­ç©å®¶æ˜¯å¦èƒ½å‡ºç‰Œ
 	bool JudgeUserOutCard(const WORD &wLastOutCardUser, BYTE *cbOutCard, BYTE cbOutCardNum);
 };
 

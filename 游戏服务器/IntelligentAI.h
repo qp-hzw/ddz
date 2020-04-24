@@ -10,155 +10,155 @@
 using namespace std;
 
 
-//ÊÖÅÆÈ¨Öµ½á¹¹
+//æ‰‹ç‰Œæƒå€¼ç»“æ„
 struct HandCardValue
 {
-	int SumValue;		//ÊÖÅÆµÄ¼ÛÖµ
-	int NeedRound;		//ĞèÒª´ò¼¸ÊÖÅÆ
+	int SumValue;		//æ‰‹ç‰Œçš„ä»·å€¼
+	int NeedRound;		//éœ€è¦æ‰“å‡ æ‰‹ç‰Œ
 };
 
-//ÅÆĞÍ×éºÏÊı¾İ½á¹¹
+//ç‰Œå‹ç»„åˆæ•°æ®ç»“æ„
 struct CardGroupData
 {
-	//Ã¶¾ÙÀàĞÍ
+	//æšä¸¾ç±»å‹
 	CardGroupType cgType;
-	//¸ÃÅÆµÄ¼ÛÖµ
+	//è¯¥ç‰Œçš„ä»·å€¼
 	int  nValue;
-	//º¬ÅÆµÄ¸öÊı
+	//å«ç‰Œçš„ä¸ªæ•°
 	int  nCount ;
-	//ÅÆÖĞ¾ö¶¨´óĞ¡µÄÅÆÖµ£¬ÓÃÓÚ¶Ô±È
+	//ç‰Œä¸­å†³å®šå¤§å°çš„ç‰Œå€¼ï¼Œç”¨äºå¯¹æ¯”
 	int nMaxCard ;
 };
 
-//ÓÎÏ·È«¾ÖÀà
+//æ¸¸æˆå…¨å±€ç±»
 class GameSituation
 {
 public:
-	//¹¹Ôìº¯Êı
+	//æ„é€ å‡½æ•°
 	GameSituation()
 	{
-			//µØÖ÷Íæ¼Ò
+			//åœ°ä¸»ç©å®¶
 	 nDiZhuID = -1;
-	//±¾¾Ö½Ğ·Ö
+	//æœ¬å±€å«åˆ†
 	 nLandScore = 0;
 
-	//µ±Ç°µØÖ÷Íæ¼Ò¡ª¡ª»¹Î´È·¶¨
+	//å½“å‰åœ°ä¸»ç©å®¶â€”â€”è¿˜æœªç¡®å®š
 	 nNowDiZhuID = -1;
-	//µ±Ç°±¾¾Ö½Ğ·Ö¡ª¡ª»¹Î´È·¶¨
+	//å½“å‰æœ¬å±€å«åˆ†â€”â€”è¿˜æœªç¡®å®š
 	 nNowLandScore = 0;
 
-	//±¾¾Öµ±Ç°µ×·Ö±¶Êı
+	//æœ¬å±€å½“å‰åº•åˆ†å€æ•°
 	 nMultiple = 0;
-	//µ±Ç°¿ØÊÖ¶ÔÏó£¨ÓÃÓÚÇø·ÖÊÇ·ñ¿ÉÒÔ×ÔÉíÈÎÒâ³öÅÆÒÔ¼°ÊÇ·ñµØÖ÷ÒÑ¾­·ÅÆú³öÅÆ´Ó¶ø²»È¥¹Ü¶ÓÓÑ£©
+	//å½“å‰æ§æ‰‹å¯¹è±¡ï¼ˆç”¨äºåŒºåˆ†æ˜¯å¦å¯ä»¥è‡ªèº«ä»»æ„å‡ºç‰Œä»¥åŠæ˜¯å¦åœ°ä¸»å·²ç»æ”¾å¼ƒå‡ºç‰Œä»è€Œä¸å»ç®¡é˜Ÿå‹ï¼‰
 	 nCardDroit = 0;
 
 	}
-	//Îö¹¹º¯Êı
+	//ææ„å‡½æ•°
 	virtual ~GameSituation()
 	{
 	}
 
 public:
-	//µØÖ÷Íæ¼Ò
+	//åœ°ä¸»ç©å®¶
 	int nDiZhuID;
-	//±¾¾Ö½Ğ·Ö
+	//æœ¬å±€å«åˆ†
 	int nLandScore;
 
-	//µ±Ç°µØÖ÷Íæ¼Ò¡ª¡ª»¹Î´È·¶¨
+	//å½“å‰åœ°ä¸»ç©å®¶â€”â€”è¿˜æœªç¡®å®š
 	int nNowDiZhuID;
-	//µ±Ç°±¾¾Ö½Ğ·Ö¡ª¡ª»¹Î´È·¶¨
+	//å½“å‰æœ¬å±€å«åˆ†â€”â€”è¿˜æœªç¡®å®š
 	int nNowLandScore ;
 
-	//ÈıÕÅµ×ÅÆ
+	//ä¸‰å¼ åº•ç‰Œ
 	int DiPai[3] ;
-	//ÒÑ¾­´ò³öµÄÅÆ¡ª¡ª×´Ì¬¼ÇÂ¼£¬±ãÓÚÒ»Ğ©¼ÆËã£¬ÖµÓòÎª¸ÃindexÅÆ¶ÔÓ¦µÄÊıÁ¿0~4
+	//å·²ç»æ‰“å‡ºçš„ç‰Œâ€”â€”çŠ¶æ€è®°å½•ï¼Œä¾¿äºä¸€äº›è®¡ç®—ï¼Œå€¼åŸŸä¸ºè¯¥indexç‰Œå¯¹åº”çš„æ•°é‡0~4
 	int value_aAllOutCardList[18] ;
-	//ÈıÃûÍæ¼ÒÒÑ¾­´ò³öµÄÊÖÅÆ¼ÇÂ¼
+	//ä¸‰åç©å®¶å·²ç»æ‰“å‡ºçš„æ‰‹ç‰Œè®°å½•
 	//int value_aUnitOutCardList[3][18] = { 0 };
-	//ÈıÃûÍæ¼ÒÒÑ¾­Ê£ÓàÊÖÅÆ¸öÊı
+	//ä¸‰åç©å®¶å·²ç»å‰©ä½™æ‰‹ç‰Œä¸ªæ•°
 	int value_aUnitHandCardCount[3] ;
-	//±¾¾Öµ±Ç°µ×·Ö±¶Êı
+	//æœ¬å±€å½“å‰åº•åˆ†å€æ•°
 	int nMultiple ;
-	//µ±Ç°¿ØÊÖ¶ÔÏó£¨ÓÃÓÚÇø·ÖÊÇ·ñ¿ÉÒÔ×ÔÉíÈÎÒâ³öÅÆÒÔ¼°ÊÇ·ñµØÖ÷ÒÑ¾­·ÅÆú³öÅÆ´Ó¶ø²»È¥¹Ü¶ÓÓÑ£©
+	//å½“å‰æ§æ‰‹å¯¹è±¡ï¼ˆç”¨äºåŒºåˆ†æ˜¯å¦å¯ä»¥è‡ªèº«ä»»æ„å‡ºç‰Œä»¥åŠæ˜¯å¦åœ°ä¸»å·²ç»æ”¾å¼ƒå‡ºç‰Œä»è€Œä¸å»ç®¡é˜Ÿå‹ï¼‰
 	int nCardDroit ;
-	//µ±Ç°³öÅÆÍæ¼Ò
+	//å½“å‰å‡ºç‰Œç©å®¶
 	int NowOutUser;
-	//µ±Ç°´ò³öÅÆµÄÀàĞÍÊı¾İ£¬±»¶¯³öÅÆÊ±Íæ¼Ò¸ù¾İÕâÀï×ö³öÉ¸Ñ¡
+	//å½“å‰æ‰“å‡ºç‰Œçš„ç±»å‹æ•°æ®ï¼Œè¢«åŠ¨å‡ºç‰Œæ—¶ç©å®¶æ ¹æ®è¿™é‡Œåšå‡ºç­›é€‰
 	CardGroupData uctNowCardGroup;
-	//±¾¾ÖÓÎÏ·ÊÇ·ñ½áÊø
+	//æœ¬å±€æ¸¸æˆæ˜¯å¦ç»“æŸ
 	bool Over ;
 
 
 };
 
-//ÊÖÅÆÊı¾İÀà
+//æ‰‹ç‰Œæ•°æ®ç±»
 class HandCardData
 {
 
 
 public:
-	//¹¹Ôìº¯Êı
+	//æ„é€ å‡½æ•°
 	HandCardData()
 	{
 	}
-	//Îö¹¹º¯Êı
+	//ææ„å‡½æ•°
 	virtual ~HandCardData()
 	{
 	}
 
 public:
 
-	list <int>		value_nHandCardList;					//ÊÖÅÆĞòÁĞ¡ª¡ªÎŞ»¨É«£¬ÖµÓò3~17
-	int					value_aHandCardList[18] ;				//ÊÖÅÆĞòÁĞ¡ª¡ª×´Ì¬¼ÇÂ¼£¬±ãÓÚÒ»Ğ©¼ÆËã£¬ÖµÓòÎª¸ÃindexÅÆ¶ÔÓ¦µÄÊıÁ¿0~4
-	list <int>		color_nHandCardList;					//ÊÖÅÆĞòÁĞ¡ª¡ªÓĞ»¨É«£¬°´ÕÕ´Ó´óµ½Ğ¡µÄÅÅÁĞ  56£¬52£º´óÍõĞ¡Íõ¡­¡­4~0£ººì3ºÚ3·½3»¨3
-	int					nHandCardCount ;							//ÊÖÅÆ¸öÊı
-	int					nGameRole ;									//Íæ¼Ò½ÇÉ«µØÎ»       0£ºµØÖ÷    1£ºÅ©Ãñ¡ª¡ªµØÖ÷ÏÂ¼Ò   2£ºÅ©Ãñ¡ª¡ªµØÖ÷ÉÏ¼Ò
-	int					nOwnIndex ;									//Íæ¼Ò×ùÎ»ID 
-	CardGroupData		uctPutCardType;						//Íæ¼ÒÒª´ò³öÈ¥µÄÅÆÀàĞÍ
-	list <int>			value_nPutCardList;					//Òª´ò³öÈ¥µÄÅÆ¡ª¡ªÎŞ»¨É«
-	list <int>		color_nPutCardList;					//Òª´ò³öÈ¥µÄÅÆ¡ª¡ªÓĞ»¨É«
+	list <int>		value_nHandCardList;					//æ‰‹ç‰Œåºåˆ—â€”â€”æ— èŠ±è‰²ï¼Œå€¼åŸŸ3~17
+	int					value_aHandCardList[18] ;				//æ‰‹ç‰Œåºåˆ—â€”â€”çŠ¶æ€è®°å½•ï¼Œä¾¿äºä¸€äº›è®¡ç®—ï¼Œå€¼åŸŸä¸ºè¯¥indexç‰Œå¯¹åº”çš„æ•°é‡0~4
+	list <int>		color_nHandCardList;					//æ‰‹ç‰Œåºåˆ—â€”â€”æœ‰èŠ±è‰²ï¼ŒæŒ‰ç…§ä»å¤§åˆ°å°çš„æ’åˆ—  56ï¼Œ52ï¼šå¤§ç‹å°ç‹â€¦â€¦4~0ï¼šçº¢3é»‘3æ–¹3èŠ±3
+	int					nHandCardCount ;							//æ‰‹ç‰Œä¸ªæ•°
+	int					nGameRole ;									//ç©å®¶è§’è‰²åœ°ä½       0ï¼šåœ°ä¸»    1ï¼šå†œæ°‘â€”â€”åœ°ä¸»ä¸‹å®¶   2ï¼šå†œæ°‘â€”â€”åœ°ä¸»ä¸Šå®¶
+	int					nOwnIndex ;									//ç©å®¶åº§ä½ID 
+	CardGroupData		uctPutCardType;						//ç©å®¶è¦æ‰“å‡ºå»çš„ç‰Œç±»å‹
+	list <int>			value_nPutCardList;					//è¦æ‰“å‡ºå»çš„ç‰Œâ€”â€”æ— èŠ±è‰²
+	list <int>		color_nPutCardList;					//è¦æ‰“å‡ºå»çš„ç‰Œâ€”â€”æœ‰èŠ±è‰²
 	HandCardValue		 uctHandCardValue;
 
 
 public:
 
-	//Òª´ò³öµÄÅÆĞòÁĞÇå¿Õ
+	//è¦æ‰“å‡ºçš„ç‰Œåºåˆ—æ¸…ç©º
 	void ClearPutCardList();
 
-	//ÊÖÅÆÅÅĞò£¬´óÅÆ¿¿Ç°
+	//æ‰‹ç‰Œæ’åºï¼Œå¤§ç‰Œé å‰
 	void SortAsList(list <int> &arr);
 
-	//³öÒ»ÕÅÅÆ£¬·µ»Ø²Ù×÷ÊÇ·ñºÏ·¨
+	//å‡ºä¸€å¼ ç‰Œï¼Œè¿”å›æ“ä½œæ˜¯å¦åˆæ³•
 	bool PutOneCard(int value_nCard, int &clear_nCard);
 
-	//³öÒ»×éÅÆ£¬·µ»Ø²Ù×÷ÊÇ·ñºÏ·¨
+	//å‡ºä¸€ç»„ç‰Œï¼Œè¿”å›æ“ä½œæ˜¯å¦åˆæ³•
 	bool PutCards();
 
-	//Í¨¹ıÓĞ»¨É«ÊÖÅÆ»ñÈ¡ÎŞ»¨É«ÊÖÅÆ£¨°üº¬Á½ÖÖ½á¹¹£©
+	//é€šè¿‡æœ‰èŠ±è‰²æ‰‹ç‰Œè·å–æ— èŠ±è‰²æ‰‹ç‰Œï¼ˆåŒ…å«ä¸¤ç§ç»“æ„ï¼‰
 	void get_valueHandCardList();
 
-	//³õÊ¼»¯
+	//åˆå§‹åŒ–
 	void Init(BYTE * CurCardData, BYTE CurCardNum);
 
-	//Êä³öËùÓĞ³ÉÔ±±äÁ¿£¬ÓÃÓÚ²âÊÔ
+	//è¾“å‡ºæ‰€æœ‰æˆå‘˜å˜é‡ï¼Œç”¨äºæµ‹è¯•
 	void PrintAll();
 
-	//»ñµÃ¿¨ÅÆµÄÂß¼­ÊıÖµ
+	//è·å¾—å¡ç‰Œçš„é€»è¾‘æ•°å€¼
 	BYTE GetCardLogicValue(BYTE cbCardData);
 
 };
 
-//³öÅÆÂß¼­Àà
+//å‡ºç‰Œé€»è¾‘ç±»
 class AILogic
 {
 public:
-	//¹¹Ôìº¯Êı
+	//æ„é€ å‡½æ•°
 	AILogic()
 	{
 
 	}
 
-	//Îö¹¹º¯Êı
+	//ææ„å‡½æ•°
 	~AILogic()
 	{
 
@@ -166,41 +166,41 @@ public:
 
 public:
 
-	//¼ì²éÊ£ÓàµÄÅÆÊÇ·ñÄÜÒ»ÊÖ³öÍê   ÊÇ£º·µ»ØÊÖÅÆÀàĞÍÊı¾İ   ·ñ£º·µ»Ø´íÎóÀàĞÍ
+	//æ£€æŸ¥å‰©ä½™çš„ç‰Œæ˜¯å¦èƒ½ä¸€æ‰‹å‡ºå®Œ   æ˜¯ï¼šè¿”å›æ‰‹ç‰Œç±»å‹æ•°æ®   å¦ï¼šè¿”å›é”™è¯¯ç±»å‹
 	CardGroupData ins_SurCardsType(int arr[]);
 
-	//vectorÖØÔØ
+	//vectoré‡è½½
 	CardGroupData ins_SurCardsType(list<int> mlist);
 
 	/*
-	·â×°ºÃµÄ»ñÈ¡¸÷ÀàÅÆĞÍ×éºÏ½á¹¹º¯Êı
-		CardGroupType cgType£ºÅÆĞÍ
-		int MaxCard£º¾ö¶¨´óĞ¡µÄÅÆÖµ
-		int Count£ºÅÆÊı
-		·µ»ØÖµ£ºCardGroupData
+	å°è£…å¥½çš„è·å–å„ç±»ç‰Œå‹ç»„åˆç»“æ„å‡½æ•°
+		CardGroupType cgTypeï¼šç‰Œå‹
+		int MaxCardï¼šå†³å®šå¤§å°çš„ç‰Œå€¼
+		int Countï¼šç‰Œæ•°
+		è¿”å›å€¼ï¼šCardGroupData
 	*/
 	CardGroupData get_GroupData(CardGroupType cgType, int MaxCard, int Count);
 
 	/*
-	Í¨¹ı»ØËİdpµÄ·½Ê½»ñÈ¡ÊÖÅÆ¼ÛÖµ
-		Óëget_PutCardList×÷Îª½»Ìæµİ¹éµ÷ÓÃ
-		·µ»Ø£º¼ÛÖµ½á¹¹ÌåHandCardValue
-		È¨ÖµµÄ¼ÆËã¹æÔò²Î¿¼Í·ÎÄ¼şÆÀ·ÖÂß¼­Ë¼Î¬
+	é€šè¿‡å›æº¯dpçš„æ–¹å¼è·å–æ‰‹ç‰Œä»·å€¼
+		ä¸get_PutCardListä½œä¸ºäº¤æ›¿é€’å½’è°ƒç”¨
+		è¿”å›ï¼šä»·å€¼ç»“æ„ä½“HandCardValue
+		æƒå€¼çš„è®¡ç®—è§„åˆ™å‚è€ƒå¤´æ–‡ä»¶è¯„åˆ†é€»è¾‘æ€ç»´
 	*/
 	HandCardValue get_HandCardValue(HandCardData &clsHandCardData);
 
-	//½«Ò»ÊÖÅÆÈ«²¿³öµô
+	//å°†ä¸€æ‰‹ç‰Œå…¨éƒ¨å‡ºæ‰
 	void Put_All_SurCards(GameSituation &clsGameSituation, HandCardData &clsHandCardData, CardGroupData SurCardGroupData);
 	void Put_All_SurCards(HandCardData &clsHandCardData, CardGroupData SurCardGroupData);
 
 
-	// ¸ù¾İ³¡ÉÏĞÎÊÆ¾ö¶¨µ±Ç°Ô¤´ò³öµÄÊÖÅÆ¡ª¡ª±»¶¯³öÅÆ
+	// æ ¹æ®åœºä¸Šå½¢åŠ¿å†³å®šå½“å‰é¢„æ‰“å‡ºçš„æ‰‹ç‰Œâ€”â€”è¢«åŠ¨å‡ºç‰Œ
 	void get_PutCardList_2_limit(GameSituation &clsGameSituation, HandCardData &clsHandCardData);
 
-	// Ö÷¶¯³öÅÆ
+	// ä¸»åŠ¨å‡ºç‰Œ
 	void get_PutCardList_2_unlimit(HandCardData &clsHandCardData);
 
-	//»ñÈ¡½Ğ·Öº¯Êı
+	//è·å–å«åˆ†å‡½æ•°
 	int LandScore( HandCardData &clsHandCardData);
 
 };

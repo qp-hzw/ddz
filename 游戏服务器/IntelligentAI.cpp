@@ -4,9 +4,9 @@
 
 //    19.10.24     by  lih
 
-//============================================ÊÖÅÆÊı¾İÀà==============================
+//============================================æ‰‹ç‰Œæ•°æ®ç±»==============================
 
-//³õÊ¼»¯  ÊÖÅÆĞòÁĞºÍÊÖÅÆ¸öÊı
+//åˆå§‹åŒ–  æ‰‹ç‰Œåºåˆ—å’Œæ‰‹ç‰Œä¸ªæ•°
 void  HandCardData::Init(BYTE * CurCardData, BYTE CurCardNum)
 {
 	if (CurCardData == NULL)
@@ -25,7 +25,7 @@ void  HandCardData::Init(BYTE * CurCardData, BYTE CurCardNum)
 	}
 }
 
-//ÅĞ¶ÏÒª´ò³öÈ¥µÄÅÆÊÇ·ñºÏ·¨
+//åˆ¤æ–­è¦æ‰“å‡ºå»çš„ç‰Œæ˜¯å¦åˆæ³•
 bool  HandCardData::PutCards()
 {
 	for (list<int>::iterator iter = value_nPutCardList.begin(); iter != value_nPutCardList.end(); iter++)
@@ -45,14 +45,14 @@ bool  HandCardData::PutCards()
 	return true;
 }
 
-//ÅĞ¶Ï´ò³öÈ¥µÄÒ»ÕÅÅÆÊÇ·ñºÏ·¨
+//åˆ¤æ–­æ‰“å‡ºå»çš„ä¸€å¼ ç‰Œæ˜¯å¦åˆæ³•
 bool  HandCardData::PutOneCard(int value_nCard, int &color_nCard)
 {
 	bool ret = false;
 
 
 
-	//value×´Ì¬Êı×é´¦Àí
+	//valueçŠ¶æ€æ•°ç»„å¤„ç†
 
 	value_aHandCardList[value_nCard]--;
 
@@ -62,7 +62,7 @@ bool  HandCardData::PutOneCard(int value_nCard, int &color_nCard)
 	}
 
 
-	//valueÁĞ±íÊı×é´¦Àí
+	//valueåˆ—è¡¨æ•°ç»„å¤„ç†
 	for (list<int>::iterator iter = value_nHandCardList.begin(); iter != value_nHandCardList.end(); iter++)
 	{
 		if (*iter == value_nCard)
@@ -74,9 +74,9 @@ bool  HandCardData::PutOneCard(int value_nCard, int &color_nCard)
 	}
 
 
-	// colorÁĞ±íÊı×é´¦Àí
+	// coloråˆ—è¡¨æ•°ç»„å¤„ç†
 
-	int k = (value_nCard - 3) * 4;      //ÊıÖµ×ª»»
+	int k = (value_nCard - 3) * 4;      //æ•°å€¼è½¬æ¢
 
 	for (list<int>::iterator iter = color_nHandCardList.begin(); iter != color_nHandCardList.end(); iter++)
 	{
@@ -95,7 +95,7 @@ bool  HandCardData::PutOneCard(int value_nCard, int &color_nCard)
 	return false;
 }
 
-//Çå¿Õ³öÅÆĞòÁĞ
+//æ¸…ç©ºå‡ºç‰Œåºåˆ—
 void  HandCardData::ClearPutCardList()
 {
 	memset(&uctPutCardType, 0, sizeof(uctPutCardType));
@@ -107,12 +107,12 @@ void  HandCardData::ClearPutCardList()
 
 
 
-//============================================³öÅÆÂß¼­Àà==============================
+//============================================å‡ºç‰Œé€»è¾‘ç±»==============================
 
 /*
-¼ì²éÊ£ÓàµÄÅÆÊÇ·ñÖ»ÊÇÒ»ÊÖÅÆ
-ÊÇ£º  ·µ»ØÊÖÅÆÀàĞÍÊı¾İ
-²»ÊÇ£º·µ»Ø´íÎóÀàĞÍ£¨cgERROR£©
+æ£€æŸ¥å‰©ä½™çš„ç‰Œæ˜¯å¦åªæ˜¯ä¸€æ‰‹ç‰Œ
+æ˜¯ï¼š  è¿”å›æ‰‹ç‰Œç±»å‹æ•°æ®
+ä¸æ˜¯ï¼šè¿”å›é”™è¯¯ç±»å‹ï¼ˆcgERRORï¼‰
 */
 CardGroupData AILogic::ins_SurCardsType(int arr[])
 {
@@ -127,10 +127,10 @@ CardGroupData AILogic::ins_SurCardsType(int arr[])
 	retCardGroupData.nCount = nCount;
 
 
-	//µ¥ÅÆÀàĞÍ
+	//å•ç‰Œç±»å‹
 	if (nCount == 1)
 	{
-		//ÓÃÓÚÑéÖ¤µÄ±äÁ¿
+		//ç”¨äºéªŒè¯çš„å˜é‡
 		int prov = 0;
 		int SumValue = 0;
 		for (int i = 3; i < 18; i++)
@@ -149,10 +149,10 @@ CardGroupData AILogic::ins_SurCardsType(int arr[])
 			return retCardGroupData;
 		}
 	}
-	//¶ÔÅÆÀàĞÍ
+	//å¯¹ç‰Œç±»å‹
 	if (nCount == 2)
 	{
-		//ÓÃÓÚÑéÖ¤µÄ±äÁ¿
+		//ç”¨äºéªŒè¯çš„å˜é‡
 		int prov = 0;
 		int SumValue = 0;
 		int i = 0;
@@ -172,10 +172,10 @@ CardGroupData AILogic::ins_SurCardsType(int arr[])
 			return retCardGroupData;
 		}
 	}
-	//ÈıÌõÀàĞÍ
+	//ä¸‰æ¡ç±»å‹
 	if (nCount == 3)
 	{
-		//ÓÃÓÚÑéÖ¤µÄ±äÁ¿
+		//ç”¨äºéªŒè¯çš„å˜é‡
 		int prov = 0;
 		int SumValue = 0;
 		int i = 0;
@@ -195,10 +195,10 @@ CardGroupData AILogic::ins_SurCardsType(int arr[])
 			return retCardGroupData;
 		}
 	}
-	//Èı´øÒ»µ¥
+	//ä¸‰å¸¦ä¸€å•
 	if (nCount == 4)
 	{
-		//ÓÃÓÚÑéÖ¤µÄ±äÁ¿
+		//ç”¨äºéªŒè¯çš„å˜é‡
 		int prov1 = 0;
 		int prov2 = 0;
 		int SumValue = 0;
@@ -224,10 +224,10 @@ CardGroupData AILogic::ins_SurCardsType(int arr[])
 			return retCardGroupData;
 		}
 	}
-	//Èı´øÒ»¶Ô
+	//ä¸‰å¸¦ä¸€å¯¹
 	if (nCount == 5)
 	{
-		//ÓÃÓÚÑéÖ¤µÄ±äÁ¿
+		//ç”¨äºéªŒè¯çš„å˜é‡
 		int prov1 = 0;
 		int prov2 = 0;
 		int SumValue = 0;
@@ -253,10 +253,10 @@ CardGroupData AILogic::ins_SurCardsType(int arr[])
 			return retCardGroupData;
 		}
 	}
-	//ËÄ´øÁ½µ¥
+	//å››å¸¦ä¸¤å•
 	if (nCount == 6)
 	{
-		//ÓÃÓÚÑéÖ¤µÄ±äÁ¿
+		//ç”¨äºéªŒè¯çš„å˜é‡
 		int prov1 = 0;
 		int prov2 = 0;
 		int SumValue = 0;
@@ -282,10 +282,10 @@ CardGroupData AILogic::ins_SurCardsType(int arr[])
 			return retCardGroupData;
 		}
 	}
-	//ËÄ´øÁ½¶Ô
+	//å››å¸¦ä¸¤å¯¹
 	if (nCount == 8)
 	{
-		//ÓÃÓÚÑéÖ¤µÄ±äÁ¿
+		//ç”¨äºéªŒè¯çš„å˜é‡
 		int prov1 = 0;
 		int prov2 = 0;
 		int SumValue = 0;
@@ -304,7 +304,7 @@ CardGroupData AILogic::ins_SurCardsType(int arr[])
 
 			}
 		}
-		//×¢ÒâÕâÀïprov2==4ÒòÎªËÄÅÆÒ²ÊÇÁ½¸ö¶Ô
+		//æ³¨æ„è¿™é‡Œprov2==4å› ä¸ºå››ç‰Œä¹Ÿæ˜¯ä¸¤ä¸ªå¯¹
 		if (prov1 == 1 && prov2 == 4)
 		{
 			retCardGroupData.cgType = cgFOUR_TAKE_TWO;
@@ -312,10 +312,10 @@ CardGroupData AILogic::ins_SurCardsType(int arr[])
 			return retCardGroupData;
 		}
 	}
-	//Õ¨µ¯ÀàĞÍ
+	//ç‚¸å¼¹ç±»å‹
 	if (nCount == 4)
 	{
-		//ÓÃÓÚÑéÖ¤µÄ±äÁ¿
+		//ç”¨äºéªŒè¯çš„å˜é‡
 		int prov = 0;
 		int SumValue = 0;
 		for (int i = 3; i < 16; i++)
@@ -334,7 +334,7 @@ CardGroupData AILogic::ins_SurCardsType(int arr[])
 			return retCardGroupData;
 		}
 	}
-	//ÍõÕ¨ÀàĞÍ
+	//ç‹ç‚¸ç±»å‹
 	if (nCount == 2)
 	{
 		int SumValue = 0;
@@ -347,10 +347,10 @@ CardGroupData AILogic::ins_SurCardsType(int arr[])
 			return retCardGroupData;
 		}
 	}
-	//µ¥Á¬ÀàĞÍ
+	//å•è¿ç±»å‹
 	if (nCount >= 5)
 	{
-		//ÓÃÓÚÑéÖ¤µÄ±äÁ¿
+		//ç”¨äºéªŒè¯çš„å˜é‡
 		int prov = 0;
 		int SumValue = 0;
 		int i;
@@ -379,10 +379,10 @@ CardGroupData AILogic::ins_SurCardsType(int arr[])
 			return retCardGroupData;
 		}
 	}
-	//¶ÔÁ¬ÀàĞÍ
+	//å¯¹è¿ç±»å‹
 	if (nCount >= 6)
 	{
-		//ÓÃÓÚÑéÖ¤µÄ±äÁ¿
+		//ç”¨äºéªŒè¯çš„å˜é‡
 		int prov = 0;
 		int SumValue = 0;
 		int i;
@@ -411,10 +411,10 @@ CardGroupData AILogic::ins_SurCardsType(int arr[])
 			return retCardGroupData;
 		}
 	}
-	//ÈıÁ¬ÀàĞÍ
+	//ä¸‰è¿ç±»å‹
 	if (nCount >= 6)
 	{
-		//ÓÃÓÚÑéÖ¤µÄ±äÁ¿
+		//ç”¨äºéªŒè¯çš„å˜é‡
 		int prov = 0;
 
 		int SumValue = 0;
@@ -444,10 +444,10 @@ CardGroupData AILogic::ins_SurCardsType(int arr[])
 			return retCardGroupData;
 		}
 	}
-	//Èı´øÒ»Á¬ÀàĞÍ
+	//ä¸‰å¸¦ä¸€è¿ç±»å‹
 	if (nCount >= 8)
 	{
-		//ÓÃÓÚÑéÖ¤µÄ±äÁ¿
+		//ç”¨äºéªŒè¯çš„å˜é‡
 		int prov1 = 0;
 		int SumValue = 0;
 		int i, j;
@@ -476,10 +476,10 @@ CardGroupData AILogic::ins_SurCardsType(int arr[])
 		}
 
 	}
-	//Èı´ø¶şÁ¬ÀàĞÍ
+	//ä¸‰å¸¦äºŒè¿ç±»å‹
 	if (nCount >= 10)
 	{
-		//ÓÃÓÚÑéÖ¤µÄ±äÁ¿
+		//ç”¨äºéªŒè¯çš„å˜é‡
 		int prov1 = 0;
 		int prov2 = 0;
 		int SumValue = 0;
@@ -520,9 +520,9 @@ CardGroupData AILogic::ins_SurCardsType(int arr[])
 }
 
 /*
-¼ì²éÊ£ÓàµÄÅÆÊÇ·ñÖ»ÊÇÒ»ÊÖÅÆ£¨vectorÖØÔØ£©
-ÊÇ£º  ·µ»ØÊÖÅÆÀàĞÍÊı¾İ
-²»ÊÇ£º·µ»Ø´íÎóÀàĞÍ£¨cgERROR£©
+æ£€æŸ¥å‰©ä½™çš„ç‰Œæ˜¯å¦åªæ˜¯ä¸€æ‰‹ç‰Œï¼ˆvectoré‡è½½ï¼‰
+æ˜¯ï¼š  è¿”å›æ‰‹ç‰Œç±»å‹æ•°æ®
+ä¸æ˜¯ï¼šè¿”å›é”™è¯¯ç±»å‹ï¼ˆcgERRORï¼‰
 */
 CardGroupData AILogic::ins_SurCardsType(list<int>mlist)
 {
@@ -537,11 +537,11 @@ CardGroupData AILogic::ins_SurCardsType(list<int>mlist)
 
 
 /*
-·â×°ºÃµÄ»ñÈ¡¸÷ÀàÅÆĞÍ×éºÏ½á¹¹º¯Êı
-CardGroupType cgType£ºÅÆĞÍ
-int MaxCard£º¾ö¶¨´óĞ¡µÄÅÆÖµ
-int Count£ºÅÆÊı
-·µ»ØÖµ£ºCardGroupData
+å°è£…å¥½çš„è·å–å„ç±»ç‰Œå‹ç»„åˆç»“æ„å‡½æ•°
+CardGroupType cgTypeï¼šç‰Œå‹
+int MaxCardï¼šå†³å®šå¤§å°çš„ç‰Œå€¼
+int Countï¼šç‰Œæ•°
+è¿”å›å€¼ï¼šCardGroupData
 */
 CardGroupData AILogic::get_GroupData(CardGroupType cgType, int MaxCard, int Count)
 {
@@ -551,52 +551,52 @@ CardGroupData AILogic::get_GroupData(CardGroupType cgType, int MaxCard, int Coun
 	uctCardGroupData.nCount = Count;
 	uctCardGroupData.nMaxCard = MaxCard;
 
-	//²»³öÅÆĞÍ
+	//ä¸å‡ºç‰Œå‹
 	if (cgType == cgZERO)
 		uctCardGroupData.nValue = 0;
-	//µ¥ÅÆÀàĞÍ
+	//å•ç‰Œç±»å‹
 	else if (cgType == cgSINGLE)
 		uctCardGroupData.nValue = MaxCard - 10;
-	//¶ÔÅÆÀàĞÍ
+	//å¯¹ç‰Œç±»å‹
 	else if (cgType == cgDOUBLE)
 		uctCardGroupData.nValue = MaxCard - 10;
-	//ÈıÌõÀàĞÍ
+	//ä¸‰æ¡ç±»å‹
 	else if (cgType == cgTHREE)
 		uctCardGroupData.nValue = MaxCard - 10;
-	//µ¥Á¬ÀàĞÍ
+	//å•è¿ç±»å‹
 	else if (cgType == cgSINGLE_LINE)
 		uctCardGroupData.nValue = MaxCard - 10 + 1;
-	//¶ÔÁ¬ÀàĞÍ
+	//å¯¹è¿ç±»å‹
 	else if (cgType == cgDOUBLE_LINE)
 		uctCardGroupData.nValue = MaxCard - 10 + 1;
-	//ÈıÁ¬ÀàĞÍ
+	//ä¸‰è¿ç±»å‹
 	else if (cgType == cgTHREE_LINE)
 		uctCardGroupData.nValue = (MaxCard - 3 + 1) / 2;
-	//Èı´øÒ»µ¥
+	//ä¸‰å¸¦ä¸€å•
 	else if (cgType == cgTHREE_TAKE_ONE)
 		uctCardGroupData.nValue = MaxCard - 10;
-	//Èı´øÒ»¶Ô
+	//ä¸‰å¸¦ä¸€å¯¹
 	else if (cgType == cgTHREE_TAKE_TWO)
 		uctCardGroupData.nValue = MaxCard - 10;
-	//Èı´øÒ»µ¥Á¬
+	//ä¸‰å¸¦ä¸€å•è¿
 	else if (cgType == cgTHREE_TAKE_ONE_LINE)
 		uctCardGroupData.nValue = (MaxCard - 3 + 1) / 2;
-	//Èı´øÒ»¶ÔÁ¬
+	//ä¸‰å¸¦ä¸€å¯¹è¿
 	else if (cgType == cgTHREE_TAKE_TWO_LINE)
 		uctCardGroupData.nValue = (MaxCard - 3 + 1) / 2;
-	//ËÄ´øÁ½µ¥
+	//å››å¸¦ä¸¤å•
 	else if (cgType == cgFOUR_TAKE_ONE)
 		uctCardGroupData.nValue = (MaxCard - 3) / 2;
-	//ËÄ´øÁ½¶Ô
+	//å››å¸¦ä¸¤å¯¹
 	else if (cgType == cgFOUR_TAKE_TWO)
 		uctCardGroupData.nValue = (MaxCard - 3) / 2;
-	//Õ¨µ¯ÀàĞÍ 
+	//ç‚¸å¼¹ç±»å‹ 
 	else if (cgType == cgBOMB_CARD)
 		uctCardGroupData.nValue = MaxCard - 3 + 7;
-	//ÍõÕ¨ÀàĞÍ 
+	//ç‹ç‚¸ç±»å‹ 
 	else if (cgType == cgKING_CARD)
 		uctCardGroupData.nValue = 20;
-	//´íÎóÅÆĞÍ
+	//é”™è¯¯ç‰Œå‹
 	else
 		uctCardGroupData.nValue = 0;
 
@@ -607,29 +607,29 @@ CardGroupData AILogic::get_GroupData(CardGroupType cgType, int MaxCard, int Coun
 
 
 /*
-Í¨¹ı»ØËİdpµÄ·½Ê½»ñÈ¡ÊÖÅÆ¼ÛÖµ
-Óëget_PutCardList×÷Îª½»Ìæµİ¹éµ÷ÓÃ
-·µ»Ø£º¼ÛÖµ½á¹¹ÌåHandCardValue
-È¨ÖµµÄ¼ÆËã¹æÔò²Î¿¼Í·ÎÄ¼şÆÀ·ÖÂß¼­Ë¼Î¬
+é€šè¿‡å›æº¯dpçš„æ–¹å¼è·å–æ‰‹ç‰Œä»·å€¼
+ä¸get_PutCardListä½œä¸ºäº¤æ›¿é€’å½’è°ƒç”¨
+è¿”å›ï¼šä»·å€¼ç»“æ„ä½“HandCardValue
+æƒå€¼çš„è®¡ç®—è§„åˆ™å‚è€ƒå¤´æ–‡ä»¶è¯„åˆ†é€»è¾‘æ€ç»´
 */
 
 HandCardValue AILogic::get_HandCardValue(HandCardData &clsHandCardData)
 {
 
-	//Ê×ÏÈÇå¿Õ³öÅÆ¶ÓÁĞ£¬ÒòÎª¼ôÖ¦Ê±ÊÇ²»µ÷ÓÃget_PutCardListµÄ
+	//é¦–å…ˆæ¸…ç©ºå‡ºç‰Œé˜Ÿåˆ—ï¼Œå› ä¸ºå‰ªææ—¶æ˜¯ä¸è°ƒç”¨get_PutCardListçš„
 	clsHandCardData.ClearPutCardList();
 
 	HandCardValue uctHandCardValue;
-	//³öÍêÅÆÁË£¬ÆäÊµÕâÖÖÇé¿öÖ»ÏŞÓÚÊÖÖĞÊ£ÏÂËÄ´ø¶şÇÒ±»¶¯³öÅÆµÄÇé¿ö£¬ÒòÎªËÄ´ø¶ş¼ôÖ¦×öÁËÌØÊâ´¦Àí¡£
+	//å‡ºå®Œç‰Œäº†ï¼Œå…¶å®è¿™ç§æƒ…å†µåªé™äºæ‰‹ä¸­å‰©ä¸‹å››å¸¦äºŒä¸”è¢«åŠ¨å‡ºç‰Œçš„æƒ…å†µï¼Œå› ä¸ºå››å¸¦äºŒå‰ªæåšäº†ç‰¹æ®Šå¤„ç†ã€‚
 	if (clsHandCardData.nHandCardCount == 0)
 	{
 		uctHandCardValue.SumValue = 0;
 		uctHandCardValue.NeedRound = 0;
 		return uctHandCardValue;
 	}
-	//¡ª¡ª¡ª¡ªÒÔÏÂÎª¼ôÖ¦£ºÅĞ¶ÏÊÇ·ñ¿ÉÒÔÒ»ÊÖ³öÍêÅÆ
+	//â€”â€”â€”â€”ä»¥ä¸‹ä¸ºå‰ªæï¼šåˆ¤æ–­æ˜¯å¦å¯ä»¥ä¸€æ‰‹å‡ºå®Œç‰Œ
 	CardGroupData uctCardGroupData = ins_SurCardsType(clsHandCardData.value_aHandCardList);
-	//¡ª¡ª¡ª¡ª²»µ½Íò²»µÃÒÑÎÒÃÇ¶¼²»»á³öËÄ´ø¶ş£¬¶¼¾¡Á¿±£Õ¨µ¯
+	//â€”â€”â€”â€”ä¸åˆ°ä¸‡ä¸å¾—å·²æˆ‘ä»¬éƒ½ä¸ä¼šå‡ºå››å¸¦äºŒï¼Œéƒ½å°½é‡ä¿ç‚¸å¼¹
 	if (uctCardGroupData.cgType != cgERROR && uctCardGroupData.cgType != cgFOUR_TAKE_ONE && uctCardGroupData.cgType != cgFOUR_TAKE_TWO)
 	{
 		uctHandCardValue.SumValue = uctCardGroupData.nValue;
@@ -637,13 +637,13 @@ HandCardValue AILogic::get_HandCardValue(HandCardData &clsHandCardData)
 		return uctHandCardValue;
 	}
 
-	//·Ç¼ôÖ¦²Ù×÷£¬¼´·ÇÒ»ÊÖÄÜ³öÍêµÄÅÆ
+	//éå‰ªææ“ä½œï¼Œå³éä¸€æ‰‹èƒ½å‡ºå®Œçš„ç‰Œ
 
-	/*Ö»ÊÇ»ñÈ¡³öÅÆµÄĞòÁĞ£¬¼´clsHandCardData.value_nPutCardList¼°clsHandCardData.uctPutCardType
-	ÆäËû³ÉÔ±¾ùÎŞ¸Ä±ä£¬Ò²²»»áµ÷ÓÃ³öÅÆº¯Êı£¬get_PutCardList·µ»Ø×îÓÅ·½°¸*/
+	/*åªæ˜¯è·å–å‡ºç‰Œçš„åºåˆ—ï¼Œå³clsHandCardData.value_nPutCardListåŠclsHandCardData.uctPutCardType
+	å…¶ä»–æˆå‘˜å‡æ— æ”¹å˜ï¼Œä¹Ÿä¸ä¼šè°ƒç”¨å‡ºç‰Œå‡½æ•°ï¼Œget_PutCardListè¿”å›æœ€ä¼˜æ–¹æ¡ˆ*/
 	get_PutCardList_2_unlimit(clsHandCardData);
 
-	//Òª±£´æµ±Ç°µÄclsHandCardData.value_nPutCardList¼°clsHandCardData.uctPutCardTypeÓÃÓÚ»ØËİ
+	//è¦ä¿å­˜å½“å‰çš„clsHandCardData.value_nPutCardListåŠclsHandCardData.uctPutCardTypeç”¨äºå›æº¯
 	CardGroupData NowPutCardType = clsHandCardData.uctPutCardType;
 	list<int> NowPutCardList = clsHandCardData.value_nPutCardList;
 
@@ -654,25 +654,25 @@ HandCardValue AILogic::get_HandCardValue(HandCardData &clsHandCardData)
 
 
 
-	//---»ØËİ¡ı
+	//---å›æº¯â†“
 	for (list<int>::iterator iter = NowPutCardList.begin();
 		iter != NowPutCardList.end(); iter++)
 	{
 		clsHandCardData.value_aHandCardList[*iter]--;
 	}
 	clsHandCardData.nHandCardCount -= NowPutCardType.nCount;
-	//---»ØËİ¡ü
+	//---å›æº¯â†‘
 
-	HandCardValue tmp_SurValue = get_HandCardValue(clsHandCardData);//µİ¹éÊ£ÓàÅÆ¼ÛÖµ
+	HandCardValue tmp_SurValue = get_HandCardValue(clsHandCardData);//é€’å½’å‰©ä½™ç‰Œä»·å€¼
 
-	//---»ØËİ¡ı	
+	//---å›æº¯â†“	
 	for (list<int>::iterator iter = NowPutCardList.begin();
 		iter != NowPutCardList.end(); iter++)
 	{
 		clsHandCardData.value_aHandCardList[*iter]++;
 	}
 	clsHandCardData.nHandCardCount += NowPutCardType.nCount;
-	//---»ØËİ¡ü
+	//---å›æº¯â†‘
 
 	uctHandCardValue.SumValue = NowPutCardType.nValue + tmp_SurValue.SumValue;
 	uctHandCardValue.NeedRound = tmp_SurValue.NeedRound + 1;
@@ -688,7 +688,7 @@ HandCardValue AILogic::get_HandCardValue(HandCardData &clsHandCardData)
 
 void AILogic::Put_All_SurCards(GameSituation &clsGameSituation, HandCardData &clsHandCardData, CardGroupData SurCardGroupData)
 {
-	/*È«²¿³öÍê*/
+	/*å…¨éƒ¨å‡ºå®Œ*/
 	for (int i = 0; i < 18; i++)
 		for (int j = 0; j < clsHandCardData.value_aHandCardList[i]; j++)
 			clsHandCardData.value_nPutCardList.push_back(i);
@@ -699,7 +699,7 @@ void AILogic::Put_All_SurCards(GameSituation &clsGameSituation, HandCardData &cl
 
 void AILogic::Put_All_SurCards(HandCardData &clsHandCardData, CardGroupData SurCardGroupData)
 {
-	/*È«²¿³öÍê*/
+	/*å…¨éƒ¨å‡ºå®Œ*/
 	for (int i = 0; i < 18; i++)
 		for (int j = 0; j < clsHandCardData.value_aHandCardList[i]; j++)
 			clsHandCardData.value_nPutCardList.push_back(i);
@@ -709,14 +709,14 @@ void AILogic::Put_All_SurCards(HandCardData &clsHandCardData, CardGroupData SurC
 }
 
 /*
-2.0°æ±¾²ßÂÔ  ¸ù¾İ³¡ÉÏĞÎÊÆ¾ö¶¨µ±Ç°Ô¤´ò³öµÄÊÖÅÆ¡ª¡ª±»¶¯³öÅÆ
+2.0ç‰ˆæœ¬ç­–ç•¥  æ ¹æ®åœºä¸Šå½¢åŠ¿å†³å®šå½“å‰é¢„æ‰“å‡ºçš„æ‰‹ç‰Œâ€”â€”è¢«åŠ¨å‡ºç‰Œ
 */
 void AILogic::get_PutCardList_2_limit(GameSituation &clsGameSituation, HandCardData &clsHandCardData)
 {
 	clsHandCardData.ClearPutCardList();
 
 
-	/*ÍõÕ¨¡ª¡ªµ±Ç°²ßÂÔÖ»´¦ÀíÍõÕ¨×÷Îªµ¹ÊıµÚ¶şÊÖµÄÓÅÏÈ³öÅÆÂß¼­£¬ºóĞø°æ±¾»áÔÚ´Ë»ù´¡ÉÏÓÅ»¯*/
+	/*ç‹ç‚¸â€”â€”å½“å‰ç­–ç•¥åªå¤„ç†ç‹ç‚¸ä½œä¸ºå€’æ•°ç¬¬äºŒæ‰‹çš„ä¼˜å…ˆå‡ºç‰Œé€»è¾‘ï¼Œåç»­ç‰ˆæœ¬ä¼šåœ¨æ­¤åŸºç¡€ä¸Šä¼˜åŒ–*/
 	if (clsHandCardData.value_aHandCardList[17] > 0 && clsHandCardData.value_aHandCardList[16] > 0)
 	{
 
@@ -736,10 +736,10 @@ void AILogic::get_PutCardList_2_limit(GameSituation &clsGameSituation, HandCardD
 		}
 	}
 
-	//²»³öÅÆĞÍ£¬µ±¶ÓÓÑ³öÅÆµÄ¼ÛÖµ > 1Ê± Ñ¡Ôñ²»³öÅÆ
-	if (clsGameSituation.NowOutUser != clsGameSituation.nDiZhuID && clsGameSituation.nCardDroit != clsGameSituation.nDiZhuID)   //ÎÒ²»ÊÇµØÖ÷£¬×îºó³öÅÆÍæ¼Ò²»ÊÇµØÖ÷
+	//ä¸å‡ºç‰Œå‹ï¼Œå½“é˜Ÿå‹å‡ºç‰Œçš„ä»·å€¼ > 1æ—¶ é€‰æ‹©ä¸å‡ºç‰Œ
+	if (clsGameSituation.NowOutUser != clsGameSituation.nDiZhuID && clsGameSituation.nCardDroit != clsGameSituation.nDiZhuID)   //æˆ‘ä¸æ˜¯åœ°ä¸»ï¼Œæœ€åå‡ºç‰Œç©å®¶ä¸æ˜¯åœ°ä¸»
 	{
-		//ÅĞ¶Ï¶ÓÓÑ³öµÄÊÖÅÆµÄ¼ÛÖµ > 1 Ñ¡Ôñ²»³öÅÆ
+		//åˆ¤æ–­é˜Ÿå‹å‡ºçš„æ‰‹ç‰Œçš„ä»·å€¼ > 1 é€‰æ‹©ä¸å‡ºç‰Œ
 		if (clsGameSituation.uctNowCardGroup.nValue > 0)
 		{
 			clsHandCardData.uctPutCardType = get_GroupData(cgZERO, 0, 0);
@@ -747,23 +747,23 @@ void AILogic::get_PutCardList_2_limit(GameSituation &clsGameSituation, HandCardD
 		}
 	}
 
-	//´íÎóÅÆĞÍ  ²»³ö
+	//é”™è¯¯ç‰Œå‹  ä¸å‡º
 	if (clsGameSituation.uctNowCardGroup.cgType == cgERROR)
 	{
 		clsHandCardData.uctPutCardType = get_GroupData(cgERROR, 0, 0);
 		return;
 	}
-	//²»³öÅÆĞÍ£¬ÔÚ±»¶¯³öÅÆ²ßÂÔÀïÒ²ÊÇ´íÎóÊı¾İ ²»³ö
+	//ä¸å‡ºç‰Œå‹ï¼Œåœ¨è¢«åŠ¨å‡ºç‰Œç­–ç•¥é‡Œä¹Ÿæ˜¯é”™è¯¯æ•°æ® ä¸å‡º
 	else if (clsGameSituation.uctNowCardGroup.cgType == cgZERO)
 	{
 		clsHandCardData.uctPutCardType = get_GroupData(cgZERO, 0, 0);
 		return;
 	}
-	//µ¥ÅÆÀàĞÍ
+	//å•ç‰Œç±»å‹
 	else if (clsGameSituation.uctNowCardGroup.cgType == cgSINGLE)
 	{
 
-		//¼ôÖ¦£ºÈç¹ûÄÜ³öÈ¥×îºóÒ»ÊÖÅÆÖ±½Ó³ö
+		//å‰ªæï¼šå¦‚æœèƒ½å‡ºå»æœ€åä¸€æ‰‹ç‰Œç›´æ¥å‡º
 		CardGroupData SurCardGroupData = ins_SurCardsType(clsHandCardData.value_aHandCardList);
 		if (SurCardGroupData.cgType != cgERROR)
 		{
@@ -779,30 +779,30 @@ void AILogic::get_PutCardList_2_limit(GameSituation &clsGameSituation, HandCardD
 			}
 		}
 
-		//Ôİ´æ×î¼ÑµÄ¼ÛÖµ
+		//æš‚å­˜æœ€ä½³çš„ä»·å€¼
 		HandCardValue BestHandCardValue = get_HandCardValue(clsHandCardData);
 
 
-		//ÎÒÃÇÈÏÎª²»³öÅÆµÄ»°»áÈÃ¶ÔÊÖÒ»¸öÂÖ´Î£¬¼´¼ÓÒ»ÂÖ£¨È¨Öµ¼õÉÙ7£©±ãÓÚºóĞøµÄ¶Ô±È²Î¿¼¡£
+		//æˆ‘ä»¬è®¤ä¸ºä¸å‡ºç‰Œçš„è¯ä¼šè®©å¯¹æ‰‹ä¸€ä¸ªè½®æ¬¡ï¼Œå³åŠ ä¸€è½®ï¼ˆæƒå€¼å‡å°‘7ï¼‰ä¾¿äºåç»­çš„å¯¹æ¯”å‚è€ƒã€‚
 		BestHandCardValue.NeedRound += 1;
 
-		//Ôİ´æ×î¼ÑµÄÅÆºÅ
+		//æš‚å­˜æœ€ä½³çš„ç‰Œå·
 		int BestMaxCard = 0;
-		//ÊÇ·ñ³öÅÆµÄ±êÖ¾
+		//æ˜¯å¦å‡ºç‰Œçš„æ ‡å¿—
 		bool PutCards = false;
 
 		for (int i = clsGameSituation.uctNowCardGroup.nMaxCard + 1; i < 18; i++)
 		{
 			if (clsHandCardData.value_aHandCardList[i] > 0)
 			{
-				//³¢ÊÔ´ò³öÒ»ÕÅÅÆ£¬¹ÀËãÊ£ÓàÊÖÅÆ¼ÛÖµ
+				//å°è¯•æ‰“å‡ºä¸€å¼ ç‰Œï¼Œä¼°ç®—å‰©ä½™æ‰‹ç‰Œä»·å€¼
 				clsHandCardData.value_aHandCardList[i]--;
 				clsHandCardData.nHandCardCount--;
 				HandCardValue tmpHandCardValue = get_HandCardValue(clsHandCardData);
 				clsHandCardData.value_aHandCardList[i]++;
 				clsHandCardData.nHandCardCount++;
 
-				//Ñ¡È¡×ÜÈ¨Öµ-ÂÖ´Î*7Öµ×î¸ßµÄ²ßÂÔ  ÒòÎªÎÒÃÇÈÏÎªÊ£ÓàµÄÊÖÅÆĞèÒªn´Î¿ØÊÖµÄ»ú»á²ÅÄÜ³öÍê£¬ÈôÂÖ´ÎÅÆĞÍºÜ´ó£¨ÈçÕ¨µ¯£© ÔòÆä-7µÄ¼ÛÖµÒ²»áÎªÕı
+				//é€‰å–æ€»æƒå€¼-è½®æ¬¡*7å€¼æœ€é«˜çš„ç­–ç•¥  å› ä¸ºæˆ‘ä»¬è®¤ä¸ºå‰©ä½™çš„æ‰‹ç‰Œéœ€è¦næ¬¡æ§æ‰‹çš„æœºä¼šæ‰èƒ½å‡ºå®Œï¼Œè‹¥è½®æ¬¡ç‰Œå‹å¾ˆå¤§ï¼ˆå¦‚ç‚¸å¼¹ï¼‰ åˆ™å…¶-7çš„ä»·å€¼ä¹Ÿä¼šä¸ºæ­£
 				if ((BestHandCardValue.SumValue - (BestHandCardValue.NeedRound * 7)) <= (tmpHandCardValue.SumValue - (tmpHandCardValue.NeedRound * 7)))
 				{
 					BestHandCardValue = tmpHandCardValue;
@@ -825,16 +825,16 @@ void AILogic::get_PutCardList_2_limit(GameSituation &clsGameSituation, HandCardD
 				(clsGameSituation.NowOutUser == clsGameSituation.nDiZhuID || clsGameSituation.nCardDroit == clsGameSituation.nDiZhuID))
 			{
 
-				//³¢ÊÔ´ò³öÕ¨µ¯£¬¹ÀËãÊ£ÓàÊÖÅÆ¼ÛÖµ,ÒòÎªÕ¨µ¯¿ÉÒÔ²ÎÓëË³×Ó£¬²»ÄÜÒòÎªÓ°ÏìË³×Ó¶øÈÎÒâ³öÕ¨
+				//å°è¯•æ‰“å‡ºç‚¸å¼¹ï¼Œä¼°ç®—å‰©ä½™æ‰‹ç‰Œä»·å€¼,å› ä¸ºç‚¸å¼¹å¯ä»¥å‚ä¸é¡ºå­ï¼Œä¸èƒ½å› ä¸ºå½±å“é¡ºå­è€Œä»»æ„å‡ºç‚¸
 				clsHandCardData.value_aHandCardList[i] -= 4;
 				clsHandCardData.nHandCardCount -= 4;
 				HandCardValue tmpHandCardValue = get_HandCardValue(clsHandCardData);
 				clsHandCardData.value_aHandCardList[i] += 4;
 				clsHandCardData.nHandCardCount += 4;
 
-				//Ñ¡È¡×ÜÈ¨Öµ-ÂÖ´Î*7Öµ×î¸ßµÄ²ßÂÔ  ÒòÎªÎÒÃÇÈÏÎªÊ£ÓàµÄÊÖÅÆĞèÒªn´Î¿ØÊÖµÄ»ú»á²ÅÄÜ³öÍê£¬ÈôÂÖ´ÎÅÆĞÍºÜ´ó£¨ÈçÕ¨µ¯£© ÔòÆä-7µÄ¼ÛÖµÒ²»áÎªÕı
+				//é€‰å–æ€»æƒå€¼-è½®æ¬¡*7å€¼æœ€é«˜çš„ç­–ç•¥  å› ä¸ºæˆ‘ä»¬è®¤ä¸ºå‰©ä½™çš„æ‰‹ç‰Œéœ€è¦næ¬¡æ§æ‰‹çš„æœºä¼šæ‰èƒ½å‡ºå®Œï¼Œè‹¥è½®æ¬¡ç‰Œå‹å¾ˆå¤§ï¼ˆå¦‚ç‚¸å¼¹ï¼‰ åˆ™å…¶-7çš„ä»·å€¼ä¹Ÿä¼šä¸ºæ­£
 				if ((BestHandCardValue.SumValue - (BestHandCardValue.NeedRound * 7)) <= (tmpHandCardValue.SumValue - (tmpHandCardValue.NeedRound * 7))
-					//Èç¹ûÊ£ÓàÊÖÅÆ¼ÛÖµÎªÕı£¬Ö¤Ã÷³öÈ¥µÄ¼¸ÂÊºÜ´ó£¬ ÄÇÃ´¿ÉÒÔÓÃÕ¨»ñµÃÏÈÊÖ
+					//å¦‚æœå‰©ä½™æ‰‹ç‰Œä»·å€¼ä¸ºæ­£ï¼Œè¯æ˜å‡ºå»çš„å‡ ç‡å¾ˆå¤§ï¼Œ é‚£ä¹ˆå¯ä»¥ç”¨ç‚¸è·å¾—å…ˆæ‰‹
 					|| tmpHandCardValue.SumValue > 0)
 				{
 					BestHandCardValue = tmpHandCardValue;
@@ -854,11 +854,11 @@ void AILogic::get_PutCardList_2_limit(GameSituation &clsGameSituation, HandCardD
 			return;
 		}
 
-		//ÍõÕ¨
+		//ç‹ç‚¸
 		if (clsHandCardData.value_aHandCardList[17] > 0 && clsHandCardData.value_aHandCardList[16] > 0 &&
 			(clsGameSituation.NowOutUser == clsGameSituation.nDiZhuID || clsGameSituation.nCardDroit == clsGameSituation.nDiZhuID))
 		{
-			//Èç¹ûÊ£ÓàÊÖÅÆ¼ÛÖµÎªÕı£¬Ö¤Ã÷³öÈ¥µÄ¼¸ÂÊºÜ´ó£¬ÄÇÃ´¿ÉÒÔÓÃÕ¨»ñµÃÏÈÊÖ£¬ÍõÕ¨20·Ö
+			//å¦‚æœå‰©ä½™æ‰‹ç‰Œä»·å€¼ä¸ºæ­£ï¼Œè¯æ˜å‡ºå»çš„å‡ ç‡å¾ˆå¤§ï¼Œé‚£ä¹ˆå¯ä»¥ç”¨ç‚¸è·å¾—å…ˆæ‰‹ï¼Œç‹ç‚¸20åˆ†
 			if (BestHandCardValue.SumValue > 20)
 			{
 				clsHandCardData.value_nPutCardList.push_back(17);
@@ -868,16 +868,16 @@ void AILogic::get_PutCardList_2_limit(GameSituation &clsGameSituation, HandCardD
 			}
 		}
 
-		//¹Ü²»ÉÏ
+		//ç®¡ä¸ä¸Š
 		clsHandCardData.uctPutCardType = get_GroupData(cgZERO, 0, 0);
 		return;
 
 	}
-	//¶ÔÅÆÀàĞÍ
+	//å¯¹ç‰Œç±»å‹
 	else if (clsGameSituation.uctNowCardGroup.cgType == cgDOUBLE)
 	{
 
-		//¼ôÖ¦£ºÈç¹ûÄÜ³öÈ¥×îºóÒ»ÊÖÅÆÖ±½Ó³ö
+		//å‰ªæï¼šå¦‚æœèƒ½å‡ºå»æœ€åä¸€æ‰‹ç‰Œç›´æ¥å‡º
 		CardGroupData SurCardGroupData = ins_SurCardsType(clsHandCardData.value_aHandCardList);
 		if (SurCardGroupData.cgType != cgERROR)
 		{
@@ -892,31 +892,31 @@ void AILogic::get_PutCardList_2_limit(GameSituation &clsGameSituation, HandCardD
 				return;
 			}
 		}
-		//-------------------------------------------¶ÔÅÆ-------------------------------------------
+		//-------------------------------------------å¯¹ç‰Œ-------------------------------------------
 
-		//Ôİ´æ×î¼ÑµÄ¼ÛÖµ
+		//æš‚å­˜æœ€ä½³çš„ä»·å€¼
 		HandCardValue BestHandCardValue = get_HandCardValue(clsHandCardData);
 
-		//ÎÒÃÇÈÏÎª²»³öÅÆµÄ»°»áÈÃ¶ÔÊÖÒ»¸öÂÖ´Î£¬¼´¼ÓÒ»ÂÖ£¨È¨Öµ¼õÉÙ7£©±ãÓÚºóĞøµÄ¶Ô±È²Î¿¼¡£
+		//æˆ‘ä»¬è®¤ä¸ºä¸å‡ºç‰Œçš„è¯ä¼šè®©å¯¹æ‰‹ä¸€ä¸ªè½®æ¬¡ï¼Œå³åŠ ä¸€è½®ï¼ˆæƒå€¼å‡å°‘7ï¼‰ä¾¿äºåç»­çš„å¯¹æ¯”å‚è€ƒã€‚
 		BestHandCardValue.NeedRound += 1;
 
-		//Ôİ´æ×î¼ÑµÄÅÆºÅ
+		//æš‚å­˜æœ€ä½³çš„ç‰Œå·
 		int BestMaxCard = 0;
-		//ÊÇ·ñ³öÅÆµÄ±êÖ¾
+		//æ˜¯å¦å‡ºç‰Œçš„æ ‡å¿—
 		bool PutCards = false;
 
 		for (int i = clsGameSituation.uctNowCardGroup.nMaxCard + 1; i < 18; i++)
 		{
 			if (clsHandCardData.value_aHandCardList[i] > 1)
 			{
-				//³¢ÊÔ´ò³öÒ»¶ÔÅÆ£¬¹ÀËãÊ£ÓàÊÖÅÆ¼ÛÖµ
+				//å°è¯•æ‰“å‡ºä¸€å¯¹ç‰Œï¼Œä¼°ç®—å‰©ä½™æ‰‹ç‰Œä»·å€¼
 				clsHandCardData.value_aHandCardList[i] -= 2;
 				clsHandCardData.nHandCardCount -= 2;
 				HandCardValue tmpHandCardValue = get_HandCardValue(clsHandCardData);
 				clsHandCardData.value_aHandCardList[i] += 2;
 				clsHandCardData.nHandCardCount += 2;
 
-				//Ñ¡È¡×ÜÈ¨Öµ-ÂÖ´Î*7Öµ×î¸ßµÄ²ßÂÔ  ÒòÎªÎÒÃÇÈÏÎªÊ£ÓàµÄÊÖÅÆĞèÒªn´Î¿ØÊÖµÄ»ú»á²ÅÄÜ³öÍê£¬ÈôÂÖ´ÎÅÆĞÍºÜ´ó£¨ÈçÕ¨µ¯£© ÔòÆä-7µÄ¼ÛÖµÒ²»áÎªÕı
+				//é€‰å–æ€»æƒå€¼-è½®æ¬¡*7å€¼æœ€é«˜çš„ç­–ç•¥  å› ä¸ºæˆ‘ä»¬è®¤ä¸ºå‰©ä½™çš„æ‰‹ç‰Œéœ€è¦næ¬¡æ§æ‰‹çš„æœºä¼šæ‰èƒ½å‡ºå®Œï¼Œè‹¥è½®æ¬¡ç‰Œå‹å¾ˆå¤§ï¼ˆå¦‚ç‚¸å¼¹ï¼‰ åˆ™å…¶-7çš„ä»·å€¼ä¹Ÿä¼šä¸ºæ­£
 				if ((BestHandCardValue.SumValue - (BestHandCardValue.NeedRound * 7)) <= (tmpHandCardValue.SumValue - (tmpHandCardValue.NeedRound * 7)))
 				{
 					BestHandCardValue = tmpHandCardValue;
@@ -935,7 +935,7 @@ void AILogic::get_PutCardList_2_limit(GameSituation &clsGameSituation, HandCardD
 		}
 
 
-		//-------------------------------------------Õ¨µ¯-------------------------------------------
+		//-------------------------------------------ç‚¸å¼¹-------------------------------------------
 
 		for (int i = 3; i < 16; i++)
 		{
@@ -943,16 +943,16 @@ void AILogic::get_PutCardList_2_limit(GameSituation &clsGameSituation, HandCardD
 				(clsGameSituation.NowOutUser == clsGameSituation.nDiZhuID || clsGameSituation.nCardDroit == clsGameSituation.nDiZhuID))
 			{
 
-				//³¢ÊÔ´ò³öÕ¨µ¯£¬¹ÀËãÊ£ÓàÊÖÅÆ¼ÛÖµ,ÒòÎªÕ¨µ¯¿ÉÒÔ²ÎÓëË³×Ó£¬²»ÄÜÒòÎªÓ°ÏìË³×Ó¶øÈÎÒâ³öÕ¨
+				//å°è¯•æ‰“å‡ºç‚¸å¼¹ï¼Œä¼°ç®—å‰©ä½™æ‰‹ç‰Œä»·å€¼,å› ä¸ºç‚¸å¼¹å¯ä»¥å‚ä¸é¡ºå­ï¼Œä¸èƒ½å› ä¸ºå½±å“é¡ºå­è€Œä»»æ„å‡ºç‚¸
 				clsHandCardData.value_aHandCardList[i] -= 4;
 				clsHandCardData.nHandCardCount -= 4;
 				HandCardValue tmpHandCardValue = get_HandCardValue(clsHandCardData);
 				clsHandCardData.value_aHandCardList[i] += 4;
 				clsHandCardData.nHandCardCount += 4;
 
-				//Ñ¡È¡×ÜÈ¨Öµ-ÂÖ´Î*7Öµ×î¸ßµÄ²ßÂÔ  ÒòÎªÎÒÃÇÈÏÎªÊ£ÓàµÄÊÖÅÆĞèÒªn´Î¿ØÊÖµÄ»ú»á²ÅÄÜ³öÍê£¬ÈôÂÖ´ÎÅÆĞÍºÜ´ó£¨ÈçÕ¨µ¯£© ÔòÆä-7µÄ¼ÛÖµÒ²»áÎªÕı
+				//é€‰å–æ€»æƒå€¼-è½®æ¬¡*7å€¼æœ€é«˜çš„ç­–ç•¥  å› ä¸ºæˆ‘ä»¬è®¤ä¸ºå‰©ä½™çš„æ‰‹ç‰Œéœ€è¦næ¬¡æ§æ‰‹çš„æœºä¼šæ‰èƒ½å‡ºå®Œï¼Œè‹¥è½®æ¬¡ç‰Œå‹å¾ˆå¤§ï¼ˆå¦‚ç‚¸å¼¹ï¼‰ åˆ™å…¶-7çš„ä»·å€¼ä¹Ÿä¼šä¸ºæ­£
 				if ((BestHandCardValue.SumValue - (BestHandCardValue.NeedRound * 7)) <= (tmpHandCardValue.SumValue - (tmpHandCardValue.NeedRound * 7))
-					//Èç¹ûÊ£ÓàÊÖÅÆ¼ÛÖµÎªÕı£¬Ö¤Ã÷³öÈ¥µÄ¼¸ÂÊºÜ´ó£¬ ÄÇÃ´¿ÉÒÔÓÃÕ¨»ñµÃÏÈÊÖ
+					//å¦‚æœå‰©ä½™æ‰‹ç‰Œä»·å€¼ä¸ºæ­£ï¼Œè¯æ˜å‡ºå»çš„å‡ ç‡å¾ˆå¤§ï¼Œ é‚£ä¹ˆå¯ä»¥ç”¨ç‚¸è·å¾—å…ˆæ‰‹
 					|| tmpHandCardValue.SumValue > 0)
 				{
 					BestHandCardValue = tmpHandCardValue;
@@ -972,11 +972,11 @@ void AILogic::get_PutCardList_2_limit(GameSituation &clsGameSituation, HandCardD
 			return;
 		}
 
-		//ÍõÕ¨
+		//ç‹ç‚¸
 		if (clsHandCardData.value_aHandCardList[17] > 0 && clsHandCardData.value_aHandCardList[16] > 0 &&
 			(clsGameSituation.NowOutUser == clsGameSituation.nDiZhuID || clsGameSituation.nCardDroit == clsGameSituation.nDiZhuID))
 		{
-			//Èç¹ûÊ£ÓàÊÖÅÆ¼ÛÖµÎªÕı£¬Ö¤Ã÷³öÈ¥µÄ¼¸ÂÊºÜ´ó£¬ÄÇÃ´¿ÉÒÔÓÃÕ¨»ñµÃÏÈÊÖ£¬ÍõÕ¨20·Ö
+			//å¦‚æœå‰©ä½™æ‰‹ç‰Œä»·å€¼ä¸ºæ­£ï¼Œè¯æ˜å‡ºå»çš„å‡ ç‡å¾ˆå¤§ï¼Œé‚£ä¹ˆå¯ä»¥ç”¨ç‚¸è·å¾—å…ˆæ‰‹ï¼Œç‹ç‚¸20åˆ†
 			if (BestHandCardValue.SumValue > 20)
 			{
 				clsHandCardData.value_nPutCardList.push_back(17);
@@ -986,14 +986,14 @@ void AILogic::get_PutCardList_2_limit(GameSituation &clsGameSituation, HandCardD
 			}
 		}
 
-		//¹Ü²»ÉÏ
+		//ç®¡ä¸ä¸Š
 		clsHandCardData.uctPutCardType = get_GroupData(cgZERO, 0, 0);
 		return;
 	}
-	//ÈıÅÆÀàĞÍ
+	//ä¸‰ç‰Œç±»å‹
 	else if (clsGameSituation.uctNowCardGroup.cgType == cgTHREE)
 	{
-		//¼ôÖ¦£ºÈç¹ûÄÜ³öÈ¥×îºóÒ»ÊÖÅÆÖ±½Ó³ö
+		//å‰ªæï¼šå¦‚æœèƒ½å‡ºå»æœ€åä¸€æ‰‹ç‰Œç›´æ¥å‡º
 		CardGroupData SurCardGroupData = ins_SurCardsType(clsHandCardData.value_aHandCardList);
 		if (SurCardGroupData.cgType != cgERROR)
 		{
@@ -1008,32 +1008,32 @@ void AILogic::get_PutCardList_2_limit(GameSituation &clsGameSituation, HandCardD
 				return;
 			}
 		}
-		//-------------------------------------------ÈıÅÆ-------------------------------------------
+		//-------------------------------------------ä¸‰ç‰Œ-------------------------------------------
 
-		//Ôİ´æ×î¼ÑµÄ¼ÛÖµ
+		//æš‚å­˜æœ€ä½³çš„ä»·å€¼
 		HandCardValue BestHandCardValue = get_HandCardValue(clsHandCardData);
 
 
-		//ÎÒÃÇÈÏÎª²»³öÅÆµÄ»°»áÈÃ¶ÔÊÖÒ»¸öÂÖ´Î£¬¼´¼ÓÒ»ÂÖ£¨È¨Öµ¼õÉÙ7£©±ãÓÚºóĞøµÄ¶Ô±È²Î¿¼¡£
+		//æˆ‘ä»¬è®¤ä¸ºä¸å‡ºç‰Œçš„è¯ä¼šè®©å¯¹æ‰‹ä¸€ä¸ªè½®æ¬¡ï¼Œå³åŠ ä¸€è½®ï¼ˆæƒå€¼å‡å°‘7ï¼‰ä¾¿äºåç»­çš„å¯¹æ¯”å‚è€ƒã€‚
 		BestHandCardValue.NeedRound += 1;
 
-		//Ôİ´æ×î¼ÑµÄÅÆºÅ
+		//æš‚å­˜æœ€ä½³çš„ç‰Œå·
 		int BestMaxCard = 0;
-		//ÊÇ·ñ³öÅÆµÄ±êÖ¾
+		//æ˜¯å¦å‡ºç‰Œçš„æ ‡å¿—
 		bool PutCards = false;
 
 		for (int i = clsGameSituation.uctNowCardGroup.nMaxCard + 1; i < 18; i++)
 		{
 			if (clsHandCardData.value_aHandCardList[i] > 2)
 			{
-				//³¢ÊÔ´ò³öÒ»¶ÔÅÆ£¬¹ÀËãÊ£ÓàÊÖÅÆ¼ÛÖµ
+				//å°è¯•æ‰“å‡ºä¸€å¯¹ç‰Œï¼Œä¼°ç®—å‰©ä½™æ‰‹ç‰Œä»·å€¼
 				clsHandCardData.value_aHandCardList[i] -= 3;
 				clsHandCardData.nHandCardCount -= 3;
 				HandCardValue tmpHandCardValue = get_HandCardValue(clsHandCardData);
 				clsHandCardData.value_aHandCardList[i] += 3;
 				clsHandCardData.nHandCardCount += 3;
 
-				//Ñ¡È¡×ÜÈ¨Öµ-ÂÖ´Î*7Öµ×î¸ßµÄ²ßÂÔ  ÒòÎªÎÒÃÇÈÏÎªÊ£ÓàµÄÊÖÅÆĞèÒªn´Î¿ØÊÖµÄ»ú»á²ÅÄÜ³öÍê£¬ÈôÂÖ´ÎÅÆĞÍºÜ´ó£¨ÈçÕ¨µ¯£© ÔòÆä-7µÄ¼ÛÖµÒ²»áÎªÕı
+				//é€‰å–æ€»æƒå€¼-è½®æ¬¡*7å€¼æœ€é«˜çš„ç­–ç•¥  å› ä¸ºæˆ‘ä»¬è®¤ä¸ºå‰©ä½™çš„æ‰‹ç‰Œéœ€è¦næ¬¡æ§æ‰‹çš„æœºä¼šæ‰èƒ½å‡ºå®Œï¼Œè‹¥è½®æ¬¡ç‰Œå‹å¾ˆå¤§ï¼ˆå¦‚ç‚¸å¼¹ï¼‰ åˆ™å…¶-7çš„ä»·å€¼ä¹Ÿä¼šä¸ºæ­£
 				if ((BestHandCardValue.SumValue - (BestHandCardValue.NeedRound * 7)) <= (tmpHandCardValue.SumValue - (tmpHandCardValue.NeedRound * 7)))
 				{
 					BestHandCardValue = tmpHandCardValue;
@@ -1053,7 +1053,7 @@ void AILogic::get_PutCardList_2_limit(GameSituation &clsGameSituation, HandCardD
 		}
 
 
-		//-------------------------------------------Õ¨µ¯-------------------------------------------
+		//-------------------------------------------ç‚¸å¼¹-------------------------------------------
 
 		for (int i = 3; i < 16; i++)
 		{
@@ -1061,16 +1061,16 @@ void AILogic::get_PutCardList_2_limit(GameSituation &clsGameSituation, HandCardD
 				(clsGameSituation.NowOutUser == clsGameSituation.nDiZhuID || clsGameSituation.nCardDroit == clsGameSituation.nDiZhuID))
 			{
 
-				//³¢ÊÔ´ò³öÕ¨µ¯£¬¹ÀËãÊ£ÓàÊÖÅÆ¼ÛÖµ,ÒòÎªÕ¨µ¯¿ÉÒÔ²ÎÓëË³×Ó£¬²»ÄÜÒòÎªÓ°ÏìË³×Ó¶øÈÎÒâ³öÕ¨
+				//å°è¯•æ‰“å‡ºç‚¸å¼¹ï¼Œä¼°ç®—å‰©ä½™æ‰‹ç‰Œä»·å€¼,å› ä¸ºç‚¸å¼¹å¯ä»¥å‚ä¸é¡ºå­ï¼Œä¸èƒ½å› ä¸ºå½±å“é¡ºå­è€Œä»»æ„å‡ºç‚¸
 				clsHandCardData.value_aHandCardList[i] -= 4;
 				clsHandCardData.nHandCardCount -= 4;
 				HandCardValue tmpHandCardValue = get_HandCardValue(clsHandCardData);
 				clsHandCardData.value_aHandCardList[i] += 4;
 				clsHandCardData.nHandCardCount += 4;
 
-				//Ñ¡È¡×ÜÈ¨Öµ-ÂÖ´Î*7Öµ×î¸ßµÄ²ßÂÔ  ÒòÎªÎÒÃÇÈÏÎªÊ£ÓàµÄÊÖÅÆĞèÒªn´Î¿ØÊÖµÄ»ú»á²ÅÄÜ³öÍê£¬ÈôÂÖ´ÎÅÆĞÍºÜ´ó£¨ÈçÕ¨µ¯£© ÔòÆä-7µÄ¼ÛÖµÒ²»áÎªÕı
+				//é€‰å–æ€»æƒå€¼-è½®æ¬¡*7å€¼æœ€é«˜çš„ç­–ç•¥  å› ä¸ºæˆ‘ä»¬è®¤ä¸ºå‰©ä½™çš„æ‰‹ç‰Œéœ€è¦næ¬¡æ§æ‰‹çš„æœºä¼šæ‰èƒ½å‡ºå®Œï¼Œè‹¥è½®æ¬¡ç‰Œå‹å¾ˆå¤§ï¼ˆå¦‚ç‚¸å¼¹ï¼‰ åˆ™å…¶-7çš„ä»·å€¼ä¹Ÿä¼šä¸ºæ­£
 				if ((BestHandCardValue.SumValue - (BestHandCardValue.NeedRound * 7)) <= (tmpHandCardValue.SumValue - (tmpHandCardValue.NeedRound * 7))
-					//Èç¹ûÊ£ÓàÊÖÅÆ¼ÛÖµÎªÕı£¬Ö¤Ã÷³öÈ¥µÄ¼¸ÂÊºÜ´ó£¬ ÄÇÃ´¿ÉÒÔÓÃÕ¨»ñµÃÏÈÊÖ
+					//å¦‚æœå‰©ä½™æ‰‹ç‰Œä»·å€¼ä¸ºæ­£ï¼Œè¯æ˜å‡ºå»çš„å‡ ç‡å¾ˆå¤§ï¼Œ é‚£ä¹ˆå¯ä»¥ç”¨ç‚¸è·å¾—å…ˆæ‰‹
 					|| tmpHandCardValue.SumValue > 0)
 				{
 					BestHandCardValue = tmpHandCardValue;
@@ -1090,11 +1090,11 @@ void AILogic::get_PutCardList_2_limit(GameSituation &clsGameSituation, HandCardD
 			return;
 		}
 
-		//ÍõÕ¨
+		//ç‹ç‚¸
 		if (clsHandCardData.value_aHandCardList[17] > 0 && clsHandCardData.value_aHandCardList[16] > 0 &&
 			(clsGameSituation.NowOutUser == clsGameSituation.nDiZhuID || clsGameSituation.nCardDroit == clsGameSituation.nDiZhuID))
 		{
-			//Èç¹ûÊ£ÓàÊÖÅÆ¼ÛÖµÎªÕı£¬Ö¤Ã÷³öÈ¥µÄ¼¸ÂÊºÜ´ó£¬ÄÇÃ´¿ÉÒÔÓÃÕ¨»ñµÃÏÈÊÖ£¬ÍõÕ¨20·Ö
+			//å¦‚æœå‰©ä½™æ‰‹ç‰Œä»·å€¼ä¸ºæ­£ï¼Œè¯æ˜å‡ºå»çš„å‡ ç‡å¾ˆå¤§ï¼Œé‚£ä¹ˆå¯ä»¥ç”¨ç‚¸è·å¾—å…ˆæ‰‹ï¼Œç‹ç‚¸20åˆ†
 			if (BestHandCardValue.SumValue > 20)
 			{
 				clsHandCardData.value_nPutCardList.push_back(17);
@@ -1104,11 +1104,11 @@ void AILogic::get_PutCardList_2_limit(GameSituation &clsGameSituation, HandCardD
 			}
 		}
 
-		//¹Ü²»ÉÏ
+		//ç®¡ä¸ä¸Š
 		clsHandCardData.uctPutCardType = get_GroupData(cgZERO, 0, 0);
 		return;
 	}
-	//µ¥Á¬ÀàĞÍ
+	//å•è¿ç±»å‹
 	else if (clsGameSituation.uctNowCardGroup.cgType == cgSINGLE_LINE)
 	{
 		CardGroupData SurCardGroupData = ins_SurCardsType(clsHandCardData.value_aHandCardList);
@@ -1119,25 +1119,25 @@ void AILogic::get_PutCardList_2_limit(GameSituation &clsGameSituation, HandCardD
 			return;
 		}
 
-		//Ôİ´æ×î¼ÑµÄ¼ÛÖµ
+		//æš‚å­˜æœ€ä½³çš„ä»·å€¼
 		HandCardValue BestHandCardValue = get_HandCardValue(clsHandCardData);
 
 
-		//ÎÒÃÇÈÏÎª²»³öÅÆµÄ»°»áÈÃ¶ÔÊÖÒ»¸öÂÖ´Î£¬¼´¼ÓÒ»ÂÖ£¨È¨Öµ¼õÉÙ7£©±ãÓÚºóĞøµÄ¶Ô±È²Î¿¼¡£
+		//æˆ‘ä»¬è®¤ä¸ºä¸å‡ºç‰Œçš„è¯ä¼šè®©å¯¹æ‰‹ä¸€ä¸ªè½®æ¬¡ï¼Œå³åŠ ä¸€è½®ï¼ˆæƒå€¼å‡å°‘7ï¼‰ä¾¿äºåç»­çš„å¯¹æ¯”å‚è€ƒã€‚
 		BestHandCardValue.NeedRound += 1;
 
-		//Ôİ´æ×î¼ÑµÄÅÆºÅ
+		//æš‚å­˜æœ€ä½³çš„ç‰Œå·
 		int BestMaxCard = 0;
-		//ÊÇ·ñ³öÅÆµÄ±êÖ¾
+		//æ˜¯å¦å‡ºç‰Œçš„æ ‡å¿—
 		bool PutCards = false;
 
-		//ÑéÖ¤Ë³×ÓµÄ±êÖ¾
+		//éªŒè¯é¡ºå­çš„æ ‡å¿—
 		int prov = 0;
-		//Ë³×ÓÆğµã
+		//é¡ºå­èµ·ç‚¹
 		int start_i = 0;
-		//Ë³×ÓÖÕµã
+		//é¡ºå­ç»ˆç‚¹
 		int end_i = 0;
-		//Ë³×Ó³¤¶È
+		//é¡ºå­é•¿åº¦
 		int length = clsGameSituation.uctNowCardGroup.nCount;
 
 		for (int i = clsGameSituation.uctNowCardGroup.nMaxCard - length + 2; i < 15; i++)
@@ -1167,7 +1167,7 @@ void AILogic::get_PutCardList_2_limit(GameSituation &clsGameSituation, HandCardD
 				}
 				clsHandCardData.nHandCardCount += clsGameSituation.uctNowCardGroup.nCount;
 
-				//Ñ¡È¡×ÜÈ¨Öµ-ÂÖ´Î*7Öµ×î¸ßµÄ²ßÂÔ  ÒòÎªÎÒÃÇÈÏÎªÊ£ÓàµÄÊÖÅÆĞèÒªn´Î¿ØÊÖµÄ»ú»á²ÅÄÜ³öÍê£¬ÈôÂÖ´ÎÅÆĞÍºÜ´ó£¨ÈçÕ¨µ¯£© ÔòÆä-7µÄ¼ÛÖµÒ²»áÎªÕı
+				//é€‰å–æ€»æƒå€¼-è½®æ¬¡*7å€¼æœ€é«˜çš„ç­–ç•¥  å› ä¸ºæˆ‘ä»¬è®¤ä¸ºå‰©ä½™çš„æ‰‹ç‰Œéœ€è¦næ¬¡æ§æ‰‹çš„æœºä¼šæ‰èƒ½å‡ºå®Œï¼Œè‹¥è½®æ¬¡ç‰Œå‹å¾ˆå¤§ï¼ˆå¦‚ç‚¸å¼¹ï¼‰ åˆ™å…¶-7çš„ä»·å€¼ä¹Ÿä¼šä¸ºæ­£
 				if ((BestHandCardValue.SumValue - (BestHandCardValue.NeedRound * 7)) <= (tmpHandCardValue.SumValue - (tmpHandCardValue.NeedRound * 7)))
 				{
 					BestHandCardValue = tmpHandCardValue;
@@ -1188,7 +1188,7 @@ void AILogic::get_PutCardList_2_limit(GameSituation &clsGameSituation, HandCardD
 			return;
 		}
 
-		//-------------------------------------------Õ¨µ¯-------------------------------------------
+		//-------------------------------------------ç‚¸å¼¹-------------------------------------------
 
 		for (int i = 3; i < 16; i++)
 		{
@@ -1196,16 +1196,16 @@ void AILogic::get_PutCardList_2_limit(GameSituation &clsGameSituation, HandCardD
 				(clsGameSituation.NowOutUser == clsGameSituation.nDiZhuID || clsGameSituation.nCardDroit == clsGameSituation.nDiZhuID))
 			{
 
-				//³¢ÊÔ´ò³öÕ¨µ¯£¬¹ÀËãÊ£ÓàÊÖÅÆ¼ÛÖµ,ÒòÎªÕ¨µ¯¿ÉÒÔ²ÎÓëË³×Ó£¬²»ÄÜÒòÎªÓ°ÏìË³×Ó¶øÈÎÒâ³öÕ¨
+				//å°è¯•æ‰“å‡ºç‚¸å¼¹ï¼Œä¼°ç®—å‰©ä½™æ‰‹ç‰Œä»·å€¼,å› ä¸ºç‚¸å¼¹å¯ä»¥å‚ä¸é¡ºå­ï¼Œä¸èƒ½å› ä¸ºå½±å“é¡ºå­è€Œä»»æ„å‡ºç‚¸
 				clsHandCardData.value_aHandCardList[i] -= 4;
 				clsHandCardData.nHandCardCount -= 4;
 				HandCardValue tmpHandCardValue = get_HandCardValue(clsHandCardData);
 				clsHandCardData.value_aHandCardList[i] += 4;
 				clsHandCardData.nHandCardCount += 4;
 
-				//Ñ¡È¡×ÜÈ¨Öµ-ÂÖ´Î*7Öµ×î¸ßµÄ²ßÂÔ  ÒòÎªÎÒÃÇÈÏÎªÊ£ÓàµÄÊÖÅÆĞèÒªn´Î¿ØÊÖµÄ»ú»á²ÅÄÜ³öÍê£¬ÈôÂÖ´ÎÅÆĞÍºÜ´ó£¨ÈçÕ¨µ¯£© ÔòÆä-7µÄ¼ÛÖµÒ²»áÎªÕı
+				//é€‰å–æ€»æƒå€¼-è½®æ¬¡*7å€¼æœ€é«˜çš„ç­–ç•¥  å› ä¸ºæˆ‘ä»¬è®¤ä¸ºå‰©ä½™çš„æ‰‹ç‰Œéœ€è¦næ¬¡æ§æ‰‹çš„æœºä¼šæ‰èƒ½å‡ºå®Œï¼Œè‹¥è½®æ¬¡ç‰Œå‹å¾ˆå¤§ï¼ˆå¦‚ç‚¸å¼¹ï¼‰ åˆ™å…¶-7çš„ä»·å€¼ä¹Ÿä¼šä¸ºæ­£
 				if ((BestHandCardValue.SumValue - (BestHandCardValue.NeedRound * 7)) <= (tmpHandCardValue.SumValue - (tmpHandCardValue.NeedRound * 7))
-					//Èç¹ûÊ£ÓàÊÖÅÆ¼ÛÖµÎªÕı£¬Ö¤Ã÷³öÈ¥µÄ¼¸ÂÊºÜ´ó£¬ ÄÇÃ´¿ÉÒÔÓÃÕ¨»ñµÃÏÈÊÖ
+					//å¦‚æœå‰©ä½™æ‰‹ç‰Œä»·å€¼ä¸ºæ­£ï¼Œè¯æ˜å‡ºå»çš„å‡ ç‡å¾ˆå¤§ï¼Œ é‚£ä¹ˆå¯ä»¥ç”¨ç‚¸è·å¾—å…ˆæ‰‹
 					|| tmpHandCardValue.SumValue > 0)
 				{
 					BestHandCardValue = tmpHandCardValue;
@@ -1225,11 +1225,11 @@ void AILogic::get_PutCardList_2_limit(GameSituation &clsGameSituation, HandCardD
 			return;
 		}
 
-		//ÍõÕ¨
+		//ç‹ç‚¸
 		if (clsHandCardData.value_aHandCardList[17] > 0 && clsHandCardData.value_aHandCardList[16] > 0 &&
 			(clsGameSituation.NowOutUser == clsGameSituation.nDiZhuID || clsGameSituation.nCardDroit == clsGameSituation.nDiZhuID))
 		{
-			//Èç¹ûÊ£ÓàÊÖÅÆ¼ÛÖµÎªÕı£¬Ö¤Ã÷³öÈ¥µÄ¼¸ÂÊºÜ´ó£¬ÄÇÃ´¿ÉÒÔÓÃÕ¨»ñµÃÏÈÊÖ£¬ÍõÕ¨20·Ö
+			//å¦‚æœå‰©ä½™æ‰‹ç‰Œä»·å€¼ä¸ºæ­£ï¼Œè¯æ˜å‡ºå»çš„å‡ ç‡å¾ˆå¤§ï¼Œé‚£ä¹ˆå¯ä»¥ç”¨ç‚¸è·å¾—å…ˆæ‰‹ï¼Œç‹ç‚¸20åˆ†
 			if (BestHandCardValue.SumValue > 20)
 			{
 				clsHandCardData.value_nPutCardList.push_back(17);
@@ -1239,15 +1239,15 @@ void AILogic::get_PutCardList_2_limit(GameSituation &clsGameSituation, HandCardD
 			}
 		}
 
-		//¹Ü²»ÉÏ
+		//ç®¡ä¸ä¸Š
 		clsHandCardData.uctPutCardType = get_GroupData(cgZERO, 0, 0);
 		return;
 	}
-	//¶ÔÁ¬ÀàĞÍ
+	//å¯¹è¿ç±»å‹
 	else if (clsGameSituation.uctNowCardGroup.cgType == cgDOUBLE_LINE)
 	{
 
-		//¼ôÖ¦£ºÈç¹ûÄÜ³öÈ¥×îºóÒ»ÊÖÅÆÖ±½Ó³ö
+		//å‰ªæï¼šå¦‚æœèƒ½å‡ºå»æœ€åä¸€æ‰‹ç‰Œç›´æ¥å‡º
 		CardGroupData SurCardGroupData = ins_SurCardsType(clsHandCardData.value_aHandCardList);
 		if (SurCardGroupData.cgType != cgERROR)
 		{
@@ -1265,26 +1265,26 @@ void AILogic::get_PutCardList_2_limit(GameSituation &clsGameSituation, HandCardD
 		}
 
 
-		//Ôİ´æ×î¼ÑµÄ¼ÛÖµ
+		//æš‚å­˜æœ€ä½³çš„ä»·å€¼
 		HandCardValue BestHandCardValue = get_HandCardValue(clsHandCardData);
 
 
-		//ÎÒÃÇÈÏÎª²»³öÅÆµÄ»°»áÈÃ¶ÔÊÖÒ»¸öÂÖ´Î£¬¼´¼ÓÒ»ÂÖ£¨È¨Öµ¼õÉÙ7£©±ãÓÚºóĞøµÄ¶Ô±È²Î¿¼¡£
+		//æˆ‘ä»¬è®¤ä¸ºä¸å‡ºç‰Œçš„è¯ä¼šè®©å¯¹æ‰‹ä¸€ä¸ªè½®æ¬¡ï¼Œå³åŠ ä¸€è½®ï¼ˆæƒå€¼å‡å°‘7ï¼‰ä¾¿äºåç»­çš„å¯¹æ¯”å‚è€ƒã€‚
 		BestHandCardValue.NeedRound += 1;
 
-		//Ôİ´æ×î¼ÑµÄÅÆºÅ
+		//æš‚å­˜æœ€ä½³çš„ç‰Œå·
 		int BestMaxCard = 0;
-		//ÊÇ·ñ³öÅÆµÄ±êÖ¾
+		//æ˜¯å¦å‡ºç‰Œçš„æ ‡å¿—
 		bool PutCards = false;
-		//ÑéÖ¤Ë³×ÓµÄ±êÖ¾
+		//éªŒè¯é¡ºå­çš„æ ‡å¿—
 		int prov = 0;
-		//Ë³×ÓÆğµã
+		//é¡ºå­èµ·ç‚¹
 		int start_i = 0;
-		//Ë³×ÓÖÕµã
+		//é¡ºå­ç»ˆç‚¹
 		int end_i = 0;
-		//Ë³×Ó³¤¶È
+		//é¡ºå­é•¿åº¦
 		int length = clsGameSituation.uctNowCardGroup.nCount / 2;
-		//2ÓëÍõ²»²ÎÓëË³×Ó£¬´Óµ±Ç°ÒÑ´ò³öµÄË³×Ó×îĞ¡ÅÆÖµ+1¿ªÊ¼±éÀú
+		//2ä¸ç‹ä¸å‚ä¸é¡ºå­ï¼Œä»å½“å‰å·²æ‰“å‡ºçš„é¡ºå­æœ€å°ç‰Œå€¼+1å¼€å§‹éå†
 		for (int i = clsGameSituation.uctNowCardGroup.nMaxCard - length + 2; i < 15; i++)
 		{
 			if (clsHandCardData.value_aHandCardList[i] > 1)
@@ -1312,7 +1312,7 @@ void AILogic::get_PutCardList_2_limit(GameSituation &clsGameSituation, HandCardD
 				}
 				clsHandCardData.nHandCardCount += clsGameSituation.uctNowCardGroup.nCount;
 
-				//Ñ¡È¡×ÜÈ¨Öµ-ÂÖ´Î*7Öµ×î¸ßµÄ²ßÂÔ  ÒòÎªÎÒÃÇÈÏÎªÊ£ÓàµÄÊÖÅÆĞèÒªn´Î¿ØÊÖµÄ»ú»á²ÅÄÜ³öÍê£¬ÈôÂÖ´ÎÅÆĞÍºÜ´ó£¨ÈçÕ¨µ¯£© ÔòÆä-7µÄ¼ÛÖµÒ²»áÎªÕı
+				//é€‰å–æ€»æƒå€¼-è½®æ¬¡*7å€¼æœ€é«˜çš„ç­–ç•¥  å› ä¸ºæˆ‘ä»¬è®¤ä¸ºå‰©ä½™çš„æ‰‹ç‰Œéœ€è¦næ¬¡æ§æ‰‹çš„æœºä¼šæ‰èƒ½å‡ºå®Œï¼Œè‹¥è½®æ¬¡ç‰Œå‹å¾ˆå¤§ï¼ˆå¦‚ç‚¸å¼¹ï¼‰ åˆ™å…¶-7çš„ä»·å€¼ä¹Ÿä¼šä¸ºæ­£
 				if ((BestHandCardValue.SumValue - (BestHandCardValue.NeedRound * 7)) <= (tmpHandCardValue.SumValue - (tmpHandCardValue.NeedRound * 7)))
 				{
 					BestHandCardValue = tmpHandCardValue;
@@ -1334,7 +1334,7 @@ void AILogic::get_PutCardList_2_limit(GameSituation &clsGameSituation, HandCardD
 			return;
 		}
 
-		//-------------------------------------------Õ¨µ¯-------------------------------------------
+		//-------------------------------------------ç‚¸å¼¹-------------------------------------------
 
 		for (int i = 3; i < 16; i++)
 		{
@@ -1342,16 +1342,16 @@ void AILogic::get_PutCardList_2_limit(GameSituation &clsGameSituation, HandCardD
 				(clsGameSituation.NowOutUser == clsGameSituation.nDiZhuID || clsGameSituation.nCardDroit == clsGameSituation.nDiZhuID))
 			{
 
-				//³¢ÊÔ´ò³öÕ¨µ¯£¬¹ÀËãÊ£ÓàÊÖÅÆ¼ÛÖµ,ÒòÎªÕ¨µ¯¿ÉÒÔ²ÎÓëË³×Ó£¬²»ÄÜÒòÎªÓ°ÏìË³×Ó¶øÈÎÒâ³öÕ¨
+				//å°è¯•æ‰“å‡ºç‚¸å¼¹ï¼Œä¼°ç®—å‰©ä½™æ‰‹ç‰Œä»·å€¼,å› ä¸ºç‚¸å¼¹å¯ä»¥å‚ä¸é¡ºå­ï¼Œä¸èƒ½å› ä¸ºå½±å“é¡ºå­è€Œä»»æ„å‡ºç‚¸
 				clsHandCardData.value_aHandCardList[i] -= 4;
 				clsHandCardData.nHandCardCount -= 4;
 				HandCardValue tmpHandCardValue = get_HandCardValue(clsHandCardData);
 				clsHandCardData.value_aHandCardList[i] += 4;
 				clsHandCardData.nHandCardCount += 4;
 
-				//Ñ¡È¡×ÜÈ¨Öµ-ÂÖ´Î*7Öµ×î¸ßµÄ²ßÂÔ  ÒòÎªÎÒÃÇÈÏÎªÊ£ÓàµÄÊÖÅÆĞèÒªn´Î¿ØÊÖµÄ»ú»á²ÅÄÜ³öÍê£¬ÈôÂÖ´ÎÅÆĞÍºÜ´ó£¨ÈçÕ¨µ¯£© ÔòÆä-7µÄ¼ÛÖµÒ²»áÎªÕı
+				//é€‰å–æ€»æƒå€¼-è½®æ¬¡*7å€¼æœ€é«˜çš„ç­–ç•¥  å› ä¸ºæˆ‘ä»¬è®¤ä¸ºå‰©ä½™çš„æ‰‹ç‰Œéœ€è¦næ¬¡æ§æ‰‹çš„æœºä¼šæ‰èƒ½å‡ºå®Œï¼Œè‹¥è½®æ¬¡ç‰Œå‹å¾ˆå¤§ï¼ˆå¦‚ç‚¸å¼¹ï¼‰ åˆ™å…¶-7çš„ä»·å€¼ä¹Ÿä¼šä¸ºæ­£
 				if ((BestHandCardValue.SumValue - (BestHandCardValue.NeedRound * 7)) <= (tmpHandCardValue.SumValue - (tmpHandCardValue.NeedRound * 7))
-					//Èç¹ûÊ£ÓàÊÖÅÆ¼ÛÖµÎªÕı£¬Ö¤Ã÷³öÈ¥µÄ¼¸ÂÊºÜ´ó£¬ ÄÇÃ´¿ÉÒÔÓÃÕ¨»ñµÃÏÈÊÖ
+					//å¦‚æœå‰©ä½™æ‰‹ç‰Œä»·å€¼ä¸ºæ­£ï¼Œè¯æ˜å‡ºå»çš„å‡ ç‡å¾ˆå¤§ï¼Œ é‚£ä¹ˆå¯ä»¥ç”¨ç‚¸è·å¾—å…ˆæ‰‹
 					|| tmpHandCardValue.SumValue > 0)
 				{
 					BestHandCardValue = tmpHandCardValue;
@@ -1371,11 +1371,11 @@ void AILogic::get_PutCardList_2_limit(GameSituation &clsGameSituation, HandCardD
 			return;
 		}
 
-		//ÍõÕ¨
+		//ç‹ç‚¸
 		if (clsHandCardData.value_aHandCardList[17] > 0 && clsHandCardData.value_aHandCardList[16] > 0 &&
 			(clsGameSituation.NowOutUser == clsGameSituation.nDiZhuID || clsGameSituation.nCardDroit == clsGameSituation.nDiZhuID))
 		{
-			//Èç¹ûÊ£ÓàÊÖÅÆ¼ÛÖµÎªÕı£¬Ö¤Ã÷³öÈ¥µÄ¼¸ÂÊºÜ´ó£¬ÄÇÃ´¿ÉÒÔÓÃÕ¨»ñµÃÏÈÊÖ£¬ÍõÕ¨20·Ö
+			//å¦‚æœå‰©ä½™æ‰‹ç‰Œä»·å€¼ä¸ºæ­£ï¼Œè¯æ˜å‡ºå»çš„å‡ ç‡å¾ˆå¤§ï¼Œé‚£ä¹ˆå¯ä»¥ç”¨ç‚¸è·å¾—å…ˆæ‰‹ï¼Œç‹ç‚¸20åˆ†
 			if (BestHandCardValue.SumValue > 20)
 			{
 				clsHandCardData.value_nPutCardList.push_back(17);
@@ -1385,16 +1385,16 @@ void AILogic::get_PutCardList_2_limit(GameSituation &clsGameSituation, HandCardD
 			}
 		}
 
-		//¹Ü²»ÉÏ
+		//ç®¡ä¸ä¸Š
 		clsHandCardData.uctPutCardType = get_GroupData(cgZERO, 0, 0);
 		return;
 
 	}
-	//ÈıÁ¬ÀàĞÍ
+	//ä¸‰è¿ç±»å‹
 	else if (clsGameSituation.uctNowCardGroup.cgType == cgTHREE_LINE)
 	{
 
-		//¼ôÖ¦£ºÈç¹ûÄÜ³öÈ¥×îºóÒ»ÊÖÅÆÖ±½Ó³ö
+		//å‰ªæï¼šå¦‚æœèƒ½å‡ºå»æœ€åä¸€æ‰‹ç‰Œç›´æ¥å‡º
 		CardGroupData SurCardGroupData = ins_SurCardsType(clsHandCardData.value_aHandCardList);
 		if (SurCardGroupData.cgType != cgERROR)
 		{
@@ -1412,26 +1412,26 @@ void AILogic::get_PutCardList_2_limit(GameSituation &clsGameSituation, HandCardD
 		}
 
 
-		//Ôİ´æ×î¼ÑµÄ¼ÛÖµ
+		//æš‚å­˜æœ€ä½³çš„ä»·å€¼
 		HandCardValue BestHandCardValue = get_HandCardValue(clsHandCardData);
 
 
-		//ÎÒÃÇÈÏÎª²»³öÅÆµÄ»°»áÈÃ¶ÔÊÖÒ»¸öÂÖ´Î£¬¼´¼ÓÒ»ÂÖ£¨È¨Öµ¼õÉÙ7£©±ãÓÚºóĞøµÄ¶Ô±È²Î¿¼¡£
+		//æˆ‘ä»¬è®¤ä¸ºä¸å‡ºç‰Œçš„è¯ä¼šè®©å¯¹æ‰‹ä¸€ä¸ªè½®æ¬¡ï¼Œå³åŠ ä¸€è½®ï¼ˆæƒå€¼å‡å°‘7ï¼‰ä¾¿äºåç»­çš„å¯¹æ¯”å‚è€ƒã€‚
 		BestHandCardValue.NeedRound += 1;
 
-		//Ôİ´æ×î¼ÑµÄÅÆºÅ
+		//æš‚å­˜æœ€ä½³çš„ç‰Œå·
 		int BestMaxCard = 0;
-		//ÊÇ·ñ³öÅÆµÄ±êÖ¾
+		//æ˜¯å¦å‡ºç‰Œçš„æ ‡å¿—
 		bool PutCards = false;
-		//ÑéÖ¤Ë³×ÓµÄ±êÖ¾
+		//éªŒè¯é¡ºå­çš„æ ‡å¿—
 		int prov = 0;
-		//Ë³×ÓÆğµã
+		//é¡ºå­èµ·ç‚¹
 		int start_i = 0;
-		//Ë³×ÓÖÕµã
+		//é¡ºå­ç»ˆç‚¹
 		int end_i = 0;
-		//Ë³×Ó³¤¶È
+		//é¡ºå­é•¿åº¦
 		int length = clsGameSituation.uctNowCardGroup.nCount / 3;
-		//2ÓëÍõ²»²ÎÓëË³×Ó£¬´Óµ±Ç°ÒÑ´ò³öµÄË³×Ó×îĞ¡ÅÆÖµ+1¿ªÊ¼±éÀú
+		//2ä¸ç‹ä¸å‚ä¸é¡ºå­ï¼Œä»å½“å‰å·²æ‰“å‡ºçš„é¡ºå­æœ€å°ç‰Œå€¼+1å¼€å§‹éå†
 		for (int i = clsGameSituation.uctNowCardGroup.nMaxCard - length + 2; i < 15; i++)
 		{
 			if (clsHandCardData.value_aHandCardList[i] > 2)
@@ -1459,7 +1459,7 @@ void AILogic::get_PutCardList_2_limit(GameSituation &clsGameSituation, HandCardD
 				}
 				clsHandCardData.nHandCardCount += clsGameSituation.uctNowCardGroup.nCount;
 
-				//Ñ¡È¡×ÜÈ¨Öµ-ÂÖ´Î*7Öµ×î¸ßµÄ²ßÂÔ  ÒòÎªÎÒÃÇÈÏÎªÊ£ÓàµÄÊÖÅÆĞèÒªn´Î¿ØÊÖµÄ»ú»á²ÅÄÜ³öÍê£¬ÈôÂÖ´ÎÅÆĞÍºÜ´ó£¨ÈçÕ¨µ¯£© ÔòÆä-7µÄ¼ÛÖµÒ²»áÎªÕı
+				//é€‰å–æ€»æƒå€¼-è½®æ¬¡*7å€¼æœ€é«˜çš„ç­–ç•¥  å› ä¸ºæˆ‘ä»¬è®¤ä¸ºå‰©ä½™çš„æ‰‹ç‰Œéœ€è¦næ¬¡æ§æ‰‹çš„æœºä¼šæ‰èƒ½å‡ºå®Œï¼Œè‹¥è½®æ¬¡ç‰Œå‹å¾ˆå¤§ï¼ˆå¦‚ç‚¸å¼¹ï¼‰ åˆ™å…¶-7çš„ä»·å€¼ä¹Ÿä¼šä¸ºæ­£
 				if ((BestHandCardValue.SumValue - (BestHandCardValue.NeedRound * 7)) <= (tmpHandCardValue.SumValue - (tmpHandCardValue.NeedRound * 7)))
 				{
 					BestHandCardValue = tmpHandCardValue;
@@ -1482,7 +1482,7 @@ void AILogic::get_PutCardList_2_limit(GameSituation &clsGameSituation, HandCardD
 			return;
 		}
 
-		//-------------------------------------------Õ¨µ¯-------------------------------------------
+		//-------------------------------------------ç‚¸å¼¹-------------------------------------------
 
 		for (int i = 3; i < 16; i++)
 		{
@@ -1490,16 +1490,16 @@ void AILogic::get_PutCardList_2_limit(GameSituation &clsGameSituation, HandCardD
 				(clsGameSituation.NowOutUser == clsGameSituation.nDiZhuID || clsGameSituation.nCardDroit == clsGameSituation.nDiZhuID))
 			{
 
-				//³¢ÊÔ´ò³öÕ¨µ¯£¬¹ÀËãÊ£ÓàÊÖÅÆ¼ÛÖµ,ÒòÎªÕ¨µ¯¿ÉÒÔ²ÎÓëË³×Ó£¬²»ÄÜÒòÎªÓ°ÏìË³×Ó¶øÈÎÒâ³öÕ¨
+				//å°è¯•æ‰“å‡ºç‚¸å¼¹ï¼Œä¼°ç®—å‰©ä½™æ‰‹ç‰Œä»·å€¼,å› ä¸ºç‚¸å¼¹å¯ä»¥å‚ä¸é¡ºå­ï¼Œä¸èƒ½å› ä¸ºå½±å“é¡ºå­è€Œä»»æ„å‡ºç‚¸
 				clsHandCardData.value_aHandCardList[i] -= 4;
 				clsHandCardData.nHandCardCount -= 4;
 				HandCardValue tmpHandCardValue = get_HandCardValue(clsHandCardData);
 				clsHandCardData.value_aHandCardList[i] += 4;
 				clsHandCardData.nHandCardCount += 4;
 
-				//Ñ¡È¡×ÜÈ¨Öµ-ÂÖ´Î*7Öµ×î¸ßµÄ²ßÂÔ  ÒòÎªÎÒÃÇÈÏÎªÊ£ÓàµÄÊÖÅÆĞèÒªn´Î¿ØÊÖµÄ»ú»á²ÅÄÜ³öÍê£¬ÈôÂÖ´ÎÅÆĞÍºÜ´ó£¨ÈçÕ¨µ¯£© ÔòÆä-7µÄ¼ÛÖµÒ²»áÎªÕı
+				//é€‰å–æ€»æƒå€¼-è½®æ¬¡*7å€¼æœ€é«˜çš„ç­–ç•¥  å› ä¸ºæˆ‘ä»¬è®¤ä¸ºå‰©ä½™çš„æ‰‹ç‰Œéœ€è¦næ¬¡æ§æ‰‹çš„æœºä¼šæ‰èƒ½å‡ºå®Œï¼Œè‹¥è½®æ¬¡ç‰Œå‹å¾ˆå¤§ï¼ˆå¦‚ç‚¸å¼¹ï¼‰ åˆ™å…¶-7çš„ä»·å€¼ä¹Ÿä¼šä¸ºæ­£
 				if ((BestHandCardValue.SumValue - (BestHandCardValue.NeedRound * 7)) <= (tmpHandCardValue.SumValue - (tmpHandCardValue.NeedRound * 7))
-					//Èç¹ûÊ£ÓàÊÖÅÆ¼ÛÖµÎªÕı£¬Ö¤Ã÷³öÈ¥µÄ¼¸ÂÊºÜ´ó£¬ ÄÇÃ´¿ÉÒÔÓÃÕ¨»ñµÃÏÈÊÖ
+					//å¦‚æœå‰©ä½™æ‰‹ç‰Œä»·å€¼ä¸ºæ­£ï¼Œè¯æ˜å‡ºå»çš„å‡ ç‡å¾ˆå¤§ï¼Œ é‚£ä¹ˆå¯ä»¥ç”¨ç‚¸è·å¾—å…ˆæ‰‹
 					|| tmpHandCardValue.SumValue > 0)
 				{
 					BestHandCardValue = tmpHandCardValue;
@@ -1519,11 +1519,11 @@ void AILogic::get_PutCardList_2_limit(GameSituation &clsGameSituation, HandCardD
 			return;
 		}
 
-		//ÍõÕ¨
+		//ç‹ç‚¸
 		if (clsHandCardData.value_aHandCardList[17] > 0 && clsHandCardData.value_aHandCardList[16] > 0 &&
 			(clsGameSituation.NowOutUser == clsGameSituation.nDiZhuID || clsGameSituation.nCardDroit == clsGameSituation.nDiZhuID))
 		{
-			//Èç¹ûÊ£ÓàÊÖÅÆ¼ÛÖµÎªÕı£¬Ö¤Ã÷³öÈ¥µÄ¼¸ÂÊºÜ´ó£¬ÄÇÃ´¿ÉÒÔÓÃÕ¨»ñµÃÏÈÊÖ£¬ÍõÕ¨20·Ö
+			//å¦‚æœå‰©ä½™æ‰‹ç‰Œä»·å€¼ä¸ºæ­£ï¼Œè¯æ˜å‡ºå»çš„å‡ ç‡å¾ˆå¤§ï¼Œé‚£ä¹ˆå¯ä»¥ç”¨ç‚¸è·å¾—å…ˆæ‰‹ï¼Œç‹ç‚¸20åˆ†
 			if (BestHandCardValue.SumValue > 20)
 			{
 				clsHandCardData.value_nPutCardList.push_back(17);
@@ -1533,31 +1533,31 @@ void AILogic::get_PutCardList_2_limit(GameSituation &clsGameSituation, HandCardD
 			}
 		}
 
-		//¹Ü²»ÉÏ
+		//ç®¡ä¸ä¸Š
 		clsHandCardData.uctPutCardType = get_GroupData(cgZERO, 0, 0);
 		return;
 	}
-	//Èı´øÒ»µ¥
+	//ä¸‰å¸¦ä¸€å•
 	else if (clsGameSituation.uctNowCardGroup.cgType == cgTHREE_TAKE_ONE)
 	{
-		//Ôİ´æ×î¼ÑµÄ¼ÛÖµ
+		//æš‚å­˜æœ€ä½³çš„ä»·å€¼
 		HandCardValue BestHandCardValue = get_HandCardValue(clsHandCardData);
-		//ÎÒÃÇÈÏÎª²»³öÅÆµÄ»°»áÈÃ¶ÔÊÖÒ»¸öÂÖ´Î£¬¼´¼ÓÒ»ÂÖ£¨È¨Öµ¼õÉÙ7£©±ãÓÚºóĞøµÄ¶Ô±È²Î¿¼¡£
+		//æˆ‘ä»¬è®¤ä¸ºä¸å‡ºç‰Œçš„è¯ä¼šè®©å¯¹æ‰‹ä¸€ä¸ªè½®æ¬¡ï¼Œå³åŠ ä¸€è½®ï¼ˆæƒå€¼å‡å°‘7ï¼‰ä¾¿äºåç»­çš„å¯¹æ¯”å‚è€ƒã€‚
 		BestHandCardValue.NeedRound += 1;
-		//Ôİ´æ×î¼ÑµÄÅÆºÅ
+		//æš‚å­˜æœ€ä½³çš„ç‰Œå·
 		int BestMaxCard = 0;
-		//Ë³´ø³öÈ¥µÄÅÆ
+		//é¡ºå¸¦å‡ºå»çš„ç‰Œ
 		int tmp_1 = 0;
-		//ÊÇ·ñ³öÅÆµÄ±êÖ¾
+		//æ˜¯å¦å‡ºç‰Œçš„æ ‡å¿—
 		bool PutCards = false;
-		//Èı´øÒ»
+		//ä¸‰å¸¦ä¸€
 		for (int i = clsGameSituation.uctNowCardGroup.nMaxCard + 1; i < 16; i++)
 		{
 			if (clsHandCardData.value_aHandCardList[i] > 2)
 			{
 				for (int j = 3; j < 18; j++)
 				{
-					//Ñ¡³öÒ»ÕÅÒÔÉÏµÄÅÆÇÒ²»ÊÇÑ¡ÔñÈıÕÅµÄÄÇ¸öÅÆ
+					//é€‰å‡ºä¸€å¼ ä»¥ä¸Šçš„ç‰Œä¸”ä¸æ˜¯é€‰æ‹©ä¸‰å¼ çš„é‚£ä¸ªç‰Œ
 					if (clsHandCardData.value_aHandCardList[j] > 0 && j != i)
 					{
 						clsHandCardData.value_aHandCardList[i] -= 3;
@@ -1567,7 +1567,7 @@ void AILogic::get_PutCardList_2_limit(GameSituation &clsGameSituation, HandCardD
 						clsHandCardData.value_aHandCardList[i] += 3;
 						clsHandCardData.value_aHandCardList[j] += 1;
 						clsHandCardData.nHandCardCount += 4;
-						//Ñ¡È¡×ÜÈ¨Öµ-ÂÖ´Î*7Öµ×î¸ßµÄ²ßÂÔ  ÒòÎªÎÒÃÇÈÏÎªÊ£ÓàµÄÊÖÅÆĞèÒªn´Î¿ØÊÖµÄ»ú»á²ÅÄÜ³öÍê£¬ÈôÂÖ´ÎÅÆĞÍºÜ´ó£¨ÈçÕ¨µ¯£© ÔòÆä-7µÄ¼ÛÖµÒ²»áÎªÕı
+						//é€‰å–æ€»æƒå€¼-è½®æ¬¡*7å€¼æœ€é«˜çš„ç­–ç•¥  å› ä¸ºæˆ‘ä»¬è®¤ä¸ºå‰©ä½™çš„æ‰‹ç‰Œéœ€è¦næ¬¡æ§æ‰‹çš„æœºä¼šæ‰èƒ½å‡ºå®Œï¼Œè‹¥è½®æ¬¡ç‰Œå‹å¾ˆå¤§ï¼ˆå¦‚ç‚¸å¼¹ï¼‰ åˆ™å…¶-7çš„ä»·å€¼ä¹Ÿä¼šä¸ºæ­£
 						if ((BestHandCardValue.SumValue - (BestHandCardValue.NeedRound * 7)) <= (tmpHandCardValue.SumValue - (tmpHandCardValue.NeedRound * 7)))
 						{
 							BestHandCardValue = tmpHandCardValue;
@@ -1589,23 +1589,23 @@ void AILogic::get_PutCardList_2_limit(GameSituation &clsGameSituation, HandCardD
 			return;
 		}
 
-		//¹Ü²»ÉÏ
+		//ç®¡ä¸ä¸Š
 		clsHandCardData.uctPutCardType = get_GroupData(cgZERO, 0, 0);
 		return;
 	}
-	//Èı´øÒ»¶Ô
+	//ä¸‰å¸¦ä¸€å¯¹
 	else if (clsGameSituation.uctNowCardGroup.cgType == cgTHREE_TAKE_TWO)
 	{
 
-		//Ôİ´æ×î¼ÑµÄ¼ÛÖµ
+		//æš‚å­˜æœ€ä½³çš„ä»·å€¼
 		HandCardValue BestHandCardValue = get_HandCardValue(clsHandCardData);
-		//ÎÒÃÇÈÏÎª²»³öÅÆµÄ»°»áÈÃ¶ÔÊÖÒ»¸öÂÖ´Î£¬¼´¼ÓÒ»ÂÖ£¨È¨Öµ¼õÉÙ7£©±ãÓÚºóĞøµÄ¶Ô±È²Î¿¼¡£
+		//æˆ‘ä»¬è®¤ä¸ºä¸å‡ºç‰Œçš„è¯ä¼šè®©å¯¹æ‰‹ä¸€ä¸ªè½®æ¬¡ï¼Œå³åŠ ä¸€è½®ï¼ˆæƒå€¼å‡å°‘7ï¼‰ä¾¿äºåç»­çš„å¯¹æ¯”å‚è€ƒã€‚
 		BestHandCardValue.NeedRound += 1;
-		//Ôİ´æ×î¼ÑµÄÅÆºÅ
+		//æš‚å­˜æœ€ä½³çš„ç‰Œå·
 		int BestMaxCard = 0;
-		//Ë³´ø³öÈ¥µÄÅÆ
+		//é¡ºå¸¦å‡ºå»çš„ç‰Œ
 		int tmp_1 = 0;
-		//ÊÇ·ñ³öÅÆµÄ±êÖ¾
+		//æ˜¯å¦å‡ºç‰Œçš„æ ‡å¿—
 		bool PutCards = false;
 
 		for (int i = clsGameSituation.uctNowCardGroup.nMaxCard + 1; i < 16; i++)
@@ -1614,7 +1614,7 @@ void AILogic::get_PutCardList_2_limit(GameSituation &clsGameSituation, HandCardD
 			{
 				for (int j = 3; j < 16; j++)
 				{
-					//Ñ¡³öÒ»ÕÅÒÔÉÏµÄÅÆÇÒ²»ÊÇÑ¡ÔñÈıÕÅµÄÄÇ¸öÅÆ
+					//é€‰å‡ºä¸€å¼ ä»¥ä¸Šçš„ç‰Œä¸”ä¸æ˜¯é€‰æ‹©ä¸‰å¼ çš„é‚£ä¸ªç‰Œ
 					if (clsHandCardData.value_aHandCardList[j] > 1 && j != i)
 					{
 						clsHandCardData.value_aHandCardList[i] -= 3;
@@ -1624,7 +1624,7 @@ void AILogic::get_PutCardList_2_limit(GameSituation &clsGameSituation, HandCardD
 						clsHandCardData.value_aHandCardList[i] += 3;
 						clsHandCardData.value_aHandCardList[j] += 2;
 						clsHandCardData.nHandCardCount += 5;
-						//Ñ¡È¡×ÜÈ¨Öµ-ÂÖ´Î*7Öµ×î¸ßµÄ²ßÂÔ  ÒòÎªÎÒÃÇÈÏÎªÊ£ÓàµÄÊÖÅÆĞèÒªn´Î¿ØÊÖµÄ»ú»á²ÅÄÜ³öÍê£¬ÈôÂÖ´ÎÅÆĞÍºÜ´ó£¨ÈçÕ¨µ¯£© ÔòÆä-7µÄ¼ÛÖµÒ²»áÎªÕı
+						//é€‰å–æ€»æƒå€¼-è½®æ¬¡*7å€¼æœ€é«˜çš„ç­–ç•¥  å› ä¸ºæˆ‘ä»¬è®¤ä¸ºå‰©ä½™çš„æ‰‹ç‰Œéœ€è¦næ¬¡æ§æ‰‹çš„æœºä¼šæ‰èƒ½å‡ºå®Œï¼Œè‹¥è½®æ¬¡ç‰Œå‹å¾ˆå¤§ï¼ˆå¦‚ç‚¸å¼¹ï¼‰ åˆ™å…¶-7çš„ä»·å€¼ä¹Ÿä¼šä¸ºæ­£
 						if ((BestHandCardValue.SumValue - (BestHandCardValue.NeedRound * 7)) <= (tmpHandCardValue.SumValue - (tmpHandCardValue.NeedRound * 7)))
 						{
 							BestHandCardValue = tmpHandCardValue;
@@ -1647,39 +1647,39 @@ void AILogic::get_PutCardList_2_limit(GameSituation &clsGameSituation, HandCardD
 			return;
 		}
 
-		//¹Ü²»ÉÏ
+		//ç®¡ä¸ä¸Š
 		clsHandCardData.uctPutCardType = get_GroupData(cgZERO, 0, 0);
 		return;
 	}
-	//Èı´øÒ»µ¥Á¬
+	//ä¸‰å¸¦ä¸€å•è¿
 	else if (clsGameSituation.uctNowCardGroup.cgType == cgTHREE_TAKE_ONE_LINE)
 	{
 
-		//Ôİ´æ×î¼ÑµÄ¼ÛÖµ
+		//æš‚å­˜æœ€ä½³çš„ä»·å€¼
 		HandCardValue BestHandCardValue = get_HandCardValue(clsHandCardData);
 
 
-		//ÎÒÃÇÈÏÎª²»³öÅÆµÄ»°»áÈÃ¶ÔÊÖÒ»¸öÂÖ´Î£¬¼´¼ÓÒ»ÂÖ£¨È¨Öµ¼õÉÙ7£©±ãÓÚºóĞøµÄ¶Ô±È²Î¿¼¡£
+		//æˆ‘ä»¬è®¤ä¸ºä¸å‡ºç‰Œçš„è¯ä¼šè®©å¯¹æ‰‹ä¸€ä¸ªè½®æ¬¡ï¼Œå³åŠ ä¸€è½®ï¼ˆæƒå€¼å‡å°‘7ï¼‰ä¾¿äºåç»­çš„å¯¹æ¯”å‚è€ƒã€‚
 		BestHandCardValue.NeedRound += 1;
 
-		//Ôİ´æ×î¼ÑµÄÅÆºÅ
+		//æš‚å­˜æœ€ä½³çš„ç‰Œå·
 		int BestMaxCard = 0;
-		//ÊÇ·ñ³öÅÆµÄ±êÖ¾
+		//æ˜¯å¦å‡ºç‰Œçš„æ ‡å¿—
 		bool PutCards = false;
-		//ÑéÖ¤Ë³×ÓµÄ±êÖ¾
+		//éªŒè¯é¡ºå­çš„æ ‡å¿—
 		int prov = 0;
-		//Ë³×ÓÆğµã
+		//é¡ºå­èµ·ç‚¹
 		int start_i = 0;
-		//Ë³×ÓÖÕµã
+		//é¡ºå­ç»ˆç‚¹
 		int end_i = 0;
-		//Ë³×Ó³¤¶È
+		//é¡ºå­é•¿åº¦
 		int length = clsGameSituation.uctNowCardGroup.nCount / 4;
 
 		int tmp_1 = 0;
 		int tmp_2 = 0;
 		int tmp_3 = 0;
 		int tmp_4 = 0;
-		//2ÓëÍõ²»²ÎÓëË³×Ó£¬´Óµ±Ç°ÒÑ´ò³öµÄË³×Ó×îĞ¡ÅÆÖµ+1¿ªÊ¼±éÀú
+		//2ä¸ç‹ä¸å‚ä¸é¡ºå­ï¼Œä»å½“å‰å·²æ‰“å‡ºçš„é¡ºå­æœ€å°ç‰Œå€¼+1å¼€å§‹éå†
 		for (int i = clsGameSituation.uctNowCardGroup.nMaxCard - length + 2; i < 15; i++)
 		{
 			if (clsHandCardData.value_aHandCardList[i] > 2)
@@ -1701,9 +1701,9 @@ void AILogic::get_PutCardList_2_limit(GameSituation &clsGameSituation, HandCardD
 				}
 				clsHandCardData.nHandCardCount -= clsGameSituation.uctNowCardGroup.nCount;
 
-				/*±¾À´Ïë×öÈ«ÅÅÁĞÑ¡È¡´ø³öµÄÅÆÈ»ºóÃ¶¾Ù³ö×î¸ß¼ÛÖµµÄ£¬µ«¿¼ÂÇµ½µ±·É»ú³¤¶ÈÒ²¾ÍÊÇÔÚ2-4Ö®¼ä
-				ËùÒÔ¸É´à×öÈı¸ö·ÖÖ§´¦ÀíËãÁË*/
-				//ÎªÁ½Á¬·É»ú
+				/*æœ¬æ¥æƒ³åšå…¨æ’åˆ—é€‰å–å¸¦å‡ºçš„ç‰Œç„¶åæšä¸¾å‡ºæœ€é«˜ä»·å€¼çš„ï¼Œä½†è€ƒè™‘åˆ°å½“é£æœºé•¿åº¦ä¹Ÿå°±æ˜¯åœ¨2-4ä¹‹é—´
+				æ‰€ä»¥å¹²è„†åšä¸‰ä¸ªåˆ†æ”¯å¤„ç†ç®—äº†*/
+				//ä¸ºä¸¤è¿é£æœº
 				if (length == 2)
 				{
 					for (int j = 3; j < 18; j++)
@@ -1719,7 +1719,7 @@ void AILogic::get_PutCardList_2_limit(GameSituation &clsGameSituation, HandCardD
 									HandCardValue tmpHandCardValue = get_HandCardValue(clsHandCardData);
 									clsHandCardData.value_aHandCardList[k] += 1;
 
-									//Ñ¡È¡×ÜÈ¨Öµ-ÂÖ´Î*7Öµ×î¸ßµÄ²ßÂÔ  ÒòÎªÎÒÃÇÈÏÎªÊ£ÓàµÄÊÖÅÆĞèÒªn´Î¿ØÊÖµÄ»ú»á²ÅÄÜ³öÍê£¬ÈôÂÖ´ÎÅÆĞÍºÜ´ó£¨ÈçÕ¨µ¯£© ÔòÆä-7µÄ¼ÛÖµÒ²»áÎªÕı
+									//é€‰å–æ€»æƒå€¼-è½®æ¬¡*7å€¼æœ€é«˜çš„ç­–ç•¥  å› ä¸ºæˆ‘ä»¬è®¤ä¸ºå‰©ä½™çš„æ‰‹ç‰Œéœ€è¦næ¬¡æ§æ‰‹çš„æœºä¼šæ‰èƒ½å‡ºå®Œï¼Œè‹¥è½®æ¬¡ç‰Œå‹å¾ˆå¤§ï¼ˆå¦‚ç‚¸å¼¹ï¼‰ åˆ™å…¶-7çš„ä»·å€¼ä¹Ÿä¼šä¸ºæ­£
 									if ((BestHandCardValue.SumValue - (BestHandCardValue.NeedRound * 7)) <= (tmpHandCardValue.SumValue - (tmpHandCardValue.NeedRound * 7)))
 									{
 										BestHandCardValue = tmpHandCardValue;
@@ -1735,7 +1735,7 @@ void AILogic::get_PutCardList_2_limit(GameSituation &clsGameSituation, HandCardD
 
 					}
 				}
-				//ÎªÈıÁ¬·É»ú
+				//ä¸ºä¸‰è¿é£æœº
 				if (length == 3)
 				{
 					for (int j = 3; j < 18; j++)
@@ -1754,7 +1754,7 @@ void AILogic::get_PutCardList_2_limit(GameSituation &clsGameSituation, HandCardD
 										{
 											clsHandCardData.value_aHandCardList[l] -= 1;
 											HandCardValue tmpHandCardValue = get_HandCardValue(clsHandCardData);
-											//Ñ¡È¡×ÜÈ¨Öµ-ÂÖ´Î*7Öµ×î¸ßµÄ²ßÂÔ  ÒòÎªÎÒÃÇÈÏÎªÊ£ÓàµÄÊÖÅÆĞèÒªn´Î¿ØÊÖµÄ»ú»á²ÅÄÜ³öÍê£¬ÈôÂÖ´ÎÅÆĞÍºÜ´ó£¨ÈçÕ¨µ¯£© ÔòÆä-7µÄ¼ÛÖµÒ²»áÎªÕı
+											//é€‰å–æ€»æƒå€¼-è½®æ¬¡*7å€¼æœ€é«˜çš„ç­–ç•¥  å› ä¸ºæˆ‘ä»¬è®¤ä¸ºå‰©ä½™çš„æ‰‹ç‰Œéœ€è¦næ¬¡æ§æ‰‹çš„æœºä¼šæ‰èƒ½å‡ºå®Œï¼Œè‹¥è½®æ¬¡ç‰Œå‹å¾ˆå¤§ï¼ˆå¦‚ç‚¸å¼¹ï¼‰ åˆ™å…¶-7çš„ä»·å€¼ä¹Ÿä¼šä¸ºæ­£
 											if ((BestHandCardValue.SumValue - (BestHandCardValue.NeedRound * 7)) <= (tmpHandCardValue.SumValue - (tmpHandCardValue.NeedRound * 7)))
 											{
 												BestHandCardValue = tmpHandCardValue;
@@ -1776,7 +1776,7 @@ void AILogic::get_PutCardList_2_limit(GameSituation &clsGameSituation, HandCardD
 
 					}
 				}
-				//ÎªËÄÁ¬·É»ú
+				//ä¸ºå››è¿é£æœº
 				if (length == 4)
 				{
 					for (int j = 3; j < 18; j++)
@@ -1800,7 +1800,7 @@ void AILogic::get_PutCardList_2_limit(GameSituation &clsGameSituation, HandCardD
 												{
 													clsHandCardData.value_aHandCardList[m] -= 1;
 													HandCardValue tmpHandCardValue = get_HandCardValue(clsHandCardData);
-													//Ñ¡È¡×ÜÈ¨Öµ-ÂÖ´Î*7Öµ×î¸ßµÄ²ßÂÔ  ÒòÎªÎÒÃÇÈÏÎªÊ£ÓàµÄÊÖÅÆĞèÒªn´Î¿ØÊÖµÄ»ú»á²ÅÄÜ³öÍê£¬ÈôÂÖ´ÎÅÆĞÍºÜ´ó£¨ÈçÕ¨µ¯£© ÔòÆä-7µÄ¼ÛÖµÒ²»áÎªÕı
+													//é€‰å–æ€»æƒå€¼-è½®æ¬¡*7å€¼æœ€é«˜çš„ç­–ç•¥  å› ä¸ºæˆ‘ä»¬è®¤ä¸ºå‰©ä½™çš„æ‰‹ç‰Œéœ€è¦næ¬¡æ§æ‰‹çš„æœºä¼šæ‰èƒ½å‡ºå®Œï¼Œè‹¥è½®æ¬¡ç‰Œå‹å¾ˆå¤§ï¼ˆå¦‚ç‚¸å¼¹ï¼‰ åˆ™å…¶-7çš„ä»·å€¼ä¹Ÿä¼šä¸ºæ­£
 													if ((BestHandCardValue.SumValue - (BestHandCardValue.NeedRound * 7)) <= (tmpHandCardValue.SumValue - (tmpHandCardValue.NeedRound * 7)))
 													{
 														BestHandCardValue = tmpHandCardValue;
@@ -1868,40 +1868,40 @@ void AILogic::get_PutCardList_2_limit(GameSituation &clsGameSituation, HandCardD
 			return;
 		}
 
-		//¹Ü²»ÉÏ
+		//ç®¡ä¸ä¸Š
 		clsHandCardData.uctPutCardType = get_GroupData(cgZERO, 0, 0);
 		return;
 	}
-	//Èı´øÒ»¶ÔÁ¬
+	//ä¸‰å¸¦ä¸€å¯¹è¿
 	else if (clsGameSituation.uctNowCardGroup.cgType == cgTHREE_TAKE_TWO_LINE)
 	{
 		int i;
 
-		//Ôİ´æ×î¼ÑµÄ¼ÛÖµ
+		//æš‚å­˜æœ€ä½³çš„ä»·å€¼
 		HandCardValue BestHandCardValue = get_HandCardValue(clsHandCardData);
 
 
-		//ÎÒÃÇÈÏÎª²»³öÅÆµÄ»°»áÈÃ¶ÔÊÖÒ»¸öÂÖ´Î£¬¼´¼ÓÒ»ÂÖ£¨È¨Öµ¼õÉÙ7£©±ãÓÚºóĞøµÄ¶Ô±È²Î¿¼¡£
+		//æˆ‘ä»¬è®¤ä¸ºä¸å‡ºç‰Œçš„è¯ä¼šè®©å¯¹æ‰‹ä¸€ä¸ªè½®æ¬¡ï¼Œå³åŠ ä¸€è½®ï¼ˆæƒå€¼å‡å°‘7ï¼‰ä¾¿äºåç»­çš„å¯¹æ¯”å‚è€ƒã€‚
 		BestHandCardValue.NeedRound += 1;
 
-		//Ôİ´æ×î¼ÑµÄÅÆºÅ
+		//æš‚å­˜æœ€ä½³çš„ç‰Œå·
 		int BestMaxCard = 0;
-		//ÊÇ·ñ³öÅÆµÄ±êÖ¾
+		//æ˜¯å¦å‡ºç‰Œçš„æ ‡å¿—
 		bool PutCards = false;
-		//ÑéÖ¤Ë³×ÓµÄ±êÖ¾
+		//éªŒè¯é¡ºå­çš„æ ‡å¿—
 		int prov = 0;
-		//Ë³×ÓÆğµã
+		//é¡ºå­èµ·ç‚¹
 		int start_i = 0;
-		//Ë³×ÓÖÕµã
+		//é¡ºå­ç»ˆç‚¹
 		int end_i = 0;
-		//Ë³×Ó³¤¶È
+		//é¡ºå­é•¿åº¦
 		int length = clsGameSituation.uctNowCardGroup.nCount / 4;
 
 		int tmp_1 = 0;
 		int tmp_2 = 0;
 		int tmp_3 = 0;
 		int tmp_4 = 0;
-		//2ÓëÍõ²»²ÎÓëË³×Ó£¬´Óµ±Ç°ÒÑ´ò³öµÄË³×Ó×îĞ¡ÅÆÖµ+1¿ªÊ¼±éÀú
+		//2ä¸ç‹ä¸å‚ä¸é¡ºå­ï¼Œä»å½“å‰å·²æ‰“å‡ºçš„é¡ºå­æœ€å°ç‰Œå€¼+1å¼€å§‹éå†
 		for (int i = clsGameSituation.uctNowCardGroup.nMaxCard - length + 2; i < 15; i++)
 		{
 			if (clsHandCardData.value_aHandCardList[i] > 2)
@@ -1923,9 +1923,9 @@ void AILogic::get_PutCardList_2_limit(GameSituation &clsGameSituation, HandCardD
 				}
 				clsHandCardData.nHandCardCount -= clsGameSituation.uctNowCardGroup.nCount;
 
-				/*±¾À´Ïë×öÈ«ÅÅÁĞÑ¡È¡´ø³öµÄÅÆÈ»ºóÃ¶¾Ù³ö×î¸ß¼ÛÖµµÄ£¬µ«¿¼ÂÇµ½µ±·É»ú³¤¶ÈÒ²¾ÍÊÇÔÚ2-4Ö®¼ä
-				ËùÒÔ¸É´à×öÈı¸ö·ÖÖ§´¦ÀíËãÁË*/
-				//ÎªÁ½Á¬·É»ú
+				/*æœ¬æ¥æƒ³åšå…¨æ’åˆ—é€‰å–å¸¦å‡ºçš„ç‰Œç„¶åæšä¸¾å‡ºæœ€é«˜ä»·å€¼çš„ï¼Œä½†è€ƒè™‘åˆ°å½“é£æœºé•¿åº¦ä¹Ÿå°±æ˜¯åœ¨2-4ä¹‹é—´
+				æ‰€ä»¥å¹²è„†åšä¸‰ä¸ªåˆ†æ”¯å¤„ç†ç®—äº†*/
+				//ä¸ºä¸¤è¿é£æœº
 				if (length == 2)
 				{
 					for (int j = 3; j < 18; j++)
@@ -1941,7 +1941,7 @@ void AILogic::get_PutCardList_2_limit(GameSituation &clsGameSituation, HandCardD
 									HandCardValue tmpHandCardValue = get_HandCardValue(clsHandCardData);
 									clsHandCardData.value_aHandCardList[k] += 2;
 
-									//Ñ¡È¡×ÜÈ¨Öµ-ÂÖ´Î*7Öµ×î¸ßµÄ²ßÂÔ  ÒòÎªÎÒÃÇÈÏÎªÊ£ÓàµÄÊÖÅÆĞèÒªn´Î¿ØÊÖµÄ»ú»á²ÅÄÜ³öÍê£¬ÈôÂÖ´ÎÅÆĞÍºÜ´ó£¨ÈçÕ¨µ¯£© ÔòÆä-7µÄ¼ÛÖµÒ²»áÎªÕı
+									//é€‰å–æ€»æƒå€¼-è½®æ¬¡*7å€¼æœ€é«˜çš„ç­–ç•¥  å› ä¸ºæˆ‘ä»¬è®¤ä¸ºå‰©ä½™çš„æ‰‹ç‰Œéœ€è¦næ¬¡æ§æ‰‹çš„æœºä¼šæ‰èƒ½å‡ºå®Œï¼Œè‹¥è½®æ¬¡ç‰Œå‹å¾ˆå¤§ï¼ˆå¦‚ç‚¸å¼¹ï¼‰ åˆ™å…¶-7çš„ä»·å€¼ä¹Ÿä¼šä¸ºæ­£
 									if ((BestHandCardValue.SumValue - (BestHandCardValue.NeedRound * 7)) <= (tmpHandCardValue.SumValue - (tmpHandCardValue.NeedRound * 7)))
 									{
 										BestHandCardValue = tmpHandCardValue;
@@ -1957,7 +1957,7 @@ void AILogic::get_PutCardList_2_limit(GameSituation &clsGameSituation, HandCardD
 
 					}
 				}
-				//ÎªÈıÁ¬·É»ú
+				//ä¸ºä¸‰è¿é£æœº
 				if (length == 3)
 				{
 					for (int j = 3; j < 18; j++)
@@ -1976,7 +1976,7 @@ void AILogic::get_PutCardList_2_limit(GameSituation &clsGameSituation, HandCardD
 										{
 											clsHandCardData.value_aHandCardList[l] -= 2;
 											HandCardValue tmpHandCardValue = get_HandCardValue(clsHandCardData);
-											//Ñ¡È¡×ÜÈ¨Öµ-ÂÖ´Î*7Öµ×î¸ßµÄ²ßÂÔ  ÒòÎªÎÒÃÇÈÏÎªÊ£ÓàµÄÊÖÅÆĞèÒªn´Î¿ØÊÖµÄ»ú»á²ÅÄÜ³öÍê£¬ÈôÂÖ´ÎÅÆĞÍºÜ´ó£¨ÈçÕ¨µ¯£© ÔòÆä-7µÄ¼ÛÖµÒ²»áÎªÕı
+											//é€‰å–æ€»æƒå€¼-è½®æ¬¡*7å€¼æœ€é«˜çš„ç­–ç•¥  å› ä¸ºæˆ‘ä»¬è®¤ä¸ºå‰©ä½™çš„æ‰‹ç‰Œéœ€è¦næ¬¡æ§æ‰‹çš„æœºä¼šæ‰èƒ½å‡ºå®Œï¼Œè‹¥è½®æ¬¡ç‰Œå‹å¾ˆå¤§ï¼ˆå¦‚ç‚¸å¼¹ï¼‰ åˆ™å…¶-7çš„ä»·å€¼ä¹Ÿä¼šä¸ºæ­£
 											if ((BestHandCardValue.SumValue - (BestHandCardValue.NeedRound * 7)) <= (tmpHandCardValue.SumValue - (tmpHandCardValue.NeedRound * 7)))
 											{
 												BestHandCardValue = tmpHandCardValue;
@@ -1998,7 +1998,7 @@ void AILogic::get_PutCardList_2_limit(GameSituation &clsGameSituation, HandCardD
 
 					}
 				}
-				//ÎªËÄÁ¬·É»ú
+				//ä¸ºå››è¿é£æœº
 				if (length == 4)
 				{
 					for (int j = 3; j < 18; j++)
@@ -2022,7 +2022,7 @@ void AILogic::get_PutCardList_2_limit(GameSituation &clsGameSituation, HandCardD
 												{
 													clsHandCardData.value_aHandCardList[m] -= 2;
 													HandCardValue tmpHandCardValue = get_HandCardValue(clsHandCardData);
-													//Ñ¡È¡×ÜÈ¨Öµ-ÂÖ´Î*7Öµ×î¸ßµÄ²ßÂÔ  ÒòÎªÎÒÃÇÈÏÎªÊ£ÓàµÄÊÖÅÆĞèÒªn´Î¿ØÊÖµÄ»ú»á²ÅÄÜ³öÍê£¬ÈôÂÖ´ÎÅÆĞÍºÜ´ó£¨ÈçÕ¨µ¯£© ÔòÆä-7µÄ¼ÛÖµÒ²»áÎªÕı
+													//é€‰å–æ€»æƒå€¼-è½®æ¬¡*7å€¼æœ€é«˜çš„ç­–ç•¥  å› ä¸ºæˆ‘ä»¬è®¤ä¸ºå‰©ä½™çš„æ‰‹ç‰Œéœ€è¦næ¬¡æ§æ‰‹çš„æœºä¼šæ‰èƒ½å‡ºå®Œï¼Œè‹¥è½®æ¬¡ç‰Œå‹å¾ˆå¤§ï¼ˆå¦‚ç‚¸å¼¹ï¼‰ åˆ™å…¶-7çš„ä»·å€¼ä¹Ÿä¼šä¸ºæ­£
 													if ((BestHandCardValue.SumValue - (BestHandCardValue.NeedRound * 7)) <= (tmpHandCardValue.SumValue - (tmpHandCardValue.NeedRound * 7)))
 													{
 														BestHandCardValue = tmpHandCardValue;
@@ -2099,24 +2099,24 @@ void AILogic::get_PutCardList_2_limit(GameSituation &clsGameSituation, HandCardD
 			return;
 		}
 
-		//¹Ü²»ÉÏ
+		//ç®¡ä¸ä¸Š
 		clsHandCardData.uctPutCardType = get_GroupData(cgZERO, 0, 0);
 		return;
 	}
-	//ËÄ´øÁ½µ¥
+	//å››å¸¦ä¸¤å•
 	else if (clsGameSituation.uctNowCardGroup.cgType == cgFOUR_TAKE_ONE)
 	{
 
-		//Ôİ´æ×î¼ÑµÄ¼ÛÖµ
+		//æš‚å­˜æœ€ä½³çš„ä»·å€¼
 		HandCardValue BestHandCardValue = get_HandCardValue(clsHandCardData);
-		//ÎÒÃÇÈÏÎª²»³öÅÆµÄ»°»áÈÃ¶ÔÊÖÒ»¸öÂÖ´Î£¬¼´¼ÓÒ»ÂÖ£¨È¨Öµ¼õÉÙ7£©±ãÓÚºóĞøµÄ¶Ô±È²Î¿¼¡£
+		//æˆ‘ä»¬è®¤ä¸ºä¸å‡ºç‰Œçš„è¯ä¼šè®©å¯¹æ‰‹ä¸€ä¸ªè½®æ¬¡ï¼Œå³åŠ ä¸€è½®ï¼ˆæƒå€¼å‡å°‘7ï¼‰ä¾¿äºåç»­çš„å¯¹æ¯”å‚è€ƒã€‚
 		BestHandCardValue.NeedRound += 1;
-		//Ôİ´æ×î¼ÑµÄÅÆºÅ
+		//æš‚å­˜æœ€ä½³çš„ç‰Œå·
 		int BestMaxCard = 0;
-		//Ë³´ø³öÈ¥µÄÅÆ
+		//é¡ºå¸¦å‡ºå»çš„ç‰Œ
 		int tmp_1 = 0;
 		int tmp_2 = 0;
-		//ÊÇ·ñ³öÅÆµÄ±êÖ¾
+		//æ˜¯å¦å‡ºç‰Œçš„æ ‡å¿—
 		bool PutCards = false;
 
 		for (int i = clsGameSituation.uctNowCardGroup.nMaxCard + 1; i < 16; i++)
@@ -2125,10 +2125,10 @@ void AILogic::get_PutCardList_2_limit(GameSituation &clsGameSituation, HandCardD
 			{
 				for (int j = 3; j < 18; j++)
 				{
-					//ÏÈÑ¡³öÒ»ÕÅÒÔÉÏµÄÅÆÇÒ²»ÊÇÑ¡ÔñËÄÕÅµÄÄÇ¸öÅÆ
+					//å…ˆé€‰å‡ºä¸€å¼ ä»¥ä¸Šçš„ç‰Œä¸”ä¸æ˜¯é€‰æ‹©å››å¼ çš„é‚£ä¸ªç‰Œ
 					if (clsHandCardData.value_aHandCardList[j] > 0 && j != i)
 					{
-						//ÔÙÑ¡³öÒ»ÕÅÒÔÉÏµÄÅÆÇÒ²»ÊÇÑ¡ÔñËÄÕÅµÄÄÇ¸öÅÆÇÒ²»ÊÇµÚÒ»´ÎÑ¡µÄÁ½ÕÅÄÚ¸öÅÆ£¨²ßÂÔÀïËÄ´ø¶ş²»ÔÊĞí´øÒ»¶Ô,»¹²»ÈçÕ¨£©
+						//å†é€‰å‡ºä¸€å¼ ä»¥ä¸Šçš„ç‰Œä¸”ä¸æ˜¯é€‰æ‹©å››å¼ çš„é‚£ä¸ªç‰Œä¸”ä¸æ˜¯ç¬¬ä¸€æ¬¡é€‰çš„ä¸¤å¼ å†…ä¸ªç‰Œï¼ˆç­–ç•¥é‡Œå››å¸¦äºŒä¸å…è®¸å¸¦ä¸€å¯¹,è¿˜ä¸å¦‚ç‚¸ï¼‰
 						for (int k = j + 1; k < 18; k++)
 						{
 							if (clsHandCardData.value_aHandCardList[k] > 0 && k != i)
@@ -2143,7 +2143,7 @@ void AILogic::get_PutCardList_2_limit(GameSituation &clsGameSituation, HandCardD
 								clsHandCardData.value_aHandCardList[k] += 1;
 								clsHandCardData.nHandCardCount += 6;
 
-								//Ñ¡È¡×ÜÈ¨Öµ-ÂÖ´Î*7Öµ×î¸ßµÄ²ßÂÔ  ÒòÎªÎÒÃÇÈÏÎªÊ£ÓàµÄÊÖÅÆĞèÒªn´Î¿ØÊÖµÄ»ú»á²ÅÄÜ³öÍê£¬ÈôÂÖ´ÎÅÆĞÍºÜ´ó£¨ÈçÕ¨µ¯£© ÔòÆä-7µÄ¼ÛÖµÒ²»áÎªÕı
+								//é€‰å–æ€»æƒå€¼-è½®æ¬¡*7å€¼æœ€é«˜çš„ç­–ç•¥  å› ä¸ºæˆ‘ä»¬è®¤ä¸ºå‰©ä½™çš„æ‰‹ç‰Œéœ€è¦næ¬¡æ§æ‰‹çš„æœºä¼šæ‰èƒ½å‡ºå®Œï¼Œè‹¥è½®æ¬¡ç‰Œå‹å¾ˆå¤§ï¼ˆå¦‚ç‚¸å¼¹ï¼‰ åˆ™å…¶-7çš„ä»·å€¼ä¹Ÿä¼šä¸ºæ­£
 								if ((BestHandCardValue.SumValue - (BestHandCardValue.NeedRound * 7)) <= (tmpHandCardValue.SumValue - (tmpHandCardValue.NeedRound * 7)))
 								{
 									BestHandCardValue = tmpHandCardValue;
@@ -2171,15 +2171,15 @@ void AILogic::get_PutCardList_2_limit(GameSituation &clsGameSituation, HandCardD
 			return;
 		}
 
-		//¹Ü²»ÉÏ
+		//ç®¡ä¸ä¸Š
 		clsHandCardData.uctPutCardType = get_GroupData(cgZERO, 0, 0);
 		return;
 	}
-	//ËÄ´øÁ½¶Ô
+	//å››å¸¦ä¸¤å¯¹
 	else if (clsGameSituation.uctNowCardGroup.cgType == cgFOUR_TAKE_TWO)
 	{
 
-		//ÕâÀïÊÇÔÚÅÄÈ¨Öµ½ÏĞ¡µÄÇé¿ö£¬ÇÒÃ»ÓĞÑ¡Ôñ³öÁ¼ºÃµÄËÄ´ø¶şÅÆĞÍ£¬ÄÇÃ´Ò²ÒªÕ¨£¬ÒòÎªĞÅÑö¡£
+		//è¿™é‡Œæ˜¯åœ¨æ‹æƒå€¼è¾ƒå°çš„æƒ…å†µï¼Œä¸”æ²¡æœ‰é€‰æ‹©å‡ºè‰¯å¥½çš„å››å¸¦äºŒç‰Œå‹ï¼Œé‚£ä¹ˆä¹Ÿè¦ç‚¸ï¼Œå› ä¸ºä¿¡ä»°ã€‚
 		for (int i = 3; i < 16; i++)
 		{
 			if (clsHandCardData.value_aHandCardList[i] == 4 &&
@@ -2195,7 +2195,7 @@ void AILogic::get_PutCardList_2_limit(GameSituation &clsGameSituation, HandCardD
 				return;
 			}
 		}
-		//ÍõÕ¨
+		//ç‹ç‚¸
 		if (clsHandCardData.value_aHandCardList[17] > 0 && clsHandCardData.value_aHandCardList[16] > 0 &&
 			(clsGameSituation.NowOutUser == clsGameSituation.nDiZhuID || clsGameSituation.nCardDroit == clsGameSituation.nDiZhuID))
 		{
@@ -2208,22 +2208,22 @@ void AILogic::get_PutCardList_2_limit(GameSituation &clsGameSituation, HandCardD
 			return;
 		}
 
-		//¹Ü²»ÉÏ
+		//ç®¡ä¸ä¸Š
 		clsHandCardData.uctPutCardType = get_GroupData(cgZERO, 0, 0);
 		return;
 	}
-	//Õ¨µ¯ÀàĞÍ 
+	//ç‚¸å¼¹ç±»å‹ 
 	else if (clsGameSituation.uctNowCardGroup.cgType == cgBOMB_CARD)
 	{
 
-		/*±¾²ßÂÔ¶ÔÓÚÕâÖÖÅÆĞÍÓĞÕ¨±ØÕ¨*/
+		/*æœ¬ç­–ç•¥å¯¹äºè¿™ç§ç‰Œå‹æœ‰ç‚¸å¿…ç‚¸*/
 
-		//Ôİ´æ×î¼ÑµÄ¼ÛÖµ
+		//æš‚å­˜æœ€ä½³çš„ä»·å€¼
 		HandCardValue BestHandCardValue = get_HandCardValue(clsHandCardData);
 
 		if (BestHandCardValue.SumValue > 14)
 		{
-			//Õ¨µ¯¡ª¡ªÕâÀïÖ±½ÓÕ¨£¬²»¿¼ÂÇ²ğ·Öºó¹û¡£ÒòÎªĞÅÑö¡£
+			//ç‚¸å¼¹â€”â€”è¿™é‡Œç›´æ¥ç‚¸ï¼Œä¸è€ƒè™‘æ‹†åˆ†åæœã€‚å› ä¸ºä¿¡ä»°ã€‚
 			for (int i = 3; i < 16; i++)
 			{
 				if (clsHandCardData.value_aHandCardList[i] == 4 && i > clsGameSituation.uctNowCardGroup.nMaxCard &&
@@ -2239,7 +2239,7 @@ void AILogic::get_PutCardList_2_limit(GameSituation &clsGameSituation, HandCardD
 					return;
 				}
 			}
-			//ÍõÕ¨
+			//ç‹ç‚¸
 			if (clsHandCardData.value_aHandCardList[17] > 0 && clsHandCardData.value_aHandCardList[16] > 0 &&
 				(clsGameSituation.NowOutUser == clsGameSituation.nDiZhuID || clsGameSituation.nCardDroit == clsGameSituation.nDiZhuID))
 			{
@@ -2253,17 +2253,17 @@ void AILogic::get_PutCardList_2_limit(GameSituation &clsGameSituation, HandCardD
 			}
 		}
 
-		//¹Ü²»ÉÏ
+		//ç®¡ä¸ä¸Š
 		clsHandCardData.uctPutCardType = get_GroupData(cgZERO, 0, 0);
 		return;
 	}
-	//ÍõÕ¨ÀàĞÍ 
+	//ç‹ç‚¸ç±»å‹ 
 	else if (clsGameSituation.uctNowCardGroup.cgType == cgKING_CARD)
 	{
 		clsHandCardData.uctPutCardType = get_GroupData(cgZERO, 0, 0);
 		return;
 	}
-	//Òì³£´¦Àí ²»³ö
+	//å¼‚å¸¸å¤„ç† ä¸å‡º
 	else
 	{
 		clsHandCardData.uctPutCardType = get_GroupData(cgZERO, 0, 0);
@@ -2272,23 +2272,23 @@ void AILogic::get_PutCardList_2_limit(GameSituation &clsGameSituation, HandCardD
 }
 
 
-//Ö÷¶¯³öÅÆ
+//ä¸»åŠ¨å‡ºç‰Œ
 void AILogic::get_PutCardList_2_unlimit(HandCardData &clsHandCardData)
 {
 
 	clsHandCardData.ClearPutCardList();
 
-	//¼ôÖ¦£ºÈç¹ûÄÜ³öÈ¥×îºóÒ»ÊÖÅÆÖ±½Ó³ö
+	//å‰ªæï¼šå¦‚æœèƒ½å‡ºå»æœ€åä¸€æ‰‹ç‰Œç›´æ¥å‡º
 	CardGroupData SurCardGroupData = ins_SurCardsType(clsHandCardData.value_aHandCardList);
 
-	//Èç¹ûÄÜÒ»´ÎĞÔ³öÈ¥ÇÒ²»ÊÇËÄ´ø¶ş£¬ÒòÎªÖ÷¶¯³öÅÆÈôÊÖÉÏÊ£ËÄ´ø¶şÅÆµÄ»°¿ÉÒÔ¿¼ÂÇÏÈ´òÒ»ÊÖÈ»ºóÕ¨£¬»ñµÃË«±¶»ı·Ö
+	//å¦‚æœèƒ½ä¸€æ¬¡æ€§å‡ºå»ä¸”ä¸æ˜¯å››å¸¦äºŒï¼Œå› ä¸ºä¸»åŠ¨å‡ºç‰Œè‹¥æ‰‹ä¸Šå‰©å››å¸¦äºŒç‰Œçš„è¯å¯ä»¥è€ƒè™‘å…ˆæ‰“ä¸€æ‰‹ç„¶åç‚¸ï¼Œè·å¾—åŒå€ç§¯åˆ†
 	if (SurCardGroupData.cgType != cgERROR && SurCardGroupData.cgType != cgFOUR_TAKE_ONE && SurCardGroupData.cgType != cgFOUR_TAKE_TWO)
 	{
 		Put_All_SurCards(clsHandCardData, SurCardGroupData);
 		return;
 	}
 
-	/*ÍõÕ¨¡ª¡ªµ±Ç°²ßÂÔÖ»´¦ÀíÍõÕ¨×÷Îªµ¹ÊıµÚ¶şÊÖµÄÓÅÏÈ³öÅÆÂß¼­£¬ºóĞø°æ±¾»áÔÚ´Ë»ù´¡ÉÏÓÅ»¯*/
+	/*ç‹ç‚¸â€”â€”å½“å‰ç­–ç•¥åªå¤„ç†ç‹ç‚¸ä½œä¸ºå€’æ•°ç¬¬äºŒæ‰‹çš„ä¼˜å…ˆå‡ºç‰Œé€»è¾‘ï¼Œåç»­ç‰ˆæœ¬ä¼šåœ¨æ­¤åŸºç¡€ä¸Šä¼˜åŒ–*/
 	if (clsHandCardData.value_aHandCardList[17] > 0 && clsHandCardData.value_aHandCardList[16] > 0)
 	{
 		clsHandCardData.value_aHandCardList[17] --;
@@ -2307,28 +2307,28 @@ void AILogic::get_PutCardList_2_unlimit(HandCardData &clsHandCardData)
 		}
 	}
 
-	//Ôİ´æ×î¼ÑµÄ¼ÛÖµ
+	//æš‚å­˜æœ€ä½³çš„ä»·å€¼
 	HandCardValue BestHandCardValue;
 	BestHandCardValue.NeedRound = 20;
 	BestHandCardValue.SumValue = MinCardsValue;
-	//ÎÒÃÇÈÏÎª²»³öÅÆµÄ»°»áÈÃ¶ÔÊÖÒ»¸öÂÖ´Î£¬¼´¼ÓÒ»ÂÖ£¨È¨Öµ¼õÉÙ7£©±ãÓÚºóĞøµÄ¶Ô±È²Î¿¼¡£
+	//æˆ‘ä»¬è®¤ä¸ºä¸å‡ºç‰Œçš„è¯ä¼šè®©å¯¹æ‰‹ä¸€ä¸ªè½®æ¬¡ï¼Œå³åŠ ä¸€è½®ï¼ˆæƒå€¼å‡å°‘7ï¼‰ä¾¿äºåç»­çš„å¯¹æ¯”å‚è€ƒã€‚
 	BestHandCardValue.NeedRound += 1;
 
-	//Ôİ´æ×î¼ÑµÄ×éºÏ
+	//æš‚å­˜æœ€ä½³çš„ç»„åˆ
 	CardGroupData BestCardGroup;
 
-	//´ø³öÈ¥µÄÅÆ
+	//å¸¦å‡ºå»çš„ç‰Œ
 	int tmp_1 = 0;
 	int tmp_2 = 0;
 	int tmp_3 = 0;
 	int tmp_4 = 0;
-	//ÓÅÏÈ´¦ÀíÈıÅÆ¡¢·É»úµÈÅÆ
+	//ä¼˜å…ˆå¤„ç†ä¸‰ç‰Œã€é£æœºç­‰ç‰Œ
 	for (int i = 3; i < 16; i++)
 	{
-		//2.0°æ±¾²ßÂÔÖ÷¶¯³öÅÆ²»²ğ·ÖÕ¨µ¯£¬ëŞ×Ô¼º´ÓÀ´¾Í²»´òËÄ´ø¶ş£¬ÒòÎªÀË
+		//2.0ç‰ˆæœ¬ç­–ç•¥ä¸»åŠ¨å‡ºç‰Œä¸æ‹†åˆ†ç‚¸å¼¹ï¼Œæœ•è‡ªå·±ä»æ¥å°±ä¸æ‰“å››å¸¦äºŒï¼Œå› ä¸ºæµª
 		if (clsHandCardData.value_aHandCardList[i] != 4 && i <= 10)
 		{
-			//³öÈı´øÒ»
+			//å‡ºä¸‰å¸¦ä¸€
 			if (clsHandCardData.value_aHandCardList[i] > 2)
 			{
 				clsHandCardData.value_aHandCardList[i] -= 3;
@@ -2341,7 +2341,7 @@ void AILogic::get_PutCardList_2_unlimit(HandCardData &clsHandCardData)
 						HandCardValue tmpHandCardValue = get_HandCardValue(clsHandCardData);
 						clsHandCardData.value_aHandCardList[j] += 1;
 						clsHandCardData.nHandCardCount += 4;
-						//Ñ¡È¡×ÜÈ¨Öµ-ÂÖ´Î*7Öµ×î¸ßµÄ²ßÂÔ  ÒòÎªÎÒÃÇÈÏÎªÊ£ÓàµÄÊÖÅÆĞèÒªn´Î¿ØÊÖµÄ»ú»á²ÅÄÜ³öÍê£¬ÈôÂÖ´ÎÅÆĞÍºÜ´ó£¨ÈçÕ¨µ¯£© ÔòÆä-7µÄ¼ÛÖµÒ²»áÎªÕı
+						//é€‰å–æ€»æƒå€¼-è½®æ¬¡*7å€¼æœ€é«˜çš„ç­–ç•¥  å› ä¸ºæˆ‘ä»¬è®¤ä¸ºå‰©ä½™çš„æ‰‹ç‰Œéœ€è¦næ¬¡æ§æ‰‹çš„æœºä¼šæ‰èƒ½å‡ºå®Œï¼Œè‹¥è½®æ¬¡ç‰Œå‹å¾ˆå¤§ï¼ˆå¦‚ç‚¸å¼¹ï¼‰ åˆ™å…¶-7çš„ä»·å€¼ä¹Ÿä¼šä¸ºæ­£
 						if ((BestHandCardValue.SumValue - (BestHandCardValue.NeedRound * 7)) <= (tmpHandCardValue.SumValue - (tmpHandCardValue.NeedRound * 7)))
 						{
 							BestHandCardValue = tmpHandCardValue;
@@ -2352,7 +2352,7 @@ void AILogic::get_PutCardList_2_unlimit(HandCardData &clsHandCardData)
 				}
 				clsHandCardData.value_aHandCardList[i] += 3;
 			}
-			//³öÈı´ø¶ş
+			//å‡ºä¸‰å¸¦äºŒ
 			if (clsHandCardData.value_aHandCardList[i] > 2)
 			{
 				for (int j = 3; j < 16; j++)
@@ -2365,7 +2365,7 @@ void AILogic::get_PutCardList_2_unlimit(HandCardData &clsHandCardData)
 						HandCardValue tmpHandCardValue = get_HandCardValue(clsHandCardData);
 						clsHandCardData.value_aHandCardList[j] += 2;
 						clsHandCardData.nHandCardCount += 5;
-						//Ñ¡È¡×ÜÈ¨Öµ-ÂÖ´Î*7Öµ×î¸ßµÄ²ßÂÔ  ÒòÎªÎÒÃÇÈÏÎªÊ£ÓàµÄÊÖÅÆĞèÒªn´Î¿ØÊÖµÄ»ú»á²ÅÄÜ³öÍê£¬ÈôÂÖ´ÎÅÆĞÍºÜ´ó£¨ÈçÕ¨µ¯£© ÔòÆä-7µÄ¼ÛÖµÒ²»áÎªÕı
+						//é€‰å–æ€»æƒå€¼-è½®æ¬¡*7å€¼æœ€é«˜çš„ç­–ç•¥  å› ä¸ºæˆ‘ä»¬è®¤ä¸ºå‰©ä½™çš„æ‰‹ç‰Œéœ€è¦næ¬¡æ§æ‰‹çš„æœºä¼šæ‰èƒ½å‡ºå®Œï¼Œè‹¥è½®æ¬¡ç‰Œå‹å¾ˆå¤§ï¼ˆå¦‚ç‚¸å¼¹ï¼‰ åˆ™å…¶-7çš„ä»·å€¼ä¹Ÿä¼šä¸ºæ­£
 						if ((BestHandCardValue.SumValue - (BestHandCardValue.NeedRound * 7)) <= (tmpHandCardValue.SumValue - (tmpHandCardValue.NeedRound * 7)))
 						{
 							BestHandCardValue = tmpHandCardValue;
@@ -2376,17 +2376,17 @@ void AILogic::get_PutCardList_2_unlimit(HandCardData &clsHandCardData)
 					clsHandCardData.value_aHandCardList[i] += 3;
 				}
 			}
-			//³öËÄ´ø¶şµ¥
+			//å‡ºå››å¸¦äºŒå•
 			if (clsHandCardData.value_aHandCardList[i] > 3)
 			{
-				//2.0°æ±¾²ßÂÔÖ÷¶¯³öÅÆ²»²ğ·ÖÕ¨µ¯£¬
+				//2.0ç‰ˆæœ¬ç­–ç•¥ä¸»åŠ¨å‡ºç‰Œä¸æ‹†åˆ†ç‚¸å¼¹ï¼Œ
 			}
-			//³öËÄ´ø¶ş¶Ô
+			//å‡ºå››å¸¦äºŒå¯¹
 			if (clsHandCardData.value_aHandCardList[i] > 3)
 			{
-				//2.0°æ±¾²ßÂÔÖ÷¶¯³öÅÆ²»²ğ·ÖÕ¨µ¯£¬
+				//2.0ç‰ˆæœ¬ç­–ç•¥ä¸»åŠ¨å‡ºç‰Œä¸æ‹†åˆ†ç‚¸å¼¹ï¼Œ
 			}
-			//³öÈı´øÒ»µ¥Á¬
+			//å‡ºä¸‰å¸¦ä¸€å•è¿
 			if (clsHandCardData.value_aHandCardList[i] > 2)
 			{
 				int prov = 0;
@@ -2400,7 +2400,7 @@ void AILogic::get_PutCardList_2_unlimit(HandCardData &clsHandCardData)
 					{
 						break;
 					}
-					//ÎªÁ½Á¬·É»ú
+					//ä¸ºä¸¤è¿é£æœº
 					if (prov == 2)
 					{
 
@@ -2441,7 +2441,7 @@ void AILogic::get_PutCardList_2_unlimit(HandCardData &clsHandCardData)
 						}
 						clsHandCardData.nHandCardCount += prov * 4;
 					}
-					//ÎªÈıÁ¬·É»ú
+					//ä¸ºä¸‰è¿é£æœº
 					if (prov == 3)
 					{
 						for (int k = i; k <= j; k++)
@@ -2493,7 +2493,7 @@ void AILogic::get_PutCardList_2_unlimit(HandCardData &clsHandCardData)
 						}
 						clsHandCardData.nHandCardCount += prov * 4;
 					}
-					//ÎªËÄÁ¬·É»ú
+					//ä¸ºå››è¿é£æœº
 					if (prov == 4)
 					{
 						for (int k = i; k <= j; k++)
@@ -2552,11 +2552,11 @@ void AILogic::get_PutCardList_2_unlimit(HandCardData &clsHandCardData)
 						}
 						clsHandCardData.nHandCardCount += prov * 4;
 					}
-					//Èôprov==5£¬ÔòÊÇµØÖ÷¿ÉÒÔÖ±½Ó³öÈ¥£¬ÔÚ¼ôÖ¦²¿·ÖÒÑ¾­´¦Àí
+					//è‹¥prov==5ï¼Œåˆ™æ˜¯åœ°ä¸»å¯ä»¥ç›´æ¥å‡ºå»ï¼Œåœ¨å‰ªæéƒ¨åˆ†å·²ç»å¤„ç†
 				}
 
 			}
-			//³öÈı´øÒ»Ë«Á¬
+			//å‡ºä¸‰å¸¦ä¸€åŒè¿
 			if (clsHandCardData.value_aHandCardList[i] > 2)
 			{
 				int prov = 0;
@@ -2570,9 +2570,9 @@ void AILogic::get_PutCardList_2_unlimit(HandCardData &clsHandCardData)
 					{
 						break;
 					}
-					/*±¾À´Ïë×öÈ«ÅÅÁĞÑ¡È¡´ø³öµÄÅÆÈ»ºóÃ¶¾Ù³ö×î¸ß¼ÛÖµµÄ£¬µ«¿¼ÂÇµ½µ±·É»ú³¤¶ÈÒ²¾ÍÊÇÔÚ2-4Ö®¼ä
-					ËùÒÔ¸É´à×öÈı¸ö·ÖÖ§´¦ÀíËãÁË*/
-					//ÎªÁ½Á¬·É»ú
+					/*æœ¬æ¥æƒ³åšå…¨æ’åˆ—é€‰å–å¸¦å‡ºçš„ç‰Œç„¶åæšä¸¾å‡ºæœ€é«˜ä»·å€¼çš„ï¼Œä½†è€ƒè™‘åˆ°å½“é£æœºé•¿åº¦ä¹Ÿå°±æ˜¯åœ¨2-4ä¹‹é—´
+					æ‰€ä»¥å¹²è„†åšä¸‰ä¸ªåˆ†æ”¯å¤„ç†ç®—äº†*/
+					//ä¸ºä¸¤è¿é£æœº
 					if (prov == 2)
 					{
 
@@ -2611,7 +2611,7 @@ void AILogic::get_PutCardList_2_unlimit(HandCardData &clsHandCardData)
 						}
 						clsHandCardData.nHandCardCount += prov * 5;
 					}
-					//ÎªÈıÁ¬·É»ú
+					//ä¸ºä¸‰è¿é£æœº
 					if (prov == 3)
 					{
 						for (int k = i; k <= j; k++)
@@ -2660,12 +2660,12 @@ void AILogic::get_PutCardList_2_unlimit(HandCardData &clsHandCardData)
 						}
 						clsHandCardData.nHandCardCount += prov * 5;
 					}
-					//Èôprov==4£¬ÔòÊÇµØÖ÷¿ÉÒÔÖ±½Ó³öÈ¥£¬ÔÚ¼ôÖ¦²¿·ÖÒÑ¾­´¦Àí
+					//è‹¥prov==4ï¼Œåˆ™æ˜¯åœ°ä¸»å¯ä»¥ç›´æ¥å‡ºå»ï¼Œåœ¨å‰ªæéƒ¨åˆ†å·²ç»å¤„ç†
 				}
 			}
 		}
 	}
-	//Õâ²¿·Ö³öÅÆ´¦Àí·Åµ½Ñ­»·Íâ
+	//è¿™éƒ¨åˆ†å‡ºç‰Œå¤„ç†æ”¾åˆ°å¾ªç¯å¤–
 	if (BestCardGroup.cgType == cgTHREE_TAKE_ONE)
 	{
 
@@ -2747,12 +2747,12 @@ void AILogic::get_PutCardList_2_unlimit(HandCardData &clsHandCardData)
 	}
 
 
-	//´ÎÖ®´¦Àíµ±Ç°¼ÛÖµ×îµÍµÄÅÆ£¬ÏÖÔÚ²»±ØÔÙ¿¼ÂÇÕâÕÅÅÆ¿ÉÄÜ±»ÈıÅÆ´ø³öµÈÇé¿ö
+	//æ¬¡ä¹‹å¤„ç†å½“å‰ä»·å€¼æœ€ä½çš„ç‰Œï¼Œç°åœ¨ä¸å¿…å†è€ƒè™‘è¿™å¼ ç‰Œå¯èƒ½è¢«ä¸‰ç‰Œå¸¦å‡ºç­‰æƒ…å†µ
 	for (int i = 3; i < 16; i++)
 	{
 		if (clsHandCardData.value_aHandCardList[i] != 0 && clsHandCardData.value_aHandCardList[i] != 4)
 		{
-			//³öµ¥ÅÆ
+			//å‡ºå•ç‰Œ
 			if (clsHandCardData.value_aHandCardList[i] > 0)
 			{
 				clsHandCardData.value_aHandCardList[i]--;
@@ -2766,24 +2766,24 @@ void AILogic::get_PutCardList_2_unlimit(HandCardData &clsHandCardData)
 					BestCardGroup = get_GroupData(cgSINGLE, i, 1);
 				}
 			}
-			//³ö¶ÔÅÆ
+			//å‡ºå¯¹ç‰Œ
 			if (clsHandCardData.value_aHandCardList[i] > 1)
 			{
-				//³¢ÊÔ´ò³öÒ»¶ÔÅÆ£¬¹ÀËãÊ£ÓàÊÖÅÆ¼ÛÖµ
+				//å°è¯•æ‰“å‡ºä¸€å¯¹ç‰Œï¼Œä¼°ç®—å‰©ä½™æ‰‹ç‰Œä»·å€¼
 				clsHandCardData.value_aHandCardList[i] -= 2;
 				clsHandCardData.nHandCardCount -= 2;
 				HandCardValue tmpHandCardValue = get_HandCardValue(clsHandCardData);
 				clsHandCardData.value_aHandCardList[i] += 2;
 				clsHandCardData.nHandCardCount += 2;
 
-				//Ñ¡È¡×ÜÈ¨Öµ-ÂÖ´Î*7Öµ×î¸ßµÄ²ßÂÔ  ÒòÎªÎÒÃÇÈÏÎªÊ£ÓàµÄÊÖÅÆĞèÒªn´Î¿ØÊÖµÄ»ú»á²ÅÄÜ³öÍê£¬ÈôÂÖ´ÎÅÆĞÍºÜ´ó£¨ÈçÕ¨µ¯£© ÔòÆä-7µÄ¼ÛÖµÒ²»áÎªÕı
+				//é€‰å–æ€»æƒå€¼-è½®æ¬¡*7å€¼æœ€é«˜çš„ç­–ç•¥  å› ä¸ºæˆ‘ä»¬è®¤ä¸ºå‰©ä½™çš„æ‰‹ç‰Œéœ€è¦næ¬¡æ§æ‰‹çš„æœºä¼šæ‰èƒ½å‡ºå®Œï¼Œè‹¥è½®æ¬¡ç‰Œå‹å¾ˆå¤§ï¼ˆå¦‚ç‚¸å¼¹ï¼‰ åˆ™å…¶-7çš„ä»·å€¼ä¹Ÿä¼šä¸ºæ­£
 				if ((BestHandCardValue.SumValue - (BestHandCardValue.NeedRound * 7)) <= (tmpHandCardValue.SumValue - (tmpHandCardValue.NeedRound * 7)))
 				{
 					BestHandCardValue = tmpHandCardValue;
 					BestCardGroup = get_GroupData(cgDOUBLE, i, 2);
 				}
 			}
-			//³öÈıÅÆ
+			//å‡ºä¸‰ç‰Œ
 			if (clsHandCardData.value_aHandCardList[i] > 2)
 			{
 				clsHandCardData.value_aHandCardList[i] -= 3;
@@ -2792,7 +2792,7 @@ void AILogic::get_PutCardList_2_unlimit(HandCardData &clsHandCardData)
 				clsHandCardData.value_aHandCardList[i] += 3;
 				clsHandCardData.nHandCardCount += 3;
 
-				//Ñ¡È¡×ÜÈ¨Öµ-ÂÖ´Î*7Öµ×î¸ßµÄ²ßÂÔ  ÒòÎªÎÒÃÇÈÏÎªÊ£ÓàµÄÊÖÅÆĞèÒªn´Î¿ØÊÖµÄ»ú»á²ÅÄÜ³öÍê£¬ÈôÂÖ´ÎÅÆĞÍºÜ´ó£¨ÈçÕ¨µ¯£© ÔòÆä-7µÄ¼ÛÖµÒ²»áÎªÕı
+				//é€‰å–æ€»æƒå€¼-è½®æ¬¡*7å€¼æœ€é«˜çš„ç­–ç•¥  å› ä¸ºæˆ‘ä»¬è®¤ä¸ºå‰©ä½™çš„æ‰‹ç‰Œéœ€è¦næ¬¡æ§æ‰‹çš„æœºä¼šæ‰èƒ½å‡ºå®Œï¼Œè‹¥è½®æ¬¡ç‰Œå‹å¾ˆå¤§ï¼ˆå¦‚ç‚¸å¼¹ï¼‰ åˆ™å…¶-7çš„ä»·å€¼ä¹Ÿä¼šä¸ºæ­£
 				if ((BestHandCardValue.SumValue - (BestHandCardValue.NeedRound * 7)) <= (tmpHandCardValue.SumValue - (tmpHandCardValue.NeedRound * 7)))
 				{
 					BestHandCardValue = tmpHandCardValue;
@@ -2800,7 +2800,7 @@ void AILogic::get_PutCardList_2_unlimit(HandCardData &clsHandCardData)
 				}
 			}
 
-			//³öµ¥Ë³
+			//å‡ºå•é¡º
 			if (clsHandCardData.value_aHandCardList[i] > 0)
 			{
 				int prov = 0;
@@ -2829,7 +2829,7 @@ void AILogic::get_PutCardList_2_unlimit(HandCardData &clsHandCardData)
 						}
 						clsHandCardData.nHandCardCount += prov;
 
-						//Ñ¡È¡×ÜÈ¨Öµ-ÂÖ´Î*7Öµ×î¸ßµÄ²ßÂÔ  ÒòÎªÎÒÃÇÈÏÎªÊ£ÓàµÄÊÖÅÆĞèÒªn´Î¿ØÊÖµÄ»ú»á²ÅÄÜ³öÍê£¬ÈôÂÖ´ÎÅÆĞÍºÜ´ó£¨ÈçÕ¨µ¯£© ÔòÆä-7µÄ¼ÛÖµÒ²»áÎªÕı
+						//é€‰å–æ€»æƒå€¼-è½®æ¬¡*7å€¼æœ€é«˜çš„ç­–ç•¥  å› ä¸ºæˆ‘ä»¬è®¤ä¸ºå‰©ä½™çš„æ‰‹ç‰Œéœ€è¦næ¬¡æ§æ‰‹çš„æœºä¼šæ‰èƒ½å‡ºå®Œï¼Œè‹¥è½®æ¬¡ç‰Œå‹å¾ˆå¤§ï¼ˆå¦‚ç‚¸å¼¹ï¼‰ åˆ™å…¶-7çš„ä»·å€¼ä¹Ÿä¼šä¸ºæ­£
 						if ((BestHandCardValue.SumValue - (BestHandCardValue.NeedRound * 7)) <= (tmpHandCardValue.SumValue - (tmpHandCardValue.NeedRound * 7)))
 						{
 							BestHandCardValue = tmpHandCardValue;
@@ -2839,7 +2839,7 @@ void AILogic::get_PutCardList_2_unlimit(HandCardData &clsHandCardData)
 				}
 
 			}
-			//³öË«Ë³
+			//å‡ºåŒé¡º
 			if (clsHandCardData.value_aHandCardList[i] > 1)
 			{
 				int prov = 0;
@@ -2868,7 +2868,7 @@ void AILogic::get_PutCardList_2_unlimit(HandCardData &clsHandCardData)
 						}
 						clsHandCardData.nHandCardCount += prov * 2;
 
-						//Ñ¡È¡×ÜÈ¨Öµ-ÂÖ´Î*7Öµ×î¸ßµÄ²ßÂÔ  ÒòÎªÎÒÃÇÈÏÎªÊ£ÓàµÄÊÖÅÆĞèÒªn´Î¿ØÊÖµÄ»ú»á²ÅÄÜ³öÍê£¬ÈôÂÖ´ÎÅÆĞÍºÜ´ó£¨ÈçÕ¨µ¯£© ÔòÆä-7µÄ¼ÛÖµÒ²»áÎªÕı
+						//é€‰å–æ€»æƒå€¼-è½®æ¬¡*7å€¼æœ€é«˜çš„ç­–ç•¥  å› ä¸ºæˆ‘ä»¬è®¤ä¸ºå‰©ä½™çš„æ‰‹ç‰Œéœ€è¦næ¬¡æ§æ‰‹çš„æœºä¼šæ‰èƒ½å‡ºå®Œï¼Œè‹¥è½®æ¬¡ç‰Œå‹å¾ˆå¤§ï¼ˆå¦‚ç‚¸å¼¹ï¼‰ åˆ™å…¶-7çš„ä»·å€¼ä¹Ÿä¼šä¸ºæ­£
 						if ((BestHandCardValue.SumValue - (BestHandCardValue.NeedRound * 7)) <= (tmpHandCardValue.SumValue - (tmpHandCardValue.NeedRound * 7)))
 						{
 							BestHandCardValue = tmpHandCardValue;
@@ -2877,7 +2877,7 @@ void AILogic::get_PutCardList_2_unlimit(HandCardData &clsHandCardData)
 					}
 				}
 			}
-			//³öÈıË³
+			//å‡ºä¸‰é¡º
 			if (clsHandCardData.value_aHandCardList[i] > 2)
 			{
 				int prov = 0;
@@ -2906,7 +2906,7 @@ void AILogic::get_PutCardList_2_unlimit(HandCardData &clsHandCardData)
 						}
 						clsHandCardData.nHandCardCount += prov * 3;
 
-						//Ñ¡È¡×ÜÈ¨Öµ-ÂÖ´Î*7Öµ×î¸ßµÄ²ßÂÔ  ÒòÎªÎÒÃÇÈÏÎªÊ£ÓàµÄÊÖÅÆĞèÒªn´Î¿ØÊÖµÄ»ú»á²ÅÄÜ³öÍê£¬ÈôÂÖ´ÎÅÆĞÍºÜ´ó£¨ÈçÕ¨µ¯£© ÔòÆä-7µÄ¼ÛÖµÒ²»áÎªÕı
+						//é€‰å–æ€»æƒå€¼-è½®æ¬¡*7å€¼æœ€é«˜çš„ç­–ç•¥  å› ä¸ºæˆ‘ä»¬è®¤ä¸ºå‰©ä½™çš„æ‰‹ç‰Œéœ€è¦næ¬¡æ§æ‰‹çš„æœºä¼šæ‰èƒ½å‡ºå®Œï¼Œè‹¥è½®æ¬¡ç‰Œå‹å¾ˆå¤§ï¼ˆå¦‚ç‚¸å¼¹ï¼‰ åˆ™å…¶-7çš„ä»·å€¼ä¹Ÿä¼šä¸ºæ­£
 						if ((BestHandCardValue.SumValue - (BestHandCardValue.NeedRound * 7)) <= (tmpHandCardValue.SumValue - (tmpHandCardValue.NeedRound * 7)))
 						{
 							BestHandCardValue = tmpHandCardValue;
@@ -3042,7 +3042,7 @@ void AILogic::get_PutCardList_2_unlimit(HandCardData &clsHandCardData)
 			return;
 		}
 	}
-	//Èç¹ûÃ»ÓĞ3-2µÄ·ÇÕ¨ÅÆ£¬Ôò¿´¿´ÓĞÃ»ÓĞµ¥Íõ
+	//å¦‚æœæ²¡æœ‰3-2çš„éç‚¸ç‰Œï¼Œåˆ™çœ‹çœ‹æœ‰æ²¡æœ‰å•ç‹
 	if (clsHandCardData.value_aHandCardList[16] == 1 && clsHandCardData.value_aHandCardList[17] == 0)
 	{
 		clsHandCardData.value_nPutCardList.push_back(16);
@@ -3055,7 +3055,7 @@ void AILogic::get_PutCardList_2_unlimit(HandCardData &clsHandCardData)
 		clsHandCardData.uctPutCardType = get_GroupData(cgSINGLE, 17, 1);
 		return;
 	}
-	//µ¥ÍõÒ²Ã»ÓĞ£¬³öÕ¨µ¯
+	//å•ç‹ä¹Ÿæ²¡æœ‰ï¼Œå‡ºç‚¸å¼¹
 	for (int i = 3; i < 16; i++)
 	{
 		if (clsHandCardData.value_aHandCardList[i] == 4)
@@ -3071,14 +3071,14 @@ void AILogic::get_PutCardList_2_unlimit(HandCardData &clsHandCardData)
 		}
 	}
 
-	//Òì³£´íÎó
+	//å¼‚å¸¸é”™è¯¯
 	clsHandCardData.uctPutCardType = get_GroupData(cgERROR, 0, 0);
 	return;
 
 }
 
 
-//»ñÈ¡½Ğ·Öº¯Êı
+//è·å–å«åˆ†å‡½æ•°
 int AILogic::LandScore(HandCardData &clsHandCardData)
 {
 	int SumValue = 0;
@@ -3106,16 +3106,16 @@ int AILogic::LandScore(HandCardData &clsHandCardData)
 }
 
 
-//»ñµÃ¿¨ÅÆµÄÂß¼­ÊıÖµ
+//è·å¾—å¡ç‰Œçš„é€»è¾‘æ•°å€¼
 BYTE HandCardData::GetCardLogicValue(BYTE cbCardData)
 {
-	//Âß¼­ÊıÖµ
+	//é€»è¾‘æ•°å€¼
 	BYTE cbCardColor = (cbCardData & 0xF0) >> 4;
 	BYTE cbCardValue = cbCardData & 0x0F;
 
 
-	//×ª»»ÊıÖµÃ÷ÏÔ³öÏÖ´íÎó
-	if ((cbCardColor << 4) == 0x40) return cbCardValue + 2;		//´óĞ¡Íõ   
+	//è½¬æ¢æ•°å€¼æ˜æ˜¾å‡ºç°é”™è¯¯
+	if ((cbCardColor << 4) == 0x40) return cbCardValue + 2;		//å¤§å°ç‹   
 
 	return (cbCardValue <= 2) ? (cbCardValue + 13) : cbCardValue;
 }

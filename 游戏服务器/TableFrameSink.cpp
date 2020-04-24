@@ -4,7 +4,7 @@
 #include "GameConfig.h"
 #include "SubRuleManager.h"
 
-// ¹¹Ôìº¯Êı
+// æ„é€ å‡½æ•°
 CTableFrameSink::CTableFrameSink()
 {
 	m_GameLogic = NULL;
@@ -16,10 +16,10 @@ CTableFrameSink::CTableFrameSink()
 
 }
 
-// Îö¹¹º¯Êı
+// ææ„å‡½æ•°
 CTableFrameSink::~CTableFrameSink()
 {
-	//Ğ£Ñé
+	//æ ¡éªŒ
 	if (NULL  !=  m_GameLogic)
 	{
 		delete m_GameLogic;
@@ -33,24 +33,24 @@ CTableFrameSink::~CTableFrameSink()
 	m_pRoomRuleOption = NULL;
 }
 
-// ³õÊ¼»¯
+// åˆå§‹åŒ–
 bool CTableFrameSink::Initialization(ITableFrame *pTableFrame, tagTableRule *comRule)
 {
-	//²éÑ¯½Ó¿Ú
+	//æŸ¥è¯¢æ¥å£
 	if (pTableFrame == NULL)
 	{
 		return false;
 	}
 
 	m_pITableFrame = pTableFrame;
-	//m_pITableFrame->SetStartMode(START_MODE_FULL_READY);	//ËùÓĞÈË×¼±¸¿ªÊ¼
+	//m_pITableFrame->SetStartMode(START_MODE_FULL_READY);	//æ‰€æœ‰äººå‡†å¤‡å¼€å§‹
 
-	//¹æÔòÅäÖÃ
+	//è§„åˆ™é…ç½®
 	m_pRoomRuleOption->com_rule = comRule;
 
 	CopyMemory(&(m_pRoomRuleOption->sub_rule), &(CSubRuleManager::instance()->GetSubGameRule()), sizeof(tagSubGameRule));
 
-	//Ğ£Ñé
+	//æ ¡éªŒ
 	if (NULL != m_GameLogic)
 	{
 		delete m_GameLogic;
@@ -58,39 +58,39 @@ bool CTableFrameSink::Initialization(ITableFrame *pTableFrame, tagTableRule *com
 		m_GameAccess = NULL; 
 	}
 
-	// ´´½¨ÓÎÏ·£¬Ö¸Õë¸³Öµ -- ´Ë´¦µÄm_GameAccessÓëm_GameLogicÎªÍ¬Ò»¸ö¶ÔÏó£¬  Óëm_GameData²»ÊÇÍ¬Ò»¸ö¶ÔÏó
+	// åˆ›å»ºæ¸¸æˆï¼ŒæŒ‡é’ˆèµ‹å€¼ -- æ­¤å¤„çš„m_GameAccessä¸m_GameLogicä¸ºåŒä¸€ä¸ªå¯¹è±¡ï¼Œ  ä¸m_GameDataä¸æ˜¯åŒä¸€ä¸ªå¯¹è±¡
 	m_GameData.CreateGame(&m_GameLogic, &m_GameAccess);
 	if (m_GameLogic == NULL || m_GameAccess == NULL)
 	{
 		return false;
 	}
 
-	//¸ø×´Ì¬Éè³õÖµ
+	//ç»™çŠ¶æ€è®¾åˆå€¼
 	m_GameAccess->SetGameStatus(GS_WK_FREE);
 
-	// ³õÊ¼»¯·¿¼ä-ÉèÖÃ·¿¼ä¹æÔò
+	// åˆå§‹åŒ–æˆ¿é—´-è®¾ç½®æˆ¿é—´è§„åˆ™
 	if (!m_GameAccess->SetRoomRule(m_pRoomRuleOption))
 		return false;
 
-	// ¼ÓÔØ¶ÁÈ¡µÄÅäÖÃÎÄ¼ş²ÎÊıºÍ´´½¨ÈÕÖ¾,ÌúÁëÂé½«-¾­µäÄ£Ê½		
+	// åŠ è½½è¯»å–çš„é…ç½®æ–‡ä»¶å‚æ•°å’Œåˆ›å»ºæ—¥å¿—,é“å²­éº»å°†-ç»å…¸æ¨¡å¼		
 	if (0 != m_GameLogic->LoadConfigParameter(L"MJ_GAMES_LOG.txt", GAME_SCORE_MODE_CLASSIC))
 	{
-		//Î´³É¹¦³õÊ¼»¯,ÍË³ö
+		//æœªæˆåŠŸåˆå§‹åŒ–,é€€å‡º
 		return false;
 	}
 	
 	return true;
 }
 
-// Ğ¡¾ÖÓÎÏ·½áÊø
+// å°å±€æ¸¸æˆç»“æŸ
 bool CTableFrameSink::XjGameConclude(int nTotalGameCount, int nCurGameCount)
 {
-	CLog::Log(log_debug, "Ğ¡¾Ö½áÊø");
+	CLog::Log(log_debug, "å°å±€ç»“æŸ");
 
-	// Íæ¼ÒÊıÄ¿
+	// ç©å®¶æ•°ç›®
 	BYTE _playersum = m_GameAccess->GetMaxChairCount();
 
-	// ¼ÆËãÍæ¼Ò·¿¼äÄÚµÄ×ÜµÃ·Ö
+	// è®¡ç®—ç©å®¶æˆ¿é—´å†…çš„æ€»å¾—åˆ†
 	for (BYTE i = 0; i < _playersum && m_GameAccess != NULL; ++i)
 	{
 		if (USER_PLAYING == m_GameAccess->GetPlayerState(i))
@@ -99,39 +99,39 @@ bool CTableFrameSink::XjGameConclude(int nTotalGameCount, int nCurGameCount)
 		}
 	}
 
-	//¼ÇÂ¼Õû´ó¾ÖÖĞµ±Ç°Ğ¡¾ÖµÄµÃ·ÖÊÇ²»ÊÇ×î´ó
+	//è®°å½•æ•´å¤§å±€ä¸­å½“å‰å°å±€çš„å¾—åˆ†æ˜¯ä¸æ˜¯æœ€å¤§
 	for (BYTE i = 0; i < _playersum && m_GameAccess != NULL; ++i)
 	{
 		SCORE CurBestBet = m_GameAccess->GetAllBet(i);
-		if (m_GameAccess->GetDJPlayerBestBet(i) < CurBestBet)      //ÉÏÒ»¾ÖµÄ·Ö±ÈÕâÒ»¾ÖĞ¡ ¾ÍÌæ»»
+		if (m_GameAccess->GetDJPlayerBestBet(i) < CurBestBet)      //ä¸Šä¸€å±€çš„åˆ†æ¯”è¿™ä¸€å±€å° å°±æ›¿æ¢
 		{
 			m_GameAccess->SetDJPlayerBestBet(i, CurBestBet);
 		}
 	}
 
 
-	// ¹¹½¨Êı¾İ
+	// æ„å»ºæ•°æ®
 	SCORE msg_totalGameScore[MAX_CHAIR_COUNT] = {'\0'};
 	SCORE msg_singleGameScore[MAX_CHAIR_COUNT] = {'\0'};
 	WORD  msg_Identity[MAX_CHAIR_COUNT] = {'\0'};
-	WORD  Winner = m_GameAccess->GetLastGameWinner();   //»ñÈ¡Ó®¼Ò
-	WORD  BankID = m_GameLogic->GetAppointBanker();     //»ñÈ¡×¯¼Ò 
+	WORD  Winner = m_GameAccess->GetLastGameWinner();   //è·å–èµ¢å®¶
+	WORD  BankID = m_GameLogic->GetAppointBanker();     //è·å–åº„å®¶ 
 
-	//»ñµÃÍæ¼Òµ¥¾ÖÓÎÏ·µÃ·Ö
+	//è·å¾—ç©å®¶å•å±€æ¸¸æˆå¾—åˆ†
 	for (BYTE i = 0; i < _playersum && m_GameAccess != NULL; ++i)
 	{
 		if (USER_PLAYING == m_GameAccess->GetPlayerState(i))
 		{
-			//Ö±½Ó½«Íæ¼Ò×Ü»ı·Ö·¢¸ø¿Í»§¶Ë£¬±ÜÃâ¿Í»§¶Ë¼ÆËã
+			//ç›´æ¥å°†ç©å®¶æ€»ç§¯åˆ†å‘ç»™å®¢æˆ·ç«¯ï¼Œé¿å…å®¢æˆ·ç«¯è®¡ç®—
 			msg_totalGameScore[i] = m_GameAccess->GetPlayerTotalScore(i);
-			//Íæ¼Òµ¥¾ÖµÃ·Ö
+			//ç©å®¶å•å±€å¾—åˆ†
 			msg_singleGameScore[i] = m_GameAccess->GetPlayerSingleScore(i);
 
 			CLog::Log(log_debug, "chair: %d, singleGameScore: %d", i, msg_singleGameScore[i]);
 		}
 	}
 
-	//»ñÈ¡Íæ¼ÒÉí·İ
+	//è·å–ç©å®¶èº«ä»½
 	for (int i = 0; i < _playersum; i++)
 	{
 		if (i == BankID)
@@ -140,7 +140,7 @@ bool CTableFrameSink::XjGameConclude(int nTotalGameCount, int nCurGameCount)
 			msg_Identity[i] = 0;
 	}
 
-	//»ñÈ¡Á½¸öÅ©ÃñµÄ¼Ó±¶±¶ÊıºÍ
+	//è·å–ä¸¤ä¸ªå†œæ°‘çš„åŠ å€å€æ•°å’Œ
 	DWORD Addbet = 0;
 	for (int i = 0; i < _playersum; i++)
 	{
@@ -150,13 +150,13 @@ bool CTableFrameSink::XjGameConclude(int nTotalGameCount, int nCurGameCount)
 		}
 	}
 
-	//Í¨Öªframe´¦Àí
+	//é€šçŸ¥frameå¤„ç†
 	BYTE cbCurGameCount = m_GameAccess->GetCurGameCount();
 
-	//Êı¾İ¹¹Ôì	Èı¸öÍæ¼ÒÈı·İ
+	//æ•°æ®æ„é€ 	ä¸‰ä¸ªç©å®¶ä¸‰ä»½
 	for (BYTE j = 0; j < _playersum && m_GameAccess != NULL; j++)
 	{
-		//¹¹ÔìÊı¾İ
+		//æ„é€ æ•°æ®
 		STR_CMD_SC_XJ_GAME_END sXJGameEnd;
 		ZeroMemory(&sXJGameEnd, sizeof(STR_CMD_SC_XJ_GAME_END));
 
@@ -174,27 +174,27 @@ bool CTableFrameSink::XjGameConclude(int nTotalGameCount, int nCurGameCount)
 
 		for (BYTE i = 0; i < _playersum && m_GameAccess != NULL; i++)
 		{
-			//»ñÈ¡Íæ¼ÒÊÖÅÆÊıÁ¿
+			//è·å–ç©å®¶æ‰‹ç‰Œæ•°é‡
 			BYTE TmpCardsCount = m_GameAccess->GetUserCurCardNum(i);
 
-			//»ñÈ¡Íæ¼Òµ±Ç°µÄÊÖÅÆ
+			//è·å–ç©å®¶å½“å‰çš„æ‰‹ç‰Œ
 			m_GameAccess->GetClientHandCards(i, sXJGameEnd.cbLeaveHandCard[i], TmpCardsCount);
 
-			//¸³Öµ
+			//èµ‹å€¼
 			sXJGameEnd.cbLeaveCardCount[i] = TmpCardsCount;
 			sXJGameEnd.nSingleGameScore[i] = msg_singleGameScore[i];
 			sXJGameEnd.nUserBet[i] = m_GameAccess->GetAllBet(i);
 
 		}
 
-		//Ñ­»··¢ËÍĞÅÏ¢
+		//å¾ªç¯å‘é€ä¿¡æ¯
 		m_pITableFrame->SendTableData(j, CMD_SC_XJ_GAME_END, &sXJGameEnd, sizeof(STR_CMD_SC_XJ_GAME_END));
 	}
 
-	//Í¨Öª¿ò¼ÜĞ¡¾ÖÓÎÏ·½áÊø
+	//é€šçŸ¥æ¡†æ¶å°å±€æ¸¸æˆç»“æŸ
 	m_pITableFrame->HandleXJGameEnd(cbCurGameCount, msg_Identity, msg_singleGameScore);
 
-	//·¢ËÍ¹«¹²±¶ÊıĞÅÏ¢
+	//å‘é€å…¬å…±å€æ•°ä¿¡æ¯
 	for (int i = 0; i < _playersum; i++)
 	{
 		if (USER_PLAYING == m_GameAccess->GetPlayerState(i))
@@ -205,46 +205,46 @@ bool CTableFrameSink::XjGameConclude(int nTotalGameCount, int nCurGameCount)
 
 	m_GameLogic->ClearXjGame();
 
-	//ÉèÖÃÓÎÏ·×´Ì¬ÎªĞ¡¾Ö½áÊø×´Ì¬
-	m_GameAccess->SetGameStatus(GS_WK_XJ_GAMEEND);    //ÒÔÃâ±»Çå¿Õ
+	//è®¾ç½®æ¸¸æˆçŠ¶æ€ä¸ºå°å±€ç»“æŸçŠ¶æ€
+	m_GameAccess->SetGameStatus(GS_WK_XJ_GAMEEND);    //ä»¥å…è¢«æ¸…ç©º
 
 	return true;
 }
 
-// ÓÎÏ·½áÊø
+// æ¸¸æˆç»“æŸ
 bool CTableFrameSink::OnEventGameConclude(BYTE cbReason)
 {
-	//¹Ø±ÕÌ¯ÅÆ¶¨Ê±Æ÷
+	//å…³é—­æ‘Šç‰Œå®šæ—¶å™¨
 	m_pITableFrame->KillGameTimer(IDI_OUT_CARD);
 
-	// ÓÎÏ·µ±Ç°¾ÖÊı
+	// æ¸¸æˆå½“å‰å±€æ•°
 	WORD cbCurGameCount = m_GameAccess->GetCurGameCount();
 
-	// ×Ü¾ÖÊı
+	// æ€»å±€æ•°
 	WORD cbAllGameCount = m_GameAccess->GetAllCount();
 
-	// Íæ¼ÒÊıÄ¿
+	// ç©å®¶æ•°ç›®
 	BYTE cbPlayersum = m_GameAccess->GetMaxChairCount(); 
 
 	switch (cbReason)
 	{
-	case GER_DISMISS:			// ½âÉ¢·¿¼ä
+	case GER_DISMISS:			// è§£æ•£æˆ¿é—´
 		{
-			printf("\n½âÉ¢·¿¼ä\n");
+			printf("\nè§£æ•£æˆ¿é—´\n");
 
-			//½áÊøÓÎÏ·
+			//ç»“æŸæ¸¸æˆ
 			m_pITableFrame->HandleDJGameEnd(GAME_CONCLUDE_NORMAL);
 		
 			break;
 		}
-	case GER_NORMAL:			//Õı³£½áÊø
+	case GER_NORMAL:			//æ­£å¸¸ç»“æŸ
 		{
-			if (cbCurGameCount == cbAllGameCount || 2 == m_pITableFrame->GameType())		// ´ó¾Ö½áÊø		//½ğ±Ò³¡ÅĞ¶ÏÕâÀï¼ÓÉÏ
+			if (cbCurGameCount == cbAllGameCount || 2 == m_pITableFrame->GameType())		// å¤§å±€ç»“æŸ		//é‡‘å¸åœºåˆ¤æ–­è¿™é‡ŒåŠ ä¸Š
 			{
 				XjGameConclude(cbAllGameCount, cbCurGameCount);
 				m_pITableFrame->HandleDJGameEnd(GAME_CONCLUDE_NORMAL);
 			}
-			// Ğ¡¾Ö½áÊø
+			// å°å±€ç»“æŸ
 			else if (cbCurGameCount < cbAllGameCount) 
 			{
 				XjGameConclude(cbAllGameCount, cbCurGameCount);
@@ -257,44 +257,44 @@ bool CTableFrameSink::OnEventGameConclude(BYTE cbReason)
 		break;
 	}
 	
-	//ÉèÖÃÓÎÏ·Îª¡¾¿ÕÏĞ¡¿×´Ì¬
+	//è®¾ç½®æ¸¸æˆä¸ºã€ç©ºé—²ã€‘çŠ¶æ€
 	m_GameAccess->SetGameStatus(GS_WK_FREE);
 
-	// ÇåÀíÓÎÏ·Êı¾İ
+	// æ¸…ç†æ¸¸æˆæ•°æ®
 	m_GameLogic->ClearXjGame();
 
-	// ÇåÀí´ó¾ÖÊı¾İ
+	// æ¸…ç†å¤§å±€æ•°æ®
 	m_GameLogic->ClearDjGame();
 
-	//´ó¾Ö½áÊø£¬Çå¿ÕÄÚ´æ -- Èç¹û ÓÎÏ·½áÊø±êÖ¾Î» GAME_CONCLUDE_CONTINUE, ÕâÀï¾Í²»ÄÜÇå¿ÕÄÚ´æ
+	//å¤§å±€ç»“æŸï¼Œæ¸…ç©ºå†…å­˜ -- å¦‚æœ æ¸¸æˆç»“æŸæ ‡å¿—ä½ GAME_CONCLUDE_CONTINUE, è¿™é‡Œå°±ä¸èƒ½æ¸…ç©ºå†…å­˜
 	m_GameLogic->ClearRoom();
 	
 	return true;
 }
 
-// ¶ÏÏßÖØÁ¬Ê±·¢ËÍ³¡¾°
+// æ–­çº¿é‡è¿æ—¶å‘é€åœºæ™¯
 bool CTableFrameSink::OnEventSendGameScene(WORD wChairID)
 {
 	switch (m_GameAccess->GetGameStatus())
 	{
-		case GS_WK_FREE:		//¿ÕÏĞ×´Ì¬
+		case GS_WK_FREE:		//ç©ºé—²çŠ¶æ€
 		{
-			//¿ÕÏĞ×´Ì¬
+			//ç©ºé—²çŠ¶æ€
 			STR_CMD_SC_STATUS_FREE StatusFree;
 			ZeroMemory( &StatusFree, sizeof( StatusFree ) );
 
-			// ÉèÖÃ±äÁ¿
+			// è®¾ç½®å˜é‡
 			//StatusFree.GameCount = m_pRoomRuleOption->com_rule->GameCount;
 			//StatusFree.PlayerCount = m_pRoomRuleOption->com_rule->PlayerCount;
 			//StatusFree.CellScore = m_pRoomRuleOption->sub_rule.Cellscore;
 			//StatusFree.FangZhu = m_pRoomRuleOption->com_rule->FangZhu;
 
-			// ·¢ËÍ³¡¾°
+			// å‘é€åœºæ™¯
 			m_pITableFrame->SendGameScene( wChairID, &StatusFree, sizeof(StatusFree));
 
 			break;
 		}
-		case GS_WK_ROB:   //ÇÀ×¯×´Ì¬
+		case GS_WK_ROB:   //æŠ¢åº„çŠ¶æ€
 		{
 			if (INVALID_CHAIR == wChairID)
 			{
@@ -302,7 +302,7 @@ bool CTableFrameSink::OnEventSendGameScene(WORD wChairID)
 				return false;
 			}
 
-			//Ğ£Ñé
+			//æ ¡éªŒ
 			if (m_GameAccess == NULL)
 				return false;
 
@@ -320,7 +320,7 @@ bool CTableFrameSink::OnEventSendGameScene(WORD wChairID)
 
 			m_GameAccess->GetClientHandCards(wChairID, wCardData, UserCardNum[wChairID]);
 
-			//¸³Öµ
+			//èµ‹å€¼
 			statusRob.CurRobUsr = m_GameAccess->GetCurRobUser();
 			statusRob.CurJuShu = m_GameAccess->GetCurGameCount();
 			//statusRob.replay_code = m_pITableFrame->GetRoomBaseInfo().replay_code;
@@ -340,17 +340,17 @@ bool CTableFrameSink::OnEventSendGameScene(WORD wChairID)
 
 			for (int i = 0; i < nPlayerNum; i++)
 			{
-				statusRob.PlayerScore[i] = m_GameAccess->GetPlayerTotalScore(i);   //×Ü·Ö
+				statusRob.PlayerScore[i] = m_GameAccess->GetPlayerTotalScore(i);   //æ€»åˆ†
 			}
 
 			//m_pITableFrame->SendTableData(wChairID, CMD_SC_STATUS_ROB, &statusRob, sizeof(STR_CMD_SC_STATUS_ROB));
-			// ·¢ËÍ³¡¾°
+			// å‘é€åœºæ™¯
 			m_pITableFrame->SendGameScene( wChairID, &statusRob, sizeof(STR_CMD_SC_STATUS_ROB));
 
 			break;
 		}
 
-		case GS_WK_ADDSCORE:	//ÏÂ×¢×´Ì¬
+		case GS_WK_ADDSCORE:	//ä¸‹æ³¨çŠ¶æ€
 		{
 			if (INVALID_CHAIR == wChairID)
 			{
@@ -372,7 +372,7 @@ bool CTableFrameSink::OnEventSendGameScene(WORD wChairID)
 
 			m_GameAccess->GetClientHandCards(wChairID, wCardData, UserCardNum[wChairID]);
 
-			//¸³Öµ
+			//èµ‹å€¼
 			statusAddStore.CurJuShu = m_GameAccess->GetCurGameCount();
 			statusAddStore.bankID = m_GameLogic->GetAppointBanker();
 //			statusAddStore.replay_code = m_pITableFrame->GetRoomBaseInfo().replay_code;
@@ -390,7 +390,7 @@ bool CTableFrameSink::OnEventSendGameScene(WORD wChairID)
 			for (int i = 0; i < nPlayerNum; i++)
 			{
 				statusAddStore.room_bet[i] = m_GameAccess->GetAllBet(i);
-				statusAddStore.All_bet[i] = m_GameAccess->GetPlayerTotalScore(i);   //×Ü·Ö
+				statusAddStore.All_bet[i] = m_GameAccess->GetPlayerTotalScore(i);   //æ€»åˆ†
 			}
 
 			//m_pITableFrame->SendTableData(wChairID, CMD_SC_STATUS_ADD_SCORE, &statusAddStore, sizeof(STR_CMD_SC_STATUS_ADD_SCORE));
@@ -398,9 +398,9 @@ bool CTableFrameSink::OnEventSendGameScene(WORD wChairID)
 			break;
 		}
 
-		case GS_WK_OUT_CARD:	//³öÅÆ×´Ì¬
+		case GS_WK_OUT_CARD:	//å‡ºç‰ŒçŠ¶æ€
 		{
-			cout << "³öÅÆ×´Ì¬¶ÏÏßÖØÁ¬" << endl;
+			cout << "å‡ºç‰ŒçŠ¶æ€æ–­çº¿é‡è¿" << endl;
 
 			if (INVALID_CHAIR == wChairID)
 			{
@@ -408,28 +408,28 @@ bool CTableFrameSink::OnEventSendGameScene(WORD wChairID)
 				return false;
 			}
 
-			//Èç¹ûÓÃ»§ÖØÁ¬ÉÏÁË Çå³ıËûµÄÁ¬Ğø³¬Ê±´ÎÊı
+			//å¦‚æœç”¨æˆ·é‡è¿ä¸Šäº† æ¸…é™¤ä»–çš„è¿ç»­è¶…æ—¶æ¬¡æ•°
 			m_GameAccess->SetPlayerTuoGuan(wChairID, 0);
 
-			//¹¹ÔìÊı¾İ
+			//æ„é€ æ•°æ®
 			STR_CMD_SC_STATUS_OUTCARD StatusOutCard;
 			ZeroMemory(&StatusOutCard, sizeof(STR_CMD_SC_STATUS_OUTCARD)); 
 
 			int nPlayerNum = m_GameAccess->GetCurPlayerCount();
-			BYTE msg_cbCardData[MAX_CHAIR_COUNT][MAX_CARD_COUNT] = {'\0'};	//¼ÇÂ¼³öÅÆ
-			BYTE msg_CardData[MAX_CHAIR_COUNT][MAX_CARD_COUNT] = {'\0'};		//¼ÇÂ¼ÃûÅÆÍæ¼ÒµÄÊÖÅÆ
-			BYTE msg_LeaveCardData[MAX_LEAVE_CARD_NUM] = {'\0'};   //µ×ÅÆ
-			BYTE msg_TurnCardData[MAX_CARD_COUNT] = {'\0'};			//¼ÇÂ¼µ±Ç°ÂÖµÄ×î´ó³öÅÆGetTurnMaxCards
+			BYTE msg_cbCardData[MAX_CHAIR_COUNT][MAX_CARD_COUNT] = {'\0'};	//è®°å½•å‡ºç‰Œ
+			BYTE msg_CardData[MAX_CHAIR_COUNT][MAX_CARD_COUNT] = {'\0'};		//è®°å½•åç‰Œç©å®¶çš„æ‰‹ç‰Œ
+			BYTE msg_LeaveCardData[MAX_LEAVE_CARD_NUM] = {'\0'};   //åº•ç‰Œ
+			BYTE msg_TurnCardData[MAX_CARD_COUNT] = {'\0'};			//è®°å½•å½“å‰è½®çš„æœ€å¤§å‡ºç‰ŒGetTurnMaxCards
 			BYTE max_card_count = MAX_CARD_COUNT;
 
-			//×î´ó³öÅÆÊıÁ¿
+			//æœ€å¤§å‡ºç‰Œæ•°é‡
 			ZeroMemory(&msg_TurnCardData, sizeof(msg_TurnCardData));
 			m_GameAccess->GetTurnMaxCards(msg_TurnCardData, max_card_count);
 
-			//µ×ÅÆ
+			//åº•ç‰Œ
 			m_GameAccess->GetLeaveCard(msg_LeaveCardData, MAX_LEAVE_CARD_NUM);
 
-			//¼ÇÂ¼ÃûÅÆÍæ¼ÒµÄÊÖÅÆ
+			//è®°å½•åç‰Œç©å®¶çš„æ‰‹ç‰Œ
 			for (int i = 0; i < nPlayerNum; i++)
 			{
 				if (m_GameAccess->GetPlayerMingPaiBet(i) > 1)
@@ -438,7 +438,7 @@ bool CTableFrameSink::OnEventSendGameScene(WORD wChairID)
 				}
 			}
 
-			//»ñÈ¡ÊÖÅÆ
+			//è·å–æ‰‹ç‰Œ
 			for (int i = 0; i < nPlayerNum; i++)
 			{
 				if (USER_PLAYING == m_GameAccess->GetPlayerState(i))
@@ -447,45 +447,45 @@ bool CTableFrameSink::OnEventSendGameScene(WORD wChairID)
 				}
 			}
 
-			//¶ÏÏßÍæ¼ÒµÄÊÖÅÆ
+			//æ–­çº¿ç©å®¶çš„æ‰‹ç‰Œ
 			m_GameAccess->GetClientHandCards(wChairID, StatusOutCard.brokenoutcarddata, m_GameAccess->GetUserCurCardNum(wChairID));
 
 			for (int i = 0; i < nPlayerNum; i++)
 			{
 				auto player_op_info = StatusOutCard.players_op;
 
-				//ÃûÅÆ×´Ì¬
+				//åç‰ŒçŠ¶æ€
 				if (m_GameAccess->GetPlayerMingPaiBet(i) > 1)
 					player_op_info[i].op_isMingpai = 1;
 
-				//ÉèÖÃ¸÷Íæ¼ÒµÄÊÖÅÆÊıÁ¿
+				//è®¾ç½®å„ç©å®¶çš„æ‰‹ç‰Œæ•°é‡
 				m_GameAccess->GetClientHandCards(i, player_op_info[i].op_HandCardData, m_GameAccess->GetUserCurCardNum(i));
 				player_op_info[i].op_cardscount = m_GameAccess->GetUserCurCardNum(i);
 
-				//ÉèÖÃ¸÷Íæ¼ÒÊÇ·ñ³öÅÆµÄ×´Ì¬
+				//è®¾ç½®å„ç©å®¶æ˜¯å¦å‡ºç‰Œçš„çŠ¶æ€
 				player_op_info[i].op_type = m_GameAccess->GetTurnOutCardType(i);
 				player_op_info[i].op_outCardCount = m_GameAccess->GetUserOutCard(i, NULL);
 
-				//ÉèÖÃÃûÅÆÍæ¼ÒµÄÊÖÅÆ
+				//è®¾ç½®åç‰Œç©å®¶çš„æ‰‹ç‰Œ
 				/*for (int j = 0; j < m_GameAccess->GetUserCurCardNum(i); j++)
 				{
 					player_op_info[i].MingPaiCardData[j] = msg_CardData[i][j];
 				}*/
 
-				//ÉèÖÃ¸÷Íæ¼Ò³öÅÆ½á¹û
+				//è®¾ç½®å„ç©å®¶å‡ºç‰Œç»“æœ
 				for (int j = 0; j < m_GameAccess->GetUserOutCard(i, NULL); j++)
 				{
 					player_op_info[i].op_result[j] = msg_cbCardData[i][j];
 				}
 			}
 
-			//ÉèÖÃµ±Ç°³öÅÆµÄÍæ¼Ò
+			//è®¾ç½®å½“å‰å‡ºç‰Œçš„ç©å®¶
 			StatusOutCard.outcardid = m_GameAccess->GetCurOutCardUser();
-			StatusOutCard.Leave_bet = m_GameAccess->GetLeaveCardBet();  //µ×ÅÆ±¶Êı
+			StatusOutCard.Leave_bet = m_GameAccess->GetLeaveCardBet();  //åº•ç‰Œå€æ•°
 
-			StatusOutCard.CurJuShu = m_GameAccess->GetCurGameCount();   //ÓÎÏ·¾ÖÊı
-			StatusOutCard.bankID = m_GameLogic->GetAppointBanker();   //×¯¼Ò
-			StatusOutCard.room_bet = m_GameAccess->GetAllBet(wChairID);   //·¿¼ä±¶Êı
+			StatusOutCard.CurJuShu = m_GameAccess->GetCurGameCount();   //æ¸¸æˆå±€æ•°
+			StatusOutCard.bankID = m_GameLogic->GetAppointBanker();   //åº„å®¶
+			StatusOutCard.room_bet = m_GameAccess->GetAllBet(wChairID);   //æˆ¿é—´å€æ•°
 			StatusOutCard.IsTurnEnd = m_GameAccess->GetOneTurnEnd();
 			StatusOutCard.ActionType = m_GameLogic->GetOutCardActionType(wChairID);
 			StatusOutCard.GameStatue = m_GameAccess->GetGameStatus();
@@ -493,26 +493,26 @@ bool CTableFrameSink::OnEventSendGameScene(WORD wChairID)
 
 			for (int i = 0; i < nPlayerNum; i++)
 			{
-				StatusOutCard.PlayerScore[i] = m_GameAccess->GetPlayerTotalScore(i);   //×Ü·Ö
-				//StatusOutCard.Add_bet[i] = m_GameAccess->GetPlayerAddScore(i);				//Íæ¼ÒÊÇ·ñ¼Ó±¶
+				StatusOutCard.PlayerScore[i] = m_GameAccess->GetPlayerTotalScore(i);   //æ€»åˆ†
+				//StatusOutCard.Add_bet[i] = m_GameAccess->GetPlayerAddScore(i);				//ç©å®¶æ˜¯å¦åŠ å€
 			}
 
 			for (int i = 0; i < MAX_LEAVE_CARD_NUM; i++)
 			{
-				StatusOutCard.LeaveCard[i] = msg_LeaveCardData[i];  //µ×ÅÆ
+				StatusOutCard.LeaveCard[i] = msg_LeaveCardData[i];  //åº•ç‰Œ
 			}
 
 			//for (int i = 0; i < max_card_count; i++)
 			//{
-			//	StatusOutCard.TurnCardData[i] = msg_TurnCardData[i];  //µ±Ç°ÂÖ×î´ó¿¨ÅÆ
+			//	StatusOutCard.TurnCardData[i] = msg_TurnCardData[i];  //å½“å‰è½®æœ€å¤§å¡ç‰Œ
 			//}
 
-			// ·¢ËÍ³¡¾°
+			// å‘é€åœºæ™¯
 			m_pITableFrame->SendGameScene( wChairID, &StatusOutCard, sizeof(STR_CMD_SC_STATUS_OUTCARD));
 
 			break;
 		}
-		case GS_WK_JIAO_FEN:   //½Ğ·Ö×´Ì¬
+		case GS_WK_JIAO_FEN:   //å«åˆ†çŠ¶æ€
 		{
 			if (INVALID_CHAIR == wChairID)
 			{
@@ -534,7 +534,7 @@ bool CTableFrameSink::OnEventSendGameScene(WORD wChairID)
 
 			m_GameAccess->GetClientHandCards(wChairID, wCardData, UserCardNum[wChairID]);
 
-			//¸³Öµ
+			//èµ‹å€¼
 			statusJiaofen.CurRobUsr = m_GameAccess->GetCurJiaoFenUser();
 			statusJiaofen.CurJuShu = m_GameAccess->GetCurGameCount();
 //			statusJiaofen.replay_code = m_pITableFrame->GetRoomBaseInfo().replay_code;
@@ -553,7 +553,7 @@ bool CTableFrameSink::OnEventSendGameScene(WORD wChairID)
 			for (int i = 0; i < nPlayerNum; i++)
 			{
 				statusJiaofen.room_bet[i] = m_GameAccess->GetAllBet(i);
-				statusJiaofen.All_bet[i] = m_GameAccess->GetPlayerTotalScore(i);   //×Ü·Ö
+				statusJiaofen.All_bet[i] = m_GameAccess->GetPlayerTotalScore(i);   //æ€»åˆ†
 			}
 
 			//m_pITableFrame->SendTableData(wChairID, CMD_SC_STATUS_JIAOFEN, &statusJiaofen, sizeof(STR_CMD_SC_STATUS_JIAOFEN));
@@ -565,7 +565,7 @@ bool CTableFrameSink::OnEventSendGameScene(WORD wChairID)
 			STR_CMD_SC_STATUS_XJ_END StatusXJEnd;
 			ZeroMemory(&StatusXJEnd, sizeof(STR_CMD_SC_STATUS_XJ_END));
 
-			//»ñµÃÍæ¼Òµ¥¾ÖÓÎÏ·µÃ·Ö
+			//è·å¾—ç©å®¶å•å±€æ¸¸æˆå¾—åˆ†
 			int nPlayerNum = m_GameAccess->GetMaxChairCount();				
 
 			//sXJGameEnd.wchairID = j;
@@ -591,19 +591,19 @@ bool CTableFrameSink::OnEventSendGameScene(WORD wChairID)
 
 			for (BYTE i = 0; i < nPlayerNum && m_GameAccess != NULL; i++)
 			{
-				//»ñÈ¡Íæ¼ÒÊÖÅÆÊıÁ¿
+				//è·å–ç©å®¶æ‰‹ç‰Œæ•°é‡
 				BYTE TmpCardsCount = m_GameAccess->GetUserCurCardNum(i);
 
-				//»ñÈ¡Íæ¼Òµ±Ç°µÄÊÖÅÆ
+				//è·å–ç©å®¶å½“å‰çš„æ‰‹ç‰Œ
 				m_GameAccess->GetClientHandCards(i, StatusXJEnd.XjGameEnd.cbLeaveHandCard[i], TmpCardsCount);
 
-				//¸³Öµ
+				//èµ‹å€¼
 				StatusXJEnd.XjGameEnd.cbLeaveCardCount[i] = TmpCardsCount;
 				StatusXJEnd.XjGameEnd.nSingleGameScore[i] = m_GameAccess->GetPlayerSingleScore(i);
 				StatusXJEnd.XjGameEnd.nUserBet[i] = m_GameAccess->GetAllBet(i);
 			}
 
-			// ·¢ËÍ³¡¾°
+			// å‘é€åœºæ™¯
 			m_pITableFrame->SendGameScene( wChairID, &StatusXJEnd, sizeof(STR_CMD_SC_STATUS_XJ_END));
 
 			break;
@@ -614,48 +614,48 @@ bool CTableFrameSink::OnEventSendGameScene(WORD wChairID)
 	return false;
 }
 
-// ¶¨Ê±Æ÷ÊÂ¼ş
+// å®šæ—¶å™¨äº‹ä»¶
 bool CTableFrameSink::OnTimerMessage(DWORD wTimerID, WPARAM wBindParam)
 {
-	//Ğ£Ñé
+	//æ ¡éªŒ
 	if ( NULL ==  m_GameAccess)
 		return false;
 
-	//Á÷³Ì´¦Àí
+	//æµç¨‹å¤„ç†
 	switch(wTimerID)
 	{
-		case IDI_ROB_BANKER: // ÇÀ×¯¶¨Ê±Æ÷
+		case IDI_ROB_BANKER: // æŠ¢åº„å®šæ—¶å™¨
 		{
 			m_pITableFrame->KillGameTimer(IDI_ROB_BANKER);
 
-			//×´Ì¬Ğ£Ñé
+			//çŠ¶æ€æ ¡éªŒ
 			if (GS_WK_ROB != m_GameAccess->GetGameStatus())
 			{
-				cout << "GS_WK_ROB != m_GameAccess->GetGameStatus() : err £º" << endl;
+				cout << "GS_WK_ROB != m_GameAccess->GetGameStatus() : err ï¼š" << endl;
 				return false;
 			}
 
-			//Ã»ÓĞ½Ğ×¯,Ä¬ÈÏ²»½Ğ   Èç¹ûÊÇ»úÆ÷ÈË£¬Ëæ»ú½Ğ×¯
+			//æ²¡æœ‰å«åº„,é»˜è®¤ä¸å«   å¦‚æœæ˜¯æœºå™¨äººï¼Œéšæœºå«åº„
 			for (WORD i = 0; (m_GameAccess != NULL) && (i < m_GameAccess->GetMaxChairCount()); i++)
 			{
 				if ((USER_PLAYING == m_GameAccess->GetPlayerState(i))
 					&& (i == m_GameAccess->GetCurRobUser()))
 				{
-					//CLog::Log(log_debug, "¶¨Ê±Æ÷µ½£ºÄ¬ÈÏ²»ÇÀ×¯");
+					//CLog::Log(log_debug, "å®šæ—¶å™¨åˆ°ï¼šé»˜è®¤ä¸æŠ¢åº„");
 
 					WORD wNextUser = m_GameAccess->GetNextUser(i);
 
 					if (wNextUser < 0 || wNextUser >= m_GameAccess->GetMaxChairCount())
 					{
-						//CLog::Log(log_error, "func ÇÀ×¯¶¨Ê±Æ÷ err : wChairID < 0 && wChairID >= m_GameAccess->GetMaxChairCount(): chairID:%d", wNextUser);
+						//CLog::Log(log_error, "func æŠ¢åº„å®šæ—¶å™¨ err : wChairID < 0 && wChairID >= m_GameAccess->GetMaxChairCount(): chairID:%d", wNextUser);
 						return false;
 					}
 
-					while (i != wNextUser)		//ÅĞ¶ÏÊÇ²»ÇÀ»¹ÊÇ²»½Ğ
+					while (i != wNextUser)		//åˆ¤æ–­æ˜¯ä¸æŠ¢è¿˜æ˜¯ä¸å«
 					{
 						if (ROB_TYPE_CALL == m_GameAccess->GetBankerState(wNextUser) || ROB_TYPE_ROB == (m_GameAccess->GetBankerState(wNextUser) + 1))
 						{
-							//ÅĞ¶ÏÍæ¼ÒÊÇ»úÆ÷ÈËµÄÇé¿ö
+							//åˆ¤æ–­ç©å®¶æ˜¯æœºå™¨äººçš„æƒ…å†µ
 							if (m_pITableFrame->IsRobot(i))
 							{
 								BYTE CurCardData[MAX_CARD_COUNT] = { 0 };
@@ -663,26 +663,26 @@ bool CTableFrameSink::OnTimerMessage(DWORD wTimerID, WPARAM wBindParam)
 
 								m_GameAccess->GetClientHandCards(i, CurCardData, CurCardNum);
 
-								//³õÊ¼»¯»úÆ÷ÈËÊÖÅÆÊı¾İ
+								//åˆå§‹åŒ–æœºå™¨äººæ‰‹ç‰Œæ•°æ®
 								m_HandCardData[i].Init(CurCardData, CurCardNum);
 
-								//¸ù¾İÊÖÅÆÅĞ¶ÏÇÀ²»ÇÀµØÖ÷
+								//æ ¹æ®æ‰‹ç‰Œåˆ¤æ–­æŠ¢ä¸æŠ¢åœ°ä¸»
 								int flag = m_AILogic.LandScore(m_HandCardData[i]);
 
 								if (flag > 1)
 								{
-									OnUserCallBanker(i, ROB_TYPE_ROB);	//²»ÇÀ»òÇÀµØÖ÷
+									OnUserCallBanker(i, ROB_TYPE_ROB);	//ä¸æŠ¢æˆ–æŠ¢åœ°ä¸»
 								}
 								else
 								{
-									OnUserCallBanker(i, ROB_STATE_BUQIANG);	//²»ÇÀ»òÇÀµØÖ÷
+									OnUserCallBanker(i, ROB_STATE_BUQIANG);	//ä¸æŠ¢æˆ–æŠ¢åœ°ä¸»
 								}
 
 								break;
 							}
 							else
 							{
-								OnUserCallBanker(i, ROB_STATE_BUQIANG);	//²»ÇÀ
+								OnUserCallBanker(i, ROB_STATE_BUQIANG);	//ä¸æŠ¢
 								break;
 							}
 						}
@@ -690,9 +690,9 @@ bool CTableFrameSink::OnTimerMessage(DWORD wTimerID, WPARAM wBindParam)
 						wNextUser = m_GameAccess->GetNextUser(wNextUser);
 					}
 
-					if (i == wNextUser)   //²»½Ğ
+					if (i == wNextUser)   //ä¸å«
 					{
-						//ÅĞ¶ÏÍæ¼ÒÊÇ»úÆ÷ÈËµÄÇé¿ö
+						//åˆ¤æ–­ç©å®¶æ˜¯æœºå™¨äººçš„æƒ…å†µ
 						if (m_pITableFrame->IsRobot(i))
 						{
 							BYTE CurCardData[MAX_CARD_COUNT] = { 0 };
@@ -700,19 +700,19 @@ bool CTableFrameSink::OnTimerMessage(DWORD wTimerID, WPARAM wBindParam)
 
 							m_GameAccess->GetClientHandCards(i, CurCardData, CurCardNum);
 
-							//³õÊ¼»¯»úÆ÷ÈËÊÖÅÆÊı¾İ
+							//åˆå§‹åŒ–æœºå™¨äººæ‰‹ç‰Œæ•°æ®
 							m_HandCardData[i].Init(CurCardData, CurCardNum);
 
-							//¸ù¾İÊÖÅÆÅĞ¶ÏÇÀ²»ÇÀµØÖ÷
+							//æ ¹æ®æ‰‹ç‰Œåˆ¤æ–­æŠ¢ä¸æŠ¢åœ°ä¸»
 							int flag = m_AILogic.LandScore(m_HandCardData[i]);
 
 							if (flag > 1)
 							{
-								OnUserCallBanker(i, ROB_TYPE_CALL);	//²»ÇÀ»òÇÀµØÖ÷
+								OnUserCallBanker(i, ROB_TYPE_CALL);	//ä¸æŠ¢æˆ–æŠ¢åœ°ä¸»
 							}
 							else
 							{
-								OnUserCallBanker(i, ROB_STATE_BUJIAO);	//²»ÇÀ»òÇÀµØÖ÷
+								OnUserCallBanker(i, ROB_STATE_BUJIAO);	//ä¸æŠ¢æˆ–æŠ¢åœ°ä¸»
 							}
 
 							break;
@@ -728,37 +728,37 @@ bool CTableFrameSink::OnTimerMessage(DWORD wTimerID, WPARAM wBindParam)
 			}
 			break;
 		}
-		case IDI_ADD_SCORE:		//ÏÂ×¢¶¨Ê±Æ÷
+		case IDI_ADD_SCORE:		//ä¸‹æ³¨å®šæ—¶å™¨
 		{
 			m_pITableFrame->KillGameTimer(IDI_ADD_SCORE);
 
-			//×´Ì¬Ğ£Ñé
+			//çŠ¶æ€æ ¡éªŒ
 			if (GS_WK_ADDSCORE != m_GameAccess->GetGameStatus())
 			{
-				cout << "GS_WK_ADDSCORE != m_GameAccess->GetGameStatus() : err £º" << endl;
+				cout << "GS_WK_ADDSCORE != m_GameAccess->GetGameStatus() : err ï¼š" << endl;
 				return false;
 			}
 
-			//Ã»ÓĞÏÂ×¢  Ä¬ÈÏ²»ÏÂ 
+			//æ²¡æœ‰ä¸‹æ³¨  é»˜è®¤ä¸ä¸‹ 
 			for (WORD i = 0; i < m_GameAccess->GetMaxChairCount() && m_GameAccess != NULL; i++)
 			{
 				if (USER_PLAYING == m_GameAccess->GetPlayerState(i)
 					/*&& (0 == m_GameAccess->GetXjReadyState(i))*/
 					&& (0 == m_GameAccess->GetAddScoreState(i)))
 				{
-					printf("¶¨Ê±Æ÷µ½£¬Ä¬ÈÏ²»ÏÂ×¢\n");
-					//CLog::Log(log_error, "¶¨Ê±Æ÷µ½£ºÄ¬ÈÏ²»ÏÂ×¢ %d\n", i);
+					printf("å®šæ—¶å™¨åˆ°ï¼Œé»˜è®¤ä¸ä¸‹æ³¨\n");
+					//CLog::Log(log_error, "å®šæ—¶å™¨åˆ°ï¼šé»˜è®¤ä¸ä¸‹æ³¨ %d\n", i);
 
 					BYTE CurCardData[MAX_CARD_COUNT] = { 0 };
 					BYTE CurCardNum = m_GameAccess->GetUserCurCardNum(i);
 
 					m_GameAccess->GetClientHandCards(i, CurCardData, CurCardNum);
 
-					//»úÆ÷ÈË¸ù¾İÊÖÅÆÏÂ×¢
-					//³õÊ¼»¯»úÆ÷ÈËÊÖÅÆÊı¾İ
+					//æœºå™¨äººæ ¹æ®æ‰‹ç‰Œä¸‹æ³¨
+					//åˆå§‹åŒ–æœºå™¨äººæ‰‹ç‰Œæ•°æ®
 					m_HandCardData[i].Init(CurCardData, CurCardNum);
 
-					//¸ù¾İÊÖÅÆÅĞ¶ÏÏÂ²»ÏÂ×¢
+					//æ ¹æ®æ‰‹ç‰Œåˆ¤æ–­ä¸‹ä¸ä¸‹æ³¨
 					int flag = m_AILogic.LandScore(m_HandCardData[i]);
 
 					if (m_pITableFrame->IsRobot(i) && 3 == flag)
@@ -771,21 +771,21 @@ bool CTableFrameSink::OnTimerMessage(DWORD wTimerID, WPARAM wBindParam)
 
 			break;
 		}
-		case IDI_MING_PAI:		//Ã÷ÅÆ¶¨Ê±Æ÷
+		case IDI_MING_PAI:		//æ˜ç‰Œå®šæ—¶å™¨
 		{
 			m_pITableFrame->KillGameTimer(IDI_MING_PAI);
 
-			//Ã»ÓĞÃ÷ÅÆ Ä¬ÈÏ²»Ã÷ÅÆ    »úÆ÷ÈËÒ²Ä¬ÈÏ²»Ã÷ÅÆ
+			//æ²¡æœ‰æ˜ç‰Œ é»˜è®¤ä¸æ˜ç‰Œ    æœºå™¨äººä¹Ÿé»˜è®¤ä¸æ˜ç‰Œ
 			for (WORD i = 0; i < m_GameAccess->GetMaxChairCount() && m_GameAccess != NULL; i++)
 			{
 				if (USER_PLAYING == m_GameAccess->GetPlayerState(i)
 					/*&& (0 == m_GameAccess->GetXjReadyState(i))*/
 					&& (0 == m_GameAccess->GetMingPaiState(i)))
 				{
-					printf("¶¨Ê±Æ÷µ½£¬Ä¬ÈÏ²»Ã÷ÅÆ\n");
-					//CLog::Log(log_error, "¶¨Ê±Æ÷µ½£ºÄ¬ÈÏ²»Ã÷ÅÆ %d\n", i);
+					printf("å®šæ—¶å™¨åˆ°ï¼Œé»˜è®¤ä¸æ˜ç‰Œ\n");
+					//CLog::Log(log_error, "å®šæ—¶å™¨åˆ°ï¼šé»˜è®¤ä¸æ˜ç‰Œ %d\n", i);
 
-					//´¦Àí²»Ã÷ÅÆÏûÏ¢
+					//å¤„ç†ä¸æ˜ç‰Œæ¶ˆæ¯
 					On_Sub_UserMingPai(i, 0, 0);
 					//On_Sub_UserMingPai(i, MING_PAI_TYPE_DEAL, 1);
 				}
@@ -793,7 +793,7 @@ bool CTableFrameSink::OnTimerMessage(DWORD wTimerID, WPARAM wBindParam)
 
 			break;
 		}
-		case IDI_OUT_CARD:		//³öÅÆ¶¨Ê±Æ÷
+		case IDI_OUT_CARD:		//å‡ºç‰Œå®šæ—¶å™¨
 		{
 			m_pITableFrame->KillGameTimer(IDI_OUT_CARD);
 
@@ -805,14 +805,14 @@ bool CTableFrameSink::OnTimerMessage(DWORD wTimerID, WPARAM wBindParam)
 				return false;
 			}
 
-			//×´Ì¬Ğ£Ñé
+			//çŠ¶æ€æ ¡éªŒ
 			if (GS_WK_OUT_CARD != m_GameAccess->GetGameStatus())
 			{
-				cout << "GS_WK_OUT_CARD != m_GameAccess->GetGameStatus() : err £ºÍĞ¹Ü" << endl;
+				cout << "GS_WK_OUT_CARD != m_GameAccess->GetGameStatus() : err ï¼šæ‰˜ç®¡" << endl;
 				return false;
 			}
 
-			//Èç¹ûÍæ¼ÒÁ¬ĞøÈı´Î¶¨Ê±Æ÷³¬Ê± ÄÇÃ´½«ËûÉèÖÃ³ÉÍĞ¹Ü×´Ì¬
+			//å¦‚æœç©å®¶è¿ç»­ä¸‰æ¬¡å®šæ—¶å™¨è¶…æ—¶ é‚£ä¹ˆå°†ä»–è®¾ç½®æˆæ‰˜ç®¡çŠ¶æ€
 			if (!(m_pITableFrame->IsRobot(OutCardUser)))
 			{
 				WORD TimeOutNum = m_GameAccess->GetPlayerTimeOutNum(OutCardUser);
@@ -820,15 +820,15 @@ bool CTableFrameSink::OnTimerMessage(DWORD wTimerID, WPARAM wBindParam)
 
 				if (2 <= TimeOutNum)
 				{
-					//ÉèÖÃ¸ÃÍæ¼ÒÎªÍĞ¹Ü
+					//è®¾ç½®è¯¥ç©å®¶ä¸ºæ‰˜ç®¡
 					m_GameAccess->SetPlayerTuoGuan(OutCardUser, 1);
 
-					//·¢ËÍÍĞ¹Ü
+					//å‘é€æ‰˜ç®¡
 					m_pITableFrame->SendPlayerTuoGuan(OutCardUser);
 				}
 			}
 
-			//²»ÊÇµÚÒ»¸ö³öÅÆ  
+			//ä¸æ˜¯ç¬¬ä¸€ä¸ªå‡ºç‰Œ  
 			if (1 == m_GameAccess->GetOneTurnEnd())
 			{
 				BYTE OutCardData[MAX_CARD_COUNT] = {'\0'};
@@ -836,7 +836,7 @@ bool CTableFrameSink::OnTimerMessage(DWORD wTimerID, WPARAM wBindParam)
 
 				ZeroMemory(&OutCardData, sizeof(OutCardData));
 
-				//ÅĞ¶Ï»úÆ÷ÈËµÄÇé¿ö
+				//åˆ¤æ–­æœºå™¨äººçš„æƒ…å†µ
 				if (m_pITableFrame->IsRobot(OutCardUser))
 				{
 					CLog::Log(log_debug, "Turn Not End Robot!! One");
@@ -846,43 +846,43 @@ bool CTableFrameSink::OnTimerMessage(DWORD wTimerID, WPARAM wBindParam)
 
 					m_GameAccess->GetClientHandCards(OutCardUser, CurCardData, CurCardNum);
 
-					//³õÊ¼»¯»úÆ÷ÈËÊÖÅÆÊı¾İ
+					//åˆå§‹åŒ–æœºå™¨äººæ‰‹ç‰Œæ•°æ®
 					m_HandCardData[OutCardUser].Init(CurCardData, CurCardNum);
 					CLog::Log(log_debug, "Turn Not End Robot!! Two");
-					//³õÊ¼»¯µ±Ç°ÂÖÊÖÅÆ
+					//åˆå§‹åŒ–å½“å‰è½®æ‰‹ç‰Œ
 					GameSituation m_GameSituation;
 					m_GameLogic->GetTurnMaxCardToRobot(m_GameSituation, m_AILogic);
 
-					//µ÷ÓÃµçÄÔÈË±»¶¯³öÅÆº¯Êı
+					//è°ƒç”¨ç”µè„‘äººè¢«åŠ¨å‡ºç‰Œå‡½æ•°
 					m_AILogic.get_PutCardList_2_limit(m_GameSituation, m_HandCardData[OutCardUser]);
 					CLog::Log(log_debug, "Turn Not End Robot!! Three");
 
-					//ÅĞ¶Ï³ö²»³öÅÆ
+					//åˆ¤æ–­å‡ºä¸å‡ºç‰Œ
 					if (m_HandCardData[OutCardUser].uctPutCardType.cgType == cgERROR || m_HandCardData[OutCardUser].uctPutCardType.cgType == cgZERO)
 					{
-						On_Sub_UserOutCard(OutCardUser, NULL, 0, 1);   //³öÅÆ¹ı
+						On_Sub_UserOutCard(OutCardUser, NULL, 0, 1);   //å‡ºç‰Œè¿‡
 						break;
 					}
 					else
 					{
 						CLog::Log(log_debug, "Turn Not End Robot!! Four");
 
-						//½«Òª³öµÄÅÆ´ÓÂß¼­Öµ×ª»»³ÉÓĞ»¨É«
+						//å°†è¦å‡ºçš„ç‰Œä»é€»è¾‘å€¼è½¬æ¢æˆæœ‰èŠ±è‰²
 						m_GameLogic->GetCardColorValue(OutCardUser, m_HandCardData[OutCardUser], OutCardData, OutCardNum);
 
-						On_Sub_UserOutCard(OutCardUser, OutCardData, OutCardNum, 0);     //³öÅÆ
+						On_Sub_UserOutCard(OutCardUser, OutCardData, OutCardNum, 0);     //å‡ºç‰Œ
 						break;
 					}
 				}
 				else
 				{
-					//ÅĞ¶Ï Íæ¼Ò¿ÉÒÔ³öµÄÅÆ
+					//åˆ¤æ–­ ç©å®¶å¯ä»¥å‡ºçš„ç‰Œ
 					if (m_GameLogic->AnalysePlayerOutCard(OutCardUser, OutCardData, &OutCardNum))
 					{
 						if (!m_GameLogic->EfficacyOutCard(OutCardUser, OutCardData, OutCardNum))
 						{
-							cout << "ÅĞ¶Ï Íæ¼Ò¿ÉÒÔ³öµÄÅÆ err" << endl;
-							//CLog::Log(log_error, "func ÅĞ¶Ï Íæ¼Ò¿ÉÒÔ³öµÄÅÆ err : Ğ£ÑéÊ§°Ü");
+							cout << "åˆ¤æ–­ ç©å®¶å¯ä»¥å‡ºçš„ç‰Œ err" << endl;
+							//CLog::Log(log_error, "func åˆ¤æ–­ ç©å®¶å¯ä»¥å‡ºçš„ç‰Œ err : æ ¡éªŒå¤±è´¥");
 							return false;
 						}
 						On_Sub_UserOutCard(OutCardUser, OutCardData, OutCardNum, 0);
@@ -890,12 +890,12 @@ bool CTableFrameSink::OnTimerMessage(DWORD wTimerID, WPARAM wBindParam)
 					}
 					else
 						{
-							On_Sub_UserOutCard(OutCardUser, NULL, 0, 1);   //³öÅÆ¹ı	
+							On_Sub_UserOutCard(OutCardUser, NULL, 0, 1);   //å‡ºç‰Œè¿‡	
 							break;
 						}
 				}
 			}
-			//ÊÇµÚÒ»¸ö³öÅÆ  
+			//æ˜¯ç¬¬ä¸€ä¸ªå‡ºç‰Œ  
 			else
 			{
 
@@ -913,34 +913,34 @@ bool CTableFrameSink::OnTimerMessage(DWORD wTimerID, WPARAM wBindParam)
 
 					m_GameAccess->GetClientHandCards(OutCardUser, CurCardData, CurCardNum);
 
-					//³õÊ¼»¯»úÆ÷ÈËÊÖÅÆÊı¾İ
+					//åˆå§‹åŒ–æœºå™¨äººæ‰‹ç‰Œæ•°æ®
 					m_HandCardData[OutCardUser].Init(CurCardData, CurCardNum);
 					CLog::Log(log_debug, "Turn End Robot!! Two");
-					//µ÷ÓÃµçÄÔÈËÖ÷¶¯³öÅÆº¯Êı
+					//è°ƒç”¨ç”µè„‘äººä¸»åŠ¨å‡ºç‰Œå‡½æ•°
 					m_AILogic.get_PutCardList_2_unlimit(m_HandCardData[OutCardUser]);
 
 					CLog::Log(log_debug, "Turn End Robot!! Three");
 
-					//½«Òª³öµÄÅÆ´ÓÂß¼­Öµ×ª»»³ÉÓĞ»¨É«
+					//å°†è¦å‡ºçš„ç‰Œä»é€»è¾‘å€¼è½¬æ¢æˆæœ‰èŠ±è‰²
 					m_GameLogic->GetCardColorValue(OutCardUser, m_HandCardData[OutCardUser], OutCardData, OutCardNum);
 					if (CT_ERROR == m_GameLogic->GetCardLogicType(OutCardData, OutCardNum))
 					{
 						CLog::Log(log_debug, "Turn End Robot!! Four");
 						//CLog::Log(log_error, "CT_ERROR == m_GameLogic->GetCardLogicType!!!!!!!!!\n");
-						//Èç¹û»úÆ÷ÈË³öÅÆ³öÏÖ´íÎó
+						//å¦‚æœæœºå™¨äººå‡ºç‰Œå‡ºç°é”™è¯¯
 						BYTE UOutCardData[MAX_CARD_COUNT] = {'\0'};
 						BYTE UOutCardNum;
 						ZeroMemory(&UOutCardData, sizeof(UOutCardData));
-						//ÅĞ¶Ï µÚÒ»¸öÍæ¼Ò¿ÉÒÔ³öµÄÅÆ
+						//åˆ¤æ–­ ç¬¬ä¸€ä¸ªç©å®¶å¯ä»¥å‡ºçš„ç‰Œ
 						m_GameLogic->AnalysePlayerOutCardFirst(OutCardUser, UOutCardData, &UOutCardNum);
 
-						//Ö´ĞĞ³öÅÆÏûÏ¢
+						//æ‰§è¡Œå‡ºç‰Œæ¶ˆæ¯
 						On_Sub_UserOutCard(OutCardUser, UOutCardData, UOutCardNum, 0);
 						break;
 					}
 					else
 					{
-						//Ö´ĞĞ³öÅÆÏûÏ¢
+						//æ‰§è¡Œå‡ºç‰Œæ¶ˆæ¯
 						On_Sub_UserOutCard(OutCardUser, OutCardData, OutCardNum, 0);
 						break;
 					}
@@ -948,14 +948,14 @@ bool CTableFrameSink::OnTimerMessage(DWORD wTimerID, WPARAM wBindParam)
 				else
 
 				{
-					//ÅĞ¶Ï µÚÒ»¸öÍæ¼Ò¿ÉÒÔ³öµÄÅÆ
+					//åˆ¤æ–­ ç¬¬ä¸€ä¸ªç©å®¶å¯ä»¥å‡ºçš„ç‰Œ
 					m_GameLogic->AnalysePlayerOutCardFirst(OutCardUser, OutCardData, &OutCardNum);
 
-					//Ö´ĞĞ³öÅÆÏûÏ¢
+					//æ‰§è¡Œå‡ºç‰Œæ¶ˆæ¯
 					On_Sub_UserOutCard(OutCardUser, OutCardData, OutCardNum, 0);
 					break;
 
-					On_Sub_UserOutCard(OutCardUser, NULL, 0, 1);   //³öÅÆ¹ı	
+					On_Sub_UserOutCard(OutCardUser, NULL, 0, 1);   //å‡ºç‰Œè¿‡	
 							break;
 				}
 
@@ -963,38 +963,38 @@ bool CTableFrameSink::OnTimerMessage(DWORD wTimerID, WPARAM wBindParam)
 
 			break;
 		}
-		case IDI_ROB_JiaoFen:	//½Ğ·Ö¶¨Ê±Æ÷
+		case IDI_ROB_JiaoFen:	//å«åˆ†å®šæ—¶å™¨
 		{
 			m_pITableFrame->KillGameTimer(IDI_ROB_JiaoFen);
 
-			//×´Ì¬Ğ£Ñé
+			//çŠ¶æ€æ ¡éªŒ
 			if (GS_WK_JIAO_FEN != m_GameAccess->GetGameStatus())
 			{
-				cout << "¶¨Ê±Æ÷£ºGS_WK_JIAO_FEN != m_GameAccess->GetGameStatus() : err" << endl;
+				cout << "å®šæ—¶å™¨ï¼šGS_WK_JIAO_FEN != m_GameAccess->GetGameStatus() : err" << endl;
 				return false;
 			}
 
-			cout << "½Ğ·Ö¶¨Ê±Æ÷µ½" << endl;
+			cout << "å«åˆ†å®šæ—¶å™¨åˆ°" << endl;
 
-			//Íæ¼ÒÄ¬ÈÏ²»½Ğ  »úÆ÷ÈËËæ»ú½Ğ·Ö
+			//ç©å®¶é»˜è®¤ä¸å«  æœºå™¨äººéšæœºå«åˆ†
 			for (int i = 0; i < m_GameAccess->GetCurPlayerCount(); i++)
 			{
 				if (i == m_GameAccess->GetCurJiaoFenUser() && USER_PLAYING == m_GameAccess->GetPlayerState(i))
 				{
-					//»úÆ÷ÈËÇé¿ö
+					//æœºå™¨äººæƒ…å†µ
 					if (m_pITableFrame->IsRobot(i))
 					{
 						WORD m_Score = JIAOFEN_START;
 						for (int j = 0; j < m_GameAccess->GetCurPlayerCount(); j++)
 						{
 							if ((0 != m_GameAccess->GetCurJiaoFenState(j))
-								&& (10 != m_GameAccess->GetCurJiaoFenState(j)))    //Ä¬ÈÏ×´Ì¬ºÍ²»½Ğ×´Ì¬
+								&& (10 != m_GameAccess->GetCurJiaoFenState(j)))    //é»˜è®¤çŠ¶æ€å’Œä¸å«çŠ¶æ€
 							{
 								m_Score -= 1 << (m_GameAccess->GetCurJiaoFenState(j));
 							}
 						}
 
-						if (JIAOFEN_START == m_Score)  //ÁùÖÖ½Ğ·ÖÇé¿ö
+						if (JIAOFEN_START == m_Score)  //å…­ç§å«åˆ†æƒ…å†µ
 						{
 							OnUserJiaoFen(i, (rand() % 4));
 							break;
@@ -1040,7 +1040,7 @@ bool CTableFrameSink::OnTimerMessage(DWORD wTimerID, WPARAM wBindParam)
 
 			break;
 		}
-		case IDI_ROB_START:		//¿ªÊ¼ÇÀ×¯¶¨Ê±Æ÷
+		case IDI_ROB_START:		//å¼€å§‹æŠ¢åº„å®šæ—¶å™¨
 			{
 				m_pITableFrame->KillGameTimer(IDI_ROB_START);
 
@@ -1050,7 +1050,7 @@ bool CTableFrameSink::OnTimerMessage(DWORD wTimerID, WPARAM wBindParam)
 
 				HandleRobBanker();
 			}
-		case IDI_OUTCARD_START:		//¿ªÊ¼³öÅÆ¶¨Ê±Æ÷
+		case IDI_OUTCARD_START:		//å¼€å§‹å‡ºç‰Œå®šæ—¶å™¨
 			{
 				m_pITableFrame->KillGameTimer(IDI_OUTCARD_START);
 
@@ -1066,33 +1066,33 @@ bool CTableFrameSink::OnTimerMessage(DWORD wTimerID, WPARAM wBindParam)
 	return true;
 }
 
-// ÓÎÏ·ÏûÏ¢´¦Àí
+// æ¸¸æˆæ¶ˆæ¯å¤„ç†
 bool CTableFrameSink::OnGameMessage(WORD wSubCmdID, VOID * pData, WORD wDataSize, WORD wChairID)
 {
-	//Ğ£Ñé
+	//æ ¡éªŒ
 	if (pData == NULL)
 		return false;
 
-	//ÏûÏ¢´¦Àí
+	//æ¶ˆæ¯å¤„ç†
 	switch (wSubCmdID)
 	{
-		case SUB_CS_OUT_CARD:		//³öÅÆ
+		case SUB_CS_OUT_CARD:		//å‡ºç‰Œ
 		{
-			//Ğ§ÑéÊı¾İ
+			//æ•ˆéªŒæ•°æ®
 			if (wDataSize != sizeof(STR_SUB_CS_OUT_CARD) )
 				return true;
 
-			//×´Ì¬Ğ£Ñé
+			//çŠ¶æ€æ ¡éªŒ
 			if (GS_WK_OUT_CARD != m_GameAccess->GetGameStatus())
 			{
 				cout << "GS_WK_OUT_CARD != m_GameAccess->GetGameStatus() : err" << endl;
 				return false;
 			}
 
-			//±äÁ¿¶¨Òå
+			//å˜é‡å®šä¹‰
 			STR_SUB_CS_OUT_CARD *pOutCard= (STR_SUB_CS_OUT_CARD *)pData;
 
-			//Èç¹ûÓÃ»§³öÅÆÁË Çå³ıËûµÄÁ¬Ğø³¬Ê±´ÎÊı
+			//å¦‚æœç”¨æˆ·å‡ºç‰Œäº† æ¸…é™¤ä»–çš„è¿ç»­è¶…æ—¶æ¬¡æ•°
 			m_GameAccess->SetPlayerTuoGuan(wChairID, 0);
 
 			bool bPass = (pOutCard->cbPass == 1) ? true : false;
@@ -1100,34 +1100,34 @@ bool CTableFrameSink::OnGameMessage(WORD wSubCmdID, VOID * pData, WORD wDataSize
 
 			break;	
 		}
-		case SUB_CS_ROB_BANKER:		 //ÇÀ×¯ÃüÁî
+		case SUB_CS_ROB_BANKER:		 //æŠ¢åº„å‘½ä»¤
 		{
-			//Ğ§ÑéÊı¾İ
+			//æ•ˆéªŒæ•°æ®
 			if (wDataSize != sizeof(STR_SUB_CS_ROB_BANKER))
 			{
-				return true;//ÉáÆúÏûÏ¢ Ò²±íÊ¾´¦Àí
+				return true;//èˆå¼ƒæ¶ˆæ¯ ä¹Ÿè¡¨ç¤ºå¤„ç†
 			}
 
-			//×´Ì¬Ğ£Ñé
+			//çŠ¶æ€æ ¡éªŒ
 			if (GS_WK_ROB != m_GameAccess->GetGameStatus())
 			{
 				cout << "GS_WK_ROB != m_GameAccess->GetGameStatus() : err" << endl;
 				return false;
 			}
 
-			//±äÁ¿¶¨Òå
+			//å˜é‡å®šä¹‰
 			STR_SUB_CS_ROB_BANKER *pCallBanker = (STR_SUB_CS_ROB_BANKER *)pData;
 			OnUserCallBanker(wChairID, pCallBanker->cbResult);
 
 			break;
 		}
-		case SUB_CS_ADD_SCORE:	 //ÓÃ»§ÏÂ×¢
+		case SUB_CS_ADD_SCORE:	 //ç”¨æˆ·ä¸‹æ³¨
 		{
-			//Ğ£ÑéÊı¾İ
+			//æ ¡éªŒæ•°æ®
 			if (wDataSize != sizeof(STR_SUB_CS_ADD_SCORE))
 				return true;
 
-			//×´Ì¬Ğ£Ñé
+			//çŠ¶æ€æ ¡éªŒ
 			if (GS_WK_ADDSCORE != m_GameAccess->GetGameStatus())
 			{
 				cout << "(GS_WK_ADDSCORE != m_GameAccess->GetGameStatus() : err" << endl;
@@ -1136,28 +1136,28 @@ bool CTableFrameSink::OnGameMessage(WORD wSubCmdID, VOID * pData, WORD wDataSize
 
 			STR_SUB_CS_ADD_SCORE *pAddScore = (STR_SUB_CS_ADD_SCORE *)pData;
 
-			//´¦Àí
+			//å¤„ç†
 			OnUserAddScore(wChairID, pAddScore->action);
 
 			break;
 		}
-		case SUB_CS_MING_PAI:	//Ã÷ÅÆ
+		case SUB_CS_MING_PAI:	//æ˜ç‰Œ
 		{
-			//Ğ£Ñé
+			//æ ¡éªŒ
 			if (1 != m_GameAccess->GetPlayerMingPaiBet(wChairID))
 			{
-				printf("Íæ¼Ò£º%d ÊÇ·ñÒÑÃ÷ÅÆ£º%d\n", wChairID, m_GameAccess->GetMingPaiState(wChairID));
-				cout << "Íæ¼ÒÒÑ¾­Ã÷¹ıÅÆÁË : err" << endl;
+				printf("ç©å®¶ï¼š%d æ˜¯å¦å·²æ˜ç‰Œï¼š%d\n", wChairID, m_GameAccess->GetMingPaiState(wChairID));
+				cout << "ç©å®¶å·²ç»æ˜è¿‡ç‰Œäº† : err" << endl;
 				return false;
 			}
 
-			//Ğ£ÑéÊı¾İ
+			//æ ¡éªŒæ•°æ®
 			if (wDataSize != sizeof(STR_SUB_CS_MING_PAI))
 				return true;
 
 			STR_SUB_CS_MING_PAI *pMingPai = (STR_SUB_CS_MING_PAI *)pData;
 
-			//¿ªÊ¼ÓÎÏ·Ã÷ÅÆÇé¿ö
+			//å¼€å§‹æ¸¸æˆæ˜ç‰Œæƒ…å†µ
 			if (pMingPai->cbType == MING_PAI_TYPE_GAMESTART)
 			{
 				m_GameAccess->SetPlayerMingPaiBet(wChairID, 5);
@@ -1167,13 +1167,13 @@ bool CTableFrameSink::OnGameMessage(WORD wSubCmdID, VOID * pData, WORD wDataSize
 			On_Sub_UserMingPai(wChairID, pMingPai->cbType, 1, pMingPai->OutCard_stage);
 			break;
 		}
-		case SUB_CS_PUBLIC_BET:		//ÓÎÏ·½áÊøµÄ¹«¹²±¶ÊıĞÅÏ¢
+		case SUB_CS_PUBLIC_BET:		//æ¸¸æˆç»“æŸçš„å…¬å…±å€æ•°ä¿¡æ¯
 		{
-			//Ğ£ÑéÊı¾İ
+			//æ ¡éªŒæ•°æ®
 			if (wDataSize != sizeof(STR_SUB_CS_PUBLIC_BET))
 				return true;
 
-			//×´Ì¬Ğ£Ñé
+			//çŠ¶æ€æ ¡éªŒ
 			if (GS_WK_FREE == m_GameAccess->GetGameStatus())
 			{
 				cout << "GS_WK_FREE == m_GameAccess->GetGameStatus() : err" << endl;
@@ -1186,13 +1186,13 @@ bool CTableFrameSink::OnGameMessage(WORD wSubCmdID, VOID * pData, WORD wDataSize
 
 			break;
 		}
-		case SUB_CS_JIAO_FEN:		//½Ğ·Ö
+		case SUB_CS_JIAO_FEN:		//å«åˆ†
 		{
-			//Ğ£ÑéÊı¾İ
+			//æ ¡éªŒæ•°æ®
 			if (wDataSize != sizeof(STR_SUB_CS_JIAO_FEN))
 				return true;
 
-			//×´Ì¬Ğ£Ñé
+			//çŠ¶æ€æ ¡éªŒ
 			if (GS_WK_JIAO_FEN != m_GameAccess->GetGameStatus())
 			{
 				cout << "GS_WK_JIAO_FEN != m_GameAccess->GetGameStatus() : err" << endl;
@@ -1205,13 +1205,13 @@ bool CTableFrameSink::OnGameMessage(WORD wSubCmdID, VOID * pData, WORD wDataSize
 
 			break;
 		}
-		case SUB_CS_JIPAIQI:		//¼ÇÅÆÆ÷
+		case SUB_CS_JIPAIQI:		//è®°ç‰Œå™¨
 		{
-			//Ğ£ÑéÊı¾İ
+			//æ ¡éªŒæ•°æ®
 			if (wDataSize != sizeof(STR_SUB_CS_JIPAIQI))
 				return true;
 
-			//×´Ì¬Ğ£Ñé
+			//çŠ¶æ€æ ¡éªŒ
 			if (GS_WK_OUT_CARD != m_GameAccess->GetGameStatus())
 			{
 				cout << "GS_WK_OUT_CARD != m_GameAccess->GetGameStatus() : err" << endl;
@@ -1231,48 +1231,48 @@ bool CTableFrameSink::OnGameMessage(WORD wSubCmdID, VOID * pData, WORD wDataSize
 	return true;
 }
 
-// ´ó¾ÖÓÎÏ·¿ªÊ¼				
+// å¤§å±€æ¸¸æˆå¼€å§‹				
 bool CTableFrameSink::OnEventGameStart()
 {
-	//¿ªÊ¼ÓÎÏ·
+	//å¼€å§‹æ¸¸æˆ
 	StartGame();
 	
 	return true;
 }
 
-// ¿ªÊ¼ÓÎÏ·
+// å¼€å§‹æ¸¸æˆ
 void CTableFrameSink::StartGame()
 {
-	CLog::Log(log_debug, "\n¡¾¿ªÊ¼ÓÎÏ·¡¿\n");
+	CLog::Log(log_debug, "\nã€å¼€å§‹æ¸¸æˆã€‘\n");
 
-	// ÉèÖÃÍæ¼Ò×´Ì¬¡¾ÓÎÏ·ÖĞ¡¿
+	// è®¾ç½®ç©å®¶çŠ¶æ€ã€æ¸¸æˆä¸­ã€‘
 	BYTE cbPlayerNum = m_GameAccess->GetMaxChairCount();
 	for ( BYTE i = 0; i < cbPlayerNum; ++i)
 	{	
 		m_GameAccess->SetPlayerState( i, USER_PLAYING );
 
-		//ÉèÖÃµ×·Ö
+		//è®¾ç½®åº•åˆ†
 		m_GameLogic->Wager(i, m_GameAccess->GetCellScore());
 	}
 
-	// ÓÎÏ·¾ÖÊı¼Ó1
+	// æ¸¸æˆå±€æ•°åŠ 1
 	BYTE cbGameCout = m_GameAccess->GetCurGameCount();
 	m_GameAccess->SetGameCount( ++cbGameCout );
 
-	//¸øÍæ¼Ò·¢ÅÆ
+	//ç»™ç©å®¶å‘ç‰Œ
 	HandleDeal();
 }
 
-//´¦Àí·¢ÅÆÁ÷³Ì
+//å¤„ç†å‘ç‰Œæµç¨‹
 void CTableFrameSink::HandleDeal()
 {
-	// Ï´ÅÆ²¢·¢ÅÆ
-	m_GameLogic->Deal();		//Ï´ÅÆËã·¨Ôö¼ÓÏ´ÅÆºÍ²»Ï´ÅÆÁ½ÖÖ²ßÂÔ
+	// æ´—ç‰Œå¹¶å‘ç‰Œ
+	m_GameLogic->Deal();		//æ´—ç‰Œç®—æ³•å¢åŠ æ´—ç‰Œå’Œä¸æ´—ç‰Œä¸¤ç§ç­–ç•¥
 
-	// ¹¹Ôì·¢ÅÆÊı¾İ
+	// æ„é€ å‘ç‰Œæ•°æ®
 	STR_CMD_SC_SEND_CARD SendCard;
 
-	//±éÀúÍæ¼Ò
+	//éå†ç©å®¶
 	BYTE cbMaxChairCount = m_GameAccess->GetMaxChairCount();
 	for (WORD i = 0; i < cbMaxChairCount; i++)
 	{
@@ -1280,13 +1280,13 @@ void CTableFrameSink::HandleDeal()
 		{
 			ZeroMemory(&SendCard, sizeof(STR_CMD_SC_SEND_CARD));
 
-			//¸³Öµ	
+			//èµ‹å€¼	
 			SendCard.wChairID = i;
 			SendCard.CurJuShu = m_GameAccess->GetCurGameCount();
 
 			CLog::Log(log_debug, "ChairID: %d, CardNum: %d", i, m_GameAccess->GetUserCurCardNum(i));
 
-			//ÉèÖÃÊÇ·ñÃ÷ÅÆ¿ªÊ¼
+			//è®¾ç½®æ˜¯å¦æ˜ç‰Œå¼€å§‹
 			if (5 == m_GameAccess->GetPlayerMingPaiBet(i))
 			{
 				SendCard.ISMingPaiStart = 1;
@@ -1296,7 +1296,7 @@ void CTableFrameSink::HandleDeal()
 				SendCard.ISMingPaiStart = 0;
 			}
 
-			//ÉèÖÃÊÖÅÆÊı¾İ  
+			//è®¾ç½®æ‰‹ç‰Œæ•°æ®  
 			int _cardsum = m_GameAccess->GetPlayerInitCardNum();
 			m_GameAccess->GetClientHandCards(i, SendCard.cbHandCardData, _cardsum);
 
@@ -1307,63 +1307,63 @@ void CTableFrameSink::HandleDeal()
 			}
 			printf("\n");
 
-			//ÉèÖÃ¸÷¿¨ÅÆµÄÊıÁ¿
+			//è®¾ç½®å„å¡ç‰Œçš„æ•°é‡
 			for (int j = 0; j < cbMaxChairCount; j++)
 			{
 				SendCard.cbHandCardNum[j] = m_GameAccess->GetUserCurCardNum(j);
 			}
 
-			// ·¢ÅÆ¸ø¶ÔÓ¦¿Í»§¶Ë -- Ã¿¸ö¿Í»§¶ËÓ¦¸ÃÖ»ÄÜÊÕµ½×Ô¼ºµÄÅÆ
+			// å‘ç‰Œç»™å¯¹åº”å®¢æˆ·ç«¯ -- æ¯ä¸ªå®¢æˆ·ç«¯åº”è¯¥åªèƒ½æ”¶åˆ°è‡ªå·±çš„ç‰Œ
 			m_pITableFrame->SendTableData(i, CMD_SC_SEND_CARD, &SendCard, sizeof(STR_CMD_SC_SEND_CARD));
 		}
 	}
 
-	// ¸ù¾İ¹æÔòÅĞ¶ÏÊÇ·ñÒªÃ÷ÅÆÕâ¸ö¹¦ÄÜ
+	// æ ¹æ®è§„åˆ™åˆ¤æ–­æ˜¯å¦è¦æ˜ç‰Œè¿™ä¸ªåŠŸèƒ½
 	if (1 == m_GameAccess->GetMingPaiMode())
 	{
 		for (int i = 0; i < cbMaxChairCount; i++)
 		{
-			//ÅĞ¶ÏÍæ¼ÒÊÇ·ñ¿ªÊ¼ÓÎÏ·¾ÍÃ÷ÅÆ
-			printf("Íæ¼Ò£º%d ÊÇ·ñ¿ªÊ¼ÓÎÏ·Ã÷ÅÆ:%d\n", i, m_GameAccess->GetPlayerMingPaiBet(i));
+			//åˆ¤æ–­ç©å®¶æ˜¯å¦å¼€å§‹æ¸¸æˆå°±æ˜ç‰Œ
+			printf("ç©å®¶ï¼š%d æ˜¯å¦å¼€å§‹æ¸¸æˆæ˜ç‰Œ:%d\n", i, m_GameAccess->GetPlayerMingPaiBet(i));
 			if (5 == m_GameAccess->GetPlayerMingPaiBet(i))
 			{
 				On_Sub_UserMingPai(i, MING_PAI_TYPE_GAMESTART, 1);
 			}
 			else
 			{
-				SendMingPaiStart(i, MING_PAI_TYPE_DEAL);    //·¢ËÍÃ÷ÅÆ¿ªÊ¼ÏûÏ¢
+				SendMingPaiStart(i, MING_PAI_TYPE_DEAL);    //å‘é€æ˜ç‰Œå¼€å§‹æ¶ˆæ¯
 			}
 		}
 
-		//ÉèÖÃÇÀ×¯¿ªÊ¼¶¨Ê±Æ÷
+		//è®¾ç½®æŠ¢åº„å¼€å§‹å®šæ—¶å™¨
 		m_pITableFrame->KillGameTimer(IDI_ROB_START);
 		m_pITableFrame->SetGameTimer(IDI_ROB_START, IDI_TIME_ROB_START, 1, 0);
 	}
-	//·ñÔòÖ±½Ó¿ªÊ¼ÇÀ×¯
+	//å¦åˆ™ç›´æ¥å¼€å§‹æŠ¢åº„
 	else
 	{
-		//ÉèÖÃÇÀ×¯¿ªÊ¼¶¨Ê±Æ÷
+		//è®¾ç½®æŠ¢åº„å¼€å§‹å®šæ—¶å™¨
 		m_pITableFrame->KillGameTimer(IDI_ROB_START);
 		m_pITableFrame->SetGameTimer(IDI_ROB_START, IDI_TIME_ROB_START, 1, 0);
 	}
 }
 
-//´¦ÀíÇÀ×¯
+//å¤„ç†æŠ¢åº„
 void CTableFrameSink::HandleRobBanker()
 {
-	//É¾³ıÃ÷ÅÆ¶¨Ê±Æ÷
+	//åˆ é™¤æ˜ç‰Œå®šæ—¶å™¨
 	m_pITableFrame->KillGameTimer(IDI_MING_PAI);
 
-	//¸ù¾İ·¿¼ä¹æÔòÅĞ¶ÏÇÀ×¯Ä£Ê½
+	//æ ¹æ®æˆ¿é—´è§„åˆ™åˆ¤æ–­æŠ¢åº„æ¨¡å¼
 	BYTE cbRobBankMode = m_GameAccess->GetRobBankMode();   
 
-	////¸øµÚÒ»ÂÖµÄÍæ¼Ò·¢ËÍ¼ÇÅÆÆ÷
+	////ç»™ç¬¬ä¸€è½®çš„ç©å®¶å‘é€è®°ç‰Œå™¨
 	//for (int i = 0; i < m_GameAccess->GetCurPlayerCount(); i++)
 	//{
 	//	OnUserJiPaiQi(i);
 	//}
 
-	////·¢ËÍ·¿¼ä±¶ÊıĞÅÏ¢
+	////å‘é€æˆ¿é—´å€æ•°ä¿¡æ¯
 	//STR_CMD_SC_FANGJIAN_BET fangjian_bet;
 	//ZeroMemory(&fangjian_bet, sizeof(fangjian_bet));
 
@@ -1374,64 +1374,64 @@ void CTableFrameSink::HandleRobBanker()
 
 	//m_pITableFrame->SendTableData(INVALID_CHAIR, CMD_SC_FANGJIAN_BET, &fangjian_bet, sizeof(STR_CMD_SC_FANGJIAN_BET));
 
-	//1¡¢½ĞÈı·Ö	
+	//1ã€å«ä¸‰åˆ†	
 	if (ROOMRULE_OPTION_ROBTYPE_JIAOSANFEN == cbRobBankMode)
 	{
-		//½ĞÈı·Ö´¦ÀíÁ÷³Ì
+		//å«ä¸‰åˆ†å¤„ç†æµç¨‹
 		HandleJiaoFenRobBanker();
 	}
 
-	//2¡¢×ÔÓÉÇÀ×¯£º·¢ËÍ¡¾ÇÀ×¯¿ªÊ¼¡¿-´¦Àí¡¾ÇÀ×¯¡¿ÏûÏ¢
-	if (ROOMRULE_OPTION_ROBTYPE_FREE == cbRobBankMode)       //²âÊÔ×ÔÓÉ×¯ºÍÂÖ×¯
+	//2ã€è‡ªç”±æŠ¢åº„ï¼šå‘é€ã€æŠ¢åº„å¼€å§‹ã€‘-å¤„ç†ã€æŠ¢åº„ã€‘æ¶ˆæ¯
+	if (ROOMRULE_OPTION_ROBTYPE_FREE == cbRobBankMode)       //æµ‹è¯•è‡ªç”±åº„å’Œè½®åº„
 	{
-		//×ÔÓÉÇÀ×¯ÏûÏ¢´¦ÀíÁ÷³Ì
+		//è‡ªç”±æŠ¢åº„æ¶ˆæ¯å¤„ç†æµç¨‹
 		HandleFreeRobBanker();
 	}
 }
 
-//´¦Àí½ĞÈı·Ö
+//å¤„ç†å«ä¸‰åˆ†
 void CTableFrameSink::HandleJiaoFenRobBanker()
 {
-	//Ëæ»úÒ»¸öÈË³öÀ´  ½ĞÈı·Ö
+	//éšæœºä¸€ä¸ªäººå‡ºæ¥  å«ä¸‰åˆ†
 	WORD wChairID = rand() % m_GameAccess->GetCurPlayerCount();
 
-	//²»ÊÇµÚÒ»¾Ö ÈÃÉÏ¾ÖÓ®¼Ò½Ğ·Ö
+	//ä¸æ˜¯ç¬¬ä¸€å±€ è®©ä¸Šå±€èµ¢å®¶å«åˆ†
 	if (1 != m_GameAccess->GetCurGameCount())
 	{
 		wChairID = m_GameAccess->GetLastGameWinner();
 	}
 
-	//·¢ËÍ½ĞÈı·Ö¿ªÊ¼ÏûÏ¢
+	//å‘é€å«ä¸‰åˆ†å¼€å§‹æ¶ˆæ¯
 	SendJiaoFenStart(wChairID, JIAOFEN_START);
 }	  
 
-//·¢ËÍ½ĞÈı·Ö¿ªÊ¼ÏûÏ¢
+//å‘é€å«ä¸‰åˆ†å¼€å§‹æ¶ˆæ¯
 void CTableFrameSink::SendJiaoFenStart(WORD wChairID, const BYTE &ActionType)
 {
-	//¹¹½¨ÏûÏ¢
+	//æ„å»ºæ¶ˆæ¯
 	STR_CMD_SC_JIAOFEN_START  JiaofenStart;
 	ZeroMemory(&JiaofenStart, sizeof(STR_CMD_SC_JIAOFEN_START));
 
-	//¸³Öµ
+	//èµ‹å€¼
 	JiaofenStart.wChairID = wChairID;
 	JiaofenStart.ActionType = ActionType;
 
-	//ÉèÖÃµ±Ç°ÕıÔÚ½Ğ·ÖµÄÍæ¼Ò     
+	//è®¾ç½®å½“å‰æ­£åœ¨å«åˆ†çš„ç©å®¶     
 	m_GameAccess->SetCurJiaoFenUser(wChairID);
 
 	if (INVALID_CHAIR != wChairID)
 	{
-		//·¢ËÍÏûÏ¢  ¹ã²¥
+		//å‘é€æ¶ˆæ¯  å¹¿æ’­
 		m_pITableFrame->SendTableData(INVALID_CHAIR, CMD_SC_JIAOFEN_START, &JiaofenStart, sizeof(STR_CMD_SC_JIAOFEN_START));
 
-		//ÉèÖÃÓÎÏ·×´Ì¬
+		//è®¾ç½®æ¸¸æˆçŠ¶æ€
 		m_GameAccess->SetGameStatus(GS_WK_JIAO_FEN);
 
-		//ÉèÖÃ½ĞÈı·Ö¶¨Ê±Æ÷  
+		//è®¾ç½®å«ä¸‰åˆ†å®šæ—¶å™¨  
 		m_pITableFrame->KillGameTimer(IDI_ROB_JiaoFen);
 
-		//ÅĞ¶Ï»úÆ÷ÈË
-		if (m_pITableFrame->IsRobot(wChairID))     //´ıÌí¼Ó »úÆ÷ÈË½Ó¿Ú»¹Ã»Ìí¼Ó
+		//åˆ¤æ–­æœºå™¨äºº
+		if (m_pITableFrame->IsRobot(wChairID))     //å¾…æ·»åŠ  æœºå™¨äººæ¥å£è¿˜æ²¡æ·»åŠ 
 		{
 			WORD index = (rand() % 4) + 1;
 			m_pITableFrame->SetGameTimer(IDI_ROB_JiaoFen, IDI_TIME_ROB_JiaoFen*0.1*index, 1, 0);
@@ -1443,24 +1443,24 @@ void CTableFrameSink::SendJiaoFenStart(WORD wChairID, const BYTE &ActionType)
 	}
 }
 
-//´¦Àí¿Í»§¶Ë·¢À´µÄ½ĞÈı·ÖÏûÏ¢
+//å¤„ç†å®¢æˆ·ç«¯å‘æ¥çš„å«ä¸‰åˆ†æ¶ˆæ¯
 void CTableFrameSink::OnUserJiaoFen(WORD wChairID, BYTE Score)
 {
-	//×´Ì¬Ğ£Ñé
+	//çŠ¶æ€æ ¡éªŒ
 	if (GS_WK_JIAO_FEN != m_GameAccess->GetGameStatus())
 	{
-		cout << "½Ğ·Ö×´Ì¬Ğ£ÑéÊ§°Ü" << endl;
+		cout << "å«åˆ†çŠ¶æ€æ ¡éªŒå¤±è´¥" << endl;
 		return;
 	}
 
-	//É±ËÀ¶¨Ê±Æ÷
+	//æ€æ­»å®šæ—¶å™¨
 	m_pITableFrame->KillGameTimer(IDI_ROB_JiaoFen);
 
-	//¹¹ÔìÏûÏ¢
+	//æ„é€ æ¶ˆæ¯
 	STR_CMD_SC_JIAOFEN_RESULT JiaofenResult;
 	ZeroMemory(&JiaofenResult, sizeof(STR_CMD_SC_JIAOFEN_RESULT));
 
-	//¸³Öµ
+	//èµ‹å€¼
 	JiaofenResult.wChairID = wChairID;
 	JiaofenResult.Score = Score;
 
@@ -1469,37 +1469,37 @@ void CTableFrameSink::OnUserJiaoFen(WORD wChairID, BYTE Score)
 		JiaofenResult.room_bet[i] = m_GameAccess->GetAllBet(i);
 	}
 
-	////Â¼Ïñ½Ğ·Ö½á¹û					//Â¼Ïñ»Ø·Å  ´ıÌí¼Ó
+	////å½•åƒå«åˆ†ç»“æœ					//å½•åƒå›æ”¾  å¾…æ·»åŠ 
 	//AddRecordJiaoSanFen(JiaofenResult);
 
-	//¹ã²¥½Ğ·Ö½á¹û
+	//å¹¿æ’­å«åˆ†ç»“æœ
 	m_pITableFrame->SendTableData(INVALID_CHAIR, CMD_SC_JIAOFEN_RESULT, &JiaofenResult, sizeof(STR_CMD_SC_JIAOFEN_RESULT));
 
-	//ÉèÖÃÒ»¸ö²ÎÊı¼ÇÂ¼½Ğ·Ö´ÎÊı 
+	//è®¾ç½®ä¸€ä¸ªå‚æ•°è®°å½•å«åˆ†æ¬¡æ•° 
 	WORD JiaoNum = m_GameAccess->GetJiaoFenCount();
 	m_GameAccess->SetJiaoFenCount(++JiaoNum);
 
-	//¼ÇÂ¼µ±Ç°Íæ¼ÒµÄ½Ğ·Ö×´Ì¬
+	//è®°å½•å½“å‰ç©å®¶çš„å«åˆ†çŠ¶æ€
 	m_GameAccess->SetCurJiaoFenState(wChairID, Score);
 
-	//Èç¹ûÍæ¼ÒÖ±½Ó½ĞÈı·Ö  ÉèÖÃËûÎªµØÖ÷
+	//å¦‚æœç©å®¶ç›´æ¥å«ä¸‰åˆ†  è®¾ç½®ä»–ä¸ºåœ°ä¸»
 	if (3 == Score)
 	{
-		//¸øÃ¿¸öÍæ¼Ò³ËÉÏ½Ğ·Ö±¶Êı
+		//ç»™æ¯ä¸ªç©å®¶ä¹˜ä¸Šå«åˆ†å€æ•°
 		for (int i = 0; i < m_GameAccess->GetCurPlayerCount(); i++)
 		{
 			m_GameLogic->Wager(i, Score);
 		}
 
-		//Ö¸¶¨ËûÎª×¯¼Ò
+		//æŒ‡å®šä»–ä¸ºåº„å®¶
 		m_GameLogic->AppointBanker(wChairID);
 
-		//½Ğ·ÖÍê³É ½øÈëÏÂ×¢×´Ì¬
+		//å«åˆ†å®Œæˆ è¿›å…¥ä¸‹æ³¨çŠ¶æ€
 		AllRobBankerOver();
 	}
 	else
 	{
-		//¼ÇÂ¼ÓĞ¶àÉÙ¸ö²»½ĞµÄÍæ¼Ò
+		//è®°å½•æœ‰å¤šå°‘ä¸ªä¸å«çš„ç©å®¶
 		BYTE cbMaxChairCount = m_GameAccess->GetMaxChairCount();
 		BYTE cbPassNum = 0;
 		for (int i = 0; i < cbMaxChairCount; i++)
@@ -1512,17 +1512,17 @@ void CTableFrameSink::OnUserJiaoFen(WORD wChairID, BYTE Score)
 		}
 
 
-		//Èç¹ûËùÓĞÈË²»½Ğ ÖØĞÂ·¢ÅÆ
+		//å¦‚æœæ‰€æœ‰äººä¸å« é‡æ–°å‘ç‰Œ
 		if (3 == cbPassNum)
 		{
-			//ÈıÂÖ¶¼²»½Ğ Ëæ»úÒ»¸öÍæ¼ÒµØÖ÷
+			//ä¸‰è½®éƒ½ä¸å« éšæœºä¸€ä¸ªç©å®¶åœ°ä¸»
 			WORD TurnPassCount = m_GameAccess->GetTurnPassCount();
 			m_GameAccess->SetTurnPassCount(++TurnPassCount);
 
 			if (3 == TurnPassCount)
 			{
 				WORD banker = rand() % cbPassNum;
-				//Ö¸¶¨ËûÎª×¯¼Ò
+				//æŒ‡å®šä»–ä¸ºåº„å®¶
 				m_GameLogic->AppointBanker(banker);
 
 				AllRobBankerOver();
@@ -1530,10 +1530,10 @@ void CTableFrameSink::OnUserJiaoFen(WORD wChairID, BYTE Score)
 				return;
 			}
 
-			//Çå¿Õ¼ÇÂ¼µÄ½Ğ·Ö´ÎÊı
+			//æ¸…ç©ºè®°å½•çš„å«åˆ†æ¬¡æ•°
 			m_GameAccess->SetJiaoFenCount(0);
 
-			//Çå¿ÕÍæ¼ÒµÄ½Ğ·Ö×´Ì¬  Çå¿ÕÍæ¼ÒµÄÃ÷ÅÆ×´Ì¬  Çå¿ÕÃ÷ÅÆ±¶Êı
+			//æ¸…ç©ºç©å®¶çš„å«åˆ†çŠ¶æ€  æ¸…ç©ºç©å®¶çš„æ˜ç‰ŒçŠ¶æ€  æ¸…ç©ºæ˜ç‰Œå€æ•°
 			for (int i = 0; i < cbMaxChairCount; i++)
 			{
 				m_GameAccess->SetCurJiaoFenState(i, 10);
@@ -1541,21 +1541,21 @@ void CTableFrameSink::OnUserJiaoFen(WORD wChairID, BYTE Score)
 				m_GameAccess->SetPlayerMingPaiBet(i, 1);
 			}
 
-			//Çå¿Õ±¶Êı
+			//æ¸…ç©ºå€æ•°
 			m_GameAccess->CleanAllBet();
 
-			//¸øÍæ¼Ò·¢ÅÆ
+			//ç»™ç©å®¶å‘ç‰Œ
 			HandleDeal();
 
 			//sleep(4);
 
-			//´¦ÀíÇÀ×¯£¨½Ğ·Ö£©
+			//å¤„ç†æŠ¢åº„ï¼ˆå«åˆ†ï¼‰
 			HandleRobBanker();
 		}
 
 		else
 		{
-			//·ñÔòÅĞ¶Ï½Ğ·ÖÊÇ·ñÒÑ¾­½Ğ¹ıÁËÈı´Î ÓĞÈı´ÎÉèÖÃ½Ğ·Ö×î´óµÄÍæ¼ÒÎªµØÖ÷
+			//å¦åˆ™åˆ¤æ–­å«åˆ†æ˜¯å¦å·²ç»å«è¿‡äº†ä¸‰æ¬¡ æœ‰ä¸‰æ¬¡è®¾ç½®å«åˆ†æœ€å¤§çš„ç©å®¶ä¸ºåœ°ä¸»
 			if (3 == JiaoNum)
 			{
 				WORD m_Score = m_GameAccess->GetCurJiaoFenState(0);
@@ -1570,32 +1570,32 @@ void CTableFrameSink::OnUserJiaoFen(WORD wChairID, BYTE Score)
 					}
 				}
 
-				//¸øÃ¿¸öÍæ¼Ò³ËÉÏ×î´ó½Ğ·Ö±¶Êı
+				//ç»™æ¯ä¸ªç©å®¶ä¹˜ä¸Šæœ€å¤§å«åˆ†å€æ•°
 				for (int i = 0; i < m_GameAccess->GetCurPlayerCount(); i++)
 				{
 					m_GameLogic->Wager(i, m_Score);
 				}
 
-				//Ö¸¶¨ËûÎª×¯¼Ò
+				//æŒ‡å®šä»–ä¸ºåº„å®¶
 				m_GameLogic->AppointBanker(Banker);
 
 				AllRobBankerOver();
 			}
-			else		//·ñÔò ¸øÏÂ¸öÍæ¼Ò·¢ËÍ½Ğ·ÖĞÅÏ¢
+			else		//å¦åˆ™ ç»™ä¸‹ä¸ªç©å®¶å‘é€å«åˆ†ä¿¡æ¯
 			{
 				WORD m_Score = JIAOFEN_START;    //1111
 				for (int i = 0; i < m_GameAccess->GetCurPlayerCount(); i++)
 				{
 					if ((USER_PLAYING == m_GameAccess->GetPlayerState(i)) &&
 						(0 != m_GameAccess->GetCurJiaoFenState(i))
-						&& (10 != m_GameAccess->GetCurJiaoFenState(i)))    //Ä¬ÈÏ×´Ì¬ºÍ²»½Ğ×´Ì¬
+						&& (10 != m_GameAccess->GetCurJiaoFenState(i)))    //é»˜è®¤çŠ¶æ€å’Œä¸å«çŠ¶æ€
 					{
 						m_Score -= 1 << (m_GameAccess->GetCurJiaoFenState(i));
 					}
 				}
 
 
-				//¸øÏÂ¸öÍæ¼Ò·¢ËÍ½Ğ·ÖÏûÏ¢
+				//ç»™ä¸‹ä¸ªç©å®¶å‘é€å«åˆ†æ¶ˆæ¯
 				SendJiaoFenStart(m_GameAccess->GetNextUser(wChairID), m_Score);
 			}
 		}
@@ -1604,10 +1604,10 @@ void CTableFrameSink::OnUserJiaoFen(WORD wChairID, BYTE Score)
 	}
 }
 
-//´¦Àí×ÔÓÉÇÀ×¯
+//å¤„ç†è‡ªç”±æŠ¢åº„
 void CTableFrameSink::HandleFreeRobBanker()
 {
-	//µÚÒ»¾Ö£º´Ó·¿Ö÷¿ªÊ¼·¢ËÍÇÀ×¯¿ªÊ¼ÏûÏ¢	µÚ¶ş¾Ö£º´ÓÉÏ¾ÖµÄÓ®¼Ò¿ªÊ¼·¢ËÍÇÀ×¯ÏûÏ¢
+	//ç¬¬ä¸€å±€ï¼šä»æˆ¿ä¸»å¼€å§‹å‘é€æŠ¢åº„å¼€å§‹æ¶ˆæ¯	ç¬¬äºŒå±€ï¼šä»ä¸Šå±€çš„èµ¢å®¶å¼€å§‹å‘é€æŠ¢åº„æ¶ˆæ¯
 	WORD wChairID = rand()%m_GameAccess->GetMaxChairCount();
 	if (1 != m_GameAccess->GetCurGameCount())
 	{
@@ -1615,18 +1615,18 @@ void CTableFrameSink::HandleFreeRobBanker()
 	}
 	m_GameAccess->SetStartRobUser(wChairID);
 
-	//·¢ËÍÇÀ×¯(½ĞµØÖ÷)¿ªÊ¼ÏûÏ¢
+	//å‘é€æŠ¢åº„(å«åœ°ä¸»)å¼€å§‹æ¶ˆæ¯
 	SendRobStart(wChairID, ROB_TYPE_CALL);
 }
 
-//·¢ËÍÇÀ×¯¿ªÊ¼ÏûÏ¢
+//å‘é€æŠ¢åº„å¼€å§‹æ¶ˆæ¯
 void CTableFrameSink::SendRobStart(const WORD &wChairID, const BYTE &cbType)
 {
-	//¸³Öµ
+	//èµ‹å€¼
 	//RobStart.cbType = cbType;
 	//RobStart.wChairID = wChairID;
 
-	//ÉèÖÃµ±Ç°ÕıÔÚÇÀ×¯µÄÍæ¼Ò
+	//è®¾ç½®å½“å‰æ­£åœ¨æŠ¢åº„çš„ç©å®¶
 	m_GameAccess->SetCurRobUser(wChairID);
 
 	if (INVALID_CHAIR != wChairID)
@@ -1639,21 +1639,21 @@ void CTableFrameSink::SendRobStart(const WORD &wChairID, const BYTE &cbType)
 
 		m_pITableFrame->SendTableData(wChairID, CMD_SC_ROB_START, &info, sizeof(STR_CMD_SC_ROB_BANKER_START));
 
-		//ÉèÖÃÓÎÏ·×´Ì¬Îª¡¾ÇÀ×¯×´Ì¬¡¿
+		//è®¾ç½®æ¸¸æˆçŠ¶æ€ä¸ºã€æŠ¢åº„çŠ¶æ€ã€‘
 		m_GameAccess->SetGameStatus(GS_WK_ROB);
 
-		//ÇÀ×¯¶¨Ê±Æ÷
+		//æŠ¢åº„å®šæ—¶å™¨
 		m_pITableFrame->KillGameTimer(IDI_ROB_BANKER);
 
-		//ÅĞ¶ÏÊÇ²»ÊÇ»úÆ÷ÈË
-		if (m_pITableFrame->IsRobot(wChairID))     //»úÆ÷ÈË½Ó¿Ú´ıÌí¼Ó
+		//åˆ¤æ–­æ˜¯ä¸æ˜¯æœºå™¨äºº
+		if (m_pITableFrame->IsRobot(wChairID))     //æœºå™¨äººæ¥å£å¾…æ·»åŠ 
 		{
 			WORD index = (rand() % 3) + 1;
 			m_pITableFrame->SetGameTimer(IDI_ROB_BANKER, IDI_TIME_ROB_BANKER*0.1*index, 1, 0);
 		}
 		else
 		{
-			//ÅĞ¶ÏÊÇ·ñÍĞ¹Ü
+			//åˆ¤æ–­æ˜¯å¦æ‰˜ç®¡
 			if (1 == m_GameAccess->GetPlayerTuoGuan(wChairID))
 			{
 				m_pITableFrame->SetGameTimer(IDI_ROB_BANKER, IDI_TIME_ROB_BANKER*0.1, 1 , 0);
@@ -1666,16 +1666,16 @@ void CTableFrameSink::SendRobStart(const WORD &wChairID, const BYTE &cbType)
 	}
 }
 
-// ´¦Àí¿Í»§¶Ë·¢À´µÄ¡¾ÇÀ×¯¡¿ÏûÏ¢
-void CTableFrameSink::OnUserCallBanker(WORD wChairID, BYTE cbResult)	//1-²»½Ğ  2-½ĞµØÖ÷  3-²»ÇÀ  4-ÇÀµØÖ÷
+// å¤„ç†å®¢æˆ·ç«¯å‘æ¥çš„ã€æŠ¢åº„ã€‘æ¶ˆæ¯
+void CTableFrameSink::OnUserCallBanker(WORD wChairID, BYTE cbResult)	//1-ä¸å«  2-å«åœ°ä¸»  3-ä¸æŠ¢  4-æŠ¢åœ°ä¸»
 {
-	//Ğ£Ñé
+	//æ ¡éªŒ
 	if (m_GameAccess->GetCurRobUser() != wChairID)
 		return;
 
-	CLog::Log(log_debug, "¡¾·şÎñÆ÷¡¿£º½ÓÊÕÓÃ»§ = %d, ÇÀ×¯ÀàĞÍ = %d", wChairID, cbResult);
+	CLog::Log(log_debug, "ã€æœåŠ¡å™¨ã€‘ï¼šæ¥æ”¶ç”¨æˆ· = %d, æŠ¢åº„ç±»å‹ = %d", wChairID, cbResult);
 
-	//ÅĞ¶ÏÍæ¼Ò½ĞÇÀ
+	//åˆ¤æ–­ç©å®¶å«æŠ¢
 	int flag = 0;
 	for (int i = 0; i < m_GameAccess->GetMaxChairCount(); i++)
 	{
@@ -1700,30 +1700,30 @@ void CTableFrameSink::OnUserCallBanker(WORD wChairID, BYTE cbResult)	//1-²»½Ğ  2
 			cbResult = ROB_TYPE_CALL;
 	}
 
-	//Èç¹ûÇÀÉèÖÃÇÀ×¯±¶Êı
+	//å¦‚æœæŠ¢è®¾ç½®æŠ¢åº„å€æ•°
 	if (ROB_TYPE_ROB == cbResult)
 	{
 		for (int i = 0; i < m_GameAccess->GetMaxChairCount(); i++)
 		{
 			if (USER_PLAYING == m_GameAccess->GetPlayerState(i))
 			{
-				m_GameLogic->Wager(i, 2);      //Èç¹ûÇÀµØÖ÷  ¸øÃ¿¸öÍæ¼Ò±¶Êı³Ë2
+				m_GameLogic->Wager(i, 2);      //å¦‚æœæŠ¢åœ°ä¸»  ç»™æ¯ä¸ªç©å®¶å€æ•°ä¹˜2
 			}
 		}
 	}
 
-	//¹Ø±Õ¶¨Ê±Æ÷
+	//å…³é—­å®šæ—¶å™¨
 	m_pITableFrame->KillGameTimer(IDI_ROB_BANKER);
 
-	//ÓÎÏ·×´Ì¬Ğ§Ñé
+	//æ¸¸æˆçŠ¶æ€æ•ˆéªŒ
 	if (GS_WK_ROB != m_GameAccess->GetGameStatus())
 		return;
 
-	//¹¹ÔìÇÀ×¯½á¹ûÊı¾İ
+	//æ„é€ æŠ¢åº„ç»“æœæ•°æ®
 	STR_CMD_SC_ROB_RESULT sRobResult;
 	ZeroMemory(&sRobResult, sizeof(STR_CMD_SC_ROB_RESULT));
 
-	//¸³Öµ 
+	//èµ‹å€¼ 
 	sRobResult.wChairID  = wChairID;	
 	sRobResult.cbResult = cbResult;	
 
@@ -1732,14 +1732,14 @@ void CTableFrameSink::OnUserCallBanker(WORD wChairID, BYTE cbResult)	//1-²»½Ğ  2
 		sRobResult.room_bet[i] = m_GameAccess->GetAllBet(i);
 	}
 
-	//ÇÀ×¯Â¼Ïñ  //´ıÌí¼Ó
+	//æŠ¢åº„å½•åƒ  //å¾…æ·»åŠ 
 	//AddRecordRobResult(sRobResult);
 
-	//¹ã²¥ÇÀ×¯½á¹û
+	//å¹¿æ’­æŠ¢åº„ç»“æœ
 	m_pITableFrame->SendTableData(INVALID_CHAIR, CMD_SC_ROB_RESULT, &sRobResult, sizeof(STR_CMD_SC_ROB_RESULT));
 
 	////////////////////////////////////////////////////////////////////////
-	//Á½ÈË¶·µØÖ÷²âÊÔÓÃ 
+	//ä¸¤äººæ–—åœ°ä¸»æµ‹è¯•ç”¨ 
 	if (2 == m_GameAccess->GetMaxChairCount())
 	{
 		//CLog::Log(log_debug, "cbResult: %d", cbResult);
@@ -1751,63 +1751,63 @@ void CTableFrameSink::OnUserCallBanker(WORD wChairID, BYTE cbResult)	//1-²»½Ğ  2
 		else
 		{
 			WORD wNextUser = m_GameAccess->GetNextUser(wChairID);
-			SendRobStart(wNextUser, ROB_TYPE_CALL);    //½ĞµØÖ÷ÀàĞÍ
+			SendRobStart(wNextUser, ROB_TYPE_CALL);    //å«åœ°ä¸»ç±»å‹
 		}
 		return;
 	}
 	////////////////////////////////////////////////////////////////////////
 
-	//ÉèÖÃÒ»¸ö²ÎÊı¼ÇÂ¼ÇÀ×¯´ÎÊı      ÎªÁËÅĞ¶Ï¹ı¹ıÇÀµØÖ÷µÄÇé¿ö
+	//è®¾ç½®ä¸€ä¸ªå‚æ•°è®°å½•æŠ¢åº„æ¬¡æ•°      ä¸ºäº†åˆ¤æ–­è¿‡è¿‡æŠ¢åœ°ä¸»çš„æƒ…å†µ
 	BYTE robnum = m_GameAccess->GetCurBankerCount();
 	m_GameAccess->SetCurBankerCount(++robnum);
-	printf("¼ÇÂ¼ÇÀ×¯´ÎÊı:%d\n", robnum);
+	printf("è®°å½•æŠ¢åº„æ¬¡æ•°:%d\n", robnum);
 
-	//ÉèÖÃÍæ¼Òµ±Ç°ÇÀ×¯×´Ì¬
+	//è®¾ç½®ç©å®¶å½“å‰æŠ¢åº„çŠ¶æ€
 	m_GameAccess->SetBankerState(wChairID, cbResult);
 
-	//Íæ¼ÒÍ¬ÒâÇÀ£¬ÔòÉèÖÃÇÀ×¯´ÎÊı
+	//ç©å®¶åŒæ„æŠ¢ï¼Œåˆ™è®¾ç½®æŠ¢åº„æ¬¡æ•°
 	BYTE cbRobNum = m_GameAccess->GetUserRobNum(wChairID);
 	if (ROB_TYPE_CALL == cbResult || ROB_TYPE_ROB == cbResult)
 	{
 		m_GameAccess->SetUserRobNum(wChairID, ++cbRobNum);
 	}
 
-	//ÈôÍæ¼ÒÁ½´Î¶¼ÇÀ×¯£¬ÔòËûÎª×¯¼Ò
+	//è‹¥ç©å®¶ä¸¤æ¬¡éƒ½æŠ¢åº„ï¼Œåˆ™ä»–ä¸ºåº„å®¶
 	if (2 == cbRobNum)
 	{
-		//Ö¸¶¨ËûÎª×¯¼Ò
+		//æŒ‡å®šä»–ä¸ºåº„å®¶
 		m_GameLogic->AppointBanker(wChairID);
 
 		AllRobBankerOver();
 	}
-	else	//ÇÀ×¯»¹Î´Íê³É£¬Ôò¼ÌĞø¸øÏÂ¸öÍæ¼Ò·¢ËÍÇÀ×¯ÏûÏ¢
+	else	//æŠ¢åº„è¿˜æœªå®Œæˆï¼Œåˆ™ç»§ç»­ç»™ä¸‹ä¸ªç©å®¶å‘é€æŠ¢åº„æ¶ˆæ¯
 	{
-		//ÅĞ¶ÏÊÇ²»ÊÇËùÓĞÍæ¼Ò¶¼Ñ¡Ôñ²»ÇÀ×¯
+		//åˆ¤æ–­æ˜¯ä¸æ˜¯æ‰€æœ‰ç©å®¶éƒ½é€‰æ‹©ä¸æŠ¢åº„
 		BYTE cbMaxChairCount = m_GameAccess->GetMaxChairCount();
 		BYTE cbPassNum = 0;
 		for (int i = 0; i < cbMaxChairCount; i++)
 		{
 			if ((USER_PLAYING == m_GameAccess->GetPlayerState(i)) &&
 				((ROB_STATE_BUJIAO == m_GameAccess->GetBankerState(i)) ||
-				(ROB_STATE_BUQIANG == m_GameAccess->GetBankerState(i))))     //1-²»½Ğ  2-½ĞµØÖ÷  3-²»ÇÀ  4-ÇÀµØÖ÷
+				(ROB_STATE_BUQIANG == m_GameAccess->GetBankerState(i))))     //1-ä¸å«  2-å«åœ°ä¸»  3-ä¸æŠ¢  4-æŠ¢åœ°ä¸»
 			{
 				cbPassNum++;
 			}
 		}
 
-		//ËùÓĞÈË·ÅÆúÇÀ×¯£¬ÔòÖØĞÂ·¢ÅÆ
+		//æ‰€æœ‰äººæ”¾å¼ƒæŠ¢åº„ï¼Œåˆ™é‡æ–°å‘ç‰Œ
 		if (cbPassNum == cbMaxChairCount)
 		{
-			cout << "ËùÓĞÈË·ÅÆúÇÀ×¯" << endl;
+			cout << "æ‰€æœ‰äººæ”¾å¼ƒæŠ¢åº„" << endl;
 
-			//ÈıÂÖ¶¼²»½Ğ Ëæ»úÒ»¸öÍæ¼ÒµØÖ÷
+			//ä¸‰è½®éƒ½ä¸å« éšæœºä¸€ä¸ªç©å®¶åœ°ä¸»
 			WORD TurnPassCount = m_GameAccess->GetTurnPassCount();
 			m_GameAccess->SetTurnPassCount(++TurnPassCount);
 
 			if (3 == TurnPassCount)
 			{
 				WORD banker = rand() % cbPassNum;
-				//Ö¸¶¨ËûÎª×¯¼Ò
+				//æŒ‡å®šä»–ä¸ºåº„å®¶
 				m_GameLogic->AppointBanker(banker);
 
 				AllRobBankerOver();
@@ -1815,10 +1815,10 @@ void CTableFrameSink::OnUserCallBanker(WORD wChairID, BYTE cbResult)	//1-²»½Ğ  2
 				return;
 			}
 
-			//Çå¿Õ¼ÇÂ¼µÄÇÀ×¯¸÷×´Ì¬
+			//æ¸…ç©ºè®°å½•çš„æŠ¢åº„å„çŠ¶æ€
 			m_GameAccess->SetCurBankerCount(0);
 
-			//Çå¿ÕÍæ¼ÒµÄÃ÷ÅÆ×´Ì¬ÇÀ×¯¸÷×´Ì¬
+			//æ¸…ç©ºç©å®¶çš„æ˜ç‰ŒçŠ¶æ€æŠ¢åº„å„çŠ¶æ€
 			for (int i = 0; i < cbMaxChairCount; i++)
 			{
 				m_GameAccess->SetMingPaiState(i, 0);
@@ -1827,36 +1827,36 @@ void CTableFrameSink::OnUserCallBanker(WORD wChairID, BYTE cbResult)	//1-²»½Ğ  2
 				m_GameAccess->SetUserRobNum(i, 0);
 			}
 
-			//Çå¿Õ±¶Êı
+			//æ¸…ç©ºå€æ•°
 			m_GameAccess->CleanAllBet();
 
-			//¸øÍæ¼Ò·¢ÅÆ
+			//ç»™ç©å®¶å‘ç‰Œ
 			HandleDeal();
 
-			//ÉèÖÃÇÀ×¯¿ªÊ¼¶¨Ê±Æ÷
+			//è®¾ç½®æŠ¢åº„å¼€å§‹å®šæ—¶å™¨
 			m_pITableFrame->KillGameTimer(IDI_ROB_START);
 			m_pITableFrame->SetGameTimer(IDI_ROB_START, IDI_TIME_ROB_START, 1, 0);
 		}
-		else	//¸øÏÂ¸öÍæ¼Ò·¢ËÍÇÀ×¯ÏûÏ¢
+		else	//ç»™ä¸‹ä¸ªç©å®¶å‘é€æŠ¢åº„æ¶ˆæ¯
 		{
-			//¸øÏÂÒ»¸öÍæ¼Ò·¢ËÍÇÀ×¯¿ªÊ¼ÏûÏ¢
+			//ç»™ä¸‹ä¸€ä¸ªç©å®¶å‘é€æŠ¢åº„å¼€å§‹æ¶ˆæ¯
 			WORD wNextUser = m_GameAccess->GetNextUser(wChairID);
 			WORD wLastUser = m_GameAccess->GetLastUser(wChairID);
 
-			//ÅĞ¶ÏÏÂ¸öÍæ¼ÒµÄÇÀ×¯×´Ì¬
-			while (wNextUser != wChairID)		//ÏÂ¸öÍæ¼Ò²»ÊÇ¡°¹ı¡±×´Ì¬²Å¸øËû·¢ËÍÇÀµØÖ÷ÏûÏ¢
+			//åˆ¤æ–­ä¸‹ä¸ªç©å®¶çš„æŠ¢åº„çŠ¶æ€
+			while (wNextUser != wChairID)		//ä¸‹ä¸ªç©å®¶ä¸æ˜¯â€œè¿‡â€çŠ¶æ€æ‰ç»™ä»–å‘é€æŠ¢åœ°ä¸»æ¶ˆæ¯
 			{
-				if (robnum == 4)   //ÇÀµØÖ÷×î¶àÖ»ÄÜËÄ¸ö»ØºÏ
+				if (robnum == 4)   //æŠ¢åœ°ä¸»æœ€å¤šåªèƒ½å››ä¸ªå›åˆ
 				{
-					if (ROB_TYPE_ROB == m_GameAccess->GetBankerState(wChairID))    //µÚËÄ»ØºÏÇÀµØÖ÷¾ÍÊÇËûÎªµØÖ÷
+					if (ROB_TYPE_ROB == m_GameAccess->GetBankerState(wChairID))    //ç¬¬å››å›åˆæŠ¢åœ°ä¸»å°±æ˜¯ä»–ä¸ºåœ°ä¸»
 					{
-						//Ö¸¶¨ËûÎª×¯¼Ò
+						//æŒ‡å®šä»–ä¸ºåº„å®¶
 						m_GameLogic->AppointBanker(wChairID);
 
 						AllRobBankerOver();
 						break;
 					}
-					else				//ÉèÖÃ×îºóÇÀ×¯Íæ¼ÒÎª×¯
+					else				//è®¾ç½®æœ€åæŠ¢åº„ç©å®¶ä¸ºåº„
 					{
 						for (int i = (wChairID + cbMaxChairCount - 1); i > wChairID; i--)
 						{
@@ -1864,7 +1864,7 @@ void CTableFrameSink::OnUserCallBanker(WORD wChairID, BYTE cbResult)	//1-²»½Ğ  2
 							if ((USER_PLAYING == m_GameAccess->GetPlayerState(chairid)) &&
 								ROB_TYPE_ROB == m_GameAccess->GetBankerState(chairid))
 							{
-								//Ö¸¶¨ËûÎª×¯¼Ò
+								//æŒ‡å®šä»–ä¸ºåº„å®¶
 								m_GameLogic->AppointBanker(chairid);
 
 								AllRobBankerOver();
@@ -1883,12 +1883,12 @@ void CTableFrameSink::OnUserCallBanker(WORD wChairID, BYTE cbResult)	//1-²»½Ğ  2
 
 				else if ((ROB_TYPE_ROB == m_GameAccess->GetBankerState(wNextUser)
 					|| ROB_TYPE_CALL == m_GameAccess->GetBankerState(wNextUser)
-					|| 0 == m_GameAccess->GetBankerState(wNextUser))	//³õÊ¼×´Ì¬
-					&& (int)cbPassNum != 2)   //ºÍÉÏÃæÍ¬Àí 914
+					|| 0 == m_GameAccess->GetBankerState(wNextUser))	//åˆå§‹çŠ¶æ€
+					&& (int)cbPassNum != 2)   //å’Œä¸Šé¢åŒç† 914
 				{
 					if ((int)cbPassNum == 1 && robnum == 1)
 					{
-						SendRobStart(wNextUser, ROB_TYPE_CALL);    //½ĞµØÖ÷ÀàĞÍ
+						SendRobStart(wNextUser, ROB_TYPE_CALL);    //å«åœ°ä¸»ç±»å‹
 						break;
 					}
 					else
@@ -1901,22 +1901,22 @@ void CTableFrameSink::OnUserCallBanker(WORD wChairID, BYTE cbResult)	//1-²»½Ğ  2
 			}
 
 
-			//Ç°Á½¸öÍæ¼Ò¶¼²»ÇÀ 
+			//å‰ä¸¤ä¸ªç©å®¶éƒ½ä¸æŠ¢ 
 			if (wNextUser == wChairID)
 			{
-				//Ä¿Ç°ÓĞÁ½¸öÍæ¼Ò¶¼²»ÇÀ »ñÈ¡µ±Ç°ÇÀ×¯µÄÍæ¼Ò  ÉèÖÃËûÎªµØÖ÷
+				//ç›®å‰æœ‰ä¸¤ä¸ªç©å®¶éƒ½ä¸æŠ¢ è·å–å½“å‰æŠ¢åº„çš„ç©å®¶  è®¾ç½®ä»–ä¸ºåœ°ä¸»
 				BYTE cbMaxChairCount = m_GameAccess->GetMaxChairCount();
 				WORD cbRobUser;
 				for (int i = 0; i < cbMaxChairCount; i++)
 				{
 					if (ROB_TYPE_ROB == m_GameAccess->GetBankerState(i)
-						|| ROB_TYPE_CALL == m_GameAccess->GetBankerState(i))  //1-²»½Ğ  2-½ĞµØÖ÷  3-²»ÇÀ  4-ÇÀµØÖ÷
+						|| ROB_TYPE_CALL == m_GameAccess->GetBankerState(i))  //1-ä¸å«  2-å«åœ°ä¸»  3-ä¸æŠ¢  4-æŠ¢åœ°ä¸»
 					{
 						cbRobUser = i;
 					}
 				}
 
-				//Ö¸¶¨×¯¼Ò
+				//æŒ‡å®šåº„å®¶
 				m_GameLogic->AppointBanker(cbRobUser);
 				AllRobBankerOver();
 			}
@@ -1924,54 +1924,54 @@ void CTableFrameSink::OnUserCallBanker(WORD wChairID, BYTE cbResult)	//1-²»½Ğ  2
 	}
 }
 
-// È«²¿ÇÀ×¯Íê³É, ½øÈëÏÂ×¢×´Ì¬
+// å…¨éƒ¨æŠ¢åº„å®Œæˆ, è¿›å…¥ä¸‹æ³¨çŠ¶æ€
 void CTableFrameSink::AllRobBankerOver()
 {
-	//ÉèÖÃÓÎÏ·×´Ì¬Îª¡¾ÏÂ×¢×´Ì¬¡¿
+	//è®¾ç½®æ¸¸æˆçŠ¶æ€ä¸ºã€ä¸‹æ³¨çŠ¶æ€ã€‘
 	m_GameAccess->SetGameStatus(GS_WK_ADDSCORE);
 
-	//¹Ø±ÕÇÀ×¯¶¨Ê±Æ÷
+	//å…³é—­æŠ¢åº„å®šæ—¶å™¨
 	m_pITableFrame->KillGameTimer(IDI_ROB_BANKER);
 
-	//Çå¿ÕÇÀ×¯´ÎÊı
+	//æ¸…ç©ºæŠ¢åº„æ¬¡æ•°
 	m_GameAccess->SetCurBankerCount(0);
 
-	//Ö¸¶¨×¯¼Ò
+	//æŒ‡å®šåº„å®¶
 	WORD wBanker = m_GameLogic->GetAppointBanker();
-	printf("»ñÈ¡µ±Ç°Ö¸¶¨µÄ×¯¼Ò£º%d", m_GameLogic->GetAppointBanker());
+	printf("è·å–å½“å‰æŒ‡å®šçš„åº„å®¶ï¼š%d", m_GameLogic->GetAppointBanker());
 
-	//Ğ£Ñé ÕâÀï²»ÍË³ö£¬Ä¬ÈÏ·¿Ö÷Îª×¯¼Ò
+	//æ ¡éªŒ è¿™é‡Œä¸é€€å‡ºï¼Œé»˜è®¤æˆ¿ä¸»ä¸ºåº„å®¶
 	if (INVALID_CHAIR == wBanker /*|| !bappointresult*/)
 	{
 		wBanker = m_GameAccess->GetRoomFangzhu();
 	}
 
-	//¼ÇÂ¼Íæ¼ÒÇÀ×¯´ÎÊı  ´ó¾Ö½áËã
+	//è®°å½•ç©å®¶æŠ¢åº„æ¬¡æ•°  å¤§å±€ç»“ç®—
 	m_GameAccess->SetPlayerBankCount(wBanker);
 
-	//·¢ËÍÖ¸¶¨×¯¼ÒÏûÏ¢
+	//å‘é€æŒ‡å®šåº„å®¶æ¶ˆæ¯
 	SendAppointBanker(wBanker);
 
-	//·¢ËÍµ×ÅÆ¸ø×¯¼Ò
+	//å‘é€åº•ç‰Œç»™åº„å®¶
 	HandleSendLeaveCard(wBanker);
 
-	cout << "·¢ËÍµ×ÅÆover" << endl;
+	cout << "å‘é€åº•ç‰Œover" << endl;
 
-	//ÉèÖÃµÚÒ»ÂÖ×î¿ªÊ¼³öÅÆÓÃ»§
+	//è®¾ç½®ç¬¬ä¸€è½®æœ€å¼€å§‹å‡ºç‰Œç”¨æˆ·
 	m_GameAccess->SetStartOutCardUser(wBanker);
 
-	//¸ù¾İ¹æÔòÊÇ·ñ·¢ËÍ¼Ó×¢¿ªÊ¼£¨¼Ó±¶£©ÏûÏ¢
+	//æ ¹æ®è§„åˆ™æ˜¯å¦å‘é€åŠ æ³¨å¼€å§‹ï¼ˆåŠ å€ï¼‰æ¶ˆæ¯
 	if (1 == m_GameAccess->GetAddBetMode())
 	{
 		SendAddScoreStart(INVALID_CHAIR);
 	}
-	//·ñÔòÖ±½Ó¿ªÊ¼³öÅÆ
+	//å¦åˆ™ç›´æ¥å¼€å§‹å‡ºç‰Œ
 	else
 	{
 		HandleOutCardStart(wBanker);
 	}
 
-	//·¢ËÍµ±Ç°·¿¼ä±¶Êı¸ø¸÷Íæ¼Ò						//¼ÇµÃ½Ğ¿Í»§¶Ë¼ÓÉÏÕâ¸öÏûÏ¢
+	//å‘é€å½“å‰æˆ¿é—´å€æ•°ç»™å„ç©å®¶						//è®°å¾—å«å®¢æˆ·ç«¯åŠ ä¸Šè¿™ä¸ªæ¶ˆæ¯
 	STR_CMD_SC_FANGJIAN_BET  fangjian_bet;
 	ZeroMemory(&fangjian_bet, sizeof(STR_CMD_SC_FANGJIAN_BET));
 
@@ -1983,21 +1983,21 @@ void CTableFrameSink::AllRobBankerOver()
 	//m_pITableFrame->SendTableData(INVALID_CHAIR, CMD_SC_FANGJIAN_BET, &fangjian_bet, sizeof(STR_CMD_SC_FANGJIAN_BET));
 }
 
-//´¦Àí·¢ËÍµ×ÅÆ
+//å¤„ç†å‘é€åº•ç‰Œ
 void CTableFrameSink::HandleSendLeaveCard(const WORD &wSendCardUser)
 {
-	CLog::Log(log_debug, "¡¾¸øÍæ¼Ò = %d·¢ËÍµ×ÅÆ¡¿", wSendCardUser);
+	CLog::Log(log_debug, "ã€ç»™ç©å®¶ = %då‘é€åº•ç‰Œã€‘", wSendCardUser);
 
-	//¸ù¾İ¹æÔòÅĞ¶ÏÊÇ·ñµ×ÅÆ¼Ó±¶
+	//æ ¹æ®è§„åˆ™åˆ¤æ–­æ˜¯å¦åº•ç‰ŒåŠ å€
 	if (1 == m_GameAccess->GetISLeaveCardDouble())
 	{
 		m_GameLogic->IsDoubleLeaveCard();
 	}
 
-	//¸ø×¯¼Ò·¢ËÍµ×ÅÆ
+	//ç»™åº„å®¶å‘é€åº•ç‰Œ
 	m_GameLogic->SendLeaveCardToUser(wSendCardUser);
 
-	//ÉèÖÃñ®×Ó,Ëæ»úÒ»ÕÅÅÆ·ÇË«ÍõµÄÅÆÀ´×÷Îªñ®×Ó
+	//è®¾ç½®ç™å­,éšæœºä¸€å¼ ç‰ŒéåŒç‹çš„ç‰Œæ¥ä½œä¸ºç™å­
 	if (0 < m_GameAccess->GetLaiZiMode())
 	{
 		DWORD index = rand() % (15 - 2);
@@ -2006,14 +2006,14 @@ void CTableFrameSink::HandleSendLeaveCard(const WORD &wSendCardUser)
 		CLog::Log(log_debug, "LAIZI: %d", LaiZi);
 	}
 
-	//¸øÆäËûÍæ¼Ò·¢ËÍ×¯¼ÒÄÃµ½µ×ÅÆµÄÏûÏ¢
+	//ç»™å…¶ä»–ç©å®¶å‘é€åº„å®¶æ‹¿åˆ°åº•ç‰Œçš„æ¶ˆæ¯
 	BYTE cbMaxChairCount = m_GameAccess->GetMaxChairCount();
 
-	//·¢ËÍµ±Ç°·¿¼ä±¶Êı¸ø¸÷Íæ¼Ò						
+	//å‘é€å½“å‰æˆ¿é—´å€æ•°ç»™å„ç©å®¶						
 	STR_CMD_SC_FANGJIAN_BET  fangjian_bet;
 	ZeroMemory(&fangjian_bet, sizeof(STR_CMD_SC_FANGJIAN_BET));
 
-	//¸øµØÖ÷¼ÓÉÏÅ©ÃñµÄ±¶Êı  ²¢¸øÅ©Ãñ¼ÓÉÏµØÖ÷µÄ±¶Êı
+	//ç»™åœ°ä¸»åŠ ä¸Šå†œæ°‘çš„å€æ•°  å¹¶ç»™å†œæ°‘åŠ ä¸Šåœ°ä¸»çš„å€æ•°
 	for (int i = 0; i < m_GameAccess->GetCurPlayerCount(); i++)
 	{
 		fangjian_bet.room_bet[i] = m_GameAccess->GetAllBet(i);
@@ -2021,20 +2021,20 @@ void CTableFrameSink::HandleSendLeaveCard(const WORD &wSendCardUser)
 
 	//m_pITableFrame->SendTableData(INVALID_CHAIR, CMD_SC_FANGJIAN_BET, &fangjian_bet, sizeof(STR_CMD_SC_FANGJIAN_BET));
 
-	//·¢ËÍµ×ÅÆ
+	//å‘é€åº•ç‰Œ
 	for (WORD i = 0; i < cbMaxChairCount; i++)
 	{
 		if ((USER_PLAYING == m_GameAccess->GetPlayerState(i)))
 		{
-			//»ñÈ¡µ×ÅÆ
+			//è·å–åº•ç‰Œ
 			BYTE leavecards[MAX_LEAVE_CARD_NUM];
 			m_GameAccess->GetLeaveCard(leavecards, MAX_LEAVE_CARD_NUM);
 
-			//·¢ËÍµ×ÅÆÏûÏ¢
+			//å‘é€åº•ç‰Œæ¶ˆæ¯
 			STR_CMD_SC_SEND_LEAVE_CARD SendLeaveCard;
 			ZeroMemory(&SendLeaveCard, sizeof(STR_CMD_SC_SEND_LEAVE_CARD));	
 
-			//¸³Öµµ×ÅÆ
+			//èµ‹å€¼åº•ç‰Œ
 			for (int j = 0; j < MAX_LEAVE_CARD_NUM; j++)
 			{
 				SendLeaveCard.cbLeaveCard[j] = leavecards[j];
@@ -2042,16 +2042,16 @@ void CTableFrameSink::HandleSendLeaveCard(const WORD &wSendCardUser)
 
 			BYTE tmpcards[MAX_CARD_COUNT] = {'\0'};
 			
-			//Íæ¼ÒÊÖÅÆÊı
+			//ç©å®¶æ‰‹ç‰Œæ•°
 			BYTE cbCardNum = m_GameAccess->GetUserCurCardNum(i);
 
-			//ÅÅĞòÊÖÅÆ
+			//æ’åºæ‰‹ç‰Œ
 			m_GameLogic->SortCardList(i, cbCardNum, ST_ORDER); 
 
-			//½«Íæ¼ÒÊÖÅÆÖĞµÄñ®×Ó½øĞĞÅÆÖµÌæ»»
+			//å°†ç©å®¶æ‰‹ç‰Œä¸­çš„ç™å­è¿›è¡Œç‰Œå€¼æ›¿æ¢
 			m_GameLogic->ReplaceLaiZiCard(i, cbCardNum);
 
-			//¸³Öµ
+			//èµ‹å€¼
 			SendLeaveCard.cbMagicCard = m_GameAccess->GetMagicCard();	// Seeqings modify
 
 			for (int j = 0; j < cbMaxChairCount; j++)
@@ -2059,7 +2059,7 @@ void CTableFrameSink::HandleSendLeaveCard(const WORD &wSendCardUser)
 				SendLeaveCard.cbHandCardNum[j] = m_GameAccess->GetUserCurCardNum(j);
 			}
 
-			//»ñÈ¡ÊÖÅÆ
+			//è·å–æ‰‹ç‰Œ
 			m_GameAccess->GetClientHandCards(i, tmpcards, cbCardNum);
 
 			for (int j = 0; j < cbCardNum; j++)
@@ -2069,53 +2069,53 @@ void CTableFrameSink::HandleSendLeaveCard(const WORD &wSendCardUser)
 			}
 			cout << endl;
 
-			//»ñÈ¡ñ®×ÓÊıÄ¿
+			//è·å–ç™å­æ•°ç›®
 			SendLeaveCard.LeaveCardBet = m_GameAccess->GetLeaveCardBet();
 
-			// ·¢ËÍÊı¾İ
+			// å‘é€æ•°æ®
 			m_pITableFrame->SendTableData(i, CMD_SC_USER_SEND_LEAVE_CARD, &SendLeaveCard, sizeof(STR_CMD_SC_SEND_LEAVE_CARD));
 		}
 	}
 }
 
-//·¢ËÍÏÂ×¢¿ªÊ¼ÏûÏ¢
+//å‘é€ä¸‹æ³¨å¼€å§‹æ¶ˆæ¯
 void CTableFrameSink::SendAddScoreStart(const WORD &wChairID)
 {
-	CLog::Log(log_debug, "¡¾·şÎñÆ÷¡¿£º¹ã²¥¡¾ÏÂ×¢¿ªÊ¼¡¿");
+	CLog::Log(log_debug, "ã€æœåŠ¡å™¨ã€‘ï¼šå¹¿æ’­ã€ä¸‹æ³¨å¼€å§‹ã€‘");
 
-	// ¹ã²¥ÏûÏ¢ ÓÃ»§ÏÂ×¢¿ªÊ¼
+	// å¹¿æ’­æ¶ˆæ¯ ç”¨æˆ·ä¸‹æ³¨å¼€å§‹
 	m_pITableFrame->SendTableData(INVALID_CHAIR, CMD_SC_ADD_SCORE_START, NULL, 0);
 		
-	// ÏÂ×¢¶¨Ê±Æ÷
+	// ä¸‹æ³¨å®šæ—¶å™¨
 	m_pITableFrame->KillGameTimer(IDI_ADD_SCORE);
 	m_pITableFrame->SetGameTimer(IDI_ADD_SCORE, IDI_TIME_ADD_SCORE, 1, 0);
 }
 
-// ÏÂ×¢¿ªÊ¼·µ»Ø
+// ä¸‹æ³¨å¼€å§‹è¿”å›
 void CTableFrameSink::OnUserAddScore( WORD wChairID, WORD wType )
 {
-	//³¬¼Ó3±¶
+	//è¶…åŠ 3å€
 	SCORE lScore = (wType == 0) ? 1 : (wType == 1 ? 2 : 3);
-	CLog::Log(log_debug, "¡¾·şÎñÆ÷¡¿£º½ÓÊÕ¡¾ÏÂ×¢¡¿£¬Íæ¼Ò = %d£¬ÏÂ×¢ = %ld", wChairID, lScore);
+	CLog::Log(log_debug, "ã€æœåŠ¡å™¨ã€‘ï¼šæ¥æ”¶ã€ä¸‹æ³¨ã€‘ï¼Œç©å®¶ = %dï¼Œä¸‹æ³¨ = %ld", wChairID, lScore);
 
-	//ÓÎÏ·×´Ì¬Ğ§Ñé
-	if (GS_WK_ADDSCORE != m_GameAccess->GetGameStatus())   //ÒÑÉè¶¨ÎªÏÂ×¢×´Ì¬
+	//æ¸¸æˆçŠ¶æ€æ•ˆéªŒ
+	if (GS_WK_ADDSCORE != m_GameAccess->GetGameStatus())   //å·²è®¾å®šä¸ºä¸‹æ³¨çŠ¶æ€
 	{
 		return;
 	}
 
-	//ÓÃ»§×´Ì¬Ğ£Ñé
+	//ç”¨æˆ·çŠ¶æ€æ ¡éªŒ
 	if ((USER_PLAYING != m_GameAccess->GetPlayerState(wChairID))
 		&& (1 != m_GameAccess->GetAddScoreState(wChairID)))
 	{
-		cout << "ÓÎÏ·Ğ§ÑéÊ§°Ü" << endl;
+		cout << "æ¸¸æˆæ•ˆéªŒå¤±è´¥" << endl;
 		return;
 	}
 
-	//¿É¶à´Î¼Ó×¢, Òò´Ë´Ë´¦²»´¦Àí¼Ó×¢Íê³É±ê¼Ç
+	//å¯å¤šæ¬¡åŠ æ³¨, å› æ­¤æ­¤å¤„ä¸å¤„ç†åŠ æ³¨å®Œæˆæ ‡è®°
 	m_GameLogic->Wager(wChairID, lScore);
 
-	//¸øµØÖ÷¼ÓÉÏÅ©ÃñµÄ±¶Êı		//¸øÅ©Ãñ¼ÓÉÏµØÖ÷µÄ¼Ó±¶
+	//ç»™åœ°ä¸»åŠ ä¸Šå†œæ°‘çš„å€æ•°		//ç»™å†œæ°‘åŠ ä¸Šåœ°ä¸»çš„åŠ å€
 	if (wChairID != m_GameLogic->GetAppointBanker())
 	{
 		m_GameLogic->Wager(m_GameLogic->GetAppointBanker(), lScore);
@@ -2129,17 +2129,17 @@ void CTableFrameSink::OnUserAddScore( WORD wChairID, WORD wType )
 		}
 	}
 
-	//¼ÇÂ¼Íæ¼ÒÏÂ×¢
+	//è®°å½•ç©å®¶ä¸‹æ³¨
 	m_GameAccess->SetPlayerAddScore(wChairID, lScore);
 
-	// ÉèÖÃÍæ¼ÒÏÂ×¢×´Ì¬
+	// è®¾ç½®ç©å®¶ä¸‹æ³¨çŠ¶æ€
 	m_GameAccess->SetAddScoreState(wChairID, 1);
 
-	//¹¹ÔìÊı¾İ
+	//æ„é€ æ•°æ®
 	STR_CMD_SC_ADD_SCORE_RESULT sAddScoreResult;
 	ZeroMemory(&sAddScoreResult, sizeof(STR_CMD_SC_ADD_SCORE_RESULT)); // Seeqings modify
 
-	//¸³Öµ
+	//èµ‹å€¼
 	sAddScoreResult.wChairID	 = wChairID;	
 	sAddScoreResult.byAction	 = wType;		
 
@@ -2149,23 +2149,23 @@ void CTableFrameSink::OnUserAddScore( WORD wChairID, WORD wType )
 			sAddScoreResult.RoomBet[i] = m_GameAccess->GetAllBet(i);
 	}
 
-	//¹ã²¥ÏÂ×¢½á¹û
+	//å¹¿æ’­ä¸‹æ³¨ç»“æœ
 	m_pITableFrame->SendTableData(INVALID_CHAIR, CMD_SC_ADD_SCORE_RESULT, &sAddScoreResult, sizeof(STR_CMD_SC_ADD_SCORE_RESULT));
 
-	// ¼ÆËã¼Ó×¢Íê³ÉÍæ¼ÒÊı
+	// è®¡ç®—åŠ æ³¨å®Œæˆç©å®¶æ•°
 	BYTE cbBetedNum = 0;
-	BYTE cbPlayerNum = m_GameAccess->GetMaxChairCount();// »ñÈ¡Íæ¼ÒÊı
+	BYTE cbPlayerNum = m_GameAccess->GetMaxChairCount();// è·å–ç©å®¶æ•°
 	for (BYTE i = 0; i < cbPlayerNum; ++i)
 	{
 		if (1 == m_GameAccess->GetAddScoreState(i))
 			cbBetedNum++;
 	}
 
-	// ¼Ó×¢Íê³É£¬·¢ÅÆ
-	printf("¼Ó×¢Íê³ÉÍæ¼ÒÊı£º%d\n", cbBetedNum);   //²âÊÔ
+	// åŠ æ³¨å®Œæˆï¼Œå‘ç‰Œ
+	printf("åŠ æ³¨å®Œæˆç©å®¶æ•°ï¼š%d\n", cbBetedNum);   //æµ‹è¯•
 	if (cbBetedNum == m_GameAccess->GetCurPlayerCount())
 	{
-		//·¢ËÍ±¶Êı
+		//å‘é€å€æ•°
 		STR_CMD_SC_FANGJIAN_BET  fangjian_bet;
 		ZeroMemory(&fangjian_bet, sizeof(STR_CMD_SC_FANGJIAN_BET));
 
@@ -2176,21 +2176,21 @@ void CTableFrameSink::OnUserAddScore( WORD wChairID, WORD wType )
 		//m_pITableFrame->SendTableData(INVALID_CHAIR, CMD_SC_FANGJIAN_BET, &fangjian_bet, sizeof(STR_CMD_SC_FANGJIAN_BET));
 
 
-		//Í¨Öª×¯¼Ò³öÅÆ
-		cout << "È«²¿ÏÂ×¢Íê³É ´¦Àí³öÅÆ¿ªÊ¼ÏûÏ¢" << endl;
+		//é€šçŸ¥åº„å®¶å‡ºç‰Œ
+		cout << "å…¨éƒ¨ä¸‹æ³¨å®Œæˆ å¤„ç†å‡ºç‰Œå¼€å§‹æ¶ˆæ¯" << endl;
 
 		WORD wBanker = m_GameLogic->GetAppointBanker();
 
-		//ÉèÖÃµÚÒ»ÂÖ×î¿ªÊ¼³öÅÆÓÃ»§
+		//è®¾ç½®ç¬¬ä¸€è½®æœ€å¼€å§‹å‡ºç‰Œç”¨æˆ·
 		m_GameAccess->SetStartOutCardUser(wBanker);
 
-		//¸ø×¯¼Ò·¢ËÍÊÇ·ñÃ÷ÅÆµÄÃüÁî
+		//ç»™åº„å®¶å‘é€æ˜¯å¦æ˜ç‰Œçš„å‘½ä»¤
 		if (1 == m_GameAccess->GetPlayerMingPaiBet(wBanker) && 1 == m_GameAccess->GetMingPaiMode())
 		{
 			SendMingPaiStart(wBanker, MING_PAI_TYPE_OUTCARD);
 		}
 
-		// ÏÂ×¢¶¨Ê±Æ÷
+		// ä¸‹æ³¨å®šæ—¶å™¨
 		m_pITableFrame->KillGameTimer(IDI_OUTCARD_START);
 		m_pITableFrame->SetGameTimer(IDI_OUTCARD_START, IDI_TIME_OUTCARD_START, 1, 0);
 	}
@@ -2198,57 +2198,57 @@ void CTableFrameSink::OnUserAddScore( WORD wChairID, WORD wType )
 	return;
 }
 
-//·¢ËÍÃ÷ÅÆ¿ªÊ¼ÏûÏ¢
+//å‘é€æ˜ç‰Œå¼€å§‹æ¶ˆæ¯
 void CTableFrameSink::SendMingPaiStart(const WORD &wChairID, const BYTE &cbMPType)
 {
-	CLog::Log(log_debug, "¡¾·şÎñÆ÷¡¿£ºÍ¨ÖªÓÃ»§ = %d¡¾Ã÷ÅÆ¿ªÊ¼¡¿", wChairID);
+	CLog::Log(log_debug, "ã€æœåŠ¡å™¨ã€‘ï¼šé€šçŸ¥ç”¨æˆ· = %dã€æ˜ç‰Œå¼€å§‹ã€‘", wChairID);
 
 	STR_CMD_SC_MING_PAI_START cmd;
 	cmd.cbType = cbMPType;
 
-	// Í¨ÖªÓÃ»§Ã÷ÅÆ¿ªÊ¼
+	// é€šçŸ¥ç”¨æˆ·æ˜ç‰Œå¼€å§‹
 	m_pITableFrame->SendTableData(wChairID, CMD_SC_MING_PAI_START, &cmd, sizeof(STR_CMD_SC_MING_PAI_START));
 
-	// Ã÷ÅÆ¶¨Ê±Æ÷
+	// æ˜ç‰Œå®šæ—¶å™¨
 	m_pITableFrame->KillGameTimer(IDI_MING_PAI);
 	m_pITableFrame->SetGameTimer(IDI_MING_PAI, IDI_TIME_MING_PAI, 1, 0);
 }
 
-//Ã÷ÅÆÊÂ¼ş
-void CTableFrameSink::On_Sub_UserMingPai(WORD wChairID, const BYTE &cbMPType, BYTE cbFlag, BYTE FlushCardBet)     //Ã÷ÅÆÀàĞÍ	2-¿ªÊ¼ÓÎÏ·Ã÷ÅÆ	1-³öÅÆ¿ªÊ¼Ã÷ÅÆ  3-·¢ÅÆÃ÷ÅÆ
-{																												//ÊÇ·ñÃ÷ÅÆ	0-²»Ã÷ÅÆ	1-Ã÷ÅÆ    //·¢ÅÆÃ÷ÅÆµÄ±¶Êı  4 - 3 - 2
-	//ÉèÖÃÍæ¼ÒÃ÷ÅÆÍê³É
+//æ˜ç‰Œäº‹ä»¶
+void CTableFrameSink::On_Sub_UserMingPai(WORD wChairID, const BYTE &cbMPType, BYTE cbFlag, BYTE FlushCardBet)     //æ˜ç‰Œç±»å‹	2-å¼€å§‹æ¸¸æˆæ˜ç‰Œ	1-å‡ºç‰Œå¼€å§‹æ˜ç‰Œ  3-å‘ç‰Œæ˜ç‰Œ
+{																												//æ˜¯å¦æ˜ç‰Œ	0-ä¸æ˜ç‰Œ	1-æ˜ç‰Œ    //å‘ç‰Œæ˜ç‰Œçš„å€æ•°  4 - 3 - 2
+	//è®¾ç½®ç©å®¶æ˜ç‰Œå®Œæˆ
 	m_GameAccess->SetMingPaiState(wChairID, 1);
 
-	//Íæ¼ÒÃ÷ÅÆ
+	//ç©å®¶æ˜ç‰Œ
 	if (cbFlag == 1)
 	{
-		//¹¹ÔìÃ÷ÅÆÊı¾İ
+		//æ„é€ æ˜ç‰Œæ•°æ®
 		STR_CMD_SC_MING_PAI_RESULT MPResult;
 		ZeroMemory(&MPResult, sizeof(STR_CMD_SC_MING_PAI_RESULT));	
 
-		//Ã÷ÅÆ¼Ó±¶
-		if (MING_PAI_TYPE_GAMESTART == cbMPType)	//¿ªÊ¼ÓÎÏ·Ã÷ÅÆ
+		//æ˜ç‰ŒåŠ å€
+		if (MING_PAI_TYPE_GAMESTART == cbMPType)	//å¼€å§‹æ¸¸æˆæ˜ç‰Œ
 		{
-			//¼Ó±¶
+			//åŠ å€
 			MPResult.cbTimes = 5;
 		}
-		else if (MING_PAI_TYPE_OUTCARD == cbMPType)   //³öÅÆÃûÅÆ
+		else if (MING_PAI_TYPE_OUTCARD == cbMPType)   //å‡ºç‰Œåç‰Œ
 		{
 			MPResult.cbTimes = 2;	
 
-			//¼ÇÂ¼Íæ¼ÒÃ÷ÅÆ±¶Êı
+			//è®°å½•ç©å®¶æ˜ç‰Œå€æ•°
 			m_GameAccess->SetPlayerMingPaiBet(wChairID, 2);
 		}
-		else if (MING_PAI_TYPE_DEAL == cbMPType)   //·¢ÅÆÃ÷ÅÆ
+		else if (MING_PAI_TYPE_DEAL == cbMPType)   //å‘ç‰Œæ˜ç‰Œ
 		{
 			MPResult.cbTimes = (FlushCardBet == 1) ? 4 : (FlushCardBet == 2 ? 3 : 2);	
 
-			//¼ÇÂ¼Íæ¼ÒÃ÷ÅÆ±¶Êı
+			//è®°å½•ç©å®¶æ˜ç‰Œå€æ•°
 			m_GameAccess->SetPlayerMingPaiBet(wChairID, MPResult.cbTimes);
 		}
 
-		//¸³Öµ
+		//èµ‹å€¼
 		MPResult.wChairID = wChairID;
 
 		for (int i = 0; i < m_GameAccess->GetMaxChairCount(); i++)
@@ -2273,25 +2273,25 @@ void CTableFrameSink::On_Sub_UserMingPai(WORD wChairID, const BYTE &cbMPType, BY
 			MPResult.cbHandCard[i] = msg_cbHandCard[i];
 		}
 
-		//¹ã²¥Íæ¼ÒÃ÷ÅÆÏûÏ¢
+		//å¹¿æ’­ç©å®¶æ˜ç‰Œæ¶ˆæ¯
 		m_pITableFrame->SendTableData(INVALID_CHAIR, CMD_SC_MING_PAI_RESULT, &MPResult, sizeof(STR_CMD_SC_MING_PAI_RESULT));
 	}
 
-	//¼ÆËãÃ÷ÅÆÍê³ÉÍæ¼ÒÊı
+	//è®¡ç®—æ˜ç‰Œå®Œæˆç©å®¶æ•°
 	BYTE cbmingpaiNum = 0;
-	BYTE cbPlayerNum = m_GameAccess->GetMaxChairCount();// »ñÈ¡Íæ¼ÒÊı
+	BYTE cbPlayerNum = m_GameAccess->GetMaxChairCount();// è·å–ç©å®¶æ•°
 	for (BYTE i = 0; i < cbPlayerNum; ++i)
 	{
 		if (1 == m_GameAccess->GetMingPaiState(i))
 			cbmingpaiNum++;
 	}
-	printf("Ã÷ÅÆÍê³ÉÍæ¼ÒÊı£º%d\n", (int)cbmingpaiNum);
+	printf("æ˜ç‰Œå®Œæˆç©å®¶æ•°ï¼š%d\n", (int)cbmingpaiNum);
 
 	if ((cbmingpaiNum == m_GameAccess->GetCurPlayerCount()))
 	{
 		if (MING_PAI_TYPE_OUTCARD == cbMPType)
 		{
-			//¸ø¸÷Íæ¼Ò¼ÓÉÏ×î´óµÄÃ÷ÅÆ±¶Êı
+			//ç»™å„ç©å®¶åŠ ä¸Šæœ€å¤§çš„æ˜ç‰Œå€æ•°
 			WORD mingbet = 1;
 			for (int i = 0; i < m_GameAccess->GetCurPlayerCount(); i++)
 			{
@@ -2311,9 +2311,9 @@ void CTableFrameSink::On_Sub_UserMingPai(WORD wChairID, const BYTE &cbMPType, BY
 		}
 		else if (GS_WK_OUT_CARD != m_GameAccess->GetGameStatus())
 		{
-			cout << "È«²¿Ã÷ÅÆÍê³É ´¦ÀíÇÀ×¯¿ªÊ¼ÏûÏ¢" << endl;
+			cout << "å…¨éƒ¨æ˜ç‰Œå®Œæˆ å¤„ç†æŠ¢åº„å¼€å§‹æ¶ˆæ¯" << endl;
 
-			//¸ø¸÷Íæ¼Ò¼ÓÉÏ×î´óµÄÃ÷ÅÆ±¶Êı
+			//ç»™å„ç©å®¶åŠ ä¸Šæœ€å¤§çš„æ˜ç‰Œå€æ•°
 			WORD mingbet = 0;
 			for (int i = 0; i < m_GameAccess->GetCurPlayerCount(); i++)
 			{
@@ -2330,29 +2330,29 @@ void CTableFrameSink::On_Sub_UserMingPai(WORD wChairID, const BYTE &cbMPType, BY
 	}
 }
 
-//´¦Àí³öÅÆ¿ªÊ¼ÏûÏ¢
+//å¤„ç†å‡ºç‰Œå¼€å§‹æ¶ˆæ¯
 void CTableFrameSink::HandleOutCardStart(const WORD &wOutCardUser)
 {
-	//É¾³ıÏÂ×¢¶¨Ê±Æ÷
+	//åˆ é™¤ä¸‹æ³¨å®šæ—¶å™¨
 	m_pITableFrame->KillGameTimer(IDI_ADD_SCORE);
 
-	//ÉèÖÃµ±Ç°³öÅÆÍæ¼Ò
+	//è®¾ç½®å½“å‰å‡ºç‰Œç©å®¶
 	m_GameAccess->SetCurOutCardUser(wOutCardUser);
 
-	//»ñÈ¡µ±Ç°ÂÖ×î´ó³öÅÆÊı¾İºÍÊıÄ¿
+	//è·å–å½“å‰è½®æœ€å¤§å‡ºç‰Œæ•°æ®å’Œæ•°ç›®
 	BYTE TurnCardNum = 0;
 	BYTE TurnCardData[MAX_CARD_COUNT] = {'\0'};
 	ZeroMemory(&TurnCardData, sizeof(TurnCardData));
 
 	m_GameAccess->GetTurnMaxCards(TurnCardData, TurnCardNum);
 
-	//¹ã²¥³öÅÆ¿ªÊ¼µÄÏûÏ¢
+	//å¹¿æ’­å‡ºç‰Œå¼€å§‹çš„æ¶ˆæ¯
 	STR_CMD_SC_OUT_CARD_START OutCardStart;
 	ZeroMemory(&OutCardStart, sizeof(STR_CMD_SC_OUT_CARD_START));	
 
 	OutCardStart.wOutCardUser = wOutCardUser;	
 
-	//µ±Ç°ÂÖÅÆÊı¾İ¸³Öµ
+	//å½“å‰è½®ç‰Œæ•°æ®èµ‹å€¼
 	/*
 	OutCardStart.TurnOutCardNum = TurnCardNum;
 	for (int i = 0; i < TurnCardNum; i++)
@@ -2360,19 +2360,19 @@ void CTableFrameSink::HandleOutCardStart(const WORD &wOutCardUser)
 		OutCardStart.TurnOutCardData[i] = TurnCardData[i];
 	}*/
 
-	//ÅĞ¶Ïµ±Ç°³öÅÆ»ØºÏÊÇ·ñ½áÊø
-	CLog::Log(log_debug, "ÅĞ¶Ïµ±Ç°»ØºÏÊÇ·ñ½áÊø: %d(0-½áÊø	1-Î´½áÊø)", m_GameAccess->GetOneTurnEnd());         //0001-³öÅÆ  0010-²»³ö  0100-ÌáÊ¾  1000-Òª²»Æğ
+	//åˆ¤æ–­å½“å‰å‡ºç‰Œå›åˆæ˜¯å¦ç»“æŸ
+	CLog::Log(log_debug, "åˆ¤æ–­å½“å‰å›åˆæ˜¯å¦ç»“æŸ: %d(0-ç»“æŸ	1-æœªç»“æŸ)", m_GameAccess->GetOneTurnEnd());         //0001-å‡ºç‰Œ  0010-ä¸å‡º  0100-æç¤º  1000-è¦ä¸èµ·
 	OutCardStart.ActionType = m_GameLogic->GetOutCardActionType(wOutCardUser);
 
-	//¹ã²¥³öÅÆ¿ªÊ¼ÏûÏ¢
+	//å¹¿æ’­å‡ºç‰Œå¼€å§‹æ¶ˆæ¯
 	m_pITableFrame->SendTableData(INVALID_CHAIR, CMD_SC_USER_OUT_CARD_START, &OutCardStart, sizeof(STR_CMD_SC_OUT_CARD_START));
 
-	//ÉèÖÃ³öÅÆÓÎÏ·×´Ì¬
+	//è®¾ç½®å‡ºç‰Œæ¸¸æˆçŠ¶æ€
 	m_GameAccess->SetGameStatus(GS_WK_OUT_CARD);
 
-	// ³öÅÆ¶¨Ê±Æ÷
+	// å‡ºç‰Œå®šæ—¶å™¨
 	m_pITableFrame->KillGameTimer(IDI_OUT_CARD);
-	//ÅĞ¶ÏÊÇ·ñÊÇ»úÆ÷ÈË
+	//åˆ¤æ–­æ˜¯å¦æ˜¯æœºå™¨äºº
 	if (m_pITableFrame->IsRobot(wOutCardUser))
 	{
 		WORD index = (rand() % 4) + 1;
@@ -2380,7 +2380,7 @@ void CTableFrameSink::HandleOutCardStart(const WORD &wOutCardUser)
 	}
 	else
 	{
-		//ÅĞ¶ÏÊÇ·ñÍĞ¹Ü
+		//åˆ¤æ–­æ˜¯å¦æ‰˜ç®¡
 		if (1 == m_GameAccess->GetPlayerTuoGuan(wOutCardUser))
 		{
 			m_pITableFrame->SetGameTimer(IDI_OUT_CARD, IDI_TIME_OUT_CARD*0.05, 1 , 0);
@@ -2392,71 +2392,71 @@ void CTableFrameSink::HandleOutCardStart(const WORD &wOutCardUser)
 	}
 }
 
-//³öÅÆÊÂ¼ş
+//å‡ºç‰Œäº‹ä»¶
 void CTableFrameSink::On_Sub_UserOutCard(WORD wOutCardUser, BYTE *cbOutCard, BYTE cbOutCardNum, const bool &bPass)
 {
-	//ÓÎÏ·×´Ì¬Ğ§Ñé
+	//æ¸¸æˆçŠ¶æ€æ•ˆéªŒ
 	if ( GS_WK_OUT_CARD != m_GameAccess->GetGameStatus() ) 
 		return;
 
-	//Êı¾İĞ£Ñé
+	//æ•°æ®æ ¡éªŒ
 	if ((wOutCardUser != m_GameAccess->GetCurOutCardUser())||
 		(MAX_CARD_COUNT < cbOutCardNum))
 	{
 		return;
 	}
 
-	//Íæ¼Ò¹ı
+	//ç©å®¶è¿‡
 	if (bPass)
 	{
-		//´¦Àí¹ıÁ÷³Ì
+		//å¤„ç†è¿‡æµç¨‹
 		HandleOutCardPass(wOutCardUser);
 	}
 	else
 	{
-		//´¦Àí³öÅÆÁ÷³Ì
+		//å¤„ç†å‡ºç‰Œæµç¨‹
 		HandleOutCard(wOutCardUser, cbOutCard, cbOutCardNum);
 	}
 }
 
-//´¦ÀíÓÃ»§³öÅÆ¹ı
+//å¤„ç†ç”¨æˆ·å‡ºç‰Œè¿‡
 void CTableFrameSink::HandleOutCardPass(WORD wOutCardUser)
 {
-	//»ñµÃ¸ÃÍæ¼ÒµÄÏÂ¼Ò
+	//è·å¾—è¯¥ç©å®¶çš„ä¸‹å®¶
 	WORD wNextUser = m_GameAccess->GetNextUser(wOutCardUser);
 
-	// É¾³ı³öÅÆ¶¨Ê±Æ÷
+	// åˆ é™¤å‡ºç‰Œå®šæ—¶å™¨
 	m_pITableFrame->KillGameTimer(IDI_OUT_CARD);
 
-	//ÉèÖÃÍæ¼ÒÎª³öÅÆ¹ı	
+	//è®¾ç½®ç©å®¶ä¸ºå‡ºç‰Œè¿‡	
 	m_GameAccess->SetTurnOutCardType(wOutCardUser, 0);
 
-	//»ñµÃÒ»ÂÖ×îºó³öÅÆµÄÍæ¼Ò
+	//è·å¾—ä¸€è½®æœ€åå‡ºç‰Œçš„ç©å®¶
 	WORD wLastUser = m_GameAccess->GetLastOutCardUser();
 
-	//Ğ£ÑéÊÇ²»ÊÇÂÖµ½¿ªÊ¼Íæ¼ÒÁË
+	//æ ¡éªŒæ˜¯ä¸æ˜¯è½®åˆ°å¼€å§‹ç©å®¶äº†
 	if ( wNextUser == wLastUser)
 	{
-		//ÏÈ·¢ËÍ³öÅÆ½á¹û°ü¸ø¿Í»§¶Ë
+		//å…ˆå‘é€å‡ºç‰Œç»“æœåŒ…ç»™å®¢æˆ·ç«¯
 		SendOutCardResult(wOutCardUser, NULL, 0, 0, OUT_CARD_SUCCESS, OUT_CARD_PASS);
 
-		//ÊÇ£¬ÔòÒ»ÂÖ½áÊø
+		//æ˜¯ï¼Œåˆ™ä¸€è½®ç»“æŸ
 		HandleRoundEnd(wNextUser);
 	}
 	else
 	{
-		//ÏÈ·¢ËÍ³öÅÆ½á¹û°ü¸ø¿Í»§¶Ë
+		//å…ˆå‘é€å‡ºç‰Œç»“æœåŒ…ç»™å®¢æˆ·ç«¯
 		SendOutCardResult(wOutCardUser, NULL, 0, 0, OUT_CARD_SUCCESS, OUT_CARD_PASS);
 
-		//·ñ£¬Í¨ÖªÏÂ¸öÍæ¼Ò³öÅÆ¿ªÊ¼
+		//å¦ï¼Œé€šçŸ¥ä¸‹ä¸ªç©å®¶å‡ºç‰Œå¼€å§‹
 		HandleOutCardStart(wNextUser);
 	}
 }
 
-//´¦ÀíÓÃ»§³öÅÆ
+//å¤„ç†ç”¨æˆ·å‡ºç‰Œ
 void CTableFrameSink::HandleOutCard(WORD wOutCardUser, BYTE *cbOutCard, BYTE cbOutCardNum)
 {
-	//Ğ£Ñé ÊÇ·ñÊÇµ±Ç°Íæ¼Ò³öÅÆ
+	//æ ¡éªŒ æ˜¯å¦æ˜¯å½“å‰ç©å®¶å‡ºç‰Œ
 	if (wOutCardUser != m_GameAccess->GetCurOutCardUser())
 		return;
 
@@ -2464,26 +2464,26 @@ void CTableFrameSink::HandleOutCard(WORD wOutCardUser, BYTE *cbOutCard, BYTE cbO
 		printf(" %d", cbOutCard[i]);
 	cout << endl;
 
-	//ÈôÍæ¼ÒÊÇÒ»ÂÖÖĞ×îÏÈ¿ªÊ¼³öÅÆÕß
+	//è‹¥ç©å®¶æ˜¯ä¸€è½®ä¸­æœ€å…ˆå¼€å§‹å‡ºç‰Œè€…
 	WORD wStartUser = m_GameAccess->GetStartOutCardUser();
 
-	//»ñµÃ´ËÂÖ×îºó³öÅÆÍæ¼Ò
+	//è·å¾—æ­¤è½®æœ€åå‡ºç‰Œç©å®¶
 	WORD wLastUser = m_GameAccess->GetLastOutCardUser();
 
-	//ÅÆĞÍ
-	int cbCardType = m_GameLogic->GetCardLogicType(cbOutCard, cbOutCardNum);    //Ê¹ÓÃBYTEµ¼ÖÂÔ½½ç
+	//ç‰Œå‹
+	int cbCardType = m_GameLogic->GetCardLogicType(cbOutCard, cbOutCardNum);    //ä½¿ç”¨BYTEå¯¼è‡´è¶Šç•Œ
 
-	//µÚÒ»¸ö³öÅÆÍæ¼Ò
+	//ç¬¬ä¸€ä¸ªå‡ºç‰Œç©å®¶
 	if ((TURN_END == m_GameAccess->GetOneTurnEnd()) &&
 		(wOutCardUser == wStartUser))
 	{
-		//ÅÆĞÍĞ£Ñé
-		if (CT_ERROR == cbCardType)		  //³öµÄ¿ÕÅÆ
+		//ç‰Œå‹æ ¡éªŒ
+		if (CT_ERROR == cbCardType)		  //å‡ºçš„ç©ºç‰Œ
 		{
-			//·¢ËÍ³öÅÆ½á¹û
-			SendOutCardResult(wOutCardUser, cbOutCard, cbOutCardNum, cbCardType, OUT_CARD_FAIL, OUT_CARD_NORMAL);  //³öÅÆÊ§°Ü
+			//å‘é€å‡ºç‰Œç»“æœ
+			SendOutCardResult(wOutCardUser, cbOutCard, cbOutCardNum, cbCardType, OUT_CARD_FAIL, OUT_CARD_NORMAL);  //å‡ºç‰Œå¤±è´¥
 
-			//ÅÆĞÍ´íÎóµ±Ç°Íæ¼Ò¼ÌĞø³öÅÆ
+			//ç‰Œå‹é”™è¯¯å½“å‰ç©å®¶ç»§ç»­å‡ºç‰Œ
 			HandleOutCardStart(wOutCardUser);
 			return;
 		}
@@ -2492,34 +2492,34 @@ void CTableFrameSink::HandleOutCard(WORD wOutCardUser, BYTE *cbOutCard, BYTE cbO
 			m_GameAccess->SetOneTurnEnd(TURN_NOT_END);
 		}
 	}
-	else	//ºóÃæ³öÅÆÍæ¼Ò
+	else	//åé¢å‡ºç‰Œç©å®¶
 	{
-		//Ğ£Ñé³öÅÆÊıÄ¿ÊÇ·ñºÍ´ËÂÖ×îºó³öÅÆÍæ¼ÒÏàÍ¬£¬³öÅÆĞ£Ñé
+		//æ ¡éªŒå‡ºç‰Œæ•°ç›®æ˜¯å¦å’Œæ­¤è½®æœ€åå‡ºç‰Œç©å®¶ç›¸åŒï¼Œå‡ºç‰Œæ ¡éªŒ
 		if ( /*(cbOutCardNum != m_GameAccess->GetUserOutCard(wLastUser, NULL)) || */
 			!m_GameLogic->EfficacyOutCard(wOutCardUser, cbOutCard, cbOutCardNum))
 		{
-			//·¢ËÍ³öÅÆ½á¹û
+			//å‘é€å‡ºç‰Œç»“æœ
 			SendOutCardResult(wOutCardUser, cbOutCard, cbOutCardNum, cbCardType, OUT_CARD_FAIL, OUT_CARD_NORMAL);
 
-			//ÅÆĞÍ´íÎóµ±Ç°Íæ¼Ò¼ÌĞø³öÅÆ
+			//ç‰Œå‹é”™è¯¯å½“å‰ç©å®¶ç»§ç»­å‡ºç‰Œ
 			HandleOutCardStart(wOutCardUser);
 			return;
 		}
 	}
 
-	// É¾³ı³öÅÆ¶¨Ê±Æ÷
+	// åˆ é™¤å‡ºç‰Œå®šæ—¶å™¨
 	m_pITableFrame->KillGameTimer(IDI_OUT_CARD);
 
-	//´ÓÊÖÅÆÖĞÉ¾³ıÍæ¼ÒÆË¿Ë
+	//ä»æ‰‹ç‰Œä¸­åˆ é™¤ç©å®¶æ‰‘å…‹
 	if (!m_GameLogic->RemoveCard(wOutCardUser, cbOutCard, cbOutCardNum))
 	{
 		return;
 	}
 
-	//´ºÌìÅĞ¶ÏÌõ¼ş¼ÇÂ¼
+	//æ˜¥å¤©åˆ¤æ–­æ¡ä»¶è®°å½•
 	m_GameAccess->SetSpring(wOutCardUser, 1);
 
-	//ñ®×Ó³¡ñ®×Ó´úÌæÆÕÍ¨ÅÆ
+	//ç™å­åœºç™å­ä»£æ›¿æ™®é€šç‰Œ
 	if (0 < m_GameAccess->GetLaiZiMode())
 	{
 		BYTE LaiZiData[MAX_LAIZI_COUNT] = { 0 };
@@ -2538,26 +2538,26 @@ void CTableFrameSink::HandleOutCard(WORD wOutCardUser, BYTE *cbOutCard, BYTE cbO
 		}
 		cout << endl;
 
-		//½«»»ºÃñ®×ÓµÄ³öÅÆÅÅĞò
+		//å°†æ¢å¥½ç™å­çš„å‡ºç‰Œæ’åº
 		m_GameLogic->SortCardListNoLaiZi(cbOutCard, cbOutCardNum, ST_ORDER);
 	}
 
-	//³öÅÆ¼ÇÂ¼
+	//å‡ºç‰Œè®°å½•
 	m_GameAccess->SetUserOutCard(wOutCardUser, cbOutCard, cbOutCardNum);
 
-	//¸ÃÂÖ³öÅÆ×î´óÊı¾İ¼ÇÂ¼
+	//è¯¥è½®å‡ºç‰Œæœ€å¤§æ•°æ®è®°å½•
 	m_GameAccess->SetTurnMaxCards(cbOutCard, cbOutCardNum);
 
-	//ÉèÖÃÍæ¼ÒÎª³öÅÆ	
+	//è®¾ç½®ç©å®¶ä¸ºå‡ºç‰Œ	
 	m_GameAccess->SetTurnOutCardType(wOutCardUser, 1);
 
-	//ÉèÖÃµ±Ç°³öÅÆÍæ¼ÒÎª´ËÂÖ×îºó³öÅÆÍæ¼Ò
+	//è®¾ç½®å½“å‰å‡ºç‰Œç©å®¶ä¸ºæ­¤è½®æœ€åå‡ºç‰Œç©å®¶
 	m_GameAccess->SetLastOutCardUser(wOutCardUser);
 
-	//ÉèÖÃÏÂÒ»¸ö³öÅÆÍæ¼Ò
+	//è®¾ç½®ä¸‹ä¸€ä¸ªå‡ºç‰Œç©å®¶
 	WORD wNextUser = m_GameAccess->GetNextUser(wOutCardUser);
 
-	//ÉèÖÃÍæ¼ÒÕ¨µ¯ĞÅÏ¢
+	//è®¾ç½®ç©å®¶ç‚¸å¼¹ä¿¡æ¯
 	if ((cbCardType&(1 << CT_BOMB_CARD)) != 0 ||
 		(cbCardType&(1 << CT_MISSILE_CARD)) != 0 ||
 		(cbCardType&(1 << CT_LAIZI_BOMB)) != 0 ||
@@ -2566,43 +2566,43 @@ void CTableFrameSink::HandleOutCard(WORD wOutCardUser, BYTE *cbOutCard, BYTE cbO
 		m_GameAccess->SetUserBoomInfo(wOutCardUser, cbCardType);
 	}
 
-	//·¢ËÍ³öÅÆ½á¹û
+	//å‘é€å‡ºç‰Œç»“æœ
 	SendOutCardResult(wOutCardUser, cbOutCard, cbOutCardNum, cbCardType, OUT_CARD_SUCCESS, OUT_CARD_NORMAL);
 
 	if (m_GameAccess->GetUserCurCardNum(wOutCardUser) == 0)
 	{
-		//Ò»ÂÖ½áÊø
+		//ä¸€è½®ç»“æŸ
 		m_GameAccess->SetCurOutCardUser(INVALID_CHAIR);
 		HandleRoundEnd(wOutCardUser);
 	}
 	else
 	{
-		//Í¨ÖªÏÂ¸öÍæ¼Ò³öÅÆ¿ªÊ¼
+		//é€šçŸ¥ä¸‹ä¸ªç©å®¶å‡ºç‰Œå¼€å§‹
 		m_GameAccess->SetCurOutCardUser(wNextUser);
 		HandleOutCardStart(wNextUser);
 	}
 }
 
-//ÅĞ¶ÏÍæ¼ÒÊÇ·ñÄÜ³öÅÆ
+//åˆ¤æ–­ç©å®¶æ˜¯å¦èƒ½å‡ºç‰Œ
 bool CTableFrameSink::JudgeUserOutCard(const WORD &wLastOutCardUser, BYTE *cbOutCard, BYTE cbOutCardNum)
 {
 	return true;
 }
 
-//·¢ËÍ³öÅÆ½á¹û
+//å‘é€å‡ºç‰Œç»“æœ
 void CTableFrameSink::SendOutCardResult(WORD wOutCardUser, BYTE *cbOutCard, BYTE cbOutCardNum, 
 										 const int &cbCardType, const BYTE &cbSuccess, const BYTE &cbFlag)
 {
-	//¹¹Ôì³öÅÆÊı¾İ
+	//æ„é€ å‡ºç‰Œæ•°æ®
 	STR_CMD_SC_OUT_CARD_RESULT OutCard;
 	ZeroMemory(&OutCard, sizeof(STR_CMD_SC_OUT_CARD_RESULT));
 
-	//»ñÈ¡µ±Ç°Íæ¼ÒÊÖÅÆÊıÁ¿ºÍÊÖÅÆÊı¾İ
+	//è·å–å½“å‰ç©å®¶æ‰‹ç‰Œæ•°é‡å’Œæ‰‹ç‰Œæ•°æ®
 	BYTE cbCurCardCount = m_GameAccess->GetUserCurCardNum(wOutCardUser);
 	BYTE cbCurCardData[MAX_CARD_COUNT] = {'\0'};
 	m_GameAccess->GetClientHandCards(wOutCardUser, cbCurCardData, cbCurCardCount);
 
-	//¸³Öµ
+	//èµ‹å€¼
 	OutCard.wOutCardUser = wOutCardUser;
 	OutCard.cbFlag = cbFlag;
 	OutCard.cbSuccess = cbSuccess;
@@ -2617,19 +2617,19 @@ void CTableFrameSink::SendOutCardResult(WORD wOutCardUser, BYTE *cbOutCard, BYTE
 		{
 			OutCard.RoomBet[i] = m_GameAccess->GetAllBet(i);
 
-			//°Ñ¼ÇÅÆÆ÷·¢¸ø¿Í»§¶Ë»º´æ
+			//æŠŠè®°ç‰Œå™¨å‘ç»™å®¢æˆ·ç«¯ç¼“å­˜
 			//OnUserJiPaiQi(i);
 		}
 	}
 
-	//¸³Öµµ±Ç°ÊÖÅÆÊı¾İ
+	//èµ‹å€¼å½“å‰æ‰‹ç‰Œæ•°æ®
 	for (int i = 0; i < cbCurCardCount; i++)
 	{
 		OutCard.handcarddata[i] = cbCurCardData[i];
 	}
 
 
-	//Õı³£³öÅÆ
+	//æ­£å¸¸å‡ºç‰Œ
 	if (1 == cbFlag)
 	{
 		if (0 == cbSuccess)
@@ -2639,7 +2639,7 @@ void CTableFrameSink::SendOutCardResult(WORD wOutCardUser, BYTE *cbOutCard, BYTE
 		}
 		else
 		{
-			//¸³Öµ					
+			//èµ‹å€¼					
 			OutCard.cbOutCardNum = cbOutCardNum;	
 			memcpy(OutCard.cbOutCard, cbOutCard, sizeof(BYTE)*cbOutCardNum);	
 			OutCard.cbHandCardNum = m_GameAccess->GetUserCurCardNum(wOutCardUser);	
@@ -2657,15 +2657,15 @@ void CTableFrameSink::SendOutCardResult(WORD wOutCardUser, BYTE *cbOutCard, BYTE
 						}
 					}
 
-					OutCard.cbCardType = i;	//ÅÆĞÍ
-					CLog::Log(log_debug, "ÅÆĞÍ: %d", OutCard.cbCardType);
+					OutCard.cbCardType = i;	//ç‰Œå‹
+					CLog::Log(log_debug, "ç‰Œå‹: %d", OutCard.cbCardType);
 					break;
 				}
 			}
 
 			//CLog::Log(log_debug, "cbCardType2: %d", OutCard.cbCardType);
 
-			//µÃ·Ö
+			//å¾—åˆ†
 		/*	BYTE cbPlayerNum = m_GameAccess->GetMaxChairCount();
 			for (BYTE i = 0; i < cbPlayerNum; ++i)
 			{
@@ -2676,129 +2676,129 @@ void CTableFrameSink::SendOutCardResult(WORD wOutCardUser, BYTE *cbOutCard, BYTE
 			}*/
 		}
 	}
-	else	//Íæ¼ÒÒª²»Æğ
+	else	//ç©å®¶è¦ä¸èµ·
 	{
 		OutCard.cbFlag = cbFlag;	
 	}
 
-	//Â¼Ïñ³öÅÆ½á¹û
+	//å½•åƒå‡ºç‰Œç»“æœ
 	//AddRecordOutCardResult(OutCard);
-	//¹ã²¥³öÅÆ½á¹û
+	//å¹¿æ’­å‡ºç‰Œç»“æœ
 	m_pITableFrame->SendTableData(INVALID_CHAIR, CMD_SC_USER_OUT_CARD_RESULT, &OutCard, sizeof(STR_CMD_SC_OUT_CARD_RESULT));
-	CLog::Log(log_debug, "¡¾¹ã²¥Íæ¼Ò = %dµÄ³öÅÆ½á¹û¡¿", OutCard.wOutCardUser);	
+	CLog::Log(log_debug, "ã€å¹¿æ’­ç©å®¶ = %dçš„å‡ºç‰Œç»“æœã€‘", OutCard.wOutCardUser);	
 
 }
 
-//´¦ÀíÒ»ÂÖ³öÅÆ½áÊø
+//å¤„ç†ä¸€è½®å‡ºç‰Œç»“æŸ
 void CTableFrameSink::HandleRoundEnd(const WORD &wWinner)
 {		
-	//¼ÆËãÒ»ÂÖµÃ·Ö
+	//è®¡ç®—ä¸€è½®å¾—åˆ†
 	WORD wScore = m_GameLogic->SettleOneRound(wWinner);
 
-	//ÉèÖÃÒ»ÂÖ½áÊø
+	//è®¾ç½®ä¸€è½®ç»“æŸ
 	m_GameAccess->SetOneTurnEnd(TURN_END);
 
-	//Çå¿ÕÍæ¼ÒÊÇ³öÅÆ»¹ÊÇ¹ı
+	//æ¸…ç©ºç©å®¶æ˜¯å‡ºç‰Œè¿˜æ˜¯è¿‡
 	for (int i = 0; i < 3; i++)
 	{
 		m_GameAccess->SetTurnOutCardType(i, 99);
 	}
 
-	//ÉèÖÃ¿ªÊ¼µÄ³öÅÆÍæ¼Ò£¬Çå¿Õ¸ÃÂÖµÄ³öÅÆÊı¾İ
+	//è®¾ç½®å¼€å§‹çš„å‡ºç‰Œç©å®¶ï¼Œæ¸…ç©ºè¯¥è½®çš„å‡ºç‰Œæ•°æ®
 	if ( 0 != m_GameAccess->GetUserCurCardNum(wWinner) )
 	{
-		//ÉèÖÃ¸ÃÂÖ×î¿ªÊ¼³öÅÆÓÃ»§
+		//è®¾ç½®è¯¥è½®æœ€å¼€å§‹å‡ºç‰Œç”¨æˆ·
 		m_GameAccess->SetStartOutCardUser(wWinner);
 
-		//ÉèÖÃµ±Ç°³öÅÆÓÃ»§
+		//è®¾ç½®å½“å‰å‡ºç‰Œç”¨æˆ·
 		m_GameAccess->SetCurOutCardUser(wWinner);
 
-		//Í¨ÖªÓ®¼Ò³öÅÆ
+		//é€šçŸ¥èµ¢å®¶å‡ºç‰Œ
 		HandleOutCardStart(wWinner);
 
-		CLog::Log(log_debug, "¡¾Íæ¼Ò»¹ÓĞÅÆ£¬Ò»ÂÖ½áÊø£¬Í¨ÖªÓ®¼Ò = %d³öÅÆ¿ªÊ¼¡¿", wWinner);
+		CLog::Log(log_debug, "ã€ç©å®¶è¿˜æœ‰ç‰Œï¼Œä¸€è½®ç»“æŸï¼Œé€šçŸ¥èµ¢å®¶ = %då‡ºç‰Œå¼€å§‹ã€‘", wWinner);
 	}
-	else	//Íæ¼ÒËùÓĞÅÆ³öÍê
+	else	//ç©å®¶æ‰€æœ‰ç‰Œå‡ºå®Œ
 	{
-		CLog::Log(log_debug, "¡¾ÓÎÏ·½áÊø¡¿");
+		CLog::Log(log_debug, "ã€æ¸¸æˆç»“æŸã€‘");
 
-		//ÉèÖÃÓ®¼Ò
+		//è®¾ç½®èµ¢å®¶
 		m_GameAccess->SetLastGameWinner(wWinner);
 
-		//¼ÇÂ¼Ó®¼Ò
+		//è®°å½•èµ¢å®¶
 		m_GameAccess->SetWinSum(wWinner, 1);
 
 		m_GameAccess->SetCurOutCardUser(INVALID_CHAIR);
 
-		//ÅĞ¶ÏÍæ¼ÒÊÇ·ñ´ºÌì
+		//åˆ¤æ–­ç©å®¶æ˜¯å¦æ˜¥å¤©
 		m_GameAccess->JudgeSpring(wWinner);
 
-		//Ëã·Ö
+		//ç®—åˆ†
 		m_GameLogic->Settle();
 
-		//Ò»ÂÖ½áÊø£¬µ±Ç°Ó®¼ÒÅÆÈ«²¿³öÍê£¬ÓÎÏ·½áÊø
+		//ä¸€è½®ç»“æŸï¼Œå½“å‰èµ¢å®¶ç‰Œå…¨éƒ¨å‡ºå®Œï¼Œæ¸¸æˆç»“æŸ
 		OnEventGameConclude(GER_NORMAL);
 	}
 }
 
-//·¢ËÍÖ¸¶¨×¯¼ÒÏûÏ¢
+//å‘é€æŒ‡å®šåº„å®¶æ¶ˆæ¯
 void CTableFrameSink::SendAppointBanker(const WORD &wBanker)
 {
-	//ÓÃ»§Ğ£Ñé
+	//ç”¨æˆ·æ ¡éªŒ
 	if ( wBanker >= m_GameAccess->GetMaxChairCount() )
 		return;
 
-	//¹¹ÔìÊı¾İ
+	//æ„é€ æ•°æ®
 	STR_CMD_SC_APPOINT_BANKER AppointBanker;
 	ZeroMemory(&AppointBanker, sizeof(STR_CMD_SC_APPOINT_BANKER));
 
-	//¸³Öµ
+	//èµ‹å€¼
 	AppointBanker.wBanker = wBanker;
 
-	//Â¼ÏñÖ¸¶¨×¯¼Ò
+	//å½•åƒæŒ‡å®šåº„å®¶
 	//AddRecordAppointBanker(AppointBanker);
 
-	//·¢ËÍÊı¾İ
+	//å‘é€æ•°æ®
 	m_pITableFrame->SendTableData(INVALID_CHAIR, CMD_SC_APPOINT_BANKER, &AppointBanker, sizeof(STR_CMD_SC_APPOINT_BANKER));
 }
 
-//ÓÎÏ·½áÊøµÄ»ñÈ¡¹«¹²±¶ÊıĞÅÏ¢
+//æ¸¸æˆç»“æŸçš„è·å–å…¬å…±å€æ•°ä¿¡æ¯
 void CTableFrameSink::OnUserPublicBet(WORD wChairID)
 {
-	//ÒÎ×ÓºÅĞ£Ñé
+	//æ¤…å­å·æ ¡éªŒ
 	if (wChairID < 0 || wChairID >= m_GameAccess->GetMaxChairCount())
 	{
 		//CLog::Log(log_error, "func OnUserPublicBet err : wChairID < 0 && wChairID >= m_GameAccess->GetMaxChairCount(): chairID:%d", wChairID);
 		return;
 	}
 
-	//¹¹ÔìĞÅÏ¢
+	//æ„é€ ä¿¡æ¯
 	STR_CMD_SC_PUBLIC_BET public_bet;
 	ZeroMemory(&public_bet, sizeof(STR_CMD_SC_PUBLIC_BET));
 
 	WORD _playernum = m_GameAccess->GetCurPlayerCount();
-	WORD LeaveCard_Bet = 1; //µ×ÅÆ±¶Êı
-	WORD Spring_Bet = 1;	//´ºÌì±¶Êı
-	WORD Mingpai_Bet = 1;  //Ã÷ÅÆ±¶Êı
-	WORD Boom_Num = 0;   //Õ¨µ¯×ÜÊıÄ¿
-	WORD Boom_Bet = 1;	 //Õ¨µ¯×Ü±¶Êı
-	WORD Rob_Num = 0;    //ÇÀ×¯´ÎÊı
-	WORD Rob_bet = 1;    //ÇÀ×¯±¶Êı
-	WORD public_Bet = 0;  //¹«¹²±¶Êı
+	WORD LeaveCard_Bet = 1; //åº•ç‰Œå€æ•°
+	WORD Spring_Bet = 1;	//æ˜¥å¤©å€æ•°
+	WORD Mingpai_Bet = 1;  //æ˜ç‰Œå€æ•°
+	WORD Boom_Num = 0;   //ç‚¸å¼¹æ€»æ•°ç›®
+	WORD Boom_Bet = 1;	 //ç‚¸å¼¹æ€»å€æ•°
+	WORD Rob_Num = 0;    //æŠ¢åº„æ¬¡æ•°
+	WORD Rob_bet = 1;    //æŠ¢åº„å€æ•°
+	WORD public_Bet = 0;  //å…¬å…±å€æ•°
 	WORD cell_score = m_GameAccess->GetCellScore();
-	tagBoomInfo  boominfo;  //Õ¨µ¯ĞÅÏ¢
-	WORD Rule = m_GameAccess->GetRobBankMode();  //»ñÈ¡ÓÎÏ·¹æÔò
+	tagBoomInfo  boominfo;  //ç‚¸å¼¹ä¿¡æ¯
+	WORD Rule = m_GameAccess->GetRobBankMode();  //è·å–æ¸¸æˆè§„åˆ™
 
-	//¸³Öµ
-	public_bet.RoomBet = 1;	//µ×·Ö
-	public_bet.IUserAScore = m_GameAccess->GetAllBet(wChairID);   //×Ü·Ö
-	public_bet.Game_State = m_GameAccess->GetGameStatus();		//ÓÎÏ·×´Ì¬
+	//èµ‹å€¼
+	public_bet.RoomBet = 1;	//åº•åˆ†
+	public_bet.IUserAScore = m_GameAccess->GetAllBet(wChairID);   //æ€»åˆ†
+	public_bet.Game_State = m_GameAccess->GetGameStatus();		//æ¸¸æˆçŠ¶æ€
 
-	//µ×ÅÆ±¶Êı
+	//åº•ç‰Œå€æ•°
 	LeaveCard_Bet = m_GameAccess->GetLeaveCardBet();
 	public_bet.LeaveCard = LeaveCard_Bet;
 
-	//´ºÌì±¶Êı
+	//æ˜¥å¤©å€æ•°
 	for (int i = 0; i < _playernum; i++)
 	{
 		WORD flag = m_GameAccess->GetSpring(i);
@@ -2810,28 +2810,28 @@ void CTableFrameSink::OnUserPublicBet(WORD wChairID)
 	public_bet.Spring = Spring_Bet;
 
 
-	if (m_GameLogic->GetAppointBanker() < 0 || m_GameLogic->GetAppointBanker() > m_GameAccess->GetMaxChairCount())	//ÅĞ¶ÏÊÇ·ñÇÀÍêÁËµØÖ÷
-		public_bet.bank_ID = -1;    //×¯¼ÒID
+	if (m_GameLogic->GetAppointBanker() < 0 || m_GameLogic->GetAppointBanker() > m_GameAccess->GetMaxChairCount())	//åˆ¤æ–­æ˜¯å¦æŠ¢å®Œäº†åœ°ä¸»
+		public_bet.bank_ID = -1;    //åº„å®¶ID
 	else
-		public_bet.bank_ID = m_GameLogic->GetAppointBanker();    //×¯¼ÒID
+		public_bet.bank_ID = m_GameLogic->GetAppointBanker();    //åº„å®¶ID
 
-	//¼Ó±¶
+	//åŠ å€
 	for (int i = 0; i < m_GameAccess->GetCurPlayerCount(); i++)
 	{
-		public_bet.AddScore[i] = m_GameAccess->GetPlayerAddScore(i);    //¸÷Íæ¼ÒµÄ¼Ó±¶ĞÅÏ¢
-		Boom_Num += m_GameAccess->GetUserBoomInfo(i, boominfo);			//»ñÈ¡Õ¨µ¯×ÜÊı
-		Rob_Num += m_GameAccess->GetUserRobNum(i);						//»ñÈ¡×Ü¹²ÇÀ×¯´ÎÊı
+		public_bet.AddScore[i] = m_GameAccess->GetPlayerAddScore(i);    //å„ç©å®¶çš„åŠ å€ä¿¡æ¯
+		Boom_Num += m_GameAccess->GetUserBoomInfo(i, boominfo);			//è·å–ç‚¸å¼¹æ€»æ•°
+		Rob_Num += m_GameAccess->GetUserRobNum(i);						//è·å–æ€»å…±æŠ¢åº„æ¬¡æ•°
 	}
 
-	//ÓÉ¹æÔòÀ´ÅĞ¶ÏÇÀ×¯²¿·ÖµÄ±¶Êı
+	//ç”±è§„åˆ™æ¥åˆ¤æ–­æŠ¢åº„éƒ¨åˆ†çš„å€æ•°
 	if (Rule == 0)
 	{
-		for (int i = 0; i < Rob_Num - 1; i++)    //¼ÆËãÇÀ×¯µÄ±¶Êı
+		for (int i = 0; i < Rob_Num - 1; i++)    //è®¡ç®—æŠ¢åº„çš„å€æ•°
 		{
-			Rob_bet *= 2;    // 2µÄ4´Î·½±¶
+			Rob_bet *= 2;    // 2çš„4æ¬¡æ–¹å€
 		}
 	}
-	else		//½Ğ·Ö±¶ÊıËã×î´óµÄÄÇÒ»¸ö
+	else		//å«åˆ†å€æ•°ç®—æœ€å¤§çš„é‚£ä¸€ä¸ª
 	{
 		for (int i = 0; i < _playernum; i++)
 		{
@@ -2853,10 +2853,10 @@ void CTableFrameSink::OnUserPublicBet(WORD wChairID)
 	}
 
 	public_bet.Boom = Boom_Bet;
-	public_bet.Rob = Rob_bet;	//ÇÀµØÖ÷»ò½Ğ·Ö
+	public_bet.Rob = Rob_bet;	//æŠ¢åœ°ä¸»æˆ–å«åˆ†
 	public_bet.Rule = Rule;
 
-	//Ã÷ÅÆ±¶ÊıÈ¡×î´óµÄÄÇÒ»¸ö
+	//æ˜ç‰Œå€æ•°å–æœ€å¤§çš„é‚£ä¸€ä¸ª
 	Mingpai_Bet = 0;
 	for (int i = 0; i < _playernum; i++)
 	{
@@ -2868,19 +2868,19 @@ void CTableFrameSink::OnUserPublicBet(WORD wChairID)
 
 	public_bet.MingPai = Mingpai_Bet;
 
-	//¹«¹²±¶Êı
+	//å…¬å…±å€æ•°
 	if (Boom_Num == 0)
 		if (Mingpai_Bet == 0)
-			public_Bet = cell_score *Rob_bet * LeaveCard_Bet* Spring_Bet;  //¹«¹²±¶Êı = ³õÊ¼*Ã÷ÅÆ*ÇÀµØÖ÷*µ×ÅÆ*Õ¨µ¯*´ºÌì
+			public_Bet = cell_score *Rob_bet * LeaveCard_Bet* Spring_Bet;  //å…¬å…±å€æ•° = åˆå§‹*æ˜ç‰Œ*æŠ¢åœ°ä¸»*åº•ç‰Œ*ç‚¸å¼¹*æ˜¥å¤©
 		else
 			public_Bet = cell_score *Rob_bet * Mingpai_Bet * LeaveCard_Bet * Spring_Bet;
 	else
 		if (Mingpai_Bet == 0)
-			public_Bet = cell_score *Rob_bet  * Boom_Bet * LeaveCard_Bet * Spring_Bet;  //¹«¹²±¶Êı = ³õÊ¼*Ã÷ÅÆ*ÇÀµØÖ÷*µ×ÅÆ*Õ¨µ¯8´ºÌì
+			public_Bet = cell_score *Rob_bet  * Boom_Bet * LeaveCard_Bet * Spring_Bet;  //å…¬å…±å€æ•° = åˆå§‹*æ˜ç‰Œ*æŠ¢åœ°ä¸»*åº•ç‰Œ*ç‚¸å¼¹8æ˜¥å¤©
 		else
 			public_Bet = cell_score *Rob_bet * Mingpai_Bet * Boom_Bet * LeaveCard_Bet * Spring_Bet;
 
-	//ÅĞ¶ÏÊÇ·ñ·â¶¥
+	//åˆ¤æ–­æ˜¯å¦å°é¡¶
 	if (m_GameAccess->GetRoomMaxBet() < public_Bet)
 	{
 		public_bet.public_bet = m_GameAccess->GetRoomMaxBet();
@@ -2895,27 +2895,27 @@ void CTableFrameSink::OnUserPublicBet(WORD wChairID)
 	//m_pITableFrame->SendTableData(wChairID, CMD_SC_PUBLIC_BET, &public_bet, sizeof(STR_CMD_SC_PUBLIC_BET));
 }
 
-//´¦Àí¿Í»§¶Ë·¢À´µÄ¼ÇÅÆÆ÷ÏûÏ¢
+//å¤„ç†å®¢æˆ·ç«¯å‘æ¥çš„è®°ç‰Œå™¨æ¶ˆæ¯
 void CTableFrameSink::OnUserJiPaiQi(WORD wChairID)
 {
-	//×´Ì¬Ğ£Ñé
+	//çŠ¶æ€æ ¡éªŒ
 	if (GS_WK_FREE == m_GameAccess->GetGameStatus())
 	{
 		cout << "OnUserJiPaiQi : err" << endl;
 		return;
 	}
 
-	//¹¹½¨ÏûÏ¢
+	//æ„å»ºæ¶ˆæ¯
 	STR_CMD_SC_JIPAIQI_START  JiPaiQi;
 	ZeroMemory(&JiPaiQi, sizeof(STR_CMD_SC_JIPAIQI_START));
 
-	//¶¨Òå±äÁ¿
+	//å®šä¹‰å˜é‡
 	BYTE CardREC[15];
 	tagCardRecorder	CardRec;
 	ZeroMemory(&CardREC, sizeof(CardREC));
 	ZeroMemory(&CardRec, sizeof(CardRec));
 
-	//»ñµÃ¸÷Íæ¼ÒµÄ¿¨ÅÆÊıÄ¿
+	//è·å¾—å„ç©å®¶çš„å¡ç‰Œæ•°ç›®
 	m_GameLogic->CardRecorder(wChairID, CardRec);
 
 	CardREC[0] = CardRec.ACount;
@@ -2942,30 +2942,30 @@ void CTableFrameSink::OnUserJiPaiQi(WORD wChairID)
 	m_pITableFrame->SendTableData(wChairID, CMD_SC_JIPAIQI_START, &JiPaiQi, sizeof(STR_CMD_SC_JIPAIQI_START));
 }
 
-//ÍĞ¹Ü
+//æ‰˜ç®¡
 bool CTableFrameSink::PlayerTuoGuan(WORD wChairID)
 {
-	////×´Ì¬Ğ£Ñé
+	////çŠ¶æ€æ ¡éªŒ
 	//if (GS_WK_OUT_CARD != m_GameAccess->GetGameStatus())
 	//{
-	//	cout << "GS_WK_OUT_CARD != m_GameAccess->GetGameStatus() : err £ºÍĞ¹Ü" << endl;
+	//	cout << "GS_WK_OUT_CARD != m_GameAccess->GetGameStatus() : err ï¼šæ‰˜ç®¡" << endl;
 	//	return false;
 	//}
 
 	if (wChairID > m_GameAccess->GetMaxChairCount())
 		return false;
 
-	//ÉèÖÃÍĞ¹Ü
+	//è®¾ç½®æ‰˜ç®¡
 	m_GameAccess->SetPlayerTuoGuan(wChairID, 1);
 
-	//ÉèÖÃÇÀ×¯¶¨Ê±Æ÷
+	//è®¾ç½®æŠ¢åº„å®šæ—¶å™¨
 	if (m_GameAccess->GetCurRobUser() == wChairID && GS_WK_ROB == m_GameAccess->GetGameStatus())
 	{
 		m_pITableFrame->KillGameTimer(IDI_ROB_BANKER);
 		m_pITableFrame->SetGameTimer(IDI_ROB_BANKER, IDI_TIME_ROB_BANKER*0.1, 1 , 0);
 	}
 
-	//ÉèÖÃ³öÅÆ¶¨Ê±Æ÷
+	//è®¾ç½®å‡ºç‰Œå®šæ—¶å™¨
 	if (m_GameAccess->GetCurOutCardUser() == wChairID && GS_WK_OUT_CARD == m_GameAccess->GetGameStatus())
 	{
 		m_pITableFrame->KillGameTimer(IDI_OUT_CARD);
@@ -2975,23 +2975,23 @@ bool CTableFrameSink::PlayerTuoGuan(WORD wChairID)
 	return true;
 }
 
-//È¡ÏûÍĞ¹Ü
+//å–æ¶ˆæ‰˜ç®¡
 bool CTableFrameSink::PlayerCancelTuoGuan(WORD wChairID)
 {
 	if (wChairID > m_GameAccess->GetMaxChairCount())
 		return false;
 
-	//È¡ÏûÍĞ¹Ü
+	//å–æ¶ˆæ‰˜ç®¡
 	m_GameAccess->SetPlayerTuoGuan(wChairID, 0);
 
 	return true;
 }
 
 /*************************************************
-@Description:     ³õÊ¼»¯Â¼ÏñÊı×é£¬»ñµÃ¸öÊı¾İµÄË÷Òı¼°´óĞ¡
-@Input:           ÎŞ
-@Output:          ÎŞ
-@Return:          ÎŞ
+@Description:     åˆå§‹åŒ–å½•åƒæ•°ç»„ï¼Œè·å¾—ä¸ªæ•°æ®çš„ç´¢å¼•åŠå¤§å°
+@Input:           æ— 
+@Output:          æ— 
+@Return:          æ— 
 @author & data:	lizhihu 2017.11.2
 *************************************************/
 void CTableFrameSink::StartRecord()
@@ -2999,15 +2999,15 @@ void CTableFrameSink::StartRecord()
 }
 
 ///*************************************************
-//@Description:     ½áÊøÂ¼Ïñ£¬ÊÍ·ÅÄÚ´æ
-//@Input:           ÎŞ
-//@Output:          ÎŞ
-//@Return: lD#ûXkQ?ävĞİ0Õ„9Œ®E?/@ ¿bözş™?øbj?““‹‰F?p_½ç´HK5?2?os+Ácn-?$? qÃúw?æxlšIÔú??ªS¯ŞbˆÏŠ£Ïõâ¡^bcVI™H“Â?Ç§"p8İÒÅÀÇ¿ªw?=Ó²ñ[±WºİˆáŒ‚2Va“êDÑÏ.ŒĞ°@??ÿ½Ú6¶‘pÅxüÅz
-//`t?ŒoPT<~0M9¾÷
+//@Description:     ç»“æŸå½•åƒï¼Œé‡Šæ”¾å†…å­˜
+//@Input:           æ— 
+//@Output:          æ— 
+//@Return: lD#é¸›kQ?é‹ ä¼‘0è«‡9å°E?/@ç‰½bé°–î¡?é´…j?æ‘€åªºF?p_ç•Œç¢’K5?2?os+ç¾‰å·’-?$? qé“­w?é¥læ¬¼æ‰??çŒ„îˆ“båŸ¾å§¡ç¡ç‹»^bcVIæ©¦æ’€?åƒ"p8è€çˆ¬å¼ºç?=ç¡¬é¦µç›¬ç‹ å ˜å¯•2Vaæ’½Dä¸¥.å±ç™…??ï£µèŠ‚6ç¨‡pèˆ©îz
+//`t?å®±PT<~0M9è¯€
 //g
 
 ////////////////////////////////////////////////////////////////////////////////////
-//µ¼³ö¶¨Òå
+//å¯¼å‡ºå®šä¹‰
 
 extern "C" __declspec(dllexport) VOID * CreateTableFrameSink()
 {
@@ -3017,14 +3017,14 @@ extern "C" __declspec(dllexport) VOID * CreateTableFrameSink()
 		pTableFrameSink = new CTableFrameSink();
 		if (pTableFrameSink == NULL)
 		{
-			throw TEXT("´´½¨Ê§°Ü");
+			throw TEXT("åˆ›å»ºå¤±è´¥");
 		}
 
 		return pTableFrameSink;
 	}
 	catch (...) {}
 
-	//ÇåÀí¶ÔÏó
+	//æ¸…ç†å¯¹è±¡
 	SafeDelete(pTableFrameSink);
 	return NULL;
 }
@@ -3039,10 +3039,10 @@ extern "C" __declspec(dllexport) VOID  FreeTableFrameSink(VOID *p)
 	}
 }
 
-//¶ÁÈ¡ÅäÖÃÎÄ¼ş
+//è¯»å–é…ç½®æ–‡ä»¶
 extern "C" __declspec(dllexport) DWORD ReadSubCfgConfig()
 {
-	//´ÓÅäÖÃÎÄ¼ş¶ÁÈ¡ÓÎÏ·ÅäÖÃ
+	//ä»é…ç½®æ–‡ä»¶è¯»å–æ¸¸æˆé…ç½®
 	int ret = CGameConfig::LoadGameCommonConfig();
 	if (ret != 0)
 		return 0;

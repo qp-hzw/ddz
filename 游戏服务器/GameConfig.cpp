@@ -3,11 +3,11 @@
 
 #include <time.h>
 
-std::string      CGameConfig::cfg_file;             // ÅäÖÃÎÄ¼ş
+std::string      CGameConfig::cfg_file;             // é…ç½®æ–‡ä»¶
 
-COM_PROFILE_RULE	CGameConfig::gComGamePara ;	    // ÓÎÏ·ÅäÖÃ
-COM_CARD_CONFIG		CGameConfig::gComCardPara;		// ¿¨ÅÆÅäÖÃ
-COM_PLAYER_CONFIG	CGameConfig::gComPlayerPara;    // Íæ¼ÒÅäÖÃ
+COM_PROFILE_RULE	CGameConfig::gComGamePara ;	    // æ¸¸æˆé…ç½®
+COM_CARD_CONFIG		CGameConfig::gComCardPara;		// å¡ç‰Œé…ç½®
+COM_PLAYER_CONFIG	CGameConfig::gComPlayerPara;    // ç©å®¶é…ç½®
  
 
 CGameConfig::CGameConfig(void)
@@ -21,18 +21,18 @@ CGameConfig::~CGameConfig(void)
 }
 
 
-//´ÓÅäÖÃÎÄ¼şÖĞ»ñÈ¡Í¨ÓÃµÄÓÎÏ·ÅäÖÃ£¬ÔÚÓÎÏ·¿ªÊ¼Ç°¸³¸øÈ«¾Ö±äÁ¿
+//ä»é…ç½®æ–‡ä»¶ä¸­è·å–é€šç”¨çš„æ¸¸æˆé…ç½®ï¼Œåœ¨æ¸¸æˆå¼€å§‹å‰èµ‹ç»™å…¨å±€å˜é‡
 int CGameConfig::LoadGameCommonConfig()
 {
 	int result = 0;
 
-	// °ó¶¨ÅäÖÃÎÄ¼ş
+	// ç»‘å®šé…ç½®æ–‡ä»¶
 	if (0 == BindCfgFile())
 	{
 		return -1;
 	}
 
-	//´ò¿ªÎÄ¼ş
+	//æ‰“å¼€æ–‡ä»¶
 	result = CWHCfg::Instance()->OpenFile(cfg_file.c_str());
 	if(result != 0)
 	{
@@ -40,84 +40,84 @@ int CGameConfig::LoadGameCommonConfig()
 		return - 2;
 	}
 
-	// ´´½¨ÓÎÏ·¿¨ÅÆºÍÍæ¼Ò£¬²¢»ñµÃÊÖÅÆ±¶ÊıÅäÖÃ
-	result = CreateGameCards();		// ´´½¨¿¨ÅÆ£¬¸øpGameRule->m_card_config¸³Öµ
+	// åˆ›å»ºæ¸¸æˆå¡ç‰Œå’Œç©å®¶ï¼Œå¹¶è·å¾—æ‰‹ç‰Œå€æ•°é…ç½®
+	result = CreateGameCards();		// åˆ›å»ºå¡ç‰Œï¼Œç»™pGameRule->m_card_configèµ‹å€¼
 	if (0 == result)
 	{
-		result = CreatePlayers(); // ´´½¨Íæ¼Ò£¬¸øpGameRule->m_players_config¸³Öµ
+		result = CreatePlayers(); // åˆ›å»ºç©å®¶ï¼Œç»™pGameRule->m_players_configèµ‹å€¼
 		if (0 != result)
 		{
-			////CLog::Log(log_error, "ÅäÖÃÍæ¼ÒÒì³£");
+			////CLog::Log(log_error, "é…ç½®ç©å®¶å¼‚å¸¸");
 		}
 	}
 	else
 	{
-		////CLog::Log(log_error, "ÅäÖÃ¿¨ÅÆÒì³£");
+		////CLog::Log(log_error, "é…ç½®å¡ç‰Œå¼‚å¸¸");
 	}
 
-	//¹Ø±ÕÎÄ¼ş
+	//å…³é—­æ–‡ä»¶
 	CWHCfg::Instance()->CloseFile();
 
 	return result;
 }
 
-// ¸ù¾İÓÎÏ·ÅäÖÃ´´½¨¿¨ÅÆÊı¾İ
+// æ ¹æ®æ¸¸æˆé…ç½®åˆ›å»ºå¡ç‰Œæ•°æ®
 int CGameConfig::CreateGameCards()
 {
 	int result = 0;
 
-	//ÌáÈ¡×é
+	//æå–ç»„
 	result = CGameCardConfig::LoadCardGroups(gComCardPara.group, gComCardPara.groupNum);
 
 	if (0 == result)
 	{
-		// »ñÈ¡ÅäÖÃÖĞÒ»¸±Ö½ÅÆµÄ×ÜÊıºÍ·¢µ½Ã¿¸öÓÃ»§µÄÅÆÊı
+		// è·å–é…ç½®ä¸­ä¸€å‰¯çº¸ç‰Œçš„æ€»æ•°å’Œå‘åˆ°æ¯ä¸ªç”¨æˆ·çš„ç‰Œæ•°
 		result = CGameCardConfig::LoadCardsSum(gComCardPara.game_cards_num);
 		if (0 == result)
 		{
-			result = CGameCardConfig::TransGroups(gComCardPara.group, gComCardPara.groupNum, gComCardPara.game_cards, gComCardPara.game_cards_num);	// ½âÎöÅÆ
+			result = CGameCardConfig::TransGroups(gComCardPara.group, gComCardPara.groupNum, gComCardPara.game_cards, gComCardPara.game_cards_num);	// è§£æç‰Œ
 			if (0 == result)
 			{
-				//¶ÁÈ¡ÅäÖÃÎÄ¼ş¶ÔÓ¦µÄÊÖÅÆ±¶Êı
+				//è¯»å–é…ç½®æ–‡ä»¶å¯¹åº”çš„æ‰‹ç‰Œå€æ•°
 				CGameCardConfig::LoadGameScoreTimes(GAME_SCORE_MODE_CLASSIC, gComGamePara.game_normal_times);
-				//»ñµÃ·è¿ñ¼Ó±¶±¶Êı
+				//è·å¾—ç–¯ç‹‚åŠ å€å€æ•°
 				//CGameCardConfig::LoadGameScoreTimes(GAME_SCORE_MODE_CRAZY, gComGamePara.game_crazy_times);
 			}
 			if (result == -1)
 			{
-				////CLog::Log(log_error, "½âÎöµÃ·Ö±¶ÊıÊ§°Ü");
+				////CLog::Log(log_error, "è§£æå¾—åˆ†å€æ•°å¤±è´¥");
 			}
 		}
 		else
 		{
-			////CLog::Log(log_error, "½âÎöÅÆÊ§°Ü");
+			////CLog::Log(log_error, "è§£æç‰Œå¤±è´¥");
 			result = -1;
 		}
 	}
 	else
 	{
-		////CLog::Log(log_error, "Ìá×éÊ§°Ü");
+		////CLog::Log(log_error, "æç»„å¤±è´¥");
 		result = -1;
 	}
 	return result;
 }
 
-// ¸ù¾İÓÎÏ·ÅäÖÃ´´½¨Íæ¼ÒÊı¾İ
+// æ ¹æ®æ¸¸æˆé…ç½®åˆ›å»ºç©å®¶æ•°æ®
 int CGameConfig::CreatePlayers()
 {
 	int result = 0;
 
 	gComPlayerPara.type = 0;
 
-	// ´ÓÅäÖÃÎÄ¼şÖĞ½âÎöÍæ¼Ò×éÊı×é
-	//PLAYER_TYPESÓÃÒ»¸öword´æ´¢ÁËÍæ¼ÒµÄÈı¸öÊı¾İID,card_sum£¬player_sum
+	// ä»é…ç½®æ–‡ä»¶ä¸­è§£æç©å®¶ç»„æ•°ç»„
+	//PLAYER_TYPESç”¨ä¸€ä¸ªwordå­˜å‚¨äº†ç©å®¶çš„ä¸‰ä¸ªæ•°æ®ID,card_sumï¼Œplayer_sum
 	result = CGamePlayerConfig::LoadPlayerDesc(gComPlayerPara.type);
 
 	return result;
 
 }
 
-// °ó¶¨ÅäÖÃÎÄ¼ş
+// ç»‘å®šé…ç½®æ–‡ä»¶
 DWORD CGameConfig::BindCfgFile()
 {
 	//cfg_file = "./subgame/"

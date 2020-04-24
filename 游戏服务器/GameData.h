@@ -10,660 +10,660 @@ public:
 	CGameData();
 	~CGameData() {}
 
-// ÓÎÏ·¹æÔò½Ó¿Ú
+// æ¸¸æˆè§„åˆ™æ¥å£
 public:
-	// ´´½¨ÓÎÏ·
+	// åˆ›å»ºæ¸¸æˆ
 	virtual int __stdcall CreateGame(CGameLogic **pGameRule, CGameAccess **pGameAccess);
 
-	// ¼ÓÔØ¶ÁÈ¡µÄÅäÖÃÎÄ¼ş²ÎÊı
+	// åŠ è½½è¯»å–çš„é…ç½®æ–‡ä»¶å‚æ•°
 	virtual int __stdcall LoadConfigParameter(const wchar_t *_logFile, const BYTE cbGameScoreMode);
 
-	//³õÊ¼»¯Êı¾İ
+	//åˆå§‹åŒ–æ•°æ®
 	virtual int __stdcall Init();
 
-	// Íæ¼ÒÏÂ×¢
+	// ç©å®¶ä¸‹æ³¨
 	virtual int __stdcall Wager(WORD wChairID, float bet);
 
-	// ¸ù¾İÇÀ×¯Ä£Ê½£¬Ö¸¶¨×¯¼Ò
+	// æ ¹æ®æŠ¢åº„æ¨¡å¼ï¼ŒæŒ‡å®šåº„å®¶
 	virtual bool __stdcall AppointBanker(WORD wChairID);
 
-	//»ñµÃµ±Ç°Ö¸¶¨µÄ×¯¼Ò
+	//è·å¾—å½“å‰æŒ‡å®šçš„åº„å®¶
 	virtual WORD __stdcall GetAppointBanker();
 
-	// ·¢ÅÆ
+	// å‘ç‰Œ
 	virtual int __stdcall Deal();
 
-	// ÉèÖÃÍæ¼Ò²Ù×÷
+	// è®¾ç½®ç©å®¶æ“ä½œ
 	virtual int __stdcall SetUserOperate(WORD wChairID, BYTE byAction, DWORD dwActionScore);
 
-	// ·ÖÎöÓÃ»§ÅÆĞÍ
+	// åˆ†æç”¨æˆ·ç‰Œå‹
 	virtual int __stdcall AnsysCardsType();
 
-	// ½áËãµÃ·Ö
+	// ç»“ç®—å¾—åˆ†
 	virtual int __stdcall Settle();
 
-	// ÇåÀíĞ¡¾ÖÓÎÏ·Êı¾İ
+	// æ¸…ç†å°å±€æ¸¸æˆæ•°æ®
 	virtual int __stdcall ClearXjGame();
 
-	// ÇåÀí´ó¾ÖÓÎÏ·Êı¾İ
+	// æ¸…ç†å¤§å±€æ¸¸æˆæ•°æ®
 	virtual int __stdcall ClearDjGame();
 
-	// ÇåÀí·¿¼äÊı¾İ
+	// æ¸…ç†æˆ¿é—´æ•°æ®
 	virtual int __stdcall ClearRoom();
 
-	//°´»¨É«È¨Î»ÅÅĞòÆË¿Ë
+	//æŒ‰èŠ±è‰²æƒä½æ’åºæ‰‘å…‹
 	virtual void __stdcall SortCardList(BYTE *cbCardData, BYTE cbCardCount);
 
-	//°´»¨É«È¨Î»¸øÓÃ»§ÊÖÅÆÅÅĞò
+	//æŒ‰èŠ±è‰²æƒä½ç»™ç”¨æˆ·æ‰‹ç‰Œæ’åº
 	virtual void __stdcall SortCardList(const WORD &wChairID, BYTE cbCardCount, BYTE cbSortType);
 
-	//¶·µØÖ÷ÅÅĞò
+	//æ–—åœ°ä¸»æ’åº
 	virtual void __stdcall SortCardList(BYTE cbCardData[], BYTE cbCardCount, BYTE cbSortType);
 
 
-	//»ñµÃ¿¨ÅÆµÄÅÅĞòµÈ¼¶
+	//è·å¾—å¡ç‰Œçš„æ’åºç­‰çº§
 	virtual BYTE __stdcall GetCardSortOrder(BYTE cbCardData);
 
-	//·ÖÎöÍæ¼ÒÊÇ·ñÄÜÁÁÖ÷
+	//åˆ†æç©å®¶æ˜¯å¦èƒ½äº®ä¸»
 	virtual bool __stdcall AnalyseUserLiangZhu(const WORD &wChairID, BYTE *cbLiangZhuColor);
 
-	//·ÖÎöÍæ¼ÒÊÇ·ñÄÜ·´Ö÷
+	//åˆ†æç©å®¶æ˜¯å¦èƒ½åä¸»
 	virtual bool __stdcall AnalyseUserFanZhu(const WORD &wChairID, BYTE *cbFanZhuCard);
 
-	//ÅĞ¶ÏÍæ¼ÒÊÖÅÆÊÇ·ñÄÜ·´Ö÷
+	//åˆ¤æ–­ç©å®¶æ‰‹ç‰Œæ˜¯å¦èƒ½åä¸»
 	virtual bool __stdcall IsUserCanFanZhu(const WORD &wChairID, const BYTE &cbCurFanZhuColor, BYTE *cbFanZhuCard);
 
-	//·¢ËÍµ×ÅÆ¸øÍæ¼Ò
+	//å‘é€åº•ç‰Œç»™ç©å®¶
 	virtual void __stdcall SendLeaveCardToUser(const WORD &wChairID);
 
-	//»ñµÃÒ»×é¿¨ÅÆµÄÅÆÀàĞÍ
+	//è·å¾—ä¸€ç»„å¡ç‰Œçš„ç‰Œç±»å‹
 	virtual int __stdcall GetCardLogicType(const BYTE *cbCardData, BYTE cbCardCount);
 
-	//»ñµÃ¿¨ÅÆµÄÂß¼­»¨É«
+	//è·å¾—å¡ç‰Œçš„é€»è¾‘èŠ±è‰²
 	virtual BYTE __stdcall GetCardLogicColor(BYTE cbCardData);
 
-	//»ñµÃ¿¨ÅÆÊı×éµÄÂß¼­»¨É«
+	//è·å¾—å¡ç‰Œæ•°ç»„çš„é€»è¾‘èŠ±è‰²
 	virtual BYTE __stdcall GetCardLogicColor(const BYTE *cbCardData, BYTE cbCardCount);
 
-	//»ñµÃ¿¨ÅÆµÄÂß¼­ÊıÖµ
+	//è·å¾—å¡ç‰Œçš„é€»è¾‘æ•°å€¼
 	virtual BYTE __stdcall GetCardLogicValue(BYTE cbCardData);
 
-	//Á½ÕÅ¿¨ÅÆÊÇ·ñÏàÁ¬
+	//ä¸¤å¼ å¡ç‰Œæ˜¯å¦ç›¸è¿
 	virtual bool __stdcall IsLineValue(BYTE cbTurnCard, BYTE cbSecondCard);
 
-	//Ò»ÂÖ±ÈÅÆ£¬ÅĞ¶ÏÓ®¼Ò
+	//ä¸€è½®æ¯”ç‰Œï¼Œåˆ¤æ–­èµ¢å®¶
 	virtual WORD __stdcall GetOneRoundWinner();
 
-	//¼ÆËãÒ»ÂÖÊäÓ®µÃ·Ö
+	//è®¡ç®—ä¸€è½®è¾“èµ¢å¾—åˆ†
 	virtual WORD __stdcall SettleOneRound(const WORD &wWinner);
 
-	//»ñµÃÒ»ÂÖÖĞµÄËùÓĞ·ÖÅÆ
+	//è·å¾—ä¸€è½®ä¸­çš„æ‰€æœ‰åˆ†ç‰Œ
 	virtual BYTE __stdcall GetScoreCard();
 
-	//»ñÈ¡¿¨ÅÆÊı×é×Ü·ÖÊı
+	//è·å–å¡ç‰Œæ•°ç»„æ€»åˆ†æ•°
 	virtual WORD __stdcall GetAllCardScore(const BYTE *cbCardData, BYTE cbCardCount);
 
-	//±È½ÏÍæ¼Ò³öÅÆ´óĞ¡
+	//æ¯”è¾ƒç©å®¶å‡ºç‰Œå¤§å°
 	virtual bool __stdcall CompareUserOutCard(const BYTE &cbFirstCardData, const WORD &cbNextCardData);
 
-	//³öÅÆĞ£Ñé
+	//å‡ºç‰Œæ ¡éªŒ
 	virtual bool __stdcall EfficacyOutCard(const WORD &wCheckUser, const BYTE *cbOutCardData, const BYTE &cbOutCardCount);
 
-	//¸ù¾İÖ¸¶¨»¨É«ÌáÈ¡ÆË¿Ë
+	//æ ¹æ®æŒ‡å®šèŠ±è‰²æå–æ‰‘å…‹
 	virtual BYTE __stdcall DistillCardByColor(const BYTE cbCardData[], BYTE cbCardCount, BYTE cbCardColor, BYTE cbResultCard[]);
 
-	//ÌáÈ¡ÆË¿Ë
+	//æå–æ‰‘å…‹
 	virtual BYTE __stdcall DistillCardByCount(const BYTE cbCardData[], BYTE cbCardCount, BYTE cbSameCount, tagSameDataInfo &SameDataInfo);
 
-	//ÌáÈ¡ÆË¿Ë
+	//æå–æ‰‘å…‹
 	virtual BYTE __stdcall DistillTrackorByCount(const BYTE cbCardData[], BYTE cbCardCount, BYTE cbSameCount, tagTractorDataInfo &TractorDataInfo);
 
-	//ÅĞ¶ÏÁ½¸öÊı×éµÄ½»¼¯ÊıÄ¿
+	//åˆ¤æ–­ä¸¤ä¸ªæ•°ç»„çš„äº¤é›†æ•°ç›®
 	virtual BYTE __stdcall GetIntersectionCount(const BYTE cbCardData1[], BYTE cbCardCount1, const BYTE cbCardData2[], BYTE cbCardCount2);
 
-	//¸ù¾İÒ»ÂÖµÄ¿ªÊ¼³öÅÆÍæ¼Ò£¬·ÖÎöÍæ¼Ò¿ÉÒÔ³öµÄÅÆ
+	//æ ¹æ®ä¸€è½®çš„å¼€å§‹å‡ºç‰Œç©å®¶ï¼Œåˆ†æç©å®¶å¯ä»¥å‡ºçš„ç‰Œ
 	virtual bool __stdcall AnalyseOutCardNotify(const WORD &wChairID, const BYTE *OutCardData,
 		const BYTE &cbOutCardNum, tagOutCardNotify *cbOutCardNotify);
 
-	//ÅĞ¶ÏÓÃ»§ÊÖÅÆÖĞÊÇ·ñÓĞÖ¸¶¨»¨É«µÄ¸ÃÀàĞÍµÄ¿¨ÅÆ
+	//åˆ¤æ–­ç”¨æˆ·æ‰‹ç‰Œä¸­æ˜¯å¦æœ‰æŒ‡å®šèŠ±è‰²çš„è¯¥ç±»å‹çš„å¡ç‰Œ
 	virtual bool __stdcall IsHaveSpecificType(const WORD &wChairID, const BYTE &color, const BYTE &cbOutCardType,
 		const BYTE &cbOutCardNum, tagOutCardNotify &cbOutCardNotify);
 
-	//¼ÆËã³­µ×µÃ·Ö
+	//è®¡ç®—æŠ„åº•å¾—åˆ†
 	virtual SCORE __stdcall CalculateChaodiScore(const BYTE &cbCDcardNum);
 
-	//¸ù¾İµÃ·Ö¼ÆËãÍæ¼ÒÉı¼¶¼¶Êı
+	//æ ¹æ®å¾—åˆ†è®¡ç®—ç©å®¶å‡çº§çº§æ•°
 	virtual BYTE __stdcall AnalyseUpGrade(const SCORE &score);
 
-	//¶·µØÖ÷±È½Ï´óĞ¡
+	//æ–—åœ°ä¸»æ¯”è¾ƒå¤§å°
 	virtual bool __stdcall AnalysebCompare(const BYTE cbCardData[], BYTE cbCardCount, tagAnalyseResult &AnalyseResult, int dCardType);
 
-	//¶·µØÖ÷·ÖÎöÆË¿Ë
+	//æ–—åœ°ä¸»åˆ†ææ‰‘å…‹
 	virtual void __stdcall AnalysebCardData(const BYTE cbCardData[], BYTE cbCardCount, tagAnalyseResult &AnalyseResult);
 
-	//¶·µØÖ÷»ñÈ¡ÀàĞÍ½á¹û
+	//æ–—åœ°ä¸»è·å–ç±»å‹ç»“æœ
 	virtual int __stdcall GetType(tagAnalyseResult AnalyseResult, const BYTE cbCardData[], BYTE cbCardCount, const BYTE NoChangeCard[]);
 
-	//ÅĞ¶Ïµ±Ç°Íæ¼ÒÊÇ·ñÄÜ³öÅÆ 
+	//åˆ¤æ–­å½“å‰ç©å®¶æ˜¯å¦èƒ½å‡ºç‰Œ 
 	virtual bool __stdcall JudgePlayerOutCard(WORD wCurOutCardUser);
 
-	//Íæ¼ÒµÚÒ»¸ö³öÅÆ  ÅĞ¶ÏËû¿ÉÒÔ³öµÄºÏÊÊµÄÅÆ
+	//ç©å®¶ç¬¬ä¸€ä¸ªå‡ºç‰Œ  åˆ¤æ–­ä»–å¯ä»¥å‡ºçš„åˆé€‚çš„ç‰Œ
 	virtual bool __stdcall AnalysePlayerOutCardFirst(WORD OutCardUsr, BYTE OutCardData[], BYTE *OutCardNum);
 
-	//Íæ¼Ò½ÓÅÆ  ÅĞ¶ÏËû¿ÉÒÔ³öµÄÅÆ
+	//ç©å®¶æ¥ç‰Œ  åˆ¤æ–­ä»–å¯ä»¥å‡ºçš„ç‰Œ
 	virtual bool __stdcall AnalysePlayerOutCard(WORD OutCardUsr, BYTE OutCardData[], BYTE *OutCardNum);
 
-	//¼ÇÅÆÆ÷ ·µ»Ø³ıµ±Ç°Íæ¼ÒÍâÆäËûÍæ¼Ò¸÷ÊÖÅÆµÄÊıÁ¿
+	//è®°ç‰Œå™¨ è¿”å›é™¤å½“å‰ç©å®¶å¤–å…¶ä»–ç©å®¶å„æ‰‹ç‰Œçš„æ•°é‡
 	virtual bool __stdcall CardRecorder(WORD wChairID, tagCardRecorder &Recorder);
 
-	//³õÊ¼»¯µ±Ç°ÂÖÊÖÅÆ¸ø»úÆ÷ÈË
+	//åˆå§‹åŒ–å½“å‰è½®æ‰‹ç‰Œç»™æœºå™¨äºº
 	virtual void __stdcall GetTurnMaxCardToRobot(GameSituation &gst, AILogic &m_AILogic);
 
-	//½«Òª³öµÄÅÆ´ÓÂß¼­Öµ×ª»»³ÉÓĞ»¨É«
+	//å°†è¦å‡ºçš„ç‰Œä»é€»è¾‘å€¼è½¬æ¢æˆæœ‰èŠ±è‰²
 	virtual void __stdcall GetCardColorValue(WORD OutCardUser, HandCardData &m_HandCardData, BYTE *OutCardData, BYTE &OutCardNum);
 
-	//¼ÆËãµ×ÅÆÊÇ·ñ·­±¶ ²¢·µ»Ø±¶Êı
+	//è®¡ç®—åº•ç‰Œæ˜¯å¦ç¿»å€ å¹¶è¿”å›å€æ•°
 	virtual DWORD __stdcall IsDoubleLeaveCard();
 
-	//»ñÈ¡³öÅÆÍæ¼Ò¶¯×÷ĞĞÎª
+	//è·å–å‡ºç‰Œç©å®¶åŠ¨ä½œè¡Œä¸º
 	virtual BYTE __stdcall GetOutCardActionType(WORD wChairID);
 
-	//================================================ñ®×Ó³¡ÅĞ¶Ï=================================================
+	//================================================ç™å­åœºåˆ¤æ–­=================================================
 
-	//»ñµÃÓÚ°üº¬ñ®×ÓµÄ¿¨ÅÆµÄÂß¼­ÊıÖµ
+	//è·å¾—äºåŒ…å«ç™å­çš„å¡ç‰Œçš„é€»è¾‘æ•°å€¼
 	virtual BYTE GetCardLogicValueLaiZi(BYTE cbCardData);
 
-	//½«Íæ¼ÒÊÖÅÆÖĞµÄñ®×Ó½øĞĞÅÆÖµÌæ»»
+	//å°†ç©å®¶æ‰‹ç‰Œä¸­çš„ç™å­è¿›è¡Œç‰Œå€¼æ›¿æ¢
 	virtual bool ReplaceLaiZiCard(WORD wChairID, BYTE cbCardNum);
 
-	//¶·µØÖ÷²»¿¼ÂÇñ®×ÓµÄÅÅĞò
+	//æ–—åœ°ä¸»ä¸è€ƒè™‘ç™å­çš„æ’åº
 	virtual void SortCardListNoLaiZi(BYTE cbCardData[], BYTE cbCardCount, BYTE cbSortType);
 
-	//ÅĞ¶Ïñ®×Ó³¡µÄÍæ¼ÒÊÇ·ñÄÜ³öÅÆ
+	//åˆ¤æ–­ç™å­åœºçš„ç©å®¶æ˜¯å¦èƒ½å‡ºç‰Œ
 	virtual bool JudgeLaiZiPlayerOutCard(WORD wChairID);
 
-	//ñ®×Ó£ºÍæ¼ÒµÚÒ»¸ö³öÅÆ  ÅĞ¶ÏËû¿ÉÒÔ³öµÄºÏÊÊµÄÅÆ
+	//ç™å­ï¼šç©å®¶ç¬¬ä¸€ä¸ªå‡ºç‰Œ  åˆ¤æ–­ä»–å¯ä»¥å‡ºçš„åˆé€‚çš„ç‰Œ
 	virtual bool LaiZiAnalysePlayerOutCardFirst(WORD OutCardUsr, BYTE OutCardData[], BYTE *OutCardNum);
 
-	//ñ®×Ó£ºÍæ¼Ò½ÓÅÆ
+	//ç™å­ï¼šç©å®¶æ¥ç‰Œ
 	virtual bool LaiZiAnalysePlayerOutCard(WORD OutCardUsr, BYTE OutCardData[], BYTE *OutCardNum);
 
-	//ñ®×Ó£º·ÖÎö±È½ÏÊÖÅÆ
+	//ç™å­ï¼šåˆ†ææ¯”è¾ƒæ‰‹ç‰Œ
 	virtual bool LaiZiCompareCard(BYTE Card[], BYTE CardCount, BYTE OutCardData[]/*out*/, BYTE *OutCardNum);
 
-	//¸¨Öúº¯Êı
-	//ÆË¿Ë×ª»»
+	//è¾…åŠ©å‡½æ•°
+	//æ‰‘å…‹è½¬æ¢
 	virtual BYTE __stdcall SwitchToCardData(BYTE cbCardIndex);
 
-	//ÆË¿Ë×ª»»
+	//æ‰‘å…‹è½¬æ¢
 	virtual BYTE __stdcall SwitchToCardIndex(BYTE cbCardData);
 
-	//ÆË¿Ë×ª»»
+	//æ‰‘å…‹è½¬æ¢
 	virtual BYTE __stdcall SwitchToCardData(const BYTE cbCardIndex[LEN_MAX_INDEX], BYTE cbCardData[MAX_CARD_COUNT]);
 
-	//ÆË¿Ë×ª»»
+	//æ‰‘å…‹è½¬æ¢
 	virtual BYTE __stdcall SwitchToCardIndex(const BYTE *cbCardData, BYTE cbCardCount, BYTE *cbCardIndex);
 
-	//É¾³ıÆË¿Ë
+	//åˆ é™¤æ‰‘å…‹
 	virtual bool __stdcall RemoveCard(const BYTE *cbRemoveCard, BYTE cbRemoveCount, BYTE *cbCardData, BYTE cbCardCount);
 
-	//´ÓÍæ¼ÒÊÖÅÆÖĞÉ¾³ıÆË¿Ë
+	//ä»ç©å®¶æ‰‹ç‰Œä¸­åˆ é™¤æ‰‘å…‹
 	virtual bool __stdcall RemoveCard(const WORD &wChairID, const BYTE *cbRemoveCard, BYTE cbRemoveCount);
 
-// ĞÅÏ¢²éÑ¯½Ó¿ÚCGameAccess
+// ä¿¡æ¯æŸ¥è¯¢æ¥å£CGameAccess
 public:
-	// ²éÑ¯µ±Ç°ÓÎÏ·ÀàĞÍID
+	// æŸ¥è¯¢å½“å‰æ¸¸æˆç±»å‹ID
 	virtual int __stdcall SetKindID(DWORD id);
 
-	// ²éÑ¯µ±Ç°ÓÎÏ·ÀàĞÍID
+	// æŸ¥è¯¢å½“å‰æ¸¸æˆç±»å‹ID
 	virtual DWORD __stdcall GetKindID();
 
-	// ²éÑ¯¿Í»§¶ËµÄÅÆ×é
+	// æŸ¥è¯¢å®¢æˆ·ç«¯çš„ç‰Œç»„
 	virtual int __stdcall GetClientHandCards(WORD wChairID, BYTE *cards, const int &cardsum);
 
-	// ²éÑ¯Íæ¼ÒĞ¡¾ÖµÃ·Ö
+	// æŸ¥è¯¢ç©å®¶å°å±€å¾—åˆ†
 	virtual SCORE __stdcall  GetPlayerSingleScore(WORD wChairID);
 
-	// ²éÑ¯Íæ¼Ò·¿¼äÄÚ×ÜµÃ·Ö
+	// æŸ¥è¯¢ç©å®¶æˆ¿é—´å†…æ€»å¾—åˆ†
 	virtual SCORE __stdcall GetPlayerTotalScore(WORD wChairID);
 
-	//¼ÇÂ¼Íæ¼Ò×¯¼Ò´ÎÊı  ´ó¾Ö½áËã
+	//è®°å½•ç©å®¶åº„å®¶æ¬¡æ•°  å¤§å±€ç»“ç®—
 	virtual int __stdcall SetPlayerBankCount(WORD wChairID);
 
-	//»ñÈ¡Íæ¼Ò×¯¼Ò´ÎÊı  
+	//è·å–ç©å®¶åº„å®¶æ¬¡æ•°  
 	virtual int __stdcall GetPlayerBankCount(WORD wChairID);
 
-	// ÉèÖÃÍæ¼ÒÓ®¾ÖÊı
+	// è®¾ç½®ç©å®¶èµ¢å±€æ•°
 	virtual int __stdcall SetWinSum(WORD wChairID, BYTE winsum);
 
-	// ²éÑ¯Íæ¼ÒÓ®¾ÖÊı
+	// æŸ¥è¯¢ç©å®¶èµ¢å±€æ•°
 	virtual int __stdcall GetWinSum(WORD wChairID, BYTE &winsum);
 
-	// ²éÑ¯µ±Ç°¾ÖÊı
+	// æŸ¥è¯¢å½“å‰å±€æ•°
 	virtual BYTE __stdcall GetCurGameCount();
 
-	// ÉèÖÃµ±Ç°¾ÖÊı
+	// è®¾ç½®å½“å‰å±€æ•°
 	virtual int __stdcall SetGameCount(BYTE count);
 
-	// ²éÑ¯×Ü¾ÖÊı
+	// æŸ¥è¯¢æ€»å±€æ•°
 	virtual BYTE __stdcall GetAllCount();
 
-	// ÉèÖÃ×Ü¾ÖÊı
+	// è®¾ç½®æ€»å±€æ•°
 	virtual int __stdcall SetAllCount(BYTE count);
 
-	// ²éÑ¯·¿¼äµ×·Ö
+	// æŸ¥è¯¢æˆ¿é—´åº•åˆ†
 	virtual DWORD __stdcall GetCellScore();
 
-	// ÉèÖÃÍæ¼Ò·¿¼äÄÚ×ÜµÃ·Ö
+	// è®¾ç½®ç©å®¶æˆ¿é—´å†…æ€»å¾—åˆ†
 	virtual DWORD __stdcall SetPlayerTotalScore(WORD wChairID, SCORE score);
 
-	// ÉèÖÃ·¿¼äµ×·Ö
+	// è®¾ç½®æˆ¿é—´åº•åˆ†
 	virtual int __stdcall SetCellScore(DWORD score);
 
-	//****************²éÑ¯/ÉèÖÃÓÃ»§ÓÎÏ·ÖĞ×´Ì¬*********************//
+	//****************æŸ¥è¯¢/è®¾ç½®ç”¨æˆ·æ¸¸æˆä¸­çŠ¶æ€*********************//
 
-	// ÉèÖÃµ±Ç°ÇÀ×¯´ÎÊı
+	// è®¾ç½®å½“å‰æŠ¢åº„æ¬¡æ•°
 	virtual int __stdcall SetCurBankerCount(BYTE count);
 
-	// »ñÈ¡µ±Ç°ÇÀ×¯´ÎÊı
+	// è·å–å½“å‰æŠ¢åº„æ¬¡æ•°
 	virtual BYTE __stdcall GetCurBankerCount();
 
-	// ÉèÖÃÍæ¼ÒÇÀ×¯×ö×¯
+	// è®¾ç½®ç©å®¶æŠ¢åº„åšåº„
 	virtual int __stdcall SetBankerState(WORD wChairID, BYTE cbResult);
 
-	// »ñÈ¡Íæ¼ÒÇÀ×¯×´Ì¬
+	// è·å–ç©å®¶æŠ¢åº„çŠ¶æ€
 	virtual BYTE __stdcall GetBankerState(WORD wChairID);
 
-	// ²éÑ¯Íæ¼ÒÏÂ×¢Íê³É±êÖ¾
+	// æŸ¥è¯¢ç©å®¶ä¸‹æ³¨å®Œæˆæ ‡å¿—
 	virtual BYTE __stdcall GetAddScoreState(WORD wChairID);
 
-	// ÉèÖÃÍæ¼ÒÏÂ×¢Íê³É±êÖ¾
+	// è®¾ç½®ç©å®¶ä¸‹æ³¨å®Œæˆæ ‡å¿—
 	virtual int __stdcall SetAddScoreState(WORD wChairID, BYTE beted);
 
-	// ²éÑ¯Íæ¼ÒÃ÷ÅÆÍê³É±êÖ¾
+	// æŸ¥è¯¢ç©å®¶æ˜ç‰Œå®Œæˆæ ‡å¿—
 	virtual BYTE __stdcall GetMingPaiState(WORD wChairID);
 
-	// ÉèÖÃÍæ¼ÒÃ÷ÅÆÍê³É±êÖ¾
+	// è®¾ç½®ç©å®¶æ˜ç‰Œå®Œæˆæ ‡å¿—
 	virtual int __stdcall SetMingPaiState(WORD wChairID, BYTE state);
 
-	// ²éÑ¯Íæ¼Ò¶¯×÷Íê³É±êÖ¾
+	// æŸ¥è¯¢ç©å®¶åŠ¨ä½œå®Œæˆæ ‡å¿—
 	virtual BYTE __stdcall GetUserOperateState(WORD wChairID);
 
-	// ÉèÖÃÍæ¼Ò¶¯×÷Íê³É±êÖ¾
+	// è®¾ç½®ç©å®¶åŠ¨ä½œå®Œæˆæ ‡å¿—
 	virtual int __stdcall SetUserOperateState(WORD wChairID, BYTE state);
 
-	// ²éÑ¯Íæ¼ÒÌ¯ÅÆ
+	// æŸ¥è¯¢ç©å®¶æ‘Šç‰Œ
 	virtual BYTE __stdcall GetShowCardState(WORD wChairID);
 
-	// ÉèÖÃÍæ¼ÒÌ¯ÅÆ
+	// è®¾ç½®ç©å®¶æ‘Šç‰Œ
 	virtual int __stdcall SetShowCardState(WORD wChairID, BYTE state);
 
-	// ²éÑ¯Íæ¼Ò×¼±¸×´Ì¬
+	// æŸ¥è¯¢ç©å®¶å‡†å¤‡çŠ¶æ€
 	virtual BYTE __stdcall GetXjReadyState(WORD wChairID);
 
-	// ÉèÖÃÍæ¼Ò×¼±¸
+	// è®¾ç½®ç©å®¶å‡†å¤‡
 	virtual int __stdcall SetXjReadyState(WORD wChairID, BYTE ready);
 
 	//*****************************end**************************//
 
-	// »ñÈ¡ÏÂ×¢Êı
+	// è·å–ä¸‹æ³¨æ•°
 	virtual DWORD __stdcall GetAllBet(WORD wChairID);
 
-	// ²éÑ¯×î´óÒÎ×ÓÊı
+	// æŸ¥è¯¢æœ€å¤§æ¤…å­æ•°
 	virtual BYTE __stdcall GetMaxChairCount();
 
-	// ÉèÖÃ×î´óÒÎ×ÓÊı
+	// è®¾ç½®æœ€å¤§æ¤…å­æ•°
 	virtual int __stdcall SetMaxChairCount(BYTE count);
 
-	//added by lizhihu 2017.10.20 ÉèÖÃÓÎÏ·¼Ó±¶Ä£Ê½£º¾­µäÄ£Ê½»ò·è¿ñ¼Ó±¶Ä£Ê½
+	//added by lizhihu 2017.10.20 è®¾ç½®æ¸¸æˆåŠ å€æ¨¡å¼ï¼šç»å…¸æ¨¡å¼æˆ–ç–¯ç‹‚åŠ å€æ¨¡å¼
 	virtual int __stdcall SetGameScoreMode(BYTE nMode);
 
-	//»ñµÃÓÎÏ·¼Ó±¶Ä£Ê½
+	//è·å¾—æ¸¸æˆåŠ å€æ¨¡å¼
 	virtual BYTE __stdcall GetGameScoreMode();
 
-	// ²éÑ¯µ±Ç°Íæ¼ÒÊı
+	// æŸ¥è¯¢å½“å‰ç©å®¶æ•°
 	virtual BYTE __stdcall GetCurPlayerCount();
 
-	// ²éÑ¯µ±Ç°ÅÔ¹ÛÕßÊı   MaxChair = CurPlayer + CurLooker + voidChair
+	// æŸ¥è¯¢å½“å‰æ—è§‚è€…æ•°   MaxChair = CurPlayer + CurLooker + voidChair
 	virtual BYTE __stdcall GetCurLookerCount();
 
-	// ÉèÖÃµ±Ç°×¯¼Ò
+	// è®¾ç½®å½“å‰åº„å®¶
 	virtual int __stdcall SetBankerID(const WORD &wChairID);
 
-	// ²éÑ¯µ±Ç°×¯¼Ò
+	// æŸ¥è¯¢å½“å‰åº„å®¶
 	virtual WORD __stdcall GetBankerID();
 
-	// »ñÈ¡ÏÂ¸öÍæ¼Ò  ÄæÊ±Õë»ñÈ¡
+	// è·å–ä¸‹ä¸ªç©å®¶  é€†æ—¶é’ˆè·å–
 	virtual WORD __stdcall GetNextUser(const WORD &wChariID);
 
-	// »ñÈ¡ÉÏ¸öÍæ¼Ò  Ë³Ê±Õë»ñÈ¡
+	// è·å–ä¸Šä¸ªç©å®¶  é¡ºæ—¶é’ˆè·å–
 	virtual WORD __stdcall GetLastUser(const WORD &wChariID);
 
-	// »ñµÃ¶Ô¼Ò
+	// è·å¾—å¯¹å®¶
 	virtual WORD __stdcall GetOppositeUser(const WORD &wChariID);
 
-	// ÉèÖÃÓÃ»§×´Ì¬£¬´Ó·şÎñÆ÷¿ò¼Ü»ñµÃ£¬ÓÃ»§×øÏÂ¡¢×¼±¸¡¢ÅÔ¹Û¡¢ÓÎÏ·ÖĞ
+	// è®¾ç½®ç”¨æˆ·çŠ¶æ€ï¼Œä»æœåŠ¡å™¨æ¡†æ¶è·å¾—ï¼Œç”¨æˆ·åä¸‹ã€å‡†å¤‡ã€æ—è§‚ã€æ¸¸æˆä¸­
 	virtual int __stdcall  SetPlayerState(WORD wChairID, DWORD state);
 
-	// ²éÑ¯ÓÃ»§×´Ì¬£¬ÓÃ»§×øÏÂ¡¢×¼±¸¡¢ÅÔ¹Û¡¢ÓÎÏ·ÖĞ
+	// æŸ¥è¯¢ç”¨æˆ·çŠ¶æ€ï¼Œç”¨æˆ·åä¸‹ã€å‡†å¤‡ã€æ—è§‚ã€æ¸¸æˆä¸­
 	virtual DWORD __stdcall GetPlayerState(WORD wChairID);
 
-	// ÉèÖÃÓÎÏ··¿¼ä×´Ì¬
+	// è®¾ç½®æ¸¸æˆæˆ¿é—´çŠ¶æ€
 	virtual int __stdcall SetGameStatus(DWORD state);
 
-	// ²éÑ¯ÓÎÏ·×´Ì¬
+	// æŸ¥è¯¢æ¸¸æˆçŠ¶æ€
 	virtual DWORD __stdcall GetGameStatus();
 
-	// ÉèÖÃ·¿¼ä¹æÔò added by lizhihu 2017.10.17 Ê¹ÓÃ void* + size È¡´ú¹Ì¶¨½á¹¹Ìå
+	// è®¾ç½®æˆ¿é—´è§„åˆ™ added by lizhihu 2017.10.17 ä½¿ç”¨ void* + size å–ä»£å›ºå®šç»“æ„ä½“
 	virtual bool __stdcall SetRoomRule(tagTableCfg * pRoomRuleOption);
 
-	//ÉèÖÃÓÎÏ·ÇÀ×¯Ä£Ê½£º0-ÇÀ×¯		1-ÂÖ×¯		2-¹Ì¶¨×¯
+	//è®¾ç½®æ¸¸æˆæŠ¢åº„æ¨¡å¼ï¼š0-æŠ¢åº„		1-è½®åº„		2-å›ºå®šåº„
 	virtual int __stdcall SetRobBankMode(BYTE nMode);
 
-	//»ñµÃÓÎÏ·ÇÀ×¯Ä£Ê½£º0-ÇÀ×¯		1-ÂÖ×¯		2-¹Ì¶¨×¯
+	//è·å¾—æ¸¸æˆæŠ¢åº„æ¨¡å¼ï¼š0-æŠ¢åº„		1-è½®åº„		2-å›ºå®šåº„
 	virtual BYTE __stdcall GetRobBankMode();
 
-	//ÉèÖÃÍæ¼ÒÇÀ×¯·ÖÊı
+	//è®¾ç½®ç©å®¶æŠ¢åº„åˆ†æ•°
 	virtual int __stdcall SetUserRobScore(const WORD &wChairID, BYTE score);
 
-	//ÉèÖÃÍæ¼ÒÇÀ×¯´ÎÊı
+	//è®¾ç½®ç©å®¶æŠ¢åº„æ¬¡æ•°
 	virtual int __stdcall SetUserRobNum(const WORD &wChairID, BYTE cbNum);
 
-	//»ñµÃÍæ¼ÒÇÀ×¯´ÎÊı
+	//è·å¾—ç©å®¶æŠ¢åº„æ¬¡æ•°
 	virtual BYTE __stdcall GetUserRobNum(const WORD &wChairID);
 
-	//ÉèÖÃ·¿Ö÷
+	//è®¾ç½®æˆ¿ä¸»
 	virtual int __stdcall SetRoomFangzhu(WORD nFangzhu_id);
 
-	//»ñµÃ·¿Ö÷id
+	//è·å¾—æˆ¿ä¸»id
 	virtual WORD __stdcall GetRoomFangzhu();
 
-	//²éÑ¯ÓÃ»§µÄ³õÊ¼¿¨ÅÆÊıÄ¿
+	//æŸ¥è¯¢ç”¨æˆ·çš„åˆå§‹å¡ç‰Œæ•°ç›®
 	virtual int  __stdcall GetPlayerInitCardNum();
 
-	//ÉèÖÃÓÃ»§µÄ³õÊ¼¿¨ÅÆÊıÄ¿
+	//è®¾ç½®ç”¨æˆ·çš„åˆå§‹å¡ç‰Œæ•°ç›®
 	virtual int  __stdcall SetPlayerInitCardNum();
 
-	//»ñµÃÉÏ¾ÖÓ®¼ÒÒÎ×ÓºÅ
+	//è·å¾—ä¸Šå±€èµ¢å®¶æ¤…å­å·
 	virtual WORD  __stdcall GetLastGameWinner();
 
-	//ÉèÖÃÓ®¼ÒÒÎ×ÓºÅ
+	//è®¾ç½®èµ¢å®¶æ¤…å­å·
 	virtual int  __stdcall SetLastGameWinner(const WORD &wChairID);
 
-	//ÉèÖÃÉı¼¶Ö÷»¨É«
+	//è®¾ç½®å‡çº§ä¸»èŠ±è‰²
 	virtual int __stdcall SetMainColor(const BYTE &color);
 
-	//»ñÈ¡Éı¼¶Ö÷»¨É«
+	//è·å–å‡çº§ä¸»èŠ±è‰²
 	virtual BYTE  __stdcall GetMainColor();
 
-	//ÉèÖÃÁÁÖ÷Íæ¼Ò
+	//è®¾ç½®äº®ä¸»ç©å®¶
 	virtual int  __stdcall SetLiangZhuUser(const WORD &wChairID);
 
-	//»ñÈ¡ÁÁÖ÷Íæ¼Ò
+	//è·å–äº®ä¸»ç©å®¶
 	virtual WORD  __stdcall GetLiangZhuUser();
 
-	//ÉèÖÃµ±Ç°¼¶ÅÆ
+	//è®¾ç½®å½“å‰çº§ç‰Œ
 	virtual int  __stdcall SetLevelValue(const BYTE &value);
 
-	//»ñÈ¡µ±Ç°¼¶ÅÆ
+	//è·å–å½“å‰çº§ç‰Œ
 	virtual BYTE  __stdcall GetLevelValue();
 
-	//»ñµÃµ×ÅÆ
+	//è·å¾—åº•ç‰Œ
 	virtual void  __stdcall GetLeaveCard(BYTE *cbLeaveCard, int nLeaveCardSize);
 
-	//»ñµÃÍæ¼Òµ±Ç°¿¨ÅÆÊıÄ¿
+	//è·å¾—ç©å®¶å½“å‰å¡ç‰Œæ•°ç›®
 	virtual BYTE  __stdcall GetUserCurCardNum(const WORD &wChairID);
 
-	//»ñµÃÍæ¼Òµ±ÊÖÅÆÖĞµÄÖ÷ÅÆ¸öÊı
+	//è·å¾—ç©å®¶å½“æ‰‹ç‰Œä¸­çš„ä¸»ç‰Œä¸ªæ•°
 	virtual BYTE  __stdcall GetUserMainColorNum(const WORD &wChairID);
 
-	// ÉèÖÃµ±Ç°³öÅÆÓÃ»§
+	// è®¾ç½®å½“å‰å‡ºç‰Œç”¨æˆ·
 	virtual int __stdcall SetCurOutCardUser(const WORD &wChairID);
 
-	// »ñµÃµ±Ç°³öÅÆÓÃ»§
+	// è·å¾—å½“å‰å‡ºç‰Œç”¨æˆ·
 	virtual WORD __stdcall GetCurOutCardUser();
 
-	// ÉèÖÃÒ»ÂÖÖĞ×îÏÈ¿ªÊ¼³öÅÆµÄÓÃ»§
+	// è®¾ç½®ä¸€è½®ä¸­æœ€å…ˆå¼€å§‹å‡ºç‰Œçš„ç”¨æˆ·
 	virtual int __stdcall SetStartOutCardUser(const WORD &wChairID);
 
-	// »ñµÃÒ»ÂÖÖĞ×îÏÈ¿ªÊ¼³öÅÆµÄÓÃ»§
+	// è·å¾—ä¸€è½®ä¸­æœ€å…ˆå¼€å§‹å‡ºç‰Œçš„ç”¨æˆ·
 	virtual WORD __stdcall GetStartOutCardUser();
 
-	// ÉèÖÃÒ»ÂÖÖĞ×îºó³öÅÆµÄÓÃ»§
+	// è®¾ç½®ä¸€è½®ä¸­æœ€åå‡ºç‰Œçš„ç”¨æˆ·
 	virtual int __stdcall SetLastOutCardUser(const WORD &wChairID);  //by hao
 
-	// »ñµÃÒ»ÂÖÖĞ×îºó³öÅÆµÄÓÃ»§
+	// è·å¾—ä¸€è½®ä¸­æœ€åå‡ºç‰Œçš„ç”¨æˆ·
 	virtual WORD __stdcall GetLastOutCardUser();
 
-	// ÉèÖÃÍæ¼Ò³öÅÆ¿¨ÅÆÊı¾İ
+	// è®¾ç½®ç©å®¶å‡ºç‰Œå¡ç‰Œæ•°æ®
 	virtual bool __stdcall SetUserOutCard(const WORD wChairID, const BYTE *cbCardData, const BYTE &cbCardNum);
 
-	// »ñµÃÍæ¼Ò³öÅÆ¿¨ÅÆÊı¾İ
+	// è·å¾—ç©å®¶å‡ºç‰Œå¡ç‰Œæ•°æ®
 	virtual BYTE __stdcall GetUserOutCard(const WORD wChairID, BYTE *cbCardData);
 
-	// »ñµÃµ×ÅÆÊıÄ¿
+	// è·å¾—åº•ç‰Œæ•°ç›®
 	virtual BYTE __stdcall GetLeaveCardNum();
 
-	// ÉèÖÃµ±Ç°·´Ö÷¿¨ÅÆ
+	// è®¾ç½®å½“å‰åä¸»å¡ç‰Œ
 	virtual int __stdcall SetCurFanZhuCard(const BYTE &card);
 
-	// »ñµÃÍæ¼Òµ±Ç°¼¶Êı
+	// è·å¾—ç©å®¶å½“å‰çº§æ•°
 	virtual int __stdcall GetUserCurLevel(const WORD &wChairID);
 
-	// ÉèÖÃµ±Ç°·´Ö÷Íæ¼Ò
+	// è®¾ç½®å½“å‰åä¸»ç©å®¶
 	virtual int __stdcall SetCurFanzhuUser(const WORD &wChairID);
 
-	// »ñµÃµ±Ç°·´Ö÷Íæ¼Ò
+	// è·å¾—å½“å‰åä¸»ç©å®¶
 	virtual WORD __stdcall GetCurFanzhuUser();
 
-	// ÉèÖÃµ±Ç°¿Ûµ×Íæ¼Ò
+	// è®¾ç½®å½“å‰æ‰£åº•ç©å®¶
 	virtual int __stdcall SetCurKoudiUser(const WORD &wChairID);
 
-	// »ñµÃµ±Ç°¿Ûµ×Íæ¼Ò
+	// è·å¾—å½“å‰æ‰£åº•ç©å®¶
 	virtual WORD __stdcall GetCurKoudiUser();
 
-	// ÉèÖÃ×î¿ªÊ¼ÇÀ×¯Íæ¼Ò
+	// è®¾ç½®æœ€å¼€å§‹æŠ¢åº„ç©å®¶
 	virtual int __stdcall SetStartRobUser(const WORD &wChairID);
 
-	// »ñµÃ×î¿ªÊ¼ÇÀ×¯Íæ¼Ò
+	// è·å¾—æœ€å¼€å§‹æŠ¢åº„ç©å®¶
 	virtual WORD __stdcall GetStartRobUser();
 
-	// ÉèÖÃÒ»ÂÖÖĞÍæ¼ÒÊÇ³öÅÆ»¹ÊÇ¹ı		
-	virtual int __stdcall SetTurnOutCardType(const WORD wChairID, DWORD type);    //0- ¹ı   1-³öÅÆ
+	// è®¾ç½®ä¸€è½®ä¸­ç©å®¶æ˜¯å‡ºç‰Œè¿˜æ˜¯è¿‡		
+	virtual int __stdcall SetTurnOutCardType(const WORD wChairID, DWORD type);    //0- è¿‡   1-å‡ºç‰Œ
 
-	// »ñÈ¡Ò»ÂÖÖĞÍæ¼ÒÊÇ³öÅÆ»¹ÊÇ¹ı
+	// è·å–ä¸€è½®ä¸­ç©å®¶æ˜¯å‡ºç‰Œè¿˜æ˜¯è¿‡
 	virtual DWORD __stdcall GetTurnOutCardType(const WORD wChairID);
 
-	// ÉèÖÃÒ»ÂÖ½áÊø
+	// è®¾ç½®ä¸€è½®ç»“æŸ
 	virtual int __stdcall SetOneTurnEnd(const BYTE &cbEnd);
 
-	// »ñµÃÒ»ÂÖ½áÊø
+	// è·å¾—ä¸€è½®ç»“æŸ
 	virtual BYTE __stdcall GetOneTurnEnd();
 
-	// ÉèÖÃÒ»ÂÖÖĞ×î´ó¿¨ÅÆÊı¾İ
+	// è®¾ç½®ä¸€è½®ä¸­æœ€å¤§å¡ç‰Œæ•°æ®
 	virtual int __stdcall SetTurnMaxCards(BYTE *cbCardData, BYTE cbCardNum);
 
-	// »ñµÃÒ»ÂÖÖĞ×î´ó¿¨ÅÆÊı¾İ
+	// è·å¾—ä¸€è½®ä¸­æœ€å¤§å¡ç‰Œæ•°æ®
 	virtual BYTE __stdcall GetTurnMaxCards(BYTE *cbCardData, BYTE &cbCardNum);
 
-	// »ñµÃÀµ×ÓÊıÄ¿
+	// è·å¾—èµ–å­æ•°ç›®
 	virtual BYTE __stdcall GetMagicCardNum(const BYTE cbHandCardData[], BYTE cbHandCardCount);
 
-	// »ñµÃÍæ¼ÒÊÖÅÆÀµ×ÓÊıÄ¿
+	// è·å¾—ç©å®¶æ‰‹ç‰Œèµ–å­æ•°ç›®
 	virtual BYTE __stdcall GetMagicCardNum(const WORD &wChairID);
 
-	//ÉèÖÃµ±Ç°ñ®×Ó
+	//è®¾ç½®å½“å‰ç™å­
 	virtual int __stdcall SetMagicCard(const BYTE &cbCard);
 
-	//»ñµÃµ±Ç°ñ®×Ó
+	//è·å¾—å½“å‰ç™å­
 	virtual BYTE __stdcall GetMagicCard();
 
-	//ÉèÖÃÍæ¼ÒÕ¨µ¯ĞÅÏ¢
+	//è®¾ç½®ç©å®¶ç‚¸å¼¹ä¿¡æ¯
 	virtual int __stdcall SetUserBoomInfo(const WORD &wChairID, const DWORD cbBoomType);
 
-	//»ñµÃÍæ¼ÒÕ¨µ¯ĞÅÏ¢
+	//è·å¾—ç©å®¶ç‚¸å¼¹ä¿¡æ¯
 	virtual BYTE __stdcall GetUserBoomInfo(const WORD &wChairID, tagBoomInfo &strBoomInfo);
 
-	//ÉèÖÃµ±Ç°ÇÀ×¯µÄÍæ¼Ò
+	//è®¾ç½®å½“å‰æŠ¢åº„çš„ç©å®¶
 	virtual int __stdcall SetCurRobUser(const WORD wChairID);
 
-	//»ñÈ¡µ±Ç°ÇÀ×¯µÄÍæ¼Ò
+	//è·å–å½“å‰æŠ¢åº„çš„ç©å®¶
 	virtual WORD __stdcall GetCurRobUser();
 
-	//¼ÇÂ¼Íæ¼ÒÏÂ×¢
+	//è®°å½•ç©å®¶ä¸‹æ³¨
 	virtual int __stdcall SetPlayerAddScore(WORD wChairID, WORD lScore);
 
-	//»ñÈ¡Íæ¼ÒÏÂ×¢
+	//è·å–ç©å®¶ä¸‹æ³¨
 	virtual WORD __stdcall GetPlayerAddScore(WORD wChairID);
 
-	//¼ÇÂ¼Íæ¼ÒÃ÷ÅÆ±¶Êı
+	//è®°å½•ç©å®¶æ˜ç‰Œå€æ•°
 	virtual int __stdcall SetPlayerMingPaiBet(WORD wChairID, WORD bet);
 
-	//»ñÈ¡Íæ¼ÒÃ÷ÅÆ±¶Êı
+	//è·å–ç©å®¶æ˜ç‰Œå€æ•°
 	virtual int __stdcall GetPlayerMingPaiBet(WORD wChairID);
 
-	//ÉèÖÃÒ»´ó¾ÖÖĞÍæ¼Ò»ñµÃ¹ıµÄ×î´ó±¶Êı
+	//è®¾ç½®ä¸€å¤§å±€ä¸­ç©å®¶è·å¾—è¿‡çš„æœ€å¤§å€æ•°
 	virtual int __stdcall SetDJPlayerBestBet(WORD wChairID, SCORE bet);
 
-	//»ñµÃÒ»´ó¾ÖÖĞÍæ¼Ò»ñµÃ¹ıµÄ×î´ó±¶Êı
+	//è·å¾—ä¸€å¤§å±€ä¸­ç©å®¶è·å¾—è¿‡çš„æœ€å¤§å€æ•°
 	virtual SCORE __stdcall GetDJPlayerBestBet(WORD wChairID);
 
-	//ÉèÖÃÓÎÏ··â¶¥±¶Êı
+	//è®¾ç½®æ¸¸æˆå°é¡¶å€æ•°
 	virtual int __stdcall SetRoomMaxBet(DWORD Max_Bet);
 
-	//»ñÈ¡ÓÎÏ··â¶¥±¶Êı
+	//è·å–æ¸¸æˆå°é¡¶å€æ•°
 	virtual DWORD __stdcall GetRoomMaxBet();
 
-	//¼ÇÂ¼Íæ¼ÒÊÇ·ñ¿ªÊ¼ÓÎÏ·Ã÷ÅÆ  5-¿ªÊ¼ÓÎÏ·Ã÷ÅÆ
+	//è®°å½•ç©å®¶æ˜¯å¦å¼€å§‹æ¸¸æˆæ˜ç‰Œ  5-å¼€å§‹æ¸¸æˆæ˜ç‰Œ
 	virtual int __stdcall SetStartMingPai(WORD wChairID, DWORD state);
 
-	//»ñÈ¡Íæ¼ÒÊÇ·ñ¿ªÊ¼ÓÎÏ·Ã÷ÅÆ
+	//è·å–ç©å®¶æ˜¯å¦å¼€å§‹æ¸¸æˆæ˜ç‰Œ
 	virtual DWORD __stdcall GetStartMingPai(WORD wChairID);
 
-	//ÉèÖÃÒ»¸ö²ÎÊı¼ÇÂ¼½Ğ·Ö´ÎÊı 
+	//è®¾ç½®ä¸€ä¸ªå‚æ•°è®°å½•å«åˆ†æ¬¡æ•° 
 	virtual int __stdcall SetJiaoFenCount(WORD count);
 
-	//»ñµÃ½Ğ·Ö´ÎÊı 
+	//è·å¾—å«åˆ†æ¬¡æ•° 
 	virtual WORD __stdcall GetJiaoFenCount();
 
-	//¼ÇÂ¼µ±Ç°Íæ¼ÒµÄ½Ğ·Ö×´Ì¬
+	//è®°å½•å½“å‰ç©å®¶çš„å«åˆ†çŠ¶æ€
 	virtual int __stdcall SetCurJiaoFenState(WORD wChairID, WORD state);
 
-	//»ñµÃµ±Ç°Íæ¼ÒµÄ½Ğ·Ö×´Ì¬
+	//è·å¾—å½“å‰ç©å®¶çš„å«åˆ†çŠ¶æ€
 	virtual int __stdcall GetCurJiaoFenState(WORD wChairID);
 
-	//ÉèÖÃµ±Ç°ÕıÔÚ½Ğ·ÖµÄÍæ¼Ò     
+	//è®¾ç½®å½“å‰æ­£åœ¨å«åˆ†çš„ç©å®¶     
 	virtual int __stdcall SetCurJiaoFenUser(WORD wChairID);
 
-	//»ñÈ¡µ±Ç°ÕıÔÚ½Ğ·ÖµÄÍæ¼Ò     
+	//è·å–å½“å‰æ­£åœ¨å«åˆ†çš„ç©å®¶     
 	virtual WORD __stdcall GetCurJiaoFenUser();
 
-	//Çå³ı¸÷Íæ¼ÒµÄ¸öÈË±¶Êı
+	//æ¸…é™¤å„ç©å®¶çš„ä¸ªäººå€æ•°
 	virtual WORD __stdcall CleanAllBet();
 
-	//»ñÈ¡²»ÇÀ×¯µÄÂÖÊı
+	//è·å–ä¸æŠ¢åº„çš„è½®æ•°
 	virtual WORD __stdcall GetTurnPassCount();
 
-	//ÉèÖÃ²»ÇÀ×¯µÄÂÖÊı
+	//è®¾ç½®ä¸æŠ¢åº„çš„è½®æ•°
 	virtual int __stdcall SetTurnPassCount(WORD count);
 
-	//ÉèÖÃÓÎÏ·ñ®×ÓÄ£Ê½
+	//è®¾ç½®æ¸¸æˆç™å­æ¨¡å¼
 	virtual int __stdcall SetLaiZiMode(WORD Mode);
 
-	//»ñÈ¡ÓÎÏ·ñ®×ÓÄ£Ê½
+	//è·å–æ¸¸æˆç™å­æ¨¡å¼
 	virtual int __stdcall GetLaiZiMode();
 
-	//»ñÈ¡µ×ÅÆ·­±¶±¶Êı
+	//è·å–åº•ç‰Œç¿»å€å€æ•°
 	virtual DWORD __stdcall GetLeaveCardBet();
 
-	//ÉèÖÃÊÇ·ñµ×ÅÆ·­±¶
+	//è®¾ç½®æ˜¯å¦åº•ç‰Œç¿»å€
 	virtual int __stdcall SetISLeaveCardDouble(WORD Mode);
 
-	//»ñÈ¡µ×ÅÆÊÇ·ñ·­±¶
+	//è·å–åº•ç‰Œæ˜¯å¦ç¿»å€
 	virtual WORD __stdcall GetISLeaveCardDouble();
 
-	//ÉèÖÃÊÇ·ñÃ÷ÅÆ
+	//è®¾ç½®æ˜¯å¦æ˜ç‰Œ
 	virtual int __stdcall SetMingPaiMode(WORD Mode);
 
-	//»ñÈ¡ÊÇ·ñÃ÷ÅÆ
+	//è·å–æ˜¯å¦æ˜ç‰Œ
 	virtual WORD __stdcall GetMingPaiMode();
 
-	//ÉèÖÃÊÇ·ñ¼Ó±¶
+	//è®¾ç½®æ˜¯å¦åŠ å€
 	virtual int __stdcall SetAddBetMode(WORD Mode);
 
-	//»ñÈ¡ÊÇ·ñ¼Ó±¶
+	//è·å–æ˜¯å¦åŠ å€
 	virtual WORD __stdcall GetAddBetMode();
 
-	//¼ÇÂ¼Íæ¼ÒÊÇ·ñ³ö¹ıÅÆ
+	//è®°å½•ç©å®¶æ˜¯å¦å‡ºè¿‡ç‰Œ
 	virtual int __stdcall SetSpring(WORD wChairID, WORD spring);
 
-	//ÅĞ¶ÏÍæ¼ÒÊÇ·ñ´ºÌì  0-²»ÊÇ 1-ÊÇ
+	//åˆ¤æ–­ç©å®¶æ˜¯å¦æ˜¥å¤©  0-ä¸æ˜¯ 1-æ˜¯
 	virtual int __stdcall JudgeSpring(WORD wChairID);
 
-	//»ñÈ¡Íæ¼ÒÊÇ·ñ´ºÌì
+	//è·å–ç©å®¶æ˜¯å¦æ˜¥å¤©
 	virtual int __stdcall GetSpring(WORD wChairID);
 
-	//ÉèÖÃÍæ¼ÒÍĞ¹Ü
+	//è®¾ç½®ç©å®¶æ‰˜ç®¡
 	virtual int __stdcall SetPlayerTuoGuan(WORD wChairID, WORD state);
 
-	//»ñÈ¡Íæ¼ÒÍĞ¹Ü
+	//è·å–ç©å®¶æ‰˜ç®¡
 	virtual int __stdcall GetPlayerTuoGuan(WORD wChairID);
 
-	//ÉèÖÃÍæ¼ÒÁ¬Ğø³¬Ê±³öÅÆ´ÎÊı
+	//è®¾ç½®ç©å®¶è¿ç»­è¶…æ—¶å‡ºç‰Œæ¬¡æ•°
 	virtual int __stdcall SetPlayerTimeOutNum(WORD wChairID, WORD num);
 
-	//»ñÈ¡Íæ¼ÒÁ¬Ğø³¬Ê±³öÅÆ´ÎÊı
+	//è·å–ç©å®¶è¿ç»­è¶…æ—¶å‡ºç‰Œæ¬¡æ•°
 	virtual int __stdcall GetPlayerTimeOutNum(WORD wChairID);
 
-	//================================================ñ®×Ó³¡ÅĞ¶Ï=================================================
+	//================================================ç™å­åœºåˆ¤æ–­=================================================
 
-	//ÉèÖÃñ®×Óµ±³ÉµÄÆÕÍ¨ÅÆ
+	//è®¾ç½®ç™å­å½“æˆçš„æ™®é€šç‰Œ
 	virtual int SetLaiZiToCommon(BYTE LaiZiData[], BYTE Count);
 
-	//»ñÈ¡ñ®×Óµ±³ÉµÄÆÕÍ¨ÅÆ
+	//è·å–ç™å­å½“æˆçš„æ™®é€šç‰Œ
 	virtual int GetLaiZiToCommon(BYTE LaiZiData[], BYTE &Count);
 
 protected:
-	// ¸ù¾İÓÎÏ·ÅäÖÃ¼ÓÔØ¿¨ÅÆÊı¾İ
+	// æ ¹æ®æ¸¸æˆé…ç½®åŠ è½½å¡ç‰Œæ•°æ®
 	int LoadGameCards( );
 
-	// ¸ù¾İÓÎÏ·ÅäÖÃ¼ÓÔØÍæ¼ÒÊı¾İ
+	// æ ¹æ®æ¸¸æˆé…ç½®åŠ è½½ç©å®¶æ•°æ®
 	int LoadPlayers( );
 
-	// ¼ÓÔØÖÃÓÎÏ·¹æÔò
+	// åŠ è½½ç½®æ¸¸æˆè§„åˆ™
 	int LoadGameRule(const BYTE cbGameScoreMode);
 
-	// µ¥Àı´´½¨ÈÕÖ¾
+	// å•ä¾‹åˆ›å»ºæ—¥å¿—
 	int CreateLog( const wchar_t *_logFile );
 
-	// Êä³öÅÆ¾ÖĞÅÏ¢
+	// è¾“å‡ºç‰Œå±€ä¿¡æ¯
 	int OutGameInfor();
 
-	// ³õÊ¼»¯È«¾ÖÊı¾İ
+	// åˆå§‹åŒ–å…¨å±€æ•°æ®
 	int InitGameData( );
 
 	void SetCardData_Leo(const WORD &wChairID, CARD_DESC *cards);
 
-// ¹¤¾ßº¯Êı
+// å·¥å…·å‡½æ•°
 protected:
 
-	// ¿¨ÅÆÊı¾İ×ª»»
-	virtual int CardTrans_S2C( const CARD_DESC &card_s, BYTE &card_c ); // ·şÎñ¶Ë×ª¿Í»§¶Ë
-	virtual int CardTrans_C2S( CARD_DESC &card_s, const BYTE &card_c ); // ¿Í»§¶Ë×ª·şÎñÆ÷
+	// å¡ç‰Œæ•°æ®è½¬æ¢
+	virtual int CardTrans_S2C( const CARD_DESC &card_s, BYTE &card_c ); // æœåŠ¡ç«¯è½¬å®¢æˆ·ç«¯
+	virtual int CardTrans_C2S( CARD_DESC &card_s, const BYTE &card_c ); // å®¢æˆ·ç«¯è½¬æœåŠ¡å™¨
 
 	int TransListToInt(int iOldType,int iNewType);
 
 public:
 
-	GAME_CARD_CONFIG	m_card_config;		// ¿¨ÅÆÅäÖÃ
-	PLAYERS_CONFIG		m_players_config;	// Íæ¼ÒÅäÖÃ
-	ROOM_CONFIG			m_room_config;		// ÓÎÏ·ÅäÖÃ	
-	PLAYING_PARAMETERS	m_playing_para;		// ÓÎÏ·ÖĞ²ÎÊı
-	CServerLog          *m_plog;			// ÈÕÖ¾
-	wchar_t             m_cfgFile[128];		// ÅäÖÃÎÄ¼ş
+	GAME_CARD_CONFIG	m_card_config;		// å¡ç‰Œé…ç½®
+	PLAYERS_CONFIG		m_players_config;	// ç©å®¶é…ç½®
+	ROOM_CONFIG			m_room_config;		// æ¸¸æˆé…ç½®	
+	PLAYING_PARAMETERS	m_playing_para;		// æ¸¸æˆä¸­å‚æ•°
+	CServerLog          *m_plog;			// æ—¥å¿—
+	wchar_t             m_cfgFile[128];		// é…ç½®æ–‡ä»¶
 
 public:
-	static const BYTE	m_cbCardData[FULL_COUNT];			//Ô­Ê¼ÆË¿ËÊı¾İ
+	static const BYTE	m_cbCardData[FULL_COUNT];			//åŸå§‹æ‰‘å…‹æ•°æ®
 	
 };
 

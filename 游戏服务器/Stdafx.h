@@ -31,32 +31,32 @@
 
 //////////////////////////////////////////////////////////////////////////////////
 
-//MFC ÎÄ¼ş
+//MFC æ–‡ä»¶
 #include <AfxWin.h>
 #include <AfxExt.h>
 #include <AfxCmn.h>
 #include <AfxDisp.h>
 
-/***È«¾ÖÎÄ¼ş***/
-//¶¨ÒåÎÄ¼ş
-#include "../×ÓÒÀÀµÏî/È«¾Ö¶¨Òå/Macro.h"
+/***å…¨å±€æ–‡ä»¶***/
+//å®šä¹‰æ–‡ä»¶
+#include "../å­ä¾èµ–é¡¹/å…¨å±€å®šä¹‰/Macro.h"
 
-//½á¹¹ÎÄ¼ş
-#include "../×ÓÒÀÀµÏî/ÓÎÏ··şÎñ/Struct_Frame.h"
-#include "../×ÓÒÀÀµÏî/ÓÎÏ··şÎñ/Define.h"
-#include "../×ÓÒÀÀµÏî/ÓÎÏ··şÎñ/TableFrameBase.h"
-#include "../×ÓÒÀÀµÏî/È«¾Ö¶¨Òå/Packet.h"
+//ç»“æ„æ–‡ä»¶
+#include "../å­ä¾èµ–é¡¹/æ¸¸æˆæœåŠ¡/Struct_Frame.h"
+#include "../å­ä¾èµ–é¡¹/æ¸¸æˆæœåŠ¡/Define.h"
+#include "../å­ä¾èµ–é¡¹/æ¸¸æˆæœåŠ¡/TableFrameBase.h"
+#include "../å­ä¾èµ–é¡¹/å…¨å±€å®šä¹‰/Packet.h"
 
-//Ä£°åÎÄ¼ş
-#include "../×ÓÒÀÀµÏî/È«¾Ö¶¨Òå/Array.h"
-#include "../×ÓÒÀÀµÏî/·şÎñºËĞÄ/log.h"
-#include "../×ÓÒÀÀµÏî/·şÎñºËĞÄ/cfg.h"
-#include "..\ÏûÏ¢¶¨Òå\CMD_SubGame.h"
+//æ¨¡æ¿æ–‡ä»¶
+#include "../å­ä¾èµ–é¡¹/å…¨å±€å®šä¹‰/Array.h"
+#include "../å­ä¾èµ–é¡¹/æœåŠ¡æ ¸å¿ƒ/log.h"
+#include "../å­ä¾èµ–é¡¹/æœåŠ¡æ ¸å¿ƒ/cfg.h"
+#include "..\æ¶ˆæ¯å®šä¹‰\CMD_SubGame.h"
 
 
-//Á´½Ó´úÂë
-#pragma comment (lib,"../×ÓÒÀÀµÏî/Á´½Ó¿â/ServiceCore.lib")
-#pragma comment (lib,"../×ÓÒÀÀµÏî/Á´½Ó¿â/KernelEngine.lib")
+//é“¾æ¥ä»£ç 
+#pragma comment (lib,"../å­ä¾èµ–é¡¹/é“¾æ¥åº“/ServiceCore.lib")
+#pragma comment (lib,"../å­ä¾èµ–é¡¹/é“¾æ¥åº“/KernelEngine.lib")
 # include <iostream>
 using namespace std;
 

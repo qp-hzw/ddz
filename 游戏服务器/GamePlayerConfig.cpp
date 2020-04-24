@@ -7,15 +7,15 @@ using namespace MSXML2;
 
 
 /**
- * ½âÎöËùÓĞµÄÍæ¼ÒÀàĞÍ £¬Êä³ö Íæ¼ÒÀàĞÍÊı×é
- * @param		configfile				[in]			ÅäÖÃÎÄ¼ş
- * @param		pplayers				[out]			Íæ¼Ò×éÊı×é
- * @param		player_sum				[in-out]		Íæ¼Ò×éÊı×é³¤¶È
- * @param		m_plog					[in]			ÈÕÖ¾½Ó¿Ú
+ * è§£ææ‰€æœ‰çš„ç©å®¶ç±»å‹ ï¼Œè¾“å‡º ç©å®¶ç±»å‹æ•°ç»„
+ * @param		configfile				[in]			é…ç½®æ–‡ä»¶
+ * @param		pplayers				[out]			ç©å®¶ç»„æ•°ç»„
+ * @param		player_sum				[in-out]		ç©å®¶ç»„æ•°ç»„é•¿åº¦
+ * @param		m_plog					[in]			æ—¥å¿—æ¥å£
  */
 int CGamePlayerConfig::LoadPlayerDesc(PLAYER_TYPE &player_type)
 {
-	// ³õÊ¼»¯Êä³ö²ÎÊı
+	// åˆå§‹åŒ–è¾“å‡ºå‚æ•°
 	int result = 0;
 
 	long id = 0, _sum = 0, _card_sum = 0;
@@ -25,30 +25,30 @@ int CGamePlayerConfig::LoadPlayerDesc(PLAYER_TYPE &player_type)
 
 	SetPlayerGroupID(player_type, id); // id
 	SetPlayerCardSum(player_type, _sum); // card_sum
-	SetPlayerSum(player_type, 0); // ½âÎöplayer_sum
+	SetPlayerSum(player_type, 0); // è§£æplayer_sum
 
 	return result;
 }
 
 /**
- * ¸ù¾İÍæ¼Ò×éÃèÊöÊı×é¹¹ÔìÍæ¼ÒÃèÊöÊı×é
- * @param		dst_player_types	[in-out]	Ä¿µÄÍæ¼ÒÀàĞÍÊı×é
- * @param		player_sum			[in]		Íæ¼ÒÀàĞÍÊı×é³¤¶È
- * @param		src_player_type		[in]		Ô´Íæ¼Ò×éÊı×é³¤¶È
+ * æ ¹æ®ç©å®¶ç»„æè¿°æ•°ç»„æ„é€ ç©å®¶æè¿°æ•°ç»„
+ * @param		dst_player_types	[in-out]	ç›®çš„ç©å®¶ç±»å‹æ•°ç»„
+ * @param		player_sum			[in]		ç©å®¶ç±»å‹æ•°ç»„é•¿åº¦
+ * @param		src_player_type		[in]		æºç©å®¶ç»„æ•°ç»„é•¿åº¦
  */
 int CGamePlayerConfig::CreatePlayerDesc( PLAYER_DESCS &dst_player_types, const DWORD player_sum, const PLAYER_TYPE &src_player_type)
 {
 
-	// ¼ÆËãÍæ¼ÒÊıÁ¿,Ã¿ÖÖÍæ¼ÒÀàĞÍÊıÄ¿*Íæ¼ÒÀàĞÍÊıÄ¿
+	// è®¡ç®—ç©å®¶æ•°é‡,æ¯ç§ç©å®¶ç±»å‹æ•°ç›®*ç©å®¶ç±»å‹æ•°ç›®
 	int _player_sum = 0;
 
-	// ³õÊ¼»¯Êä³ö²ÎÊı
+	// åˆå§‹åŒ–è¾“å‡ºå‚æ•°
 	int result = 0;
 
-	//Íæ¼ÒÀàĞÍ	
+	//ç©å®¶ç±»å‹	
 	for( DWORD j = 0; j < player_sum; ++j  )
 	{
-		//Íæ¼ÒÊı×é¸³Öµ
+		//ç©å®¶æ•°ç»„èµ‹å€¼
 		dst_player_types[j].type = src_player_type;
 	}
 
@@ -57,7 +57,7 @@ int CGamePlayerConfig::CreatePlayerDesc( PLAYER_DESCS &dst_player_types, const D
 
 
 /**
-* ÉèÖÃÍæ¼ÒÀàĞÍ×éID
+* è®¾ç½®ç©å®¶ç±»å‹ç»„ID
 */
 void CGamePlayerConfig::SetPlayerGroupID( PLAYER_TYPE &_type, BYTE _id)
 {
@@ -66,7 +66,7 @@ void CGamePlayerConfig::SetPlayerGroupID( PLAYER_TYPE &_type, BYTE _id)
 }
 
 /**
-* ÉèÖÃÍæ¼ÒÊıÁ¿
+* è®¾ç½®ç©å®¶æ•°é‡
 */
 void CGamePlayerConfig::SetPlayerSum( PLAYER_TYPE &_type, BYTE _sum)
 {
@@ -75,7 +75,7 @@ void CGamePlayerConfig::SetPlayerSum( PLAYER_TYPE &_type, BYTE _sum)
 }
 
 /**
-* ÉèÖÃÍæ¼ÒÀàĞÍÊÖÅÆÊıÁ¿
+* è®¾ç½®ç©å®¶ç±»å‹æ‰‹ç‰Œæ•°é‡
 */
 void CGamePlayerConfig::SetPlayerCardSum( PLAYER_TYPE &_type, BYTE _card_sum )
 {
@@ -84,25 +84,25 @@ void CGamePlayerConfig::SetPlayerCardSum( PLAYER_TYPE &_type, BYTE _card_sum )
 }
 
 /**
-* ÌáÈ¡Íæ¼ÒÀàĞÍ×éID
+* æå–ç©å®¶ç±»å‹ç»„ID
 */
 BYTE CGamePlayerConfig::GetPlayerGroupID( PLAYER_TYPE _type)
 {
-	return (_type >> 12); //Ç°4Î»
+	return (_type >> 12); //å‰4ä½
 }
 
 /**
-* ÌáÈ¡Íæ¼ÒÀàÊıÁ¿
+* æå–ç©å®¶ç±»æ•°é‡
 */
 BYTE CGamePlayerConfig::GetPlayerSum( PLAYER_TYPE _type)
 {
-	return ( ( _type >> 8 ) & 0x0F );	//ÖĞ4Î»
+	return ( ( _type >> 8 ) & 0x0F );	//ä¸­4ä½
 }
 
 /**
-* ÌáÈ¡Íæ¼ÒÀàĞÍÊÖÅÆÊıÁ¿
+* æå–ç©å®¶ç±»å‹æ‰‹ç‰Œæ•°é‡
 */
 BYTE CGamePlayerConfig::GetPlayerCardSum( PLAYER_TYPE _type )
 {
-	return ( _type & 0x00FF );			//ºó8Î»
+	return ( _type & 0x00FF );			//å8ä½
 }

@@ -6,7 +6,7 @@
 static AFX_EXTENSION_MODULE GameServerDLL={NULL,NULL};
 
 
-//DLL µ¼³öÖ÷º¯Êı
+//DLL å¯¼å‡ºä¸»å‡½æ•°
 extern "C" int APIENTRY DllMain(HINSTANCE hInstance, DWORD dwReason, LPVOID lpReserved)
 {
 	UNREFERENCED_PARAMETER(lpReserved);
@@ -24,7 +24,7 @@ extern "C" int APIENTRY DllMain(HINSTANCE hInstance, DWORD dwReason, LPVOID lpRe
 
 
 /*
-//DLL µ¼³öÖ÷º¯Êı
+//DLL å¯¼å‡ºä¸»å‡½æ•°
 extern "C" int APIENTRY DllMain(HINSTANCE hInstance, DWORD dwReason, LPVOID lpReserved)
 {
 	UNREFERENCED_PARAMETER(lpReserved);
@@ -33,10 +33,10 @@ extern "C" int APIENTRY DllMain(HINSTANCE hInstance, DWORD dwReason, LPVOID lpRe
 		if (!AfxInitExtensionModule(GameServerDLL, hInstance)) return 0;
 		new CDynLinkLibrary(GameServerDLL);
 
-		//³õÊ¼»¯ COM
+		//åˆå§‹åŒ– COM
 		CoInitialize(NULL);
 
-		//³õÊ¼»¯ SOCKET
+		//åˆå§‹åŒ– SOCKET
 		WSADATA WSAData;
 		WORD wVersionRequested = MAKEWORD(2, 2);
 		int iErrorCode = WSAStartup(wVersionRequested, &WSAData);
